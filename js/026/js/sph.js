@@ -78,11 +78,13 @@ Vec3.prototype = {
 };
 Vec3.add = function(v1, v2) {
     var v = v1.copy();
-    return v.add(v2);
+    v.add(v2);
+    return v;
 };
 Vec3.sub = function(v1, v2) {
     var v = v1.copy();
-    return v.sub(v2);
+    v.sub(v2);
+    return v;
 };
 Vec3.eq = function(v1, v2) {
     return v1.eq(v2);
@@ -173,12 +175,12 @@ var Sim = function() {
 	for (var i = 0; i < p_ps.length; i++) {
             insert_neighbor_map(p_ps[i], p_nbr_map);
 	}
+        
+        return p_nbr_map;
     };
 
     function insert_neighbor_map(p_p, p_nbr_map) {
 	var ix = neighbor_map_idx(p_p.pos);
-
-        console.log(" " + ix);
 
 	if (p_nbr_map[ix] == undefined) {
 	    p_nbr_map[ix] = [];
@@ -213,13 +215,17 @@ var Sim = function() {
 			MIN.y <= v.y && v.y <= MAX.y &&
 			MIN.z <= v.z && v.z <= MAX.z) {
 			var ix = neighbor_map_idx(v);
-                        console.log("hge" + ix);
 
 			if (p_nbr_map[ix] != undefined) {
-			    ptrs.concat(p_nbr_map[ix]);
+//                            console.log("nbr " + p_nbr_map[ix].length);
+//			    ptrs.concat(p_nbr_map[ix]);
+                            for (var i = 0; i < p_nbr_map[ix].length; i++) {
+                                ptrs.push(p_nbr_map[ix][i]);
+                            }
 			}
 		    }
 		}
+
 	return ptrs;
     };
     
@@ -240,7 +246,7 @@ var Sim = function() {
             var ptrs = neighbor(p_nbr_map, p_p.pos);
             var sum  = 0.0;
 	    for (var j = 0; j < ptrs.length; j++) {
-		var p_pj = p_ptr[j];
+		var p_pj = ptrs[j];
 		var dr = Vec3.sub(p_p.pos, p_pj.pos);
                 dr.multScalar(SPH_SIMSCALE);
 		var r2 = dr.mag2();
@@ -252,7 +258,6 @@ var Sim = function() {
             p_p.rho = sum*SPH_PMASS*Poly6Kern;
             p_p.prs = (p_p.rho - SPH_RESTDENSITY)*SPH_INTSTIFF;
             p_p.rho = 1.0/p_p.rho;
-//            console.log (ptrs.length + " " + p_p.rho + " " + p_p.prs);
 	}
     };
 
@@ -265,19 +270,34 @@ var Sim = function() {
 	    var force = p_p.f;
 	    var ptrs = neighbor(p_nbr_map, p_p.pos);
 	    force.x = force.y = force.z = 0.0;
+
+            //console.log("l %d", ptrs.length);
+            
 	    for (var j = 0; j < ptrs.length; j++) {
 		var p_pj = ptrs[j];
 		if (Vec3.eq(p_p.pos, p_pj.pos)) continue;
-		var dr = Vec3.sub(p_p.pos, p_pj.pos).mult(SPH_SIMSCALE);
+		var dr = Vec3.sub(p_p.pos, p_pj.pos);
+                dr.multScalar(SPH_SIMSCALE);
 		var r  = dr.mag();
 
 		if (H > r) {
+                    //c = H - r;
+                    //pterm = -0.5 * c * SpikyKern * (p_p->prs + p_pj->prs) / r;
+                    //vterm = LapKern * SPH_VISC;
                     c = H - r;
                     pterm = -0.5*c*SpikyKern*(p_p.prs + p_pj.prs)/r;
                     vterm = LapKern*SPH_VISC;
-                    fcurr = Vec3.add(dr.mult(pterm),
-				     vterm*Vec3.sub(p_pj.vel, p_p.vel));
-                    fcurr.mult(c*p_p.rho*p_pj.rho);
+
+                    //fcurr = pterm * dr + vterm * (p_pj->vel - p_p->vel);
+                    dr.multScalar(pterm);
+                    var dv = Vec3.sub(p_pj.vel, p_p.vel);
+                    dv.multScalar(vterm);
+                    fcurr = Vec3.add(dr, dv);
+
+                    //fcurr *= c * p_p->rho * p_pj->rho;
+                    fcurr.multScalar(c*p_p.rho*p_pj.rho);
+
+                    //force += fcurr;
                     force.add(fcurr);
 		}
             }
@@ -403,7 +423,7 @@ var Sim = function() {
         var p_ps = new_particles();
 
         simulation(p_ps);
-//        output_particles(p_ps, 1);
+        output_particles(p_ps, 1);
         return;
 
         //std::cout << "# of particles : " << particles_size( p_ps ) << std::endl;
