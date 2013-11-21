@@ -170,7 +170,7 @@ var Sim = function() {
     function new_neighbor_map(p_ps) {
 	var p_nbr_map;// = [];
 //	p_nbr_map = new NeighborMap();
-	p_nbr_map = NeighborMap;
+	p_nbr_map = [];//NeighborMap;
 	
 	for (var i = 0; i < p_ps.length; i++) {
             insert_neighbor_map(p_ps[i], p_nbr_map);
@@ -270,9 +270,7 @@ var Sim = function() {
 	    var force = p_p.f;
 	    var ptrs = neighbor(p_nbr_map, p_p.pos);
 	    force.x = force.y = force.z = 0.0;
-
-            //console.log("l %d", ptrs.length);
-            
+	    
 	    for (var j = 0; j < ptrs.length; j++) {
 		var p_pj = ptrs[j];
 		if (Vec3.eq(p_p.pos, p_pj.pos)) continue;
@@ -310,13 +308,14 @@ var Sim = function() {
         var speed, diff, adj;
   
         g = new Vec3(0.0, -9.8, 0.0);
+	
         for (var i = 0; i < p_ps.length; i++) {
             var p_p = p_ps[i];
             var accel = Vec3.multScalar(SPH_PMASS, p_p.f);
-      
+	    
             speed = accel.mag2();
             if (speed > SPH_LIMIT*SPH_LIMIT) {
-                accel.multScalar(SPH_LIMIT/sqrt(speed));
+                accel.multScalar(SPH_LIMIT/Math.sqrt(speed));
             }
       
             // Z-axis walls
@@ -423,10 +422,11 @@ var Sim = function() {
         var p_ps = new_particles();
 
         simulation(p_ps);
+        simulation(p_ps);
+        simulation(p_ps);
         output_particles(p_ps, 1);
         return;
 
-        //std::cout << "# of particles : " << particles_size( p_ps ) << std::endl;
         for (var i = 0 ; i < 2; i++) {
             output_particles(p_ps, i);
             simulation(p_ps);
