@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <stdlib.h>
 
 /*----------------------------
   Declaration of vec3
