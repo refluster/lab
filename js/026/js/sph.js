@@ -120,11 +120,12 @@ var Particle = function() {
 
 /// Sim /////////////////////////// 
 var Sim = function() {
-    const SPH_RESTDENSITY = 600.0;
+//    const SPH_RESTDENSITY = 600.0;
+    const SPH_RESTDENSITY = 300.0;
     const SPH_INTSTIFF    = 3.0;
     const SPH_PMASS       = 0.00020543;
     const SPH_SIMSCALE    = 0.004;
-    const H               = 0.01;
+    const H               = 0.012;
     const PI              = 3.141592653589793;
     const DT              = 0.004;
     const SPH_VISC        = 0.2;
@@ -135,19 +136,19 @@ var Sim = function() {
     const SPH_EXTDAMP     = 256.0;
     const SPH_PDIST       = Math.pow(SPH_PMASS/SPH_RESTDENSITY,
                                      1.0/3.0);
-//    const MIN             = new Vec3(  0.0,  0.0, -10.0);
-//    const MAX             = new Vec3( 20.0, 50.0,  10.0);
-    const MIN             = new Vec3(  0.0,  0.0, -5.0);
-    const MAX             = new Vec3( 10.0, 25.0,  5.0);
-//    const INIT_MIN        = new Vec3(  0.0,  0.0, -10.0);
-//    const INIT_MAX        = new Vec3( 10.0, 20.0,  10.0);
-    const INIT_MIN        = new Vec3(  0.0,  0.0, -5.0);
-    const INIT_MAX        = new Vec3(  5.0, 10.0,  5.0);
+//    const MIN             = new Vec3(  0.0,  0.0, -5.0);
+//    const MAX             = new Vec3( 10.0, 25.0,  0.0);
+//    const INIT_MIN        = new Vec3(  0.0,  0.0,  10.0);
+//    const INIT_MAX        = new Vec3(  5.0, 10.0,  10.0);
+
+    const MIN             = new Vec3(  0.0,  0.0,   0.0);
+    const MAX             = new Vec3( 30.0,100.0,  10.0);
+    const INIT_MIN        = new Vec3(  0.0,  0.0,   0.0);
+    const INIT_MAX        = new Vec3( 10.0, 45.0,  10.0);
+
     const Poly6Kern       = 315.0 / (64.0*PI*Math.pow(H, 9));
     const SpikyKern       = -45.0 / (PI*Math.pow(H, 6));
     const LapKern         = 45.0 / (PI*Math.pow(H, 6));
-    
-    var NeighborMap = [];
     
     function new_particles() {
 	var p_ps = [];
@@ -433,10 +434,26 @@ var Sim = function() {
         }
         //delete_particles(p_ps);
     };
+
+    var particles = [];
+
+    this.init = function() {
+        particles = new_particles();
+    };
+
+    this.step = function() {
+        simulation(particles);
+    };
+
+    this.get_particle = function() {
+        return particles;
+    };
 };
 
+/*
 $(window).load(function() {
     //console.log("loaded");
     var sim = new Sim();
     sim.main();
 });
+*/

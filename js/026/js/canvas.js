@@ -63,7 +63,7 @@ var canvasManager = {}; // namespace
 
             for (var i = 0; i < p.length; i++) {
                 this.ctx.beginPath();
-                this.ctx.arc(p[i].pos.x*10, 200-p[i].pos.y*10,
+                this.ctx.arc(p[i].pos.x*8, this.area.h-p[i].pos.y*8,
                              this.radius, 0, this.PI2, false);
                 this.ctx.fill();
             }
