@@ -118,10 +118,11 @@ var Particle = function() {
     this.prs = 0.0;
 };
 
-/// Sim /////////////////////////// 
-var Sim = function() {
-//    const SPH_RESTDENSITY = 600.0;
-    const SPH_RESTDENSITY = 300.0;
+/// Sph /////////////////////////// 
+var Sph = function() {
+    // parameters
+    const SPH_RESTDENSITY = 600.0;
+//    const SPH_RESTDENSITY = 300.0;
     const SPH_INTSTIFF    = 3.0;
     const SPH_PMASS       = 0.00020543;
     const SPH_SIMSCALE    = 0.004;
@@ -136,19 +137,21 @@ var Sim = function() {
     const SPH_EXTDAMP     = 256.0;
     const SPH_PDIST       = Math.pow(SPH_PMASS/SPH_RESTDENSITY,
                                      1.0/3.0);
-//    const MIN             = new Vec3(  0.0,  0.0, -5.0);
-//    const MAX             = new Vec3( 10.0, 25.0,  0.0);
-//    const INIT_MIN        = new Vec3(  0.0,  0.0,  10.0);
-//    const INIT_MAX        = new Vec3(  5.0, 10.0,  10.0);
+/*
+    const MIN             = new Vec3(  0.0,  0.0, -5.0);
+    const MAX             = new Vec3( 10.0, 25.0,  0.0);
+    const INIT_MIN        = new Vec3(  0.0,  0.0,  10.0);
+    const INIT_MAX        = new Vec3(  5.0, 10.0,  10.0);
+*/
 
     const MIN             = new Vec3(  0.0,  0.0,   0.0);
-    const MAX             = new Vec3( 30.0,100.0,  10.0);
+    const MAX             = new Vec3( 30.0, 50.0,  15.0);
     const INIT_MIN        = new Vec3(  0.0,  0.0,   0.0);
-    const INIT_MAX        = new Vec3( 10.0, 45.0,  10.0);
+    const INIT_MAX        = new Vec3( 10.0, 30.0,  15.0);
 
-    const Poly6Kern       = 315.0 / (64.0*PI*Math.pow(H, 9));
-    const SpikyKern       = -45.0 / (PI*Math.pow(H, 6));
-    const LapKern         = 45.0 / (PI*Math.pow(H, 6));
+    const Poly6Kern       = 315.0/(64.0*PI*Math.pow(H, 9));
+    const SpikyKern       = -45.0/(PI*Math.pow(H, 6));
+    const LapKern         = 45.0/(PI*Math.pow(H, 6));
     
     function new_particles() {
 	var p_ps = [];

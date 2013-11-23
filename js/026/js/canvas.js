@@ -35,7 +35,7 @@ var canvasManager = {}; // namespace
 	};
         
         this.init = function(n) {
-            this.sph = new Sim();
+            this.sph = new Sph();
             this.sph.init();
         };
         
