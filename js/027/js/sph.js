@@ -271,7 +271,7 @@ var Sph = function() {
         var g;
         var speed, diff, adj;
   
-        g = new Vec3(0.0, -9.8, 0.0);
+        g = gravity; //new Vec3(0.0, -9.8, 0.0);
 	
         for (var i = 0; i < p_ps.length; i++) {
             var p_p = p_ps[i];
@@ -355,6 +355,7 @@ var Sph = function() {
         }
     };
 
+    var gravity = new Vec3(0.0, -9.8, 0.0);
     var particles = [];
 
     this.init = function() {
@@ -367,5 +368,11 @@ var Sph = function() {
 
     this.get_particle = function() {
         return particles;
+    };
+    
+    this.set_gravity = function(gx, gy, gz) {
+        gravity.x = gx;
+        gravity.y = gy;
+        gravity.z = gz;
     };
 };

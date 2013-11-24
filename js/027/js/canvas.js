@@ -42,6 +42,10 @@ var canvasManager = {}; // namespace
             this.sph.step();
         };
 
+        this.setGravity = function(gx, gy, gz) {
+            this.sph.setGravity(gx, gy, gz);
+        };
+
         this.draw = function() {
             this.blank();
             this.ctx.save();

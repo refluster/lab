@@ -35,6 +35,11 @@ var panelApl = {}; // namespace
 	$('#msg1').html(msg);
     };
 
+    panelApl.getGravity = function(evt) {
+        var acg = evt.accelerationIncludingGravity;
+        panelApl.canv.setGravity(acg.x, acg.y, acg.z);
+    };
+
     /* body onload process */
     $(window).load(function() {
 	// get canvas's DOM element and context
@@ -52,10 +57,10 @@ var panelApl = {}; // namespace
 	var $btn = $('#stbtn1'); // start button
 	$btn.mousedown(panelApl.start);
 	$btn.text('start');
-	
+        window.addEventListener('devicemotion', panelApl.getGravity);
+        	
 	// show message
 	panelApl.showmsg('press start button');
-        window.addEventListener('devicemotion', panelApl.readGravity);
         
         panelApl.timer.set({
             action: function() {
