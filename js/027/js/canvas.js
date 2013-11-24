@@ -43,7 +43,7 @@ var canvasManager = {}; // namespace
         };
 
         this.setGravity = function(gx, gy, gz) {
-            this.sph.setGravity(gx, gy, gz);
+            this.sph.set_gravity(gx, gy, gz);
         };
 
         this.draw = function() {
