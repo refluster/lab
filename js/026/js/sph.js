@@ -1,34 +1,3 @@
-///////////////////////////// experimental
-/*
-function () {
-    const val = 3;
-    this.hoge = function() {
-	console.log("hoge" + val)
-    }
-};
-b =  {val: 3, hoge: function};
-вк OK
-b =  function() {val: 3, hoge: function};
-вк NG
-b = function() {var v = 34; this.hoge = function() {console.log("f,hoge " + v);}; };
-вк OK
-b = function() {var v = 34; function func() {console.log("func " + v);} this.hoge = function() {func()}; };
-вк OK
-*/
-
-////////////////////////////// Sample
-/*
-var Person = function(name) {
-    this.name = name;
-};
-Person.prototype.name = 'nanashi';
-Person.prototype.say = function() {
-    console.log("I like " + this.name);
-};
-var p = new Person('nicole');
-p.say;
-p.name = '';
-*/
 /// Vec3 ///////////////////////////
 
 var Vec3 = function(x, y, z) {
@@ -172,20 +141,15 @@ var Sph = function() {
     };
     
     function new_neighbor_map(p_ps) {
-	var p_nbr_map;// = [];
-//	p_nbr_map = new NeighborMap();
-	p_nbr_map = [];//NeighborMap;
-	
+	var p_nbr_map = [];
 	for (var i = 0; i < p_ps.length; i++) {
             insert_neighbor_map(p_ps[i], p_nbr_map);
 	}
-        
         return p_nbr_map;
     };
 
     function insert_neighbor_map(p_p, p_nbr_map) {
 	var ix = neighbor_map_idx(p_p.pos);
-
 	if (p_nbr_map[ix] == undefined) {
 	    p_nbr_map[ix] = [];
 	}
@@ -195,13 +159,13 @@ var Sph = function() {
     function neighbor_map_idx(r) {
 	var x, y, z;
 	var mx, my;
-	var d;
-	d  = H/SPH_SIMSCALE;
-	x  = Math.floor((r.x - MIN.x)/d);
-	y  = Math.floor((r.y - MIN.y)/d);
-	z  = Math.floor((r.z - MIN.z)/d);
-	mx = Math.floor((MAX.x - MIN.x)/d);
-	my = Math.floor((MAX.y - MIN.y)/d);
+	var d_inv;
+	d_inv  = SPH_SIMSCALE/H;
+	x  = Math.floor((r.x - MIN.x)*d_inv);
+	y  = Math.floor((r.y - MIN.y)*d_inv);
+	z  = Math.floor((r.z - MIN.z)*d_inv);
+	mx = Math.floor((MAX.x - MIN.x)*d_inv);
+	my = Math.floor((MAX.y - MIN.y)*d_inv);
 	return x + y*mx + z*mx*my;
     };
 
@@ -221,8 +185,6 @@ var Sph = function() {
 			var ix = neighbor_map_idx(v);
 
 			if (p_nbr_map[ix] != undefined) {
-//                            console.log("nbr " + p_nbr_map[ix].length);
-//			    ptrs.concat(p_nbr_map[ix]);
                             for (var i = 0; i < p_nbr_map[ix].length; i++) {
                                 ptrs.push(p_nbr_map[ix][i]);
                             }
@@ -239,7 +201,6 @@ var Sph = function() {
 	calc_amount(p_ps, p_nbr_map);
 	calc_force(p_ps, p_nbr_map);
 	advance(p_ps, p_nbr_map);
-	//delete_neighbor_map(p_nbr_map);
     };
     
     function calc_amount(p_ps, p_nbr_map) {
@@ -305,7 +266,6 @@ var Sph = function() {
             }
 	}
     };
-
 
     function advance(p_ps, p_nbr_map) {
         var g;
@@ -378,48 +338,6 @@ var Sph = function() {
         }
     };
 
-    function output_particles(p_ps, cnt) {
-        var file_name = "result" + cnt + ".pov"
-
-        //std::cout << "processing " << file_name << " ..." << std::endl;
-  
-/*
-        console.log("#include \"colors.inc\"\n" +
-                    "camera {\n" +
-                    "  location <10, 30, -40.0>\n" +
-                    "  look_at <10, 10, 0.0>\n" +
-                    "}\n" +
-                    "light_source { <0, 30, -30> color White }\n");
-*/
-        var text = "#include \"colors.inc\"\n" +
-            "camera {\n" +
-            "  location <10, 30, -40.0>\n" +
-            "  look_at <10, 10, 0.0>\n" +
-            "}\n" +
-            "light_source { <0, 30, -30> color White }\n";
-        
-        for (var i = 0; i < p_ps.length; i++) {
-            var p_p = p_ps[i];
-            var r = p_p.pos;
-/*
-            console.log("sphere {\n" + 
-                        "  <" + r.x + ", " + r.y + ", " + r.z + ">, 0.5\n" +
-                        "  texture {\n" +
-                        "    pigment { color Yellow }\n" +
-                        "  }\n" +
-                        "}\n");
-*/
-            text += "sphere {\n" + 
-                "  <" + r.x + ", " + r.y + ", " + r.z + ">, 0.5\n" +
-                "  texture {\n" +
-                "    pigment { color Yellow }\n" +
-                "  }\n" +
-                "}\n";
-        }
-        
-        console.log(text);
-    };
-
     this.main = function() {
         var n = 1;
 
@@ -435,7 +353,6 @@ var Sph = function() {
             output_particles(p_ps, i);
             simulation(p_ps);
         }
-        //delete_particles(p_ps);
     };
 
     var particles = [];
@@ -452,11 +369,3 @@ var Sph = function() {
         return particles;
     };
 };
-
-/*
-$(window).load(function() {
-    //console.log("loaded");
-    var sim = new Sim();
-    sim.main();
-});
-*/

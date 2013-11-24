@@ -1,15 +1,7 @@
-/* HTML5 Canvas drag&drop */
 var canvasManager = {}; // namespace
 
 (function($) {
-    /* canvas class
-     * {canvas context} ctx: the context
-     * {int} w: width
-     * {int} h: height
-     * {objext} names: caller namespace
-     */
-
-    canvasManager.canv = function(ctx, w, h, names) {
+    canvasManager.canv = function(ctx, w, h) {
 	this.ctx = ctx; // the context
 	this.area = {w:w, h:h};  // the area
 	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
@@ -24,9 +16,12 @@ var canvasManager = {}; // namespace
 
         // environment parameter
         this.drawInterval = 33; //msec
-        this.radius = 3; // raduis of balls
+        this.radius = 1; // raduis of balls
         this.particles = [];
         this.sph;
+
+	this.ctx.lineWidth = 1;
+	this.ctx.globalCompositeOperation = "source-over";
 
 	this.blank = function() {
 	    //this.ctx.clearRect(0, 0, this.area.w, this.area.h);
@@ -34,7 +29,7 @@ var canvasManager = {}; // namespace
             this.ctx.fillRect(0, 0, this.area.w, this.area.h);
 	};
         
-        this.init = function(n) {
+        this.init = function() {
             this.sph = new Sph();
             this.sph.init();
         };
@@ -43,10 +38,6 @@ var canvasManager = {}; // namespace
             this.drawInterval = 1000/fps;
         };
 
-        this.setRadius = function(radius) {
-            this.radius = radius;
-        };
-        
         this.moveObj = function() {
             this.sph.step();
         };

@@ -4,7 +4,7 @@
 var panelApl = {}; // namespace
 
 (function($) {
-    panelApl.gamestart = false;  // true if playing
+    panelApl.start = false;  // true if playing
     panelApl.timer = $.timer();
     panelApl.fps = 30;
     
@@ -15,44 +15,20 @@ var panelApl = {}; // namespace
 	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 	var $btn = $('#stbtn1'); // start button
         
-	if (!panelApl.gamestart) { // if not playing
-            //// set parameters from web form
-            var cristals = document.form1.input_cristals.value;
-            var radius = document.form1.input_radius.value;
-            // check if inputs are number
-            if (isNaN(cristals) || isNaN(radius)) {
-                panelApl.showmsg("ERROR: incorrect input");
-                return;
-            }
-            cristals = Number(cristals);
-            radius = Number(radius);
-            if (cristals < 0 || radius < 0) {
-                panelApl.showmsg("ERROR: values must be positive number or zoro");
-                return;
-            }
-            panelApl.canv.setRadius(radius);
-
+	if (!panelApl.start) { // if not playing
 	    // init canvas
-	    panelApl.canv.init(cristals);
-	    
-	    panelApl.gamestart = true;
+	    panelApl.canv.init();
+	    panelApl.start = true;
             panelApl.canv.setFps(panelApl.fps);
 	    panelApl.showmsg('moving');
-	    $btn.text('stop');
-            
-            // start simulation
             panelApl.timer.play();
+	    $btn.text('stop');
 	} else { // if playing
-	    panelApl.gamestart = false;
+	    panelApl.start = false;
             panelApl.timer.pause();
 	    panelApl.showmsg('paused');
 	    $btn.text('start');
 	}
-    };
-
-    panelApl.readGravity = function(evt) {
-        var g = evt.accelerationIncludingGravity;
-        panelApl.canv.set3dGravity({x:g.x, y:-g.y, z:g.z});
     };
 
     panelApl.showmsg = function(msg) {
@@ -65,12 +41,10 @@ var panelApl = {}; // namespace
 	var canvas = document.getElementById('cv1');
 	if ( ! canvas || ! canvas.getContext ) { return false; }
 	var ctx = canvas.getContext("2d");
-	ctx.lineWidth = 1;
-	ctx.globalCompositeOperation = "source-over";
-
-	// display
+        
+        // canvas
 	panelApl.canv = new canvasManager.canv(ctx, canvas.width,
-                                               canvas.height, panelApl);
+                                               canvas.height);
 	panelApl.canv.init();
 	panelApl.canv.draw();
         

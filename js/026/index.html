@@ -48,11 +48,11 @@ form {
 }
 -->
 </style>
-<title>v0.23 crystals on the lotus leaf (friction)</title>
+<title>026 particle simulation</title>
 <!--[if IE]>
 <script type="text/javascript" src="./fcvs/flashcanvas.js"></script>
 <![endif]-->
-<script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="./js/jquery.timer.js" charset="EUC-JP"></script>
 <script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
 <script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
@@ -60,19 +60,17 @@ form {
 </head>
 <body>
   <div id="body" class="body">
-    <div class="title">v0.23 crystals on the lotus leaf (friction)</div>
+    <div class="title">026 particle simulation</div>
     release note
     <ul style="margin-left: 50px">
-      <li>gravity and gyro sensor, "devicemotion"</li>
+      <li>sph simulation method</li>
     </ul>
     <div class="divcv">
-      <form name="form1" action="">
-	cristals: <input name="input_cristals" type="text" value="10" /><br>
-        radius: <input name="input_radius" type="text" value="2" /><br>
-      </form>
       <div class="msg"><button id="stbtn1" class="btn"></button></div>
       <div id="msg1" class="msg"></div>
-      <div id="cvdiv1"><canvas id="cv1" class="cv" width="600" height="300"></canvas></div>
+      <div id="cvdiv1">
+	<canvas id="cv1" class="cv" width="600" height="300"></canvas>
+      </div>
     </div>
     <div style="clear: both;"></div>
   </div><br>
