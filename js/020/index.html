@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="EUC-JP">
+<style TYPE="text/css">
+<!--
+/* set mergin/padding for all tags as zero not to depend on browser */
+* { margin: 0;
+	padding: 0;
+}
+/* conetent */
+.body {
+	display: block;
+	position: relative;
+	margin: 30px 100px;
+	overflow: visible;
+	width: 800px;
+}
+/* Canvas */
+.divcv {
+	display: block;
+}
+.cv {
+        border: solid 1px #808080;
+}
+/* title */
+.title {
+	display: block;
+	font-size: 25px;
+	font-weight: bold;
+}
+/* message */
+.msg {
+	display: block;
+	overflow: visible;
+	font-size: 14px;
+	font-weight: bold;
+	color: #202020;
+}
+/* button */
+.btn {
+	width: 100px;
+	font-size: 16px;
+	line-height: 23px;
+}
+form {
+        margin-bottom: 10px;
+}
+-->
+</style>
+<title>0.20 gyro & gravity sensor test</title>
+<!--[if IE]>
+<script type="text/javascript" src="./fcvs/flashcanvas.js"></script>
+<![endif]-->
+<script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/jquery.timer.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
+</head>
+<body>
+  <div id="body" class="body">
+    <div class="title">0.20 gyro & gravity sensor test</div>
+    release note
+    <ul style="margin-left: 50px">
+      <li>gravity and gyro sensor, "devicemotion"</li>
+    </ul>
+    <div id="msg" style="clear: both;"></div>
+  </div><br>
+</body>
+</html>

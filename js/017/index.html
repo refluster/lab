@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="EUC-JP">
+<style TYPE="text/css">
+<!--
+/* set mergin/padding for all tags as zero not to depend on browser */
+* { margin: 0;
+	padding: 0;
+}
+/* conetent */
+.body {
+	display: block;
+	position: relative;
+	margin: 30px 100px;
+	overflow: visible;
+	width: 800px;
+	font-family: "ＭＳ Ｐゴシック", "Osaka", sans-serif;
+}
+/* Canvas */
+.divcv {
+	display: block;
+	float: left;
+	margin: 10px 40px 10px 10px;
+	width: 300px;
+	/* height: 300px; */
+}
+.cv {
+	border-style: solid;
+	border-width: 1px;	
+	border-color: #808080;
+	background-color: #F8F8FF;
+}
+/* title */
+.title {
+	display: block;
+	font-size: 25px;
+	font-weight: bold;
+}
+/* message */
+.msg {
+	display: block;
+	margin: 5px 0;
+	overflow: visible;
+	width: 300px;
+	height: 50px;
+	text-align: center;
+	font-size: 14px;
+	line-height: 25px;
+	font-weight: bold;
+	color: #202020;
+}
+/* button */
+.btn {
+	width: 85px;
+	font-size: 20px;
+	line-height: 23px;
+	font-weight: bold;
+	font-family: "ＭＳ Ｐゴシック", "Osaka", sans-serif;
+}
+-->
+</style>
+<title>v0.17 crystal on the lotus leaf</title>
+<!--[if IE]>
+<script type="text/javascript" src="./fcvs/flashcanvas.js"></script>
+<![endif]-->
+<script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/jquery.timer.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
+</head>
+<body>
+  <div id="body" class="body">
+    <div class="title">v0.17 crystal on the lotus leaf</div>
+    release note
+    <ul style="margin-left: 50px">
+      <li></li>
+    </ul>
+    <div class="divcv">
+      <div id="cvdiv1"><canvas id="cv1" class="cv" width="600" height="300"></canvas></div>
+      <div id="msg1" class="msg"></div>
+      <div class="msg"><button id="stbtn1" class="btn"></button></div>
+    </div>
+    <div style="clear: both;"></div>
+  </div><br>
+</body>
+</html>

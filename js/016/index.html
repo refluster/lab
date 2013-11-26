@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="EUC-JP">
+<style TYPE="text/css">
+<!--
+/* set mergin/padding for all tags as zero not to depend on browser */
+* { margin: 0;
+	padding: 0;
+}
+/* conetent */
+.body {
+	display: block;
+	position: relative;
+	margin: 30px 100px;
+	overflow: visible;
+	width: 800px;
+}
+/* Canvas */
+.divcv {
+	display: block;
+	float: left;
+	margin: 10px 40px 10px 10px;
+	width: 300px;
+	/* height: 300px; */
+}
+.cv {
+	border-style: solid;
+	border-width: 1px;	
+	border-color: #808080;
+	background-color: #F8F8FF;
+}
+/* title */
+.title {
+	display: block;
+	font-size: 25px;
+	font-weight: bold;
+}
+/* message */
+.msg {
+	display: block;
+	margin: 5px 0;
+	overflow: visible;
+	width: 300px;
+	height: 50px;
+	text-align: center;
+	font-size: 12px;
+	line-height: 25px;
+}
+/* button */
+#btn1 {
+	width: 100px;
+	font-size: 14px;
+	line-height: 23px;
+}
+form {
+	margin-bottom: 10px;
+}
+-->
+</style>
+<title>v0.16 mossy (parameter)</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
+</head>
+<body>
+  <div id="body" class="body">
+    <div class="title">v0.16 mossy (parameter)</div>
+    release note
+    <ul style="margin-left: 50px">
+      <li></li>
+    </ul>
+    <div class="divcv">
+      <form name="form1" action="">
+	number: <input name="input_number" type="text" id="txt1" value="1000" /><br>
+	rmin: <input name="input_rmin" type="text" id="txt1" value="8" /><br>
+	rmax: <input name="input_rmax" type="text" id="txt1" value="14" /><br>
+	seconds: <input name="input_seconds" type="text" id="txt1" value="2.0" /><br>
+	fps: <input name="input_fps" type="text" id="txt1" value="10" /><br>
+	<input name="btn" type="button" id="btn1" value="update" />
+      </form>
+      <p />
+      <div id="cvdiv1">
+	<canvas id="cv1" class="cv" width="300" height="300">
+	</canvas>
+      </div>
+      <div id="msg1" class="msg"></div>
+<!--
+      <div class="msg"><button id="stbtn1" class="btn"></button></div>
+-->
+    </div>
+    <div style="clear: both;"></div>
+  </div><br>
+</body>
+</html>
+
+
+

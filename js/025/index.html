@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="EUC-JP">
+<style TYPE="text/css">
+<!--
+/* set mergin/padding for all tags as zero not to depend on browser */
+* { margin: 0;
+	padding: 0;
+}
+/* conetent */
+.body {
+	display: block;
+	position: relative;
+	margin: 30px 100px;
+	overflow: visible;
+	width: 800px;
+}
+/* Canvas */
+.divcv {
+	display: block;
+}
+.cv {
+        border: solid 1px #808080;
+}
+/* title */
+.title {
+	display: block;
+	font-size: 25px;
+	font-weight: bold;
+}
+/* message */
+.msg {
+	display: block;
+	overflow: visible;
+	font-size: 14px;
+	font-weight: bold;
+	color: #202020;
+}
+/* button */
+.btn {
+	width: 100px;
+	font-size: 16px;
+	line-height: 23px;
+}
+form {
+        margin-bottom: 10px;
+}
+-->
+</style>
+<title>v0.23 crystals on the lotus leaf (friction)</title>
+<!--[if IE]>
+<script type="text/javascript" src="./fcvs/flashcanvas.js"></script>
+<![endif]-->
+<script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/jquery.timer.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
+</head>
+<body>
+  <div id="body" class="body">
+    <div class="title">v0.23 crystals on the lotus leaf (friction)</div>
+    release note
+    <ul style="margin-left: 50px">
+      <li>gravity and gyro sensor, "devicemotion"</li>
+    </ul>
+    <div class="divcv">
+      <form name="form1" action="">
+	cristals: <input name="input_cristals" type="text" value="10" /><br>
+        radius: <input name="input_radius" type="text" value="10" /><br>
+        coefficient of restriction: <input name="input_cor" type="text" value="0.2" /><br>
+        coefficient of friction: <input name="input_cof" type="text" value="4" /><br>
+      </form>
+      <div class="msg"><button id="stbtn1" class="btn"></button></div>
+      <div id="msg1" class="msg"></div>
+      <div id="cvdiv1"><canvas id="cv1" class="cv" width="600" height="300"></canvas></div>
+    </div>
+    <div style="clear: both;"></div>
+  </div><br>
+</body>
+</html>
