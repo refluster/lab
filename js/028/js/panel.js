@@ -5,13 +5,17 @@ var panelApl = {}; // namespace
 
 (function($) {
     panelApl.gamestart = false;  // true if playing
-    panelApl.fps = 1;
+    panelApl.fps = 10;
+    panelApl.timer = $.timer();
 
     // socket
     panelApl.socket = new io.connect("http://183.181.8.119:8028");
 
-    // server side session id
-    panelApl.sessionId = null;
+    // get my session id from the server
+    panelApl.socket.on('your sid', function (sid) {
+        console.log("my id %s", sid);
+        panelApl.sessionId = sid;
+    });
 
     /* button process
      * return: none
@@ -23,8 +27,7 @@ var panelApl = {}; // namespace
 	    panelApl.gamestart = true;
 	    panelApl.showmsg('playing as display');
 
-            panelApl.socket.emit("set display",
-                                 {sid:panelApl.sessionId});
+            panelApl.socket.emit("set display", {sid:panelApl.sessionId});
 
             // socket event bind
             panelApl.socket.on("connect", function(){
@@ -35,6 +38,7 @@ var panelApl = {}; // namespace
             panelApl.socket.on('set stear', function (data) {
                 panelApl.stear = data.stear;
                 console.log("stear %f", data.stear);
+                panelApl.canvMng.draw({x:(data.stear + 10)*10, y:100});
             });
 
             // another client connected
@@ -53,6 +57,7 @@ var panelApl = {}; // namespace
 
     panelApl.startController = function() {
 	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
+
 	if (!panelApl.gamestart) { // if not playing
             window.addEventListener('devicemotion', panelApl.getGravity);
 	    panelApl.gamestart = true;
@@ -61,20 +66,20 @@ var panelApl = {}; // namespace
             panelApl.socket.emit("set controller",
                                  {sid:panelApl.sessionId});
             
-            // get my session id from the server
-            panelApl.socket.on('your sid', function (sid) {
-                panelApl.sessionId = sid;
-            });
-
             panelApl.timer.set({
                 action: function() {
-                    panelApl.setStear(panelApl.acg.y);
+                    console.log("hoge");
+                    panelApl.setStear(4);
+//                    panelApl.setStear(panelApl.acg.y);
                 },
                 time: 1000/panelApl.fps
             });
+            panelApl.timer.play();
+
 	} else { // if playing
 	    panelApl.gamestart = false;
 	    panelApl.showmsg('play controller');
+            panelApl.timer.pause();
 	}
     };
 
@@ -89,8 +94,7 @@ var panelApl = {}; // namespace
     // stearing setting
     panelApl.setStear = function(_stear) {
         panelApl.socket.emit("set stear",
-                             {sid:panelApl.sessionId, stear:13});
-//                             {sid:panelApl.sessionId, stear:_stear});
+                             {sid:panelApl.sessionId, stear:_stear});
     };
 
     // get acceleration
