@@ -1,38 +1,40 @@
 var http = require('http');
 var io = require('socket.io');
- 
 var fs = require('fs');
 
 var server = http.createServer();
 server.listen(8028);
 var socket = io.listen(server);
  
-var client_db = new Array();
+var display
+var controller
 
 socket.on('connection', function(client){
     // setup client db of the new commer
     console.log('=============== connected');
 
     client.emit('your sid', client.id);
-    for (var i in client_db) {
-        client.emit('client connected', i);
-    }
-    
+
     // notify all clients about the new client with session id
     client.broadcast.emit('client connected', client.id);
 
-    // add client info into db
-    client_db[client.id] = {speed:0, stear:0, pos:{x:0, y:0}};
+    client.on('set display', function(data) {
+        display = client;
+    });
+    client.on('set controller', function(data) {
+        controller = client;
+    });
     
     // receive to set stearing info
     client.on('set stear', function(data) {
-        client_db[data.sid].color = data.color;
-        client.broadcast.emit('set stear', data);
+        display.emit('set stear', data);
+        console.log('set stear');
     });
     
     // receive to set speed info
     client.on('set speed', function(data) {
-        client.broadcast.emit('set speed', data);
+        display.emit('set speed', data);
+        console.log('set speed');
     });
     
     client.on('disconnect', function() {

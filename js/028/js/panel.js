@@ -4,24 +4,14 @@
 var panelApl = {}; // namespace
 
 (function($) {
-    
-    /* global var */
-    // drag state
-    panelApl.drag = {
-	now: false, // true if dragging
-    };
     panelApl.gamestart = false;  // true if playing
-    
-    panelApl.fps = 30;
+    panelApl.fps = 1;
 
     // socket
     panelApl.socket = new io.connect("http://183.181.8.119:8028");
 
     // server side session id
     panelApl.sessionId = null;
-
-    // client database, [0] indicates self
-    panelApl.client_db = new Array();
 
     /* button process
      * return: none
@@ -33,6 +23,9 @@ var panelApl = {}; // namespace
 	    panelApl.gamestart = true;
 	    panelApl.showmsg('playing as display');
 
+            panelApl.socket.emit("set display",
+                                 {sid:panelApl.sessionId});
+
             // socket event bind
             panelApl.socket.on("connect", function(){
                 console.log('connected');
@@ -40,17 +33,17 @@ var panelApl = {}; // namespace
             
             // draw line by another client
             panelApl.socket.on('set stear', function (data) {
-                panelApl.client_db[data.sid].stear = data.stear;
+                panelApl.stear = data.stear;
                 console.log("stear %f", data.stear);
             });
 
             // another client connected
             panelApl.socket.on('client connected', function (sid) {
-                panelApl.client_db[sid] = {stear:0, speed:0};
+                ;//
             });
             
             panelApl.socket.on('client disconnected', function (data) {
-                //jQuery('#member_count').html(data);
+                ;//
             });
 	} else { // if playing
 	    panelApl.gamestart = false;
@@ -65,6 +58,9 @@ var panelApl = {}; // namespace
 	    panelApl.gamestart = true;
 	    panelApl.showmsg('playing as controller');
 
+            panelApl.socket.emit("set controller",
+                                 {sid:panelApl.sessionId});
+            
             // get my session id from the server
             panelApl.socket.on('your sid', function (sid) {
                 panelApl.sessionId = sid;
@@ -92,9 +88,9 @@ var panelApl = {}; // namespace
     
     // stearing setting
     panelApl.setStear = function(_stear) {
-        panelApl.client_db[0].stear = _stear;
         panelApl.socket.emit("set stear",
-                             {sid:panelApl.sessionId, stear:_stear});
+                             {sid:panelApl.sessionId, stear:13});
+//                             {sid:panelApl.sessionId, stear:_stear});
     };
 
     // get acceleration
