@@ -59,7 +59,7 @@ var panelApl = {}; // namespace
 	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 
 	if (!panelApl.gamestart) { // if not playing
-            window.addEventListener('devicemotion', panelApl.getGravity);
+            window.addEventListener('devicemotion', panelApl.getAcceleration);
 	    panelApl.gamestart = true;
 	    panelApl.showmsg('playing as controller');
 
@@ -68,7 +68,7 @@ var panelApl = {}; // namespace
             
             panelApl.timer.set({
                 action: function() {
-                    console.log("hoge");
+                    console.log("hoge %d", panelApl.acg.y);
 //                    panelApl.setStear(4);
                     panelApl.setStear(panelApl.acg.y);
                 },
