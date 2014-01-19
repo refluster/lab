@@ -13,9 +13,6 @@ var canvasManager = {}; // namespace
 	this.ctx = ctx; // the context
 	this.area = {w:w, h:h};  // the area
 	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
-        this.prevPos = {x:0, y:0}; // previous position of the cursor
-        this.color = 'black';
-        this.lineWidth = 1;
         
 	// set the position of the canvas on the browser
 	var $cvdiv = $('#cvdiv1');
@@ -32,66 +29,21 @@ var canvasManager = {}; // namespace
 	 * return: none
 	 */
 	this.blank = function() {
-	    // clear
 	    this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 	};
-
-	/* draw canvas initialize the position
-	 * return: none
-	 */
-	this.setPos = function(pos) {
-            this.prevPos = pos;
-        };
-
-        this.setColor = function(color) {
-            this.color = color;
-        };
-
-        this.setLineWidth = function(lineWidth) {
-            this.lineWidth = lineWidth;
-        };
 
 	/* draw canvas
 	 * return: none
 	 */
 	this.draw = function(pos) {
             this.ctx.save();
-            this.ctx.strokeStyle = this.color;
-            this.ctx.lineWidth = this.lineWidth;
-            
+            this.ctx.strokeStyle = 'black';
+            this.ctx.lineWidth = 3;
             this.ctx.beginPath();
-            this.ctx.moveTo(this.prevPos.x, this.prevPos.y);
-            this.ctx.lineTo(pos.x, pos.y);
-            this.ctx.stroke();
-
+            this.ctx.arc(pos.x, pos.y, 8, 0,  2*Math.PI, true);
+            this.ctx.fill();
             this.ctx.restore();
-
-            this.prevPos = pos;
 	};
-
-        this.drawLine = function(color, lineWidth, from, to) {
-            this.ctx.save();
-            this.ctx.strokeStyle = color;
-            this.ctx.lineWidth = lineWidth;
-            
-            this.ctx.beginPath();
-            this.ctx.moveTo(from.x, from.y);
-            this.ctx.lineTo(to.x, to.y);
-            this.ctx.stroke();
-            
-            this.ctx.restore();
-        }
-
-        this.restoreImage = function(imgData) {
-            var img = new Image();
-	    var alpha = ctx.globalAlpha;
-
-            img.src = imgData;
-	    ctx.globalAlpha = 1.0;
-            this.ctx.drawImage(img, 0, 0);
-	    ctx.globalAlpha = alpha;
-        }
-
     }
 
 })(jQuery);

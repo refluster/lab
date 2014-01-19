@@ -58,78 +58,34 @@
 	font-weight: bold;
 	font-family: "ＭＳ Ｐゴシック", "Osaka", sans-serif;
 }
-.toolbar li {
-    width:44px;
-    height:44px;
-    margin:auto;
-    list-style-type: none;
-    border:1px solid #ccc;
-    border-radius:6px;
-    margin:10px;
-    display:block;
-    float:left;
-}
-#color-black {
-    background-color:black;
-}
-#color-red {
-    background-color:red;
-}
-#color-blue {
-    background-color:blue;
-}
-#color-yellow {
-    background-color:yellow;
-}
-#line-1px,#line-3px,#line-5px {
-    text-align: center;
-}
-
-
 -->
 </style>
-<title>v0.09 shared board</title>
+<title>v0.28 smart control</title>
 <!--[if IE]>
 <script type="text/javascript" src="./fcvs/flashcanvas.js"></script>
 <![endif]-->
 <script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
-<script src="http://183.181.8.119:8081/socket.io/socket.io.js"></script> 
+<script src="http://183.181.8.119:8028/socket.io/socket.io.js"></script> 
 <script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
 <script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
 </head>
 <body>
   <div id="body" class="body">
-    <div class="title">v0.09 html5 shared board</div>
+    <div class="title">v0.28 smart control</div>
     release note
     <ul style="margin-left: 50px">
-      <li>共有ボード</li>
+      <li>..</li>
     </ul>
-    <ul class="toolbar">
-      <li id="color-black"></li>
-      <li id="color-red"></li>
-      <li id="color-blue"></li>
-      <li id="color-yellow"></li>
-    </ul>
-    <div style="clear: both;"></div>
-    <ul class="toolbar">
-      <li id="line-1px">S</li>
-      <li id="line-3px">M</li>
-      <li id="line-5px">L</li>
-    </ul>
-    <div style="clear: both;"></div>
     <div class="divcv">
-      <div id="cvdiv1"><canvas id="cv1" class="cv" width="300" height="300"></canvas></div>
+      <div id="cvdiv1">
+	<canvas id="cv1" class="cv" width="300" height="300"></canvas>
+      </div>
       <div id="msg1" class="msg"></div>
-      <div class="msg"><button id="stbtn1" class="btn"></button></div>
-      <div class="msg"><button id="clearbtn" class="btn"></button></div>
-      <div class="msg"><button id="savebtn" class="btn"></button></div>
-      <div class="msg"><button id="restorebtn" class="btn"></button></div>
-      <div class="msg"><button id="dispimgbtn" class="btn"></button></div>
-      <div class="msg"><button id="dlimgbtn" class="btn"></button></div>
+      <div class="msg">
+	<button id="stbtn_smapho" class="btn"></button>
+	<button id="stbtn_pc" class="btn"></button>
+      </div>
     </div>
-    <div style="clear: both;"></div>
-    ↓実行時のようす：Google Chrome（左），Safari（中），iPhone（右）
-    <img src="./sample.jpg"/>
   </div><br>
 </body>
 </html>

@@ -22,17 +22,17 @@ socket.on('connection', function(client){
     client.broadcast.emit('client connected', client.id);
 
     // add client info into db
-    client_db[client.id] = {color:'black', lineWidth:3, lastPos:{x:0, y:0}};
+    client_db[client.id] = {speed:0, stear:0, pos:{x:0, y:0}};
     
     // receive to set stearing info
-    client.on('setStear', function(data) {
+    client.on('set stear', function(data) {
         client_db[data.sid].color = data.color;
-        client.broadcast.emit('setStear', data);
+        client.broadcast.emit('set stear', data);
     });
     
     // receive to set speed info
-    client.on('setSpeed', function(data) {
-        client.broadcast.emit('setSpeed', data);
+    client.on('set speed', function(data) {
+        client.broadcast.emit('set speed', data);
     });
     
     client.on('disconnect', function() {
