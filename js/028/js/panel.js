@@ -69,8 +69,8 @@ var panelApl = {}; // namespace
             panelApl.timer.set({
                 action: function() {
                     console.log("hoge");
-                    panelApl.setStear(4);
-//                    panelApl.setStear(panelApl.acg.y);
+//                    panelApl.setStear(4);
+                    panelApl.setStear(panelApl.acg.y);
                 },
                 time: 1000/panelApl.fps
             });
