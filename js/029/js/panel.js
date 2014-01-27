@@ -108,7 +108,7 @@ var panelApl = {}; // namespace
     panelApl.sendSensor = function() {
         panelApl.socket.emit("send sensor",
                              {sid:panelApl.sessionId,
-                              acc:panelApl.acc
+                              acc:panelApl.acc,
                               interval:1000/panelApl.fps});
         panelApl.acc.x = panelApl.acc.y = panelApl.acc.z = 0;
     };
