@@ -7,10 +7,13 @@ var panelApl = {}; // namespace
     panelApl.gamestart = false;  // true if playing
     panelApl.fps = 10;
     panelApl.timer = $.timer();
-    panelApl.acg = {x:3, y:4, z:5};
-
+    panelApl.acc = {x:0, y:0, z:0};
+    panelApl.pos = {x:100, y:100, z:100};
+    panelApl.vec = {x:100, y:100, z:100};
+    panelApl.angle = {x:0, y:0, z:0};
+    
     // socket
-    panelApl.socket = new io.connect("http://183.181.8.119:8028");
+    panelApl.socket = new io.connect("http://183.181.8.119:8029");
 
     // get my session id from the server
     panelApl.socket.on('your sid', function (sid) {
@@ -18,13 +21,7 @@ var panelApl = {}; // namespace
         panelApl.sessionId = sid;
     });
 
-    panelApl.pos = {x:100, y:100};
-    panelApl.speed = 4;
-    panelApl.angle = 0;
-
-    /* button process
-     * return: none
-     */
+    // display device (normally pc) entry point
     panelApl.startDisplay = function() {
 	if (!panelApl.gamestart) { // if not playing
 	    // init canvas
@@ -40,31 +37,21 @@ var panelApl = {}; // namespace
             });
             
             // draw line by another client
-            panelApl.socket.on('set stear', function (data) {
-                panelApl.stear = data.stear;
-                console.log("stear %f", data.stear);
+            panelApl.socket.on('send sensor', function (data) {
+                var acc = data.acc;
+                var interval = data.interval;
 
-                panelApl.angle += data.stear/64;
-                panelApl.pos.x += panelApl.speed*Math.sin(panelApl.angle);
-                panelApl.pos.y += panelApl.speed*Math.cos(panelApl.angle);
+                console.log("sensor recv");
+                panelApl.vec.x += acc.x*interval;
+                panelApl.vec.y += acc.y*interval;
+                panelApl.vec.z += acc.z*interval;
 
-                if (panelApl.pos.x > panelApl.canvas.width) {
-                    panelApl.pos.x -= panelApl.canvas.width;
-                }
-                if (panelApl.pos.x < 0) {
-                    panelApl.pos.x += panelApl.canvas.width;
-                }
-                if (panelApl.pos.y > panelApl.canvas.height) {
-                    panelApl.pos.y -= panelApl.canvas.height;
-                }
-                if (panelApl.pos.y < 0) {
-                    panelApl.pos.y += panelApl.canvas.height;
-                }
-                panelApl.pos.y += panelApl.speed*Math.cos(panelApl.angle);
+                panelApl.pos.x += panelApl.vec.x*interval;
+                panelApl.pos.y += panelApl.vec.y*interval;
+                panelApl.pos.z += panelApl.vec.z*interval;
 
                 panelApl.canvMng.blank();
-                panelApl.canvMng.draw({x:(data.stear + 10)*10, y:100}, "red");
-//                panelApl.canvMng.draw({x:panelApl.pos.x, y:panelApl.pos.y}, "green");
+                panelApl.canvMng.draw({x:panelApl.pos.x, y:100}, "red");
             });
 
             // another client connected
@@ -72,6 +59,7 @@ var panelApl = {}; // namespace
                 ;//
             });
             
+            // a client disconnected
             panelApl.socket.on('client disconnected', function (data) {
                 ;//
             });
@@ -81,22 +69,24 @@ var panelApl = {}; // namespace
 	}
     };
 
+    // mobile controller entry point
     panelApl.startController = function() {
 	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 
 	if (!panelApl.gamestart) { // if not playing
-            window.addEventListener('devicemotion', panelApl.getAcceleration);
+            window.addEventListener('devicemotion', panelApl.deviceMotion);
+            //window.addEventListener('deviceorientation', panelApl.deviceOrientation;
 	    panelApl.gamestart = true;
 	    panelApl.showmsg('playing as controller');
-
+            
             panelApl.socket.emit("set controller",
                                  {sid:panelApl.sessionId});
             
+            // run on each frame
             panelApl.timer.set({
                 action: function() {
-                    console.log("hoge %d", panelApl.acg.y);
-//                    panelApl.setStear(4);
-                    panelApl.setStear(panelApl.acg.y);
+                    console.log("send sensor params");
+                    panelApl.sendSensor();
                 },
                 time: 1000/panelApl.fps
             });
@@ -109,26 +99,30 @@ var panelApl = {}; // namespace
 	}
     };
 
-    /* display message
-     * {string} msg: displayed message
-     * return: none
-     */
+    // display message
     panelApl.showmsg = function(msg) {
 	$('#msg1').html(msg);
     };
     
-    // stearing setting
-    panelApl.setStear = function(_stear) {
-        panelApl.socket.emit("set stear",
-                             {sid:panelApl.sessionId, stear:_stear});
+    // send sensor (client)
+    panelApl.sendSensor = function() {
+        panelApl.socket.emit("send sensor",
+                             {sid:panelApl.sessionId,
+                              acc:panelApl.acc
+                              interval:1000/panelApl.fps});
+        panelApl.acc.x = panelApl.acc.y = panelApl.acc.z = 0;
     };
-
-    // get acceleration
-    panelApl.getAcceleration = function(evt) {
-        panelApl.acg = evt.accelerationIncludingGravity;
+    
+    // get acceleration (client)
+    panelApl.deviceMotion = function(evt) {
+        var acc = evt.acceleration;
+        panelApl.acc.x += acc.x;
+        panelApl.acc.y += acc.y;
+        panelApl.acc.z += acc.z;
+        //http://docs.phonegap.com/ja/3.1.0/cordova_accelerometer_accelerometer.md.html
     };
-
-    /* body onload process */
+    
+    // onload process
     $(window).load(function() {
 	// get canvas's DOM element and context
 	panelApl.canvas = document.getElementById('cv1');
@@ -136,7 +130,7 @@ var panelApl = {}; // namespace
 	var ctx = panelApl.canvas.getContext("2d");
 	ctx.lineWidth = 1;
 	ctx.globalCompositeOperation = "source-over";
-
+        
 	// canvas
 	panelApl.canvMng = new canvasManager.canv(ctx, panelApl.canvas.width,
                                                   panelApl.canvas.height,
@@ -147,10 +141,8 @@ var panelApl = {}; // namespace
 	// set events
 	$('#stbtn_pc').mousedown(panelApl.startDisplay);
         $('#stbtn_smapho').mousedown(panelApl.startController);
-
+        
 	// show message
-	panelApl.showmsg('press start button');
-
+	panelApl.showmsg('press display or mobile');
     });
-    
 })(jQuery);

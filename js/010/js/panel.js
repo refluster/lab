@@ -12,7 +12,9 @@ var panelApl = {};
     panelApl.initThree = function() {
         panelApl.width = document.getElementById('canvas-frame').clientWidth;
         panelApl.height = document.getElementById('canvas-frame').clientHeight;
+        console.log('oge');
         panelApl.renderer = new THREE.WebGLRenderer({antialias: true});
+        console.log('oge');
         panelApl.renderer.setSize(panelApl.width, panelApl.height );
         document.getElementById('canvas-frame').appendChild(panelApl.renderer.domElement);
         panelApl.renderer.setClearColorHex(0x000000, 1.0);
