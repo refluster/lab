@@ -9,7 +9,7 @@ var panelApl = {}; // namespace
     panelApl.timer = $.timer();
     panelApl.acc = {x:0, y:0, z:0};
     panelApl.pos = {x:100, y:100, z:100};
-    panelApl.vec = {x:100, y:100, z:100};
+    panelApl.vec = {x:0, y:0, z:0};
     panelApl.angle = {x:0, y:0, z:0};
     
     // socket
@@ -28,7 +28,7 @@ var panelApl = {}; // namespace
 	    panelApl.canvMng.init();
 	    panelApl.gamestart = true;
 	    panelApl.showmsg('playing as display');
-
+            panelApl.vec.x = panelApl.vec.y = panelApl.vec.z = 0;
             panelApl.socket.emit("set display", {sid:panelApl.sessionId});
 
             // socket event bind
