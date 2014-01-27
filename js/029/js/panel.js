@@ -50,6 +50,9 @@ var panelApl = {}; // namespace
                 panelApl.pos.y += panelApl.vec.y*interval;
                 panelApl.pos.z += panelApl.vec.z*interval;
 
+                console.log("v(%8d,%8d) p(%8d,%8d)",
+                            panelApl.vec.x, panelApl.vec.y,
+                            panelApl.pos.x, panelApl.pos.y);
                 panelApl.canvMng.blank();
                 panelApl.canvMng.draw({x:panelApl.pos.x, y:100}, "red");
             });
