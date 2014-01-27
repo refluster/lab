@@ -39,7 +39,7 @@ var panelApl = {}; // namespace
             // draw line by another client
             panelApl.socket.on('send sensor', function (data) {
                 var acc = data.acc;
-                var interval = data.interval;
+                var interval = data.interval/1000.0;
 
                 console.log("sensor recv");
                 panelApl.vec.x += acc.x*interval;
@@ -49,8 +49,8 @@ var panelApl = {}; // namespace
                 panelApl.pos.x += panelApl.vec.x*interval;
                 panelApl.pos.y += panelApl.vec.y*interval;
                 panelApl.pos.z += panelApl.vec.z*interval;
-
-                console.log("a(%d,%d) v(%8d,%8d) p(%8d,%8d)",
+                
+                console.log("a(%f,%f,%f) v(%f,%f,%f) p(%f,%f,%f)",
                             panelApl.acc.x, panelApl.acc.y, panelApl.acc.z, 
                             panelApl.vec.x, panelApl.vec.y, panelApl.vec.z,
                             panelApl.pos.x, panelApl.pos.y, panelApl.pos.z);
