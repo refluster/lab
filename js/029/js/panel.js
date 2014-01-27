@@ -50,9 +50,10 @@ var panelApl = {}; // namespace
                 panelApl.pos.y += panelApl.vec.y*interval;
                 panelApl.pos.z += panelApl.vec.z*interval;
 
-                console.log("v(%8d,%8d) p(%8d,%8d)",
-                            panelApl.vec.x, panelApl.vec.y,
-                            panelApl.pos.x, panelApl.pos.y);
+                console.log("a(%d,%d) v(%8d,%8d) p(%8d,%8d)",
+                            panelApl.acc.x, panelApl.acc.y, panelApl.acc.z, 
+                            panelApl.vec.x, panelApl.vec.y, panelApl.vec.z,
+                            panelApl.pos.x, panelApl.pos.y, panelApl.pos.z);
                 panelApl.canvMng.blank();
                 panelApl.canvMng.draw({x:panelApl.pos.x, y:100}, "red");
             });
@@ -119,9 +120,9 @@ var panelApl = {}; // namespace
     // get acceleration (client)
     panelApl.deviceMotion = function(evt) {
         var acc = evt.acceleration;
-        panelApl.acc.x += acc.x;
-        panelApl.acc.y += acc.y;
-        panelApl.acc.z += acc.z;
+        panelApl.acc.x = acc.x;
+        panelApl.acc.y = acc.y;
+        panelApl.acc.z = acc.z;
         //http://docs.phonegap.com/ja/3.1.0/cordova_accelerometer_accelerometer.md.html
     };
     
