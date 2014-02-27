@@ -29,6 +29,9 @@ var panelApl = {}; // namespace
 	    panelApl.gamestart = true;
 	    panelApl.showmsg('playing as display');
             panelApl.vec.x = panelApl.vec.y = panelApl.vec.z = 0;
+            panelApl.pos.x = panelApl.pos.y = panelApl.pos.z = 100;
+
+            // notify this session id as a display
             panelApl.socket.emit("set display", {sid:panelApl.sessionId});
 
             // socket event bind
@@ -40,8 +43,15 @@ var panelApl = {}; // namespace
             panelApl.socket.on('send sensor', function (data) {
                 var acc = data.acc;
                 var interval = data.interval/1000.0;
+                var scale = 50;
 
-                console.log("sensor recv");
+                if (acc.x < 0.1 && acc.x > -0.1) acc.x = 0;
+                if (acc.y < 0.1 && acc.y > -0.1) acc.y = 0;
+                if (acc.z < 0.1 && acc.z > -0.1) acc.z = 0;
+                acc.x *= scale;
+                acc.y *= scale;
+                acc.z *= scale;
+
                 panelApl.vec.x += acc.x*interval;
                 panelApl.vec.y += acc.y*interval;
                 panelApl.vec.z += acc.z*interval;
@@ -49,11 +59,22 @@ var panelApl = {}; // namespace
                 panelApl.pos.x += panelApl.vec.x*interval;
                 panelApl.pos.y += panelApl.vec.y*interval;
                 panelApl.pos.z += panelApl.vec.z*interval;
-                
-                console.log("a(%f,%f,%f) v(%f,%f,%f) p(%f,%f,%f)",
-                            panelApl.acc.x, panelApl.acc.y, panelApl.acc.z, 
+
+/*
+                console.log("a(%8f,%8f,%8f) v(%8f,%8f,%8f) p(%8f,%8f,%8f)",
+                            acc.x, acc.y, acc.z, 
                             panelApl.vec.x, panelApl.vec.y, panelApl.vec.z,
                             panelApl.pos.x, panelApl.pos.y, panelApl.pos.z);
+
+                panelApl.pos.x += acc.x*interval;
+                panelApl.pos.y += acc.y*interval;
+                panelApl.pos.z += acc.z*interval;
+*/
+                console.log("a: %f", acc.x);
+                console.log("p: %f", panelApl.pos.x);
+                console.log("i: %f", interval);
+                console.log("--------------------");
+                
                 panelApl.canvMng.blank();
                 panelApl.canvMng.draw({x:panelApl.pos.x, y:100}, "red");
             });
@@ -120,9 +141,10 @@ var panelApl = {}; // namespace
     // get acceleration (client)
     panelApl.deviceMotion = function(evt) {
         var acc = evt.acceleration;
-        panelApl.acc.x = acc.x;
-        panelApl.acc.y = acc.y;
-        panelApl.acc.z = acc.z;
+        console.log("(%f)", panelApl.acc.x);
+        panelApl.acc.x += acc.x;
+        panelApl.acc.y += acc.y;
+        panelApl.acc.z += acc.z;
         //http://docs.phonegap.com/ja/3.1.0/cordova_accelerometer_accelerometer.md.html
     };
     

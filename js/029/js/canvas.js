@@ -43,7 +43,6 @@ var canvasManager = {}; // namespace
             this.ctx.arc(pos.x, pos.y, 8, 0,  2*Math.PI, true);
             this.ctx.fill();
             this.ctx.restore();
-            console.log("p %d,%d", pos.x, pos.y);
 	};
     }
 
