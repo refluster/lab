@@ -39,7 +39,7 @@ function initCB(instance) {
     ////////////////////////////// layer
     ge.getOptions().setFlyToSpeed(3);
 
-    google.earth.addEventListener(ge, "frameend", update);
+//    google.earth.addEventListener(ge, "frameend", update);
 
     document.onkeydown = onKeyDown;
     document.onkeyup = onKeyUp;
@@ -49,7 +49,10 @@ function initCB(instance) {
 
     ////////////////////////////// time
     ge.getTime().getControl().setVisibility(ge.VISIBILITY_SHOW);
-    ge.getTime().setRate(60*60);
+//    ge.getTime().setRate(60*60);
+
+    ////////////////////////////// enable navigation
+    ge.getNavigationControl().setVisibility(ge.VISIBILITY_SHOW);
     
     ////////////////////////////// show
     ge.getWindow().setVisibility(true);
