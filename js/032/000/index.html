@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="EUC-JP">
+  <meta name="viewport" content="width=320, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" type="text/css"  href="style.css" media="all">
+  
+  <title>032 CSS3 UI test</title>
+</head>
+<body>
+
+  <div id="content">
+	<input type="radio" class="radio-menu-select" checked
+		   name="radio-menu-select" id="radio-main">
+	<div class="page main-menu" id="main-menu">
+	  <div class="title">main menu</div>
+	  <div class="contents">
+		<label for="radio-sub-0">
+		  <div class="item">sub menu 0</div>
+		</label>
+		<hr>
+		<label for="radio-sub-1">
+		  <div class="item">sub menu 1</div>
+		</label>
+	  </div>
+	</div>
+	
+	<input type="radio" class="radio-menu-select"
+		   name="radio-menu-select" id="radio-sub-0">
+	<div class="page sub-menu" id="sub-menu-0">
+	  <div class="title">sub menu 0</div>
+	  <div class="contents">
+		<label for="radio-main">
+		  <div class="item">main menu</div>
+		</label>
+	  </div>
+	</div>
+	
+	<input type="radio" class="radio-menu-select"
+		   name="radio-menu-select" id="radio-sub-1">
+	<div class="page sub-menu" id="sub-menu-1">
+	  <div class="title">sub menu 1</div>
+	  <div class="contents">
+		<label for="radio-main">
+		  <div class="item">main menu</div>
+		</label>
+	  </div>
+	</div>
+	
+  </div>
+</body>
+</html>
