@@ -53,10 +53,9 @@ var PageTransitions = (function() {
 
 		isAnimating = true;
 		
-		console.log(targetPageId);
-		var $nextPage = $main.find('.' + targetPageId).addClass( 'pt-page-current' ),
-			outClass = '', inClass = '';
-		console.log($nextPage);
+		var $currPage = currentPage;
+		var $nextPage = $main.find('.' + targetPageId).addClass( 'pt-page-current' );
+		var outClass = '', inClass = '';
 
 		currentPage = $nextPage;
 
