@@ -57,19 +57,19 @@ html, body { height: 100%; }
 	text-align: center;
 }
 
-.pt-page-1 {
+#pt-page-1 {
 	background: #0ac2d2;
 }
 
-.pt-page-2 {
+#pt-page-2 {
 	background: #7bb7fa;
 }
 
-.pt-page-3 {
+#pt-page-3 {
 	background: #60d7a9;
 }
 
-.pt-page-4 {
+#pt-page-4 {
 	background: #fdc162;
 }
 
