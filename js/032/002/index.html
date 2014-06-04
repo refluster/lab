@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Page Transitions</title>
+    <title>Unkai proto 0.00</title>
     <link rel="stylesheet" type="text/css" href="css/default.css" />
     <link rel="stylesheet" type="text/css" href="css/component.css" />
     <link rel="stylesheet" type="text/css" href="css/animations.css" />
@@ -12,90 +12,128 @@
   </head>
   <body>	
     <div id="pt-main" class="pt-perspective">
-
+	  
       <div class="pt-page" id="pt-page-main">
         <h1>Main</h1>
 		<div class="page-contents">
-		  <div class="page-content">
-			<button class="page-forward" value="pt-page-light">
+		  <div class="page-components">
+			<div class="component page-forward" value="pt-page-light">
 			  Light
-			</button>
-			<button class="page-forward" value="pt-page-mist">
+			</div>
+			<div class="component page-forward" value="pt-page-mist">
 			  Mist
-			</button>
-			<button class="page-forward" value="pt-page-temperature">
-			  Temperature	/ Humidity
-			</button>
-			<button class="page-forward" value="pt-page-status">
-			  Status
-			</button>
-			<button class="page-forward" value="pt-page-network">
+			</div>
+			<div class="component page-forward" value="pt-page-temperature">
+			  Temperature & Humidity
+			</div>
+			<div class="component page-forward" value="pt-page-network">
 			  Network
-			</button>
+			</div>
+			<div class="component page-forward" value="pt-page-about">
+			  About
+			</div>
  		  </div>
 		</div>
       </div>
-
+	  
       <div class="pt-page" id="pt-page-light">
         <h1>
-		  <button class="page-backward" value="pt-page-main">
-			&lt; Main
-          </button>
+		  <div class="page-backward" value="pt-page-main">&lt; Main</div>
 		  Light
 		</h1>
 		<div class="page-contents">
-		  <input type="range" style="width: 80%;">
-		</div>
-      </div>
-
+		  Brightness (R/G/B)<br>
+		  <div class="page-components">
+		    <div class="component">
+			  <input type="range" class="slider">
+			</div>
+		    <div class="component">
+			  <input type="range" class="slider">
+			</div>
+		    <div class="component">
+			  <input type="range" class="slider">
+			</div>
+          </div>
+        </div>
+	  </div>
+      
       <div class="pt-page" id="pt-page-mist">
         <h1>
-		  <button class="page-backward" value="pt-page-main">
-			&lt; Main
-          </button>
+		  <div class="page-backward" value="pt-page-main">&lt; Main</div>
 		  Mist
 		</h1>
 		<div class="page-contents">
-		  <input type="range" style="width: 80%;">
+          Automatic Mist Control
+		  <div class="page-components">
+			under construction...
+          </div>
 		</div>
       </div>
-
+	  
       <div class="pt-page" id="pt-page-temperature">
         <h1>
-		  <button class="page-backward" value="pt-page-main">
-			&lt; Main
-          </button>
-		  Temperature / Humidity
+		  <div class="page-backward" value="pt-page-main">&lt; Main</div>
+		  Temperature & Humidity
 		</h1>
 		<div class="page-contents">
-		  <input type="range" style="width: 80%;">
+		  <div class="page-components">
+			under construction...
+          </div>
 		</div>
       </div>
-
-      <div class="pt-page" id="pt-page-status">
-        <h1>
-		  <button class="page-backward" value="pt-page-main">
-			&lt; Main
-          </button>
-		  Status
-		</h1>
-		<div class="page-contents">
-		  <input type="range" style="width: 80%;">
-		</div>
-      </div>
-
+      
       <div class="pt-page" id="pt-page-network">
         <h1>
-		  <button class="page-backward" value="pt-page-main">
-			&lt; Main
-          </button>
+		  <div class="page-backward" value="pt-page-main">&lt; Main</div>
 		  Network
 		</h1>
 		<div class="page-contents">
-		  <input type="range" style="width: 80%;">
+		  <div class="page-components">
+			<div class="component">
+			  IP Adress
+			  <span class="right">192.168.0.1</span>
+			</div>
+			<div class="component">
+			  Subnet Mask
+			  <span class="right">255.255.255.0</span>
+			</div>
+			<div class="component">
+			  Gateway
+			  <span class="right">192.168.0.1</span>
+			</div>
+          </div>
 		</div>
       </div>
+      
+      <div class="pt-page" id="pt-page-about">
+        <h1>
+		  <div class="page-backward" value="pt-page-main">&lt; Main</div>
+		  About
+		</h1>
+		<div class="page-contents">
+		  <div class="page-components">
+			<div class="component">Version
+			  <span class="right">Unkai ver 1.0.0</span>
+			</div>
+			<div class="component">Processor
+			  <span class="right">ARM1176JZF-S</span>
+			</div>
+			<div class="component">DRAM
+			  <span class="right">256MB</span>
+			</div>
+          </div>
 
+		  <div class="page-components">
+			<div class="component">Operation Time
+			  <span class="right">56d 13h 24m</span>
+			</div>
+			<div class="component">Mist Supply
+			  <span class="right">1.3L</span>
+			</div>
+          </div>
+		</div>
+      </div>
+      
     </div>
     
     <div class="pt-message">
