@@ -136,7 +136,7 @@ var Sph = function() {
                     p_ps.push(p);
 				}
 //		var p = new Particle();
-//		p.pos.x = 5; p.pos.y = 10; p.pos.z = 3;
+//		p.pos.x = 5; p.pos.y = 50; p.pos.z = 3;
 //		p_ps.push(p);
 		return p_ps;
     };
@@ -383,6 +383,8 @@ var Sph = function() {
         return particles;
     };
 	
+	var count = 0;
+
 	this.get_around = function() {
 		var idx_y_top = 0;
 		var prev_idx;
@@ -399,7 +401,7 @@ var Sph = function() {
 		}
 		
 		base_idx = idx_y_top;
-		v1 = {x: 0, y: -1};
+		v1 = {x: 0, y: 1};
 
 		outline.push(particles[idx_y_top]);
 		indexArr.push(idx_y_top);
@@ -407,9 +409,9 @@ var Sph = function() {
 		prev_idx = -1;
 
 		while (1) {
-			max_idx = -1;
-			var max_sincos = -100;
-			
+			min_idx = -1;
+			var min_sincos = 100;
+
 			console.log('=========== base_idx:%d idx_y_top:%d', base_idx, idx_y_top);
 
 			for (var i = 0; i < particles.length; i++) {
@@ -418,37 +420,45 @@ var Sph = function() {
 					var dy = particles[i].pos.y - particles[base_idx].pos.y;
 					var len = Math.sqrt(dx*dx + dy*dy);
 
-//					if (len > SPH_PDIST/SPH_SIMSCALE*2) {
-//						continue;
-//					}
+					if (len > SPH_PDIST/SPH_SIMSCALE*4) {
+						continue;
+					}
 					
 					var v2 = {x: dx/len, y: dy/len};
 					
 					var cos = v1.x*v2.x + v1.y*v2.y;
 					var sin = v1.x*v2.y - v1.y*v2.x;
 					
-					var sincos = (sin >= 0.0? 10: 0) - cos + 1;
+					var sincos = (sin >= 0.0? 1 - cos: 10 + cos);
 					
-					if (sincos > max_sincos) {
-						max_sincos = sincos;
-						max_idx = i;
+					if (sincos < min_sincos) {
+						min_sincos = sincos;
+						min_idx = i;
 					}
 				}
 			}
 			
-			if (max_idx < 0) {
+			console.log('min_idx: %d', i)
+
+			if (min_idx < 0) {
 				console.log('error');
 				return outline;
 			}
 
-			outline.push(particles[max_idx]);
-			indexArr.push(max_idx);
-
-			if (max_idx == idx_y_top) 
+			if (outline.indexOf(particles[min_idx]) >= 0) {
+				outline.push(particles[min_idx]);
+				indexArr.push(min_idx);
 				break;
+			}
+
+			outline.push(particles[min_idx]);
+			indexArr.push(min_idx);
+
+//			if (min_idx == idx_y_top)
+//				break;
 
 			prev_idx = base_idx;
-			base_idx = max_idx;
+			base_idx = min_idx;
 			
 			var dx = particles[prev_idx].pos.x - particles[base_idx].pos.x;
 			var dy = particles[prev_idx].pos.y - particles[base_idx].pos.y;
@@ -462,3 +472,8 @@ var Sph = function() {
 		return outline;
 	};
 };
+
+/*
+idx_y_top: 9
+base_idx : 5 -> 8 -> 2 -> 5 -> 8 -> 2 -> 5 ...
+*/
