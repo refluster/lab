@@ -135,6 +135,9 @@ var Sph = function() {
 					p.pos.x = x; p.pos.y = y; p.pos.z = z;
                     p_ps.push(p);
 				}
+//		var p = new Particle();
+//		p.pos.x = 5; p.pos.y = 10; p.pos.z = 3;
+//		p_ps.push(p);
 		return p_ps;
     };
     
@@ -401,19 +404,21 @@ var Sph = function() {
 		outline.push(particles[idx_y_top]);
 		indexArr.push(idx_y_top);
 		
+		prev_idx = -1;
+
 		while (1) {
 			max_idx = -1;
 			var max_sincos = -100;
 			
+			console.log('=========== base_idx:%d idx_y_top:%d', base_idx, idx_y_top);
+
 			for (var i = 0; i < particles.length; i++) {
-//				if (i != base_idx && i != prev_idx &&
-//					outline.indexOf(particles[i]) < 0) {
 				if (i != base_idx && i != prev_idx) {
 					var dx = particles[i].pos.x - particles[base_idx].pos.x;
 					var dy = particles[i].pos.y - particles[base_idx].pos.y;
 					var len = Math.sqrt(dx*dx + dy*dy);
 
-//					if (len > SPH_PDIST/SPH_SIMSCALE*10) {
+//					if (len > SPH_PDIST/SPH_SIMSCALE*2) {
 //						continue;
 //					}
 					
@@ -433,11 +438,14 @@ var Sph = function() {
 			
 			if (max_idx < 0) {
 				console.log('error');
-				return;
+				return outline;
 			}
 
 			outline.push(particles[max_idx]);
 			indexArr.push(max_idx);
+
+			if (max_idx == idx_y_top) 
+				break;
 
 			prev_idx = base_idx;
 			base_idx = max_idx;
@@ -447,8 +455,6 @@ var Sph = function() {
 			var len = Math.sqrt(dx*dx + dy*dy);
 			v1 = {x: dx/len, y: dy/len};
 			
-			if (base_idx == idx_y_top) 
-				break;
 		}
 		
 		console.log(indexArr);
