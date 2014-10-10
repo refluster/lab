@@ -2,7 +2,6 @@ $(function(){
     var socket = new io.connect("http://183.181.8.119:8080");
     
     socket.on("connect", function(){
-        $("#transportName").text("connect via " + socket.socket.transport.name);
     });
  
     socket.on("message", function(data){
