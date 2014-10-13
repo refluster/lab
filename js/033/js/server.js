@@ -6,27 +6,26 @@ var unity;
 
 // Scream server example: "hi" -> "HI!!!"
 var server = ws.createServer(function (conn) {
-    console.log("New connection")
-
+	console.log("New connection")
     conn.on("text", function (str) {
-        console.log("Received "+str)
+		console.log("Received "+str)
 
-	msg = JSON.parse(str);
-	switch (msg.op) {
-	case "init":
-	    if (msg.type == "unity") {
-		unity = conn;
-	    } else if (msg.type == "sensor") {
-		sensor = conn;
-	    }
-	    break;
-	case "sensor":
+		msg = JSON.parse(str);
+		switch (msg.op) {
+		case "init":
+			if (msg.type == "unity") {
+				unity = conn;
+			} else if (msg.type == "sensor") {
+				sensor = conn;
+			}
+			break;
+		case "sensor":
             unity.sendText(JSON.stringify(msg.data));
-	    break;
-	}
+			break;
+		}
     })
-
-    conn.on("close", function (code, reason) {
-        console.log("Connection closed")
-    })
+	
+	conn.on("close", function (code, reason) {
+		console.log("Connection closed")
+	})
 }).listen(1338)
