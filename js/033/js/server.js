@@ -1,15 +1,13 @@
-//https://www.npmjs.org/package/nodejs-websocket
-
 var ws = require("nodejs-websocket")
 var sensor;
 var unity;
 
-// Scream server example: "hi" -> "HI!!!"
 var server = ws.createServer(function (conn) {
 	console.log("New connection")
-    conn.on("text", function (str) {
+	
+	conn.on("text", function (str) {
 		console.log("Received "+str)
-
+		
 		msg = JSON.parse(str);
 		switch (msg.op) {
 		case "init":
@@ -20,12 +18,20 @@ var server = ws.createServer(function (conn) {
 			}
 			break;
 		case "sensor":
-            unity.sendText(JSON.stringify(msg.data));
+			console.log("sensor receive");
+			if (unity) {
+				unity.sendText(JSON.stringify(msg.data));
+			}
 			break;
 		}
-    })
+	})
 	
 	conn.on("close", function (code, reason) {
+		if (conn == unity) {
+			unity = null;
+		} else if (conn == sensor) {
+			sensor = null;
+		}
 		console.log("Connection closed")
 	})
 }).listen(1338)
