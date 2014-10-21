@@ -7,30 +7,36 @@ $(function () {
 		return;
 	}
 	
-	var connection = new WebSocket('ws://183.181.8.119:1338');
+	var connection;
+	var running = false;
 	var acg = {x: 0.0, y: 0.0, z: 0.0};
 	var intervalId;
-	var running = false;
 	
-	connection.onopen = function () {
-		console.log("open");
-		connection.send(JSON.stringify({op: "init", type: "sensor"}));
-	};
-	
-	connection.onerror = function (error) {
-		console.log("error");
-	};
-	
-	connection.onmessage = function (message) {
-		console.log("message");
-		// try to decode json (I assume that each message from server is json)
-		try {
-			var json = JSON.parse(message.data);
-		} catch (e) {
-			console.log('This doesn\'t look like a valid JSON: ', message.data);
-			return;
-		}
-	};
+	function connectServer() {
+		connection = new WebSocket('ws://183.181.8.119:1338');
+		running = false;
+		acg = {x: 0.0, y: 0.0, z: 0.0};
+		
+		connection.onopen = function () {
+			console.log("open");
+			connection.send(JSON.stringify({op: "init", type: "sensor"}));
+		};
+		
+		connection.onerror = function (error) {
+			console.log("error");
+		};
+		
+		connection.onmessage = function (message) {
+			console.log("message");
+			// try to decode json (I assume that each message from server is json)
+			try {
+				var json = JSON.parse(message.data);
+			} catch (e) {
+				console.log('This doesn\'t look like a valid JSON: ', message.data);
+				return;
+			}
+		};
+	}
 	
 	var a_acg = [];
 	
@@ -84,6 +90,7 @@ $(function () {
 	
 	$('#connect').click(function() {
 		if (!running) {
+			connectServer();
 			intervalId = setInterval(sendMsg, 100);
 			running = true;
 			$('#connect').html('disconnect server');

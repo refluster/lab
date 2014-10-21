@@ -2,6 +2,8 @@ var ws = require("nodejs-websocket")
 var sensor;
 var unity;
 
+require("./secpolicy.js");
+
 var server = ws.createServer(function (conn) {
 	console.log("New connection")
 	

@@ -1,48 +1,3 @@
-/*
-      // (1)レンダラの初期化
-      var renderer = new THREE.WebGLRenderer({ antialias:true });
-      renderer.setSize(500, 500);
-      renderer.setClearColorHex(0x000000, 1);
-      document.body.appendChild(renderer.domElement);
- 
-      // (2)シーンの作成
-      var scene = new THREE.Scene();
- 
-      // (3)カメラの作成
-      var camera = new THREE.PerspectiveCamera(15, 500 / 500);
-      camera.position = new THREE.Vector3(0, 4, 8);
-      camera.lookAt(new THREE.Vector3(0, 0, 0));
-      scene.add(camera);
- 
-      // (4)ライトの作成
-      var light = new THREE.DirectionalLight(0xcccccc);
-      light.position = new THREE.Vector3(0.577, 0.577, 0.577);
-      scene.add(light);
- 
-      var ambient = new THREE.AmbientLight(0x333333);
-      scene.add(ambient);
- 
-      // (5)表示する物体の作成
-      var geometry = new THREE.SphereGeometry(1, 32, 16);
-      var material = new THREE.MeshPhongMaterial({
-        color: 0xffffff, ambient: 0xffffff,
-        specular: 0xcccccc, shininess:50, metal:true,
-        map: THREE.ImageUtils.loadTexture('images/earth.jpg') });
-      var mesh = new THREE.Mesh(geometry, material);
-      scene.add(mesh);
- 
-      // (6)レンダリング
-      var baseTime = +new Date;
-      function render() {
-        requestAnimationFrame(render);
-        mesh.rotation.y = 0.3 * (+new Date - baseTime) / 1000;
-        renderer.render(scene, camera);
-      };
-      render();
-*/
-
-//////////////////////////////
-
 var panelApl = {};
 
 (function($) {
@@ -67,13 +22,8 @@ var panelApl = {};
         panelApl.camera = new THREE.PerspectiveCamera( 15 , panelApl.width / panelApl.height,
                                                        1 , 10000 );
         panelApl.camera.position.x = 0;
-        panelApl.camera.position.y = 4;
-        panelApl.camera.position.z = 8;
-/*
-        panelApl.camera.up.x = 0;
-        panelApl.camera.up.y = 0;
-        panelApl.camera.up.z = 1;
-*/
+        panelApl.camera.position.y = 40;
+        panelApl.camera.position.z = 80;
         panelApl.camera.lookAt( {x:0, y:1, z:0 } );
     };
 
@@ -91,22 +41,10 @@ var panelApl = {};
     };
     
     panelApl.initObject = function(){
-/*
-        var geometry = new THREE.SphereGeometry(1, 32, 16);
-        var material = new THREE.MeshPhongMaterial({
-            color: 0xffffff, ambient: 0xffffff,
-            specular: 0xcccccc, shininess:50, metal:true,
-            map: THREE.ImageUtils.loadTexture('img/earth.jpg') });
-        panelApl.mesh = new THREE.Mesh(geometry, material);
-        panelApl.scene.add(panelApl.mesh);
-*/
         panelApl.mesh = new THREE.Object3D();
         var loader = new THREE.JSONLoader();
-//        loader.load('./js/monkey.js', function(geometry) {
-//        loader.load('./js/oak_table.js', function(geometry) {
-        loader.load('./js/patio_chair.js', function(geometry) {
+        loader.load('./js/monkey.js', function(geometry) {
             panelApl.mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial);
-//            geometry.materials[0].ambient = geometry.materials[0].color;
             panelApl.mesh = new THREE.Mesh(geometry,
                                            new THREE.MeshLambertMaterial({color: 0x444444}));
             panelApl.mesh.scale = new THREE.Vector3(2, 2, 2);

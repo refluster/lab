@@ -1,6 +1,3 @@
-/* HTML5 Canvas drag&drop
- * canvas is updated when an object is dragged by 1px
- */
 (function($) {
     /* body onload process */
     $(window).load(function() {
@@ -14,9 +11,10 @@
             
             //傾き
             var acg = evt.accelerationIncludingGravity;
-            temp += "acg_x:" + acg.x +"<br>"; //x方向の傾き
-            temp += "acg_y:" + acg.y +"<br>"; //y方向の傾き
-            temp += "acg_z:" + acg.z +"<br>"; //z方向の傾き
+
+            temp += "acg_x:" + acg.x +"<br>"; //x方向の加速度(重力込み)
+            temp += "acg_y:" + acg.y +"<br>"; //y方向の加速度(重力込み)
+            temp += "acg_z:" + acg.z +"<br>"; //z方向の加速度(重力込み)
             temp += "<br>";
             
             //回転加速度
@@ -27,8 +25,5 @@
             
             document.getElementById("msg").innerHTML = temp;
         });
-        
-	// show message
-	//panelApl.showmsg('press start button');
     });
 })(jQuery);
