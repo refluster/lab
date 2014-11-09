@@ -4,38 +4,12 @@
 <meta charset="EUC-JP">
 <style TYPE="text/css">
 <!--
-/* set mergin/padding for all tags as zero not to depend on browser */
-* { margin: 0;
-	padding: 0;
-}
-/* conetent */
-.body {
-	display: block;
-	position: relative;
-	margin: 30px 100px;
-	overflow: visible;
-	width: 800px;
-	font-family: "ＭＳ Ｐゴシック", "Osaka", sans-serif;
-}
-/* Canvas */
-.divcv {
-	display: block;
-	float: left;
-	margin: 10px 40px 10px 10px;
-	width: 300px;
-	/* height: 300px; */
+body {
+    margin: 32px;
+	font-size: 16px;
 }
 .cv {
-	border-style: solid;
-	border-width: 1px;	
-	border-color: #808080;
-	background-color: #F8F8FF;
-}
-/* title */
-.title {
-	display: block;
-	font-size: 25px;
-	font-weight: bold;
+	border: solid 1px #808080;
 }
 div#canvas-frame{
   border: none;
@@ -45,22 +19,20 @@ div#canvas-frame{
 }
 -->
 </style>
-<title>031 fluctuation</title>
+<title>031: fluctuation</title>
 <script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
 <script type="text/javascript" src="./js/three.min.js"></script>
 <script type="text/javascript" src="./js/panel.js" type="text/javascript"></script>
 </head>
 <body>
-  <div id="body" class="body">
-    <div class="title">031 fluctuation</div>
-    <ul style="margin-left: 50px">
-      <li>Three.js</li>
-      <li>intermittent chaos</li>
-    </ul>
-    <div class="divcv">
-      <div id="canvas-frame"></div>
-    </div>
-    <div style="clear: both;"></div>
-  </div><br>
+  <h2>031: fluctuation</h2>
+  <hr />
+  <ul>
+    <li>Three.js</li>
+    <li>intermittent chaos</li>
+  </ul>
+  <div class="divcv">
+    <div id="canvas-frame"></div>
+  </div>
 </body>
 </html>

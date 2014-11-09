@@ -39,7 +39,7 @@ var panelApl = {}; // namespace
 	    
 	    panelApl.gamestart = true;
             panelApl.timer.play();
-	    panelApl.showmsg('flick the ball');
+	    panelApl.showmsg('drag in the box');
 	    $btn.text('stop');
 	} else { // if playing
 	    // delete mouse events from the canvas
