@@ -16,6 +16,7 @@ body {
 	margin-top: 16px;
 	width: 120px;
 	font-weight: bold;
+	display:block;
 }
 .toolbar li {
     width:44px;
@@ -46,18 +47,23 @@ body {
 -->
 </style>
 <title>009: shared board</title>
-<script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
+<!--
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+-->
+<script type="text/javascript" src="./js/jquery.js"></script>
 <script src="http://183.181.8.119:8081/socket.io/socket.io.js"></script> 
-<script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
+<script type="text/javascript" src="./js/client.js" charset="EUC-JP"></script>
 <script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
 </head>
 <body>
   <h2>009: html5 shared board</h2>
   <hr>
+
   <ul>
     <li>共有ボード</li>
     <li>socket.io / node.js</li>
   </ul>
+
   <ul class="toolbar">
     <li id="color-black"></li>
     <li id="color-red"></li>
@@ -65,20 +71,24 @@ body {
     <li id="color-yellow"></li>
   </ul>
   <div style="clear: both;"></div>
+
   <ul class="toolbar">
     <li id="line-1px">S</li>
     <li id="line-3px">M</li>
     <li id="line-5px">L</li>
   </ul>
   <div style="clear: both;"></div>
+
   <div id="cvdiv1"><canvas id="cv1" class="cv" width="300" height="300"></canvas></div>
-  <div id="msg1" class="msg"></div>
-  <div class="msg"><button id="stbtn1" class="btn"></button></div>
-  <div class="msg"><button id="clearbtn" class="btn"></button></div>
-  <div class="msg"><button id="savebtn" class="btn"></button></div>
-  <div class="msg"><button id="restorebtn" class="btn"></button></div>
-  <div class="msg"><button id="dispimgbtn" class="btn"></button></div>
-  <div class="msg"><button id="dlimgbtn" class="btn"></button></div>
+  <div id="msg1"></div>
+
+  <button id="stbtn1" class="btn">start</button>
+  <button id="clearbtn" class="btn">clear image</button>
+  <button id="savebtn" class="btn">save image</button>
+  <button id="restorebtn" class="btn">restore image</button>
+  <button id="dispimgbtn" class="btn">display image</button>
+  <button id="dlimgbtn" class="btn">download image</button>
+
   <div style="clear: both;"></div>
   ↓実行時のようす：Google Chrome（左），Safari（中），iPhone（右）
   <img src="./sample.jpg"/>
