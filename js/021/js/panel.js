@@ -12,7 +12,6 @@ var panelApl = {}; // namespace
      * return: none
      */
     panelApl.start = function() {
-	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 	var $btn = $('#stbtn1'); // start button
         
 	if (!panelApl.gamestart) { // if not playing
