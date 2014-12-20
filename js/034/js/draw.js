@@ -12,7 +12,6 @@ function drawRectCol(context, bx, by, width, height, iniDist) {
 	length = iniDist*0.6;
 	
 	for (var i = 0; i < 100; i++) {
-//				context.fillRect(cx - length/2, cy - length/2, length, length);
 		context.beginPath();
 		context.moveTo(cx, cy - length/2);
         context.lineTo(cx - length/2, cy);
@@ -31,16 +30,15 @@ function drawRectCol(context, bx, by, width, height, iniDist) {
 	}
 }
 
-function sample() {
+function draw() {
 	// get canvas
-	var canvas = document.getElementById('sample1');
+	var canvas = document.getElementById('canvas');
 	
 	if (canvas.getContext) {
 		var context = canvas.getContext('2d');
 
 		// set color
 		context.fillStyle = 'rgb(255,138,0)';
-		//context.strokeStyle = 'rgb(255,255,255)';
 
 		for (var i = true, x = 20; x < canvas.width; i = !i, x += 15) {
 			if (i == 0) {
