@@ -1,32 +1,32 @@
+<!DOCTYPE HTML>
 <html>
-  <head>
-    <script type="text/javascript" src="js/test.js"></script>
-    <style type="text/css">
-      div.color_disp {
-      float: left;
-      border: 1px solid black;
-      margin: 0px;
-      padding: 0px;
-      height: 20px;
-      width: 40px;
-      }
-    </style>
-  </head>
-  <body>
+    <head>
+        <title>famo.us App</title>
+        <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-    <div>
-      <div id="color_disp_0" class="color_disp">a</div>
-      <div id="color_disp_1" class="color_disp">b</div>
-      <div id="color_disp_2" class="color_disp">c</div>
-      <div id="color_disp_3" class="color_disp">d</div>
-      <div id="color_disp_4" class="color_disp">e</div>
-      <div style="clear: both"></div>
-    </div>
+        <!-- shims for backwards compatibility -->
+        <script type="text/javascript" src="http://code.famo.us/lib/functionPrototypeBind.js"></script>
+        <script type="text/javascript" src="http://code.famo.us/lib/classList.js"></script>
+        <script type="text/javascript" src="http://code.famo.us/lib/requestAnimationFrame.js"></script>
 
-    <div style="position: relative; height: 240px">
-      <canvas id="bgImage" width="320" height="240" style="border: 0px solid black; position: absolute; left: 0; top: 0; z-index: 0;">hoge</canvas>
-      <canvas id="fgImage" width="320" height="240" style="border: 0px solid black; position: absolute; left: 0; top: 0; z-index: 1;">hoge</canvas>
-    </div>
-    fgaF
-  </body>
+        <!-- module loader -->
+        <script type="text/javascript" src="http://code.famo.us/lib/require.js"></script>
+
+        <!-- famous -->
+        <link rel="stylesheet" type="text/css" href="http://code.famo.us/famous/0.3.0/famous.css" />
+        <script type="text/javascript" src="http://code.famo.us/famous/0.3.0/famous.min.js"></script>
+
+        <!-- app code -->
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <script type="text/javascript">
+            require.config({
+                baseUrl: './src/'
+            });
+            require(['main']);
+        </script>
+    </head>
+    <body></body>
 </html>
