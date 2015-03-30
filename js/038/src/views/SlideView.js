@@ -26,10 +26,10 @@ define(function(require, exports, module) {
 		this.vDiagram = new View();
 
 		_layout.call(this);
-		_createTitleView.call(this);
-		_createDescriptionView.call(this);
+//		_createTitleView.call(this);
+//		_createDescriptionView.call(this);
 		_createDiagramView.call(this);
-		_createBackground.call(this);
+//		_createBackground.call(this);
     }
 
     SlideView.DEFAULT_OPTIONS = {
@@ -90,7 +90,19 @@ define(function(require, exports, module) {
 			}
 		});
 
-		this.vTitle.add(sTitle);
+		var smInsert = new StateModifier({
+			transform: Transform.translate(0, 0, -100)
+		});
+
+		smInsert.setTransform(
+			Transform.translate(0, 0, 0),
+			{
+				duration: 800,
+				curve: 'easeInOut'
+			}
+		);
+
+		this.vTitle.add(smInsert).add(sTitle);
 	}
 
 	function _createDescriptionView() {
@@ -103,15 +115,26 @@ define(function(require, exports, module) {
 			}
 		});
 		
-		this.vDescription.add(sDescription);
+		var smInsert = new StateModifier({
+			transform: Transform.translate(0, 0, -100)
+		});
+
+		smInsert.setTransform(
+			Transform.translate(0, 0, 0),
+			{
+				duration: 800,
+				curve: 'easeInOut'
+			}
+		);
+
+		this.vDescription.add(smInsert).add(sDescription);
 	}
 
 	function _createDiagramView() {
 		// your app here
 		var logo = new ImageSurface({
 			size: [300, 100],
-			//content: 'http://code.famo.us/assets/famous_logo.png',
-			content: 'img/scheme-mono.jpg',
+			content: 'img/scheme-mono.png',
 			classes: ['double-sided']
 		});
 
@@ -120,16 +143,13 @@ define(function(require, exports, module) {
 			origin: [0.5, 0.5],
 			align: [0.5, 0.5],
 			transform : function () {
+				return Transform.rotateY(.002 * (Date.now() - initialTime));
 				//return Transform.rotateZ(.002 * (Date.now() - initialTime));
 			}
 		});
 
 		this.vDiagram.add(centerSpinModifier).add(logo);
 		
-		var smInsert = new StateModifier({
-			transform: Transform.translate(50, 100, 0)
-		});
-
 		var sContent = new Surface({
 			content: 'Right view',
 			size: [undefined, 100],
@@ -140,33 +160,33 @@ define(function(require, exports, module) {
 			}
 		});
 
-		smInsert.setTransform(
-			Transform.translate(0, 100, 0),
-			{
-				duration: 800,
-				curve: 'easeInOut'
-			}
-		);
+		var smInsert = new StateModifier({
+			opacity: 0,
+			origin: [0.5, 0.5],
+			align: [0.5, 0.5],
+			transform: Transform.translate(50, 0, -100)
+		});
+
+		setInterval(function() {
+			smInsert.setOpacity(
+				1,
+				{
+					duration: 800,
+					curve: 'easeInOut'
+				}
+			);
+			smInsert.setTransform(
+				Transform.translate(0, 0, 0),
+				{
+					duration: 800,
+					curve: 'easeInOut'
+				}
+			)},
+					2000);
 
 		this.vDiagram.add(smInsert).add(sContent);
 	}
 	
-	SlideView.prototype.fadeIn = function() {
-/*
-		var sContent = new Surface({
-			content: 'Right view',
-			size: [undefined, 100],
-			properties: {
-				color: this.options.textColor,
-				border: '1px solid white',
-				pointerEvents: 'none'
-			}
-		});
-
-		this.add(sContent);
-*/
-	}
-
 	module.exports = SlideView;
 });
 

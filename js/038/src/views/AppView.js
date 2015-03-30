@@ -19,14 +19,15 @@ define(function(require, exports, module) {
     AppView.DEFAULT_OPTIONS = {
 		numSlide: 4,
         lightboxOpts: {
-            inOpacity: 0,
+            //inOpacity: 0,
             outOpacity: 0,
             //inOrigin: [0, 0],
             //outOrigin: [0, 0],
             //showOrigin: [0, 0],
             //inTransform: Transform.thenMove(Transform.rotateX(0.9), [0, 300, 0]),
             //outTransform: Transform.thenMove(Transform.rotateZ(0.7), [0, window.innerHeight, 100]),
-			inTransform: Transform.thenMove(Transform.rotateX(0), [0, 0, -100]),
+			//inTransform: Transform.thenMove(Transform.rotateX(0), [0, 0, -100]),
+			inTransform: Transform.thenMove(Transform.rotateX(0), [0, 0, 0]),
 			outTransform: Transform.thenMove(Transform.rotateZ(0), [0, 0, 100]),
             inTransition: { duration: 650, curve: 'easeOut' },
             outTransition: { duration: 300, curve: Easing.inCubic },
@@ -50,7 +51,6 @@ define(function(require, exports, module) {
         this.ready = false;
         this.lightbox.show(slide, function() {
             this.ready = true;
-			slide.fadeIn();
         }.bind(this));
     };
 
