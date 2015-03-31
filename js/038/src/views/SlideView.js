@@ -1,17 +1,13 @@
 define(function(require, exports, module) {
-	var Engine = require('famous/core/Engine');
 	var Surface = require('famous/core/Surface');
 	var Transform = require('famous/core/Transform');
 	var Modifier = require('famous/core/Modifier');
 	var StateModifier = require('famous/modifiers/StateModifier');
 	var Easing = require('famous/transitions/Easing');
 	var Transitionable = require('famous/transitions/Transitionable');
-    var Lightbox = require('famous/views/Lightbox');
     var View = require('famous/core/View');
 	var GridLayout = require("famous/views/GridLayout");
-    var HeaderFooterLayout = require("famous/views/HeaderFooterLayout");
 	var ImageSurface = require("famous/surfaces/ImageSurface");
-
 
 	var mCenter = new Modifier({
 		origin: [0.5,0.5],
@@ -21,22 +17,25 @@ define(function(require, exports, module) {
     function SlideView() {
         View.apply(this, arguments);
 
-		this.vTitle = new View();
-		this.vDescription = new View();
-		this.vDiagram = new View();
-
 		_layout.call(this);
-//		_createTitleView.call(this);
-//		_createDescriptionView.call(this);
+		_createTitleView.call(this);
+		_createDescriptionView.call(this);
 		_createDiagramView.call(this);
-//		_createBackground.call(this);
+		_createBackground.call(this);
     }
 
     SlideView.DEFAULT_OPTIONS = {
 		textColor: '#fff',
-		size: [800, 600]
+		size: [800, 600],
+		duration: 600,
+		tick: 200,
     };
 
+	SlideView.DEFAULT_OPTIONS.transition = {
+		duration: SlideView.DEFAULT_OPTIONS.duration,
+		curve: 'easeOut'
+	};
+	
     SlideView.prototype = Object.create(View.prototype);
     SlideView.prototype.constructor = SlideView;
 
@@ -57,6 +56,11 @@ define(function(require, exports, module) {
 	}
 	
 	function _layout() {
+		// create views
+		this.vTitle = new View();
+		this.vDescription = new View();
+		this.vDiagram = new View();
+
 		var FlexibleLayout = require('famous/views/FlexibleLayout');
 		var layout = new FlexibleLayout({
 			ratios: [2, 3],
@@ -97,7 +101,7 @@ define(function(require, exports, module) {
 		smInsert.setTransform(
 			Transform.translate(0, 0, 0),
 			{
-				duration: 800,
+				duration: this.options.duration,
 				curve: 'easeInOut'
 			}
 		);
@@ -122,7 +126,7 @@ define(function(require, exports, module) {
 		smInsert.setTransform(
 			Transform.translate(0, 0, 0),
 			{
-				duration: 800,
+				duration: this.options.duration,
 				curve: 'easeInOut'
 			}
 		);
@@ -144,7 +148,6 @@ define(function(require, exports, module) {
 			align: [0.5, 0.5],
 			transform : function () {
 				return Transform.rotateY(.002 * (Date.now() - initialTime));
-				//return Transform.rotateZ(.002 * (Date.now() - initialTime));
 			}
 		});
 
@@ -168,21 +171,11 @@ define(function(require, exports, module) {
 		});
 
 		setInterval(function() {
-			smInsert.setOpacity(
-				1,
-				{
-					duration: 800,
-					curve: 'easeInOut'
-				}
-			);
+			smInsert.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition);
 			smInsert.setTransform(
 				Transform.translate(0, 0, 0),
-				{
-					duration: 800,
-					curve: 'easeInOut'
-				}
-			)},
-					2000);
+				SlideView.DEFAULT_OPTIONS.transition);},
+			this.options.tick);
 
 		this.vDiagram.add(smInsert).add(sContent);
 	}
