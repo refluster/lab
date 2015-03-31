@@ -8,6 +8,8 @@ define(function(require, exports, module) {
     var View = require('famous/core/View');
 	var GridLayout = require("famous/views/GridLayout");
 	var ImageSurface = require("famous/surfaces/ImageSurface");
+    var Transitionable   = require('famous/transitions/Transitionable');
+    var SpringTransition = require('famous/transitions/SpringTransition');
 
 	var mCenter = new Modifier({
 		origin: [0.5,0.5],
@@ -28,7 +30,7 @@ define(function(require, exports, module) {
 		textColor: '#fff',
 		size: [800, 600],
 		duration: 600,
-		tick: 200,
+		tick: 400,
     };
 
 	SlideView.DEFAULT_OPTIONS.transition = {
@@ -135,49 +137,70 @@ define(function(require, exports, module) {
 	}
 
 	function _createDiagramView() {
-		// your app here
+		var initialTime = Date.now();
+		
+		////////////////////////////////////////////////////////////
+		// scheme-mono rotate
 		var logo = new ImageSurface({
 			size: [300, 100],
 			content: 'img/scheme-mono.png',
 			classes: ['double-sided']
 		});
 
-		var initialTime = Date.now();
-		var centerSpinModifier = new Modifier({
+		var mCenterSpinY = new Modifier({
 			origin: [0.5, 0.5],
-			align: [0.5, 0.5],
-			transform : function () {
+			align: [0.5, 0.3],
+			transform: function () {
 				return Transform.rotateY(.002 * (Date.now() - initialTime));
 			}
 		});
 
-		this.vDiagram.add(centerSpinModifier).add(logo);
-		
-		var sContent = new Surface({
-			content: 'Right view',
-			size: [undefined, 100],
-			properties: {
-				color: this.options.textColor,
-				border: '1px solid white',
-				pointerEvents: 'none'
-			}
-		});
-
-		var smInsert = new StateModifier({
+		var smAppear = new StateModifier({
 			opacity: 0,
-			origin: [0.5, 0.5],
-			align: [0.5, 0.5],
-			transform: Transform.translate(50, 0, -100)
+			transform: Transform.translate(100, 0, 0)
 		});
 
-		setInterval(function() {
-			smInsert.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition);
-			smInsert.setTransform(
+		setTimeout(function() {
+			initialTime = Date.now();
+			smAppear.setTransform(
 				Transform.translate(0, 0, 0),
-				SlideView.DEFAULT_OPTIONS.transition);},
-			this.options.tick);
+				SlideView.DEFAULT_OPTIONS.transition);
+			smAppear.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition);
+		}, this.options.tick*4);
 
-		this.vDiagram.add(smInsert).add(sContent);
+		this.vDiagram.add(smAppear).add(mCenterSpinY).add(logo);
+
+		////////////////////////////////////////////////////////////
+		// restroom
+		var logo2 = new ImageSurface({
+			size: [this.options.size[0]*0.1, true],
+			content: 'http://illustcut.com/box/mark/iroiro1/mark01_20.png'
+		});
+		
+		var smDamping = new StateModifier({
+			origin: [0.5, 0],
+			align: [0.5, 0.6],
+			transform: Transform.translate(100, 0, 0)
+		});
+
+		Transitionable.registerMethod('spring', SpringTransition);
+		
+		smDamping.setTransform(
+			Transform.rotateX(-0.5),
+			{ duration: 200, curve: 'easeOut' }
+		);
+		
+		smDamping.setTransform(
+			Transform.identity,
+			{ method: 'spring', period: 1100, dampingRatio: 0 }
+		);
+		
+		setTimeout(function() {
+			smDamping.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition);
+			smDamping.setTransform(Transform.translate(0, 0, 0), SlideView.DEFAULT_OPTIONS.transition);
+		}, this.options.tick*6);
+		
+		this.vDiagram.add(smDamping).add(logo2);
 	}
 	
 	module.exports = SlideView;
