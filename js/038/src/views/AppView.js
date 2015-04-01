@@ -2,16 +2,16 @@ define(function(require, exports, module) {
 	var Transform = require('famous/core/Transform');
 	var Easing = require('famous/transitions/Easing');
 	var Lightbox = require('famous/views/Lightbox');
-	var View = require('famous/core/View');
+    var View = require('famous/core/View');
 
-	var SlideView = require('views/SlideView');
+    var SlideView = require('views/SlideView');
 
-	function AppView() {
+    function AppView() {
 		View.apply(this, arguments);
 		
 		_createLightbox.call(this);
 		this.showSlide();
-	}
+    }
 
 	AppView.prototype = Object.create(View.prototype);
 	AppView.prototype.constructor = AppView;
@@ -20,7 +20,7 @@ define(function(require, exports, module) {
 		aspect: 2.5, // width / height
 		numSlide: 4,
 		lightboxOpts: {
-			//inOpacity: 0,
+			inOpacity: 1,
 			outOpacity: 0,
 			//inOrigin: [0, 0],
 			//outOrigin: [0, 0],
@@ -28,19 +28,20 @@ define(function(require, exports, module) {
 			//inTransform: Transform.thenMove(Transform.rotateX(0.9), [0, 300, 0]),
 			//outTransform: Transform.thenMove(Transform.rotateZ(0.7), [0, window.innerHeight, 100]),
 			//inTransform: Transform.thenMove(Transform.rotateX(0), [0, 0, -100]),
-			inTransform: Transform.thenMove(Transform.rotateX(0), [0, 0, 0]),
+			//inTransform: Transform.thenMove(Transform.rotateX(0), [0, 0, 0]),
+			inTransform: Transform.identity,
 			outTransform: Transform.thenMove(Transform.rotateZ(0), [0, 0, 100]),
-			inTransition: { duration: 650, curve: 'easeOut' },
+			//inTransition: { duration: 650, curve: 'easeOut' },
 			outTransition: { duration: 300, curve: Easing.inCubic },
 			overlap: false
-		}
-	};
+        }
+    };
 
-	function _createLightbox() {
+    function _createLightbox() {
 		this.lightbox = new Lightbox(this.options.lightboxOpts);
 		//this.mainNode.add(this.lightbox);
 		this.add(this.lightbox);
-	}
+    }
 
 	AppView.prototype.showSlide = function() {
 		var slideWidth;
@@ -50,7 +51,7 @@ define(function(require, exports, module) {
 			slideWidth = window.innerHeight * this.options.aspect * 0.8;
 		}
 		
-		var slide = new SlideView({
+        var slide = new SlideView({
 			size: [slideWidth, slideWidth / this.options.aspect]
 		});
 

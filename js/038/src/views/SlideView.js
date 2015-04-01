@@ -95,13 +95,14 @@ define(function(require, exports, module) {
 		});
 		
 		var smInsert = new StateModifier({
+			opacity: 0,
 			transform: Transform.translate(0, 0, -100)
 		});
 
-		smInsert.setTransform(
-			Transform.translate(0, 0, 0),
-			SlideView.DEFAULT_OPTIONS.transition
-		);
+		setTimeout(function() {
+			smInsert.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition);
+			smInsert.setTransform(Transform.translate(0, 0, 0), SlideView.DEFAULT_OPTIONS.transition);
+		}, this.options.tick);
 
 		this.vTitle.add(smInsert).add(sTitle);
 	}
@@ -169,7 +170,7 @@ define(function(require, exports, module) {
 										  });
 								  }
 								 );
-		}, this.options.tick*4);
+		}, this.options.tick*2);
 		
 		this.vDiagram.add(smInsert).add(mCenterSpinY).add(isLogo);
 		
