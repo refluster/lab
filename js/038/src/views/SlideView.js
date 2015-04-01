@@ -108,11 +108,13 @@ define(function(require, exports, module) {
 	}
 
 	function _createDescriptionView() {
-		var code = "<pre>" +
-			"aaa\n" +
-			"  aaa\n" +
-			"	 aaa\n" +
-			"</pre>";
+		var code = '<ul style="color: #e8c">' +
+			"<li>Tween Animations</li>" +
+			"<li>Phisics Animations</li>" +
+			"<li>Opacity</li>" +
+			"<li>Position</li>" +
+			"<li>Rotation</li>" +
+			"</ul>";
 
 		var sDescription = new Surface({
 			content: 'Contents can be animated smoothly with famo.us framework' + code,
