@@ -32,7 +32,7 @@ define(function(require, exports, module) {
 			inTransform: Transform.identity,
 			outTransform: Transform.thenMove(Transform.rotateZ(0), [0, 0, 100]),
 			//inTransition: { duration: 650, curve: 'easeOut' },
-			outTransition: { duration: 300, curve: Easing.inCubic },
+			outTransition: { duration: 600, curve: Easing.outCubic },
 			overlap: false
         }
     };

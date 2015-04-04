@@ -20,7 +20,7 @@ define(function(require, exports, module) {
 	function SlideView() {
 		View.apply(this, arguments);
 
-		_layout.call(this);
+		_layoutLandscape.call(this);
 		_createTitleView.call(this);
 		_createDescriptionView.call(this);
 		_createDiagramView.call(this);
@@ -44,22 +44,14 @@ define(function(require, exports, module) {
 	SlideView.prototype.constructor = SlideView;
 
 	function _createBackground() {
-		var sBackground = new Surface({
-			properties: {
-				//backgroundColor: this.options.backgroundColor,
-				//textAlign: 'center',
-				border: '1px solid green'
-			}
-		});
-		
+		var sBackground = new Surface();
 		this.add(sBackground);
-
 		sBackground.on('click', function() {
 			this._eventOutput.emit('click');
 		}.bind(this));
 	}
 	
-	function _layout() {
+	function _layoutLandscape() {
 		// create views
 		this.vTitle = new View();
 		this.vDescription = new View();
@@ -108,13 +100,16 @@ define(function(require, exports, module) {
 	}
 
 	function _createDescriptionView() {
-		var code = '<ul style="color: #e8c">' +
-			"<li>Tween Animations</li>" +
-			"<li>Phisics Animations</li>" +
-			"<li>Opacity</li>" +
-			"<li>Position</li>" +
-			"<li>Rotation</li>" +
-			"</ul>";
+		var code =
+			'<ul style="color: #fae">' +
+			'<li>Tween Animation</li>' +
+			'<li>Phisics Animation</li>' +
+			'</ul><ul style="color: #aef">' +
+			'<li>Position</li>' +
+			'<li>Angle</li>' +
+			'<li>Size</li>' +
+			'<li>Style</li>' +
+			'</ul>';
 
 		var sDescription = new Surface({
 			content: 'Contents can be animated smoothly with famo.us framework' + code,

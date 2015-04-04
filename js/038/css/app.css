@@ -16,3 +16,7 @@ body {
     -webkit-backface-visibility: visible;
     backface-visibility: visible;
 }
+
+ul {
+	list-style-type: square;
+}
