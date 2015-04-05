@@ -2,16 +2,17 @@ define(function(require, exports, module) {
 	var Transform = require('famous/core/Transform');
 	var Easing = require('famous/transitions/Easing');
 	var Lightbox = require('famous/views/Lightbox');
-    var View = require('famous/core/View');
+	var View = require('famous/core/View');
 
-    var SlideView = require('views/SlideView');
+	var AnimationSlide = require('views/slides/Animation');
+	var ButtonSlide = require('views/slides/Button');
 
-    function AppView() {
+	function AppView() {
 		View.apply(this, arguments);
 		
 		_createLightbox.call(this);
 		this.showSlide();
-    }
+	}
 
 	AppView.prototype = Object.create(View.prototype);
 	AppView.prototype.constructor = AppView;
@@ -34,14 +35,14 @@ define(function(require, exports, module) {
 			//inTransition: { duration: 650, curve: 'easeOut' },
 			outTransition: { duration: 600, curve: Easing.outCubic },
 			overlap: false
-        }
-    };
+		}
+	};
 
-    function _createLightbox() {
+	function _createLightbox() {
 		this.lightbox = new Lightbox(this.options.lightboxOpts);
 		//this.mainNode.add(this.lightbox);
 		this.add(this.lightbox);
-    }
+	}
 
 	AppView.prototype.showSlide = function() {
 		var slideWidth;
@@ -51,11 +52,18 @@ define(function(require, exports, module) {
 			slideWidth = window.innerHeight * this.options.aspect * 0.8;
 		}
 		
-        var slide = new SlideView({
+		/*
+		  var slide = new AnimationSlide({
+		  size: [slideWidth, slideWidth / this.options.aspect]
+		  });
+		*/
+		var slide = new ButtonSlide({
 			size: [slideWidth, slideWidth / this.options.aspect]
 		});
 
 		slide.on('click', this.showSlide.bind(this));
+
+		window.history.pushState(null, null, "#/test");
 
 		this.ready = false;
 		this.lightbox.show(slide, function() {

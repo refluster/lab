@@ -17,7 +17,7 @@ define(function(require, exports, module) {
 		align: [0.5,0.5],
 	});
 	
-	function SlideView() {
+	function Animation() {
 		View.apply(this, arguments);
 
 		_layoutLandscape.call(this);
@@ -27,7 +27,7 @@ define(function(require, exports, module) {
 		_createBackground.call(this);
 	}
 
-	SlideView.DEFAULT_OPTIONS = {
+	Animation.DEFAULT_OPTIONS = {
 		textColor: '#fff',
 		size: [800, 600],
 		duration: 300,
@@ -35,13 +35,13 @@ define(function(require, exports, module) {
 		border: '0px solid white'
 	};
 
-	SlideView.DEFAULT_OPTIONS.transition = {
-		duration: SlideView.DEFAULT_OPTIONS.duration,
+	Animation.DEFAULT_OPTIONS.transition = {
+		duration: Animation.DEFAULT_OPTIONS.duration,
 		curve: 'easeOut'
 	};
 	
-	SlideView.prototype = Object.create(View.prototype);
-	SlideView.prototype.constructor = SlideView;
+	Animation.prototype = Object.create(View.prototype);
+	Animation.prototype.constructor = Animation;
 
 	function _createBackground() {
 		var sBackground = new Surface();
@@ -92,8 +92,8 @@ define(function(require, exports, module) {
 		});
 
 		setTimeout(function() {
-			smInsert.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition);
-			smInsert.setTransform(Transform.translate(0, 0, 0), SlideView.DEFAULT_OPTIONS.transition);
+			smInsert.setOpacity(1, Animation.DEFAULT_OPTIONS.transition);
+			smInsert.setTransform(Transform.translate(0, 0, 0), Animation.DEFAULT_OPTIONS.transition);
 		}, this.options.tick);
 
 		this.vTitle.add(smInsert).add(sTitle);
@@ -127,8 +127,8 @@ define(function(require, exports, module) {
 		});
 
 		setTimeout(function() {
-			smInsert.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition)
-			smInsert.setTransform(Transform.translate(0, 0, 0), SlideView.DEFAULT_OPTIONS.transition)
+			smInsert.setOpacity(1, Animation.DEFAULT_OPTIONS.transition)
+			smInsert.setTransform(Transform.translate(0, 0, 0), Animation.DEFAULT_OPTIONS.transition)
 		}, this.options.tick*2);
 		
 
@@ -156,15 +156,14 @@ define(function(require, exports, module) {
 
 		setTimeout(function() {
 			initialTime = Date.now();
-			smInsert.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition);
+			smInsert.setOpacity(1, Animation.DEFAULT_OPTIONS.transition);
 			smInsert.setTransform(Transform.translate(0, 0, 0),
-								  SlideView.DEFAULT_OPTIONS.transition,
+								  Animation.DEFAULT_OPTIONS.transition,
 								  function() {
 									  var initialTime = Date.now();
-									  mCenterSpinY.setTransform(
-										  function() {
-											  return Transform.rotateY(.002 * (Date.now() - initialTime));
-										  });
+									  mCenterSpinY.setTransform(function() {
+										  return Transform.rotateY(.002 * (Date.now() - initialTime));
+									  });
 								  }
 								 );
 		}, this.options.tick*2);
@@ -190,8 +189,8 @@ define(function(require, exports, module) {
 		Transitionable.registerMethod('spring', SpringTransition);
 		
 		setTimeout(function() {
-			smInsert2.setOpacity(1, SlideView.DEFAULT_OPTIONS.transition);
-			smInsert2.setTransform(Transform.translate(0, 0, 0), SlideView.DEFAULT_OPTIONS.transition,
+			smInsert2.setOpacity(1, Animation.DEFAULT_OPTIONS.transition);
+			smInsert2.setTransform(Transform.translate(0, 0, 0), Animation.DEFAULT_OPTIONS.transition,
 								   function() {
 									   smDamping.setTransform(
 										   Transform.rotateX(-0.5),
@@ -208,6 +207,6 @@ define(function(require, exports, module) {
 		this.vDiagram.add(smDamping).add(smInsert2).add(isLogo2);
 	}
 	
-	module.exports = SlideView;
+	module.exports = Animation;
 });
 
