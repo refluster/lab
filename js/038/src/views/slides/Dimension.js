@@ -25,6 +25,15 @@ define(function(require, exports, module) {
 		_createDimension.call(this);
 		_createBackground.call(this);
 		_setTransfer.call(this);
+		_setTransfer.call(this);
+		_setTransfer.call(this);
+		_setTransfer.call(this);
+		_setTransfer.call(this);
+		_setTransfer.call(this);
+		_setTransfer.call(this);
+		_setTransfer.call(this);
+		_setTransfer.call(this);
+		_setTransfer.call(this);
 	}
 
 	Dimension.DEFAULT_OPTIONS = {
@@ -33,9 +42,9 @@ define(function(require, exports, module) {
 		duration: 300,
 		tick: 300,
 		border: '0px solid white',
-		grid: 20,
-		floorLength: 300,
-		numBox: 10,
+		grid: 40,
+		floorLength: 1000,
+		numBox: 100,
 	};
 
 	Dimension.DEFAULT_OPTIONS.transition = {
@@ -54,7 +63,7 @@ define(function(require, exports, module) {
 
 	function _createBackground() {
 		var sBackground = new Surface({
-			transform: Transform.translate(0, 0, -100)
+			transform: Transform.translate(0, 0, -100),
 		});
 		this.add(sBackground);
 		sBackground.on('click', function() {
@@ -99,18 +108,19 @@ define(function(require, exports, module) {
 	}
 
 	function _createDimension() {
-		var initialTime = Date.now();
 		var mRotate = new Modifier({
 			origin: [0.5, 0.5],
 			align: [0.5, 0.5],
 			size: [this.options.floorLength, this.options.floorLength],
-/*
 			transform: function() {
-				return Transform.rotate(.0002 * (Date.now() - initialTime) + 1.2,
-										.00012 * (Date.now() - initialTime),
-										0);
+				var date = Date.now();
+				return Transform.thenMove(
+					Transform.rotate(.0002 * date + 1.2,
+									 .00012 * date,
+									 0),
+					[0, 0, 500]
+				);
 			}
-*/
 		});
 
 		this.rotateModifier = this.rootModifier.add(mRotate);
@@ -127,20 +137,10 @@ define(function(require, exports, module) {
 				classes: ['double-sided'],
 				properties: {
 					backgroundColor: '#d65',
+					pointerEvents: 'none',
 				}
 			});
 
-/*
-			var mBox = new Modifier({
-				origin: [0, 0],
-				size: [this.options.floorLength / this.options.grid,
-					   this.options.floorLength / this.options.grid],
-				transform: Transform.translate(
-					gridX * this.options.floorLength / this.options.grid,
-					gridY * this.options.floorLength / this.options.grid,
-					0)
-			});
-*/
 			var mBox = new StateModifier({
 				origin: [0, 0],
 				size: [this.options.floorLength / this.options.grid,
@@ -158,8 +158,6 @@ define(function(require, exports, module) {
 				modifier: mBox,
 				position: [gridX * this.options.floorLength / this.options.grid,
 						   gridY * this.options.floorLength / this.options.grid],
-				positionPrev: [gridX * this.options.floorLength / this.options.grid,
-							   gridY * this.options.floorLength / this.options.grid],
 			});
 		}
 
@@ -169,6 +167,7 @@ define(function(require, exports, module) {
 			properties: {
 //				backgroundColor: '#6d5',
 				border: '1px solid yellow',
+				pointerEvents: 'none',
 			}
 		});
 
@@ -178,12 +177,8 @@ define(function(require, exports, module) {
 	function _setTransfer() {
 		var rand = Math.random();
 		var boxIndex = Math.floor(rand * this.options.numBox);
-		
-
 		var minTransferGrid = Math.floor(this.options.grid * .4);
 		var moveGridDistance = Math.floor(rand * (this.options.grid - minTransferGrid)) + minTransferGrid;
-
-//		var moveGridDistance = Math.floor(rand * this.options.grid);
 		var direction = rand > 0.5 ? 0: 1;
 
 		this.boxes[boxIndex].position[direction] += moveGridDistance *
@@ -191,8 +186,6 @@ define(function(require, exports, module) {
 		if (this.boxes[boxIndex].position[direction] >= this.options.floorLength) {
 			this.boxes[boxIndex].position[direction] -= this.options.floorLength;
 		}
-
-		console.log({dir: direction, move: moveGridDistance, pos: this.boxes[boxIndex].position[direction]});
 
 		this.boxes[boxIndex].modifier.setTransform(
 			Transform.translate(
@@ -202,19 +195,6 @@ define(function(require, exports, module) {
 			this.options.boxTransition,
 			_setTransfer.bind(this)
 		);
-
-		return;
-		////////////////////////////////////////////////////////////
-
-		var tState = new Transitionable(0);
-		this.boxes[boxIndex].modifier.setTransform(function() {
-			return Transform.translate(
-				this.boxes[boxIndex].position[0] * tState.get() +
-					this.boxes[boxIndex].positionPrev[0] * tState.get(),
-				this.boxes[boxIndex].position[1] * tState.get() +
-					this.boxes[boxIndex].positionPrev[1] * tState.get(),
-				0);
-		});
 	}
 	
 	module.exports = Dimension;
