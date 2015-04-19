@@ -6,6 +6,7 @@ define(function(require, exports, module) {
 
 	var AnimationSlide = require('views/slides/Animation');
 	var ButtonSlide = require('views/slides/Button');
+	var DimensionSlide = require('views/slides/Dimension');
 
 	function AppView() {
 		View.apply(this, arguments);
@@ -57,7 +58,12 @@ define(function(require, exports, module) {
 		  size: [slideWidth, slideWidth / this.options.aspect]
 		  });
 		*/
+		/*
 		var slide = new ButtonSlide({
+			size: [slideWidth, slideWidth / this.options.aspect]
+		});
+		*/
+		var slide = new DimensionSlide({
 			size: [slideWidth, slideWidth / this.options.aspect]
 		});
 
