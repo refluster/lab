@@ -83,7 +83,7 @@ define(function(require, exports, module) {
 	
 	function _createTitleView() {
 		var sTitle = new Surface({
-			content: '3D Rendarables',
+			content: '3D Support',
 			properties: {
 				fontSize: (this.options.size[0]*0.04) + 'px',
 				color: this.options.textColor,
@@ -115,8 +115,8 @@ define(function(require, exports, module) {
 			transform: function() {
 				var date = Date.now();
 				return Transform.thenMove(
-					Transform.rotate(.0002 * date + 1.2,
-									 .00012 * date,
+					Transform.rotate(.0005 * date + 1.2,
+									 .00022 * date,
 									 0),
 					[0, 0, 500]
 				);
@@ -166,7 +166,7 @@ define(function(require, exports, module) {
 			opacity: 0.5,
 			properties: {
 //				backgroundColor: '#6d5',
-				border: '1px solid yellow',
+//				border: '1px solid yellow',
 				pointerEvents: 'none',
 			}
 		});

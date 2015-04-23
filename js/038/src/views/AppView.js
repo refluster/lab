@@ -44,7 +44,7 @@ define(function(require, exports, module) {
 		//this.mainNode.add(this.lightbox);
 		this.add(this.lightbox);
 	}
-
+	
 	AppView.prototype.showSlide = function() {
 		var slideWidth;
 		if (window.innerHeight * this.options.aspect > window.innerWidth) {
@@ -53,29 +53,58 @@ define(function(require, exports, module) {
 			slideWidth = window.innerHeight * this.options.aspect * 0.8;
 		}
 		
-		/*
-		  var slide = new AnimationSlide({
-		  size: [slideWidth, slideWidth / this.options.aspect]
-		  });
-		*/
-		/*
-		var slide = new ButtonSlide({
-			size: [slideWidth, slideWidth / this.options.aspect]
-		});
-		*/
-		var slide = new DimensionSlide({
-			size: [slideWidth, slideWidth / this.options.aspect]
-		});
-
-		slide.on('click', this.showSlide.bind(this));
-
-		window.history.pushState(null, null, "#/test");
+		var newHash;
+		var slide;
+		
+		switch (window.location.hash) {
+		case null:
+		case "":
+		case "#/1":
+			slide = new AnimationSlide({
+				size: [slideWidth, slideWidth / this.options.aspect]
+			});
+			break;
+		case "#/2":
+			slide = new DimensionSlide({
+				size: [slideWidth, slideWidth / this.options.aspect]
+			});
+			break;
+		case "#/3":
+			slide = new ButtonSlide({
+				size: [slideWidth, slideWidth / this.options.aspect]
+			});
+			break;
+		}
+		
+		slide.on('click', this.showNextSlide.bind(this));
 
 		this.ready = false;
 		this.lightbox.show(slide, function() {
 			this.ready = true;
 		}.bind(this));
 	};
+
+	AppView.prototype.showNextSlide = function() {
+		var hash;
+		
+		switch (window.location.hash) {
+		case null:
+		case "":
+		case "#/3":
+			hash = "#/1";
+			break;
+		case "#/1":
+			hash = "#/2";
+			break;
+		case "#/2":
+			hash = "#/3";
+			break;
+		}
+
+		window.history.pushState(null, null, hash);
+
+		this.showSlide();
+	}		
 
 	module.exports = AppView;
 });
