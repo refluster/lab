@@ -4,10 +4,6 @@ define(function(require, exports, module) {
 	var Lightbox = require('famous/views/Lightbox');
 	var View = require('famous/core/View');
 
-	var AnimationSlide = require('views/slides/Animation');
-	var ButtonSlide = require('views/slides/Button');
-	var DimensionSlide = require('views/slides/Dimension');
-
 	function AppView() {
 		View.apply(this, arguments);
 		
@@ -35,7 +31,7 @@ define(function(require, exports, module) {
 			outTransform: Transform.thenMove(Transform.rotateZ(0), [0, 0, 100]),
 			//inTransition: { duration: 650, curve: 'easeOut' },
 			outTransition: { duration: 600, curve: Easing.outCubic },
-			overlap: false
+			overlap: true
 		}
 	};
 
@@ -47,29 +43,31 @@ define(function(require, exports, module) {
 	
 	AppView.prototype.showSlide = function() {
 		var slideWidth;
+		var slide;
+
 		if (window.innerHeight * this.options.aspect > window.innerWidth) {
 			slideWidth = window.innerWidth * 0.8;
 		} else {
 			slideWidth = window.innerHeight * this.options.aspect * 0.8;
 		}
 		
-		var newHash;
-		var slide;
-		
 		switch (window.location.hash) {
 		case null:
 		case "":
 		case "#/1":
+			var AnimationSlide = require('views/slides/Animation');
 			slide = new AnimationSlide({
 				size: [slideWidth, slideWidth / this.options.aspect]
 			});
 			break;
 		case "#/2":
+			var DimensionSlide = require('views/slides/Dimension');
 			slide = new DimensionSlide({
 				size: [slideWidth, slideWidth / this.options.aspect]
 			});
 			break;
 		case "#/3":
+			var ButtonSlide = require('views/slides/Button');
 			slide = new ButtonSlide({
 				size: [slideWidth, slideWidth / this.options.aspect]
 			});
