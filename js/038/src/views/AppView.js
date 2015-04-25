@@ -9,6 +9,7 @@ define(function(require, exports, module) {
 		
 		_createLightbox.call(this);
 		this.showSlide();
+		window.onhashchange = this.showSlide.bind(this);
 	}
 
 	AppView.prototype = Object.create(View.prototype);
