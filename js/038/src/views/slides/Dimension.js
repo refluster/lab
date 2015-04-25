@@ -43,7 +43,7 @@ define(function(require, exports, module) {
 		tick: 300,
 		border: '0px solid white',
 		grid: 40,
-		floorLength: 1000,
+		floorLength: 2000,
 		numBox: 100,
 	};
 
@@ -51,6 +51,10 @@ define(function(require, exports, module) {
 		duration: Dimension.DEFAULT_OPTIONS.duration,
 		//		curve: 'easeOut'
 		curve: Easing.easeIn
+	};
+	Dimension.DEFAULT_OPTIONS.insTransition = {
+		duration: 5000,
+		curve: Easing.outQuad
 	};
 	Dimension.DEFAULT_OPTIONS.boxTransition = {
 		duration: Dimension.DEFAULT_OPTIONS.duration * 3,
@@ -83,7 +87,7 @@ define(function(require, exports, module) {
 	
 	function _createTitleView() {
 		var sTitle = new Surface({
-			content: 'Support 3D',
+			content: 'Simple 3D',
 			properties: {
 				fontSize: (this.options.size[0]*0.04) + 'px',
 				color: this.options.textColor,
@@ -123,7 +127,18 @@ define(function(require, exports, module) {
 			}
 		});
 
-		this.rotateModifier = this.rootModifier.add(mRotate);
+		var smInsert = new StateModifier({
+			opacity: 0,
+			transform: Transform.translate(0, 0, 400)
+		});
+
+		setTimeout(function() {
+			smInsert.setOpacity(1, Dimension.DEFAULT_OPTIONS.insTransition);
+			smInsert.setTransform(Transform.translate(0, 0, -800), Dimension.DEFAULT_OPTIONS.insTransition);
+		}, this.options.tick);
+
+		//this.rotateModifier = this.rootModifier.add(mRotate);
+		this.rotateModifier = this.rootModifier.add(smInsert).add(mRotate);
 		this.boxes = [];
 
 		for (var i = 0; i < this.options.numBox; i++) {
@@ -136,8 +151,19 @@ define(function(require, exports, module) {
 			var sBox = new Surface({
 				classes: ['double-sided'],
 				properties: {
-					backgroundColor: '#d65',
-					pointerEvents: 'none',
+//					backgroundColor: '#fff',
+//					pointerEvents: 'none',
+
+					fontSize: (8) + 'px',
+					textAlign: 'center',
+					lineHeight: 8 + 'px',
+					color: 'white',
+					textAlign: 'center',
+//					backgroundColor: '#f6b',
+//					border: '1px solid #444',
+					backgroundBlendMode: 'screen',
+					boxShadow: '0 0 1px #0fd, 0 0 3px #fff, 0 0 5px #fff,' +
+						'0 0 7px #fff, 0 0 9px #0fd'
 				}
 			});
 
@@ -161,17 +187,6 @@ define(function(require, exports, module) {
 			});
 		}
 
-		var box = new Surface({
-			classes: ['double-sided'],
-			opacity: 0.5,
-			properties: {
-//				backgroundColor: '#6d5',
-//				border: '1px solid yellow',
-				pointerEvents: 'none',
-			}
-		});
-
-		this.rotateModifier.add(box);
 	}
 
 	function _setTransfer() {

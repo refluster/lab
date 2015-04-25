@@ -71,7 +71,7 @@ define(function(require, exports, module) {
 	
 	function _createTitleView() {
 		var sTitle = new Surface({
-			content: 'Working with Inputs',
+			content: 'Work with Inputs',
 			properties: {
 				fontSize: (this.options.size[0]*0.04) + 'px',
 				color: this.options.textColor,
