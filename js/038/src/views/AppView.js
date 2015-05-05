@@ -3,6 +3,7 @@ define(function(require, exports, module) {
 	var Easing = require('famous/transitions/Easing');
 	var Lightbox = require('famous/views/Lightbox');
 	var View = require('famous/core/View');
+	var ScrollSync = require("famous/inputs/ScrollSync");
 
 	function AppView() {
 		View.apply(this, arguments);
@@ -76,6 +77,16 @@ define(function(require, exports, module) {
 		}
 		
 		slide.on('click', this.showNextSlide.bind(this));
+
+		//////////////////////////////
+		var scrollSync = new ScrollSync();
+		scrollSync.on("update", function(data) {
+			if(data.delta[1] > 0) {
+				this.showNextSlide.bind(this)
+			}
+		});
+
+		//////////////////////////////
 
 		this.ready = false;
 		this.lightbox.show(slide, function() {
