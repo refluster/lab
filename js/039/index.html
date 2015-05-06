@@ -5,21 +5,40 @@
         -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+    <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <style>
-      #sun
+      div.color_disp {
+      float: left;
+      border: 1px solid black;
+      margin: 0px;
+      padding: 0px;
+      height: 20px;
+      width: 40px;
+      }
     </style>
   </head>
-  <body style="background-color: #fff">
+  <body>
     
-    <img id="sun" width=100 src="img/sun.png" />
+    <img id="sun" width=30% src="img/sun.png" />
     <br />
     
-    <img id="cloud" width=200 src="img/cloud.png" />
+    <img id="cloud" width=30% src="img/cloud.png" />
     <br />
     
-    <img id="mt" width=600 height=80 src="img/mt.png" />
+    <img id="mt" width=100% src="img/mt.png" />
     <br />
     
+    <span id="msg"></span>
+
+    <div>
+      <div id="color_disp_0" class="color_disp">a</div>
+      <div id="color_disp_1" class="color_disp">b</div>
+      <div id="color_disp_2" class="color_disp">c</div>
+      <div id="color_disp_3" class="color_disp">d</div>
+      <div id="color_disp_4" class="color_disp">e</div>
+      <div style="clear: both"></div>
+    </div>
+
 <!--
     <img width=300 src="http://freeiconbox.com/icon/256/14078.png" />
     <img width=200 src="http://icons.iconarchive.com/icons/jaan-jaak/weather/512/cloudy-icon.png" />
