@@ -1,50 +1,88 @@
-
+var inherits = function(childCtor, parentCtor) {
+	// inherits prototype from parent class
+	Object.setPrototypeOf(childCtor.prototype, parentCtor.prototype);
+};
 
 $(function(){
-	function disableScrolling(e) { e.preventDefault();}
-	document.addEventListener('touchstart', disableScrolling, false);
-	document.addEventListener('touchmove', disableScrolling, false);
-	$('img').on('dragstart', disableScrolling);
+	function disableEvent(e) { e.preventDefault();}
+	document.addEventListener('touchstart', disableEvent, false);
+	document.addEventListener('touchmove', disableEvent, false);
+	$('img').on('dragstart', disableEvent);
 
-	var Movable = function(id, update) {
+	Movable = function(id, update) {
 		this.state = {
-			offset_x: 0,
-			last_margin_x: 0,
+			offsetX: 0,
+			marginX: 0,
 		};
 		this.obj = $(id);
 		this.bodyObj = $('body');
 		this.update = update;
-
 		this.obj.mousedown(this.inputStart.bind(this));
 		this.obj.bind('touchstart', this.inputStart.bind(this));
 	}
 
-	Movable.prototype.inputStart = function(e) {
-		var pageX = (e.pageX? e.pageX: e.originalEvent.touches[0].pageX);
-		
-		this.state.offset_x = pageX - this.state.last_margin_x;
+	Movable.prototype.setEventHandler = function() {
 		this.bodyObj.mousemove(this.inputMove.bind(this));
 		this.bodyObj.mouseup(this.inputEnd.bind(this));
 		this.bodyObj.bind('touchmove', this.inputMove.bind(this));
 		this.bodyObj.bind('touchend', this.inputEnd.bind(this));
 	}
-	
-	Movable.prototype.inputMove = function(e) {
-		var pageX = (e.pageX? e.pageX: e.originalEvent.touches[0].pageX);
-		
-		this.state.last_margin_x = pageX - this.state.offset_x;
-		this.obj.css({'margin-left': this.state.last_margin_x + 'px'});
-		this.update({left: this.state.last_margin_x / this.bodyObj.width(),
-					 right: (this.state.last_margin_x + this.obj.width()) / this.bodyObj.width()});
-	}
-	
-	Movable.prototype.inputEnd = function(e) {
+
+	Movable.prototype.resetEventHandler = function() {
 		this.bodyObj.unbind('mousemove');
 		this.bodyObj.unbind('mouseup');
 		this.bodyObj.unbind('touchmove');
 		this.bodyObj.unbind('touchend');
 	}
+
+	Movable.prototype.inputStart = function(e) {
+		var pageX = (e.pageX? e.pageX: e.originalEvent.touches[0].pageX);
+		this.state.offsetX = pageX - this.state.marginX;
+		this.setEventHandler();
+	}
 	
+	Movable.prototype.inputMove = function(e) {
+		var pageX = (e.pageX? e.pageX: e.originalEvent.touches[0].pageX);
+		this.state.marginX = pageX - this.state.offsetX;
+		this.obj.css({'margin-left': this.state.marginX + 'px'});
+		this.update({left: this.state.marginX / this.bodyObj.width(),
+					 right: (this.state.marginX + this.obj.width()) / this.bodyObj.width()});
+	}
+	
+	Movable.prototype.inputEnd = function(e) {
+		this.resetEventHandler();
+	}
+	
+	MovableStretch = function(id, update) {
+		Movable.call(this, id, update);
+		this.prevTouchX = [0, 0];
+	}
+	
+	MovableStretch.prototype.inputStart = function(e) {
+		if (e.pageX || e.originalEvent.touches.length == 1) {
+			// click or single touch
+			Movable.prototype.inputStart.call(this, e);
+		} else {
+			// multi touch
+			this.prevTouchX[0] = e.originalEvent.touches[0].pageX;
+			this.prevTouchX[1] = e.originalEvent.touches[1].pageX;
+			this.setEventHandler();
+		}
+	}
+	
+	MovableStretch.prototype.inputMove = function(e) {
+		if (e.pageX || e.originalEvent.touches.length == 1) {
+			// click or single touch
+			Movable.prototype.inputMove.call(this, e);
+		} else {
+			// multi touch
+			this.prevTouchX[0] = e.originalEvent.touches[0].pageX;
+			this.prevTouchX[1] = e.originalEvent.touches[1].pageX;
+		}
+	}
+
+	inherits(MovableStretch, Movable);
+
 	function LedCtrl() {
 		this.refColor = [];
 		this.refColor.push({ratio: 0,
@@ -82,15 +120,15 @@ $(function(){
 
 	LedCtrl.prototype.updateSun = function(p) {
 		this.sunX = (p.left + p.right)/2;
-		this.updateLed.bind(this);
+		this.updateLed();
 	}
 
 	LedCtrl.prototype.updateCloud = function(p) {
-		//this.sunX = (p.left + p.right)/2;
-		this.updateLed.bind(this);
+		this.updateLed();
 	}
 
 	LedCtrl.prototype.updateLed = function() {
+		// re-calc sun light
 		for (var i = 0; i < this.refColor.length - 1; i++) {
 			if (this.sunX < this.refColor[i + 1].ratio) {
 				var c = this.refColor[i + 1].ratio - this.refColor[i].ratio;
@@ -108,13 +146,30 @@ $(function(){
 												  this.refColor[i + 1].rgb[j].b*ra);
 				}
 				
-				console.log(this.ledSun[0]);
 				break;
 			}
+		}
+
+		// re-calc cloud shadow
+		for (var i = 0; i < this.led.length; i++) {
+			this.led[i].r = this.ledSun[i].r;
+			this.led[i].g = this.ledSun[i].g;
+			this.led[i].b = this.ledSun[i].b;
+		}
+
+		// update led
+		for (var i = 0; i < this.led.length; i++) {
+			
+			console.log(this.led[i]);
+
+			$('#color_disp_' + i).css('background-color', 'rgb(' +
+									 this.led[i].r + ',' + 
+									 this.led[i].g + ',' + 
+									 this.led[i].b + ')');
 		}
 	}
 
 	var led = new LedCtrl();
 	var sun = new Movable('#sun', led.updateSun.bind(led));
-	var cloud = new Movable('#cloud', led.updateCloud.bind(led));
+	var cloud = new MovableStretch('#cloud', led.updateCloud.bind(led));
 });
