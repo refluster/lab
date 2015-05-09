@@ -71,6 +71,10 @@ $(function(){
 			Movable.prototype.inputStart.call(this, e);
 		} else {
 			// multi touch
+			this.baseTouchX0 = Math.floor(e.originalEvent.touches[0].pageX);
+			this.baseTouchX1 = Math.floor(e.originalEvent.touches[1].pageX);
+			
+/*
 			if (e.originalEvent.touches[0].pageX <= e.originalEvent.touches[1].pageX) {
 				this.baseTouchX0 = Math.floor(e.originalEvent.touches[0].pageX);
 				this.baseTouchX1 = Math.floor(e.originalEvent.touches[1].pageX);
@@ -78,6 +82,7 @@ $(function(){
 				this.baseTouchX0 = Math.floor(e.originalEvent.touches[1].pageX);
 				this.baseTouchX1 = Math.floor(e.originalEvent.touches[0].pageX);
 			}
+*/
 			this.baseMarginX = this.state.marginX;
 			this.baseWidth = this.obj.width();
 			this.setEventHandler();
@@ -92,6 +97,9 @@ $(function(){
 			// multi touch
 			var touchX0;
 			var touchX1;
+			touchX0 = Math.floor(e.originalEvent.touches[0].pageX);
+			touchX1 = Math.floor(e.originalEvent.touches[1].pageX);
+/*
 			if (e.originalEvent.touches[0].pageX <= e.originalEvent.touches[1].pageX) {			
 				touchX0 = Math.floor(e.originalEvent.touches[0].pageX);
 				touchX1 = Math.floor(e.originalEvent.touches[1].pageX);
@@ -99,17 +107,18 @@ $(function(){
 				touchX0 = Math.floor(e.originalEvent.touches[1].pageX);
 				touchX1 = Math.floor(e.originalEvent.touches[0].pageX);
 			}
+*/
 			touchX0
 			var d0 = this.baseTouchX1 - this.baseTouchX0;
 			var d1 = touchX1 - touchX0;
 			var v0 = touchX0 - this.baseTouchX0;
 			var v1 = touchX1 - this.baseTouchX1;
-			var centerX;
 
 			if (v0 - v1 == 0) {
 				// pararell transform
 				Movable.prototype.inputMove.call(this, e);
 			} else {
+				var centerX;
 				if (v0 == 0) {
 					centerX = touchX0;
 				} else if (v1 == 0) {
