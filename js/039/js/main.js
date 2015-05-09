@@ -106,19 +106,25 @@ $(function(){
 			var v1 = touchX1 - this.baseTouchX1;
 			var centerX;
 
-			if (v0 == 0) {
-				centerX = touchX0;
-			} else if (v1 == 0) {
-				centerX = touchX1;
+			if (v0 - v1 == 0) {
+				// pararell transform
+				Movable.prototype.inputMove.call(this, e);
 			} else {
-				centerX = touchX0 + d1*v0/(v0 - v1);
+				if (v0 == 0) {
+					centerX = touchX0;
+				} else if (v1 == 0) {
+					centerX = touchX1;
+				} else {
+					centerX = touchX0 + d1*v0/(v0 - v1);
+				}
+				centerX = Math.floor(centerX);
+				
+				this.state.marginX = this.baseMarginX -
+					Math.floor((centerX - this.baseMarginX)*(d1/d0 - 1));
+				this.width = Math.floor(d1/d0*this.baseWidth);
+				this.obj.width(this.width);
+				this.obj.css({'margin-left': this.state.marginX + 'px'});
 			}
-			centerX = Math.floor(centerX);
-
-			this.state.marginX = this.baseMarginX - Math.floor((centerX - this.baseMarginX)*(d1/d0 - 1));
-			this.width = Math.floor(d1/d0*this.baseWidth);
-			this.obj.width(this.width);
-			this.obj.css({'margin-left': this.state.marginX + 'px'});
 		}
 	}
 
@@ -211,9 +217,9 @@ $(function(){
 		for (var i = 0; i < this.led.length; i++) {
 			console.log(this.led[i]);
 			$('#color_disp_' + i).css('background-color', 'rgb(' +
-									 this.led[i].r + ',' + 
-									 this.led[i].g + ',' + 
-									 this.led[i].b + ')');
+									  this.led[i].r + ',' + 
+									  this.led[i].g + ',' + 
+									  this.led[i].b + ')');
 		}
 	}
 
