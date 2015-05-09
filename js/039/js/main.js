@@ -1,13 +1,14 @@
-var inherits = function(childCtor, parentCtor) {
-	// inherits prototype from parent class
-	Object.setPrototypeOf(childCtor.prototype, parentCtor.prototype);
-};
+var log = function(text) {
+	$('#msg').append(text + '<br>');
+}
 
 $(function(){
 	function disableEvent(e) { e.preventDefault();}
 	document.addEventListener('touchstart', disableEvent, false);
 	document.addEventListener('touchmove', disableEvent, false);
 	$('img').on('dragstart', disableEvent);
+
+	// Movable ////////////////////////////
 
 	Movable = function(id, update) {
 		this.state = {
@@ -53,19 +54,32 @@ $(function(){
 		this.resetEventHandler();
 	}
 	
+	// MovableStretch ////////////////////////////
+
 	MovableStretch = function(id, update) {
 		Movable.call(this, id, update);
-		this.prevTouchX = [0, 0];
+		this.prevTouchX0 = 0;
+		this.prevTouchX1 = 0;
+		this.width = this.obj.width();
 	}
 	
+	MovableStretch.prototype = new Movable;
+
 	MovableStretch.prototype.inputStart = function(e) {
 		if (e.pageX || e.originalEvent.touches.length == 1) {
 			// click or single touch
 			Movable.prototype.inputStart.call(this, e);
 		} else {
 			// multi touch
-			this.prevTouchX[0] = e.originalEvent.touches[0].pageX;
-			this.prevTouchX[1] = e.originalEvent.touches[1].pageX;
+			if (e.originalEvent.touches[0].pageX <= e.originalEvent.touches[1].pageX) {
+				this.baseTouchX0 = Math.floor(e.originalEvent.touches[0].pageX);
+				this.baseTouchX1 = Math.floor(e.originalEvent.touches[1].pageX);
+			} else {
+				this.baseTouchX0 = Math.floor(e.originalEvent.touches[1].pageX);
+				this.baseTouchX1 = Math.floor(e.originalEvent.touches[0].pageX);
+			}
+			this.baseMarginX = this.state.marginX;
+			this.baseWidth = this.obj.width();
 			this.setEventHandler();
 		}
 	}
@@ -76,12 +90,48 @@ $(function(){
 			Movable.prototype.inputMove.call(this, e);
 		} else {
 			// multi touch
-			this.prevTouchX[0] = e.originalEvent.touches[0].pageX;
-			this.prevTouchX[1] = e.originalEvent.touches[1].pageX;
+			var touchX0;
+			var touchX1;
+			if (e.originalEvent.touches[0].pageX <= e.originalEvent.touches[1].pageX) {			
+				touchX0 = Math.floor(e.originalEvent.touches[0].pageX);
+				touchX1 = Math.floor(e.originalEvent.touches[1].pageX);
+			} else {
+				touchX0 = Math.floor(e.originalEvent.touches[1].pageX);
+				touchX1 = Math.floor(e.originalEvent.touches[0].pageX);
+			}
+			touchX0
+			var d0 = this.baseTouchX1 - this.baseTouchX0;
+			var d1 = touchX1 - touchX0;
+			var v0 = touchX0 - this.baseTouchX0;
+			var v1 = touchX1 - this.baseTouchX1;
+			var centerX;
+
+			if (v0 == 0) {
+				centerX = touchX0;
+			} else if (v1 == 0) {
+				centerX = touchX1;
+			} else {
+				centerX = touchX0 + d1*v0/(v0 - v1);
+			}
+			centerX = Math.floor(centerX);
+
+			this.state.marginX = this.baseMarginX - Math.floor((centerX - this.baseMarginX)*(d1/d0 - 1));
+			this.width = Math.floor(d1/d0*this.baseWidth);
+			this.obj.width(this.width);
+			this.obj.css({'margin-left': this.state.marginX + 'px'});
 		}
 	}
 
-	inherits(MovableStretch, Movable);
+	MovableStretch.prototype.inputEnd = function(e) {
+		if (e.pageX || e.originalEvent.touches.length == 1) {
+			// click or single touch
+		} else {
+			// multi touch
+		}
+		this.resetEventHandler();
+	}
+	
+	// LedCtrl ////////////////////////////
 
 	function LedCtrl() {
 		this.refColor = [];
@@ -159,9 +209,7 @@ $(function(){
 
 		// update led
 		for (var i = 0; i < this.led.length; i++) {
-			
 			console.log(this.led[i]);
-
 			$('#color_disp_' + i).css('background-color', 'rgb(' +
 									 this.led[i].r + ',' + 
 									 this.led[i].g + ',' + 
@@ -172,4 +220,5 @@ $(function(){
 	var led = new LedCtrl();
 	var sun = new Movable('#sun', led.updateSun.bind(led));
 	var cloud = new MovableStretch('#cloud', led.updateCloud.bind(led));
+
 });
