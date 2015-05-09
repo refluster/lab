@@ -73,16 +73,6 @@ $(function(){
 			// multi touch
 			this.baseTouchX0 = Math.floor(e.originalEvent.touches[0].pageX);
 			this.baseTouchX1 = Math.floor(e.originalEvent.touches[1].pageX);
-			
-/*
-			if (e.originalEvent.touches[0].pageX <= e.originalEvent.touches[1].pageX) {
-				this.baseTouchX0 = Math.floor(e.originalEvent.touches[0].pageX);
-				this.baseTouchX1 = Math.floor(e.originalEvent.touches[1].pageX);
-			} else {
-				this.baseTouchX0 = Math.floor(e.originalEvent.touches[1].pageX);
-				this.baseTouchX1 = Math.floor(e.originalEvent.touches[0].pageX);
-			}
-*/
 			this.baseMarginX = this.state.marginX;
 			this.baseWidth = this.obj.width();
 			this.setEventHandler();
@@ -95,45 +85,33 @@ $(function(){
 			Movable.prototype.inputMove.call(this, e);
 		} else {
 			// multi touch
-			var touchX0;
-			var touchX1;
-			touchX0 = Math.floor(e.originalEvent.touches[0].pageX);
-			touchX1 = Math.floor(e.originalEvent.touches[1].pageX);
-/*
-			if (e.originalEvent.touches[0].pageX <= e.originalEvent.touches[1].pageX) {			
-				touchX0 = Math.floor(e.originalEvent.touches[0].pageX);
-				touchX1 = Math.floor(e.originalEvent.touches[1].pageX);
-			} else {
-				touchX0 = Math.floor(e.originalEvent.touches[1].pageX);
-				touchX1 = Math.floor(e.originalEvent.touches[0].pageX);
-			}
-*/
-			touchX0
+			var touchX0 = Math.floor(e.originalEvent.touches[0].pageX);
+			var touchX1 = Math.floor(e.originalEvent.touches[1].pageX);
 			var d0 = this.baseTouchX1 - this.baseTouchX0;
 			var d1 = touchX1 - touchX0;
 			var v0 = touchX0 - this.baseTouchX0;
 			var v1 = touchX1 - this.baseTouchX1;
 
 			if (v0 - v1 == 0) {
-				// pararell transform
-				Movable.prototype.inputMove.call(this, e);
+				// translation
+				this.state.marginX = this.baseMarginX + v0;
 			} else {
+				// resize and translation
 				var centerX;
 				if (v0 == 0) {
 					centerX = touchX0;
 				} else if (v1 == 0) {
 					centerX = touchX1;
 				} else {
-					centerX = touchX0 + d1*v0/(v0 - v1);
+					centerX = Math.floor(touchX0 + d1*v0/(v0 - v1));
 				}
-				centerX = Math.floor(centerX);
 				
-				this.state.marginX = this.baseMarginX -
-					Math.floor((centerX - this.baseMarginX)*(d1/d0 - 1));
 				this.width = Math.floor(d1/d0*this.baseWidth);
 				this.obj.width(this.width);
-				this.obj.css({'margin-left': this.state.marginX + 'px'});
+				this.state.marginX = this.baseMarginX -
+					Math.floor((centerX - this.baseMarginX)*(d1/d0 - 1));
 			}
+			this.obj.css({'margin-left': this.state.marginX + 'px'});
 		}
 	}
 
@@ -189,6 +167,7 @@ $(function(){
 	}
 
 	LedCtrl.prototype.updateCloud = function(p) {
+		log('cloud led');
 		this.updateLed();
 	}
 
