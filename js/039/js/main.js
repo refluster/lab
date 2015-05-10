@@ -112,6 +112,8 @@ $(function(){
 					Math.floor((centerX - this.baseMarginX)*(d1/d0 - 1));
 			}
 			this.obj.css({'margin-left': this.state.marginX + 'px'});
+			this.update({left: this.state.marginX / this.bodyObj.width(),
+						 right: (this.state.marginX + this.obj.width()) / this.bodyObj.width()});
 		}
 	}
 
@@ -135,17 +137,17 @@ $(function(){
 								  {r:   0, g:   0, b:   0},
 								  {r:   0, g:   0, b:   0}]});
 		this.refColor.push({ratio: 0.5,
-							rgb: [{r:   0, g: 100, b:   0},
-								  {r:   0, g:   0, b:   0},
-								  {r:   0, g:   0, b:   0},
-								  {r:   0, g:   0, b:   0},
-								  {r:   0, g:   0, b:   0}]});
+							rgb: [{r: 255, g: 255, b:   0},
+								  {r: 255, g: 255, b:   0},
+								  {r: 255, g: 255, b:   0},
+								  {r: 255, g: 255, b:   0},
+								  {r: 255, g: 255, b:   0}]});
 		this.refColor.push({ratio: 1,
-							rgb: [{r: 100, g:   0, b:   0},
-								  {r:   0, g:   0, b:   0},
-								  {r:   0, g:   0, b:   0},
-								  {r:   0, g:   0, b:   0},
-								  {r:   0, g:   0, b:   0}]});
+							rgb: [{r: 255, g:   0, b: 255},
+								  {r: 255, g:   0, b: 255},
+								  {r: 255, g:   0, b: 255},
+								  {r: 255, g:   0, b: 255},
+								  {r: 255, g:   0, b: 255}]});
 							
 		this.led = [{r: 0, g: 0, b: 0},
 					{r: 0, g: 0, b: 0},
@@ -159,15 +161,18 @@ $(function(){
 					   {r: 0, g: 0, b: 0}];
 
 		this.sunX = 0;
+		this.cloudX = 0;
+		this.cloudWidth = 0;
 	}
 
 	LedCtrl.prototype.updateSun = function(p) {
 		this.sunX = (p.left + p.right)/2;
 		this.updateLed();
 	}
-
+	
 	LedCtrl.prototype.updateCloud = function(p) {
-		log('cloud led');
+		this.cloudX = (p.left + p.right)/2;
+		this.cloudWidth = p.right - p.left;
 		this.updateLed();
 	}
 
@@ -196,14 +201,21 @@ $(function(){
 
 		// re-calc cloud shadow
 		for (var i = 0; i < this.led.length; i++) {
-			this.led[i].r = this.ledSun[i].r;
-			this.led[i].g = this.ledSun[i].g;
-			this.led[i].b = this.ledSun[i].b;
+			var ratio;
+			if (i/this.led.length >= this.cloudX - this.cloudWidth/2 &&
+				i/this.led.length <= this.cloudX + this.cloudWidth/2) {
+				ratio = 0.2;
+			} else {
+				ratio = 1.0;
+			}
+
+			this.led[i].r = Math.floor(this.ledSun[i].r*ratio);
+			this.led[i].g = Math.floor(this.ledSun[i].g*ratio);
+			this.led[i].b = Math.floor(this.ledSun[i].b*ratio);
 		}
 
 		// update led
 		for (var i = 0; i < this.led.length; i++) {
-			console.log(this.led[i]);
 			$('#color_disp_' + i).css('background-color', 'rgb(' +
 									  this.led[i].r + ',' + 
 									  this.led[i].g + ',' + 
