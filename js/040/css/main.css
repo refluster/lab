@@ -1,0 +1,43 @@
+.default {
+	width: 100px;
+	height: 100px;
+	background: red;
+	-webkit-transform: translateY(2000px);
+	transform: translateY(2000px);
+	opacity: 0;
+}
+.animating {
+	width: 100px;
+	height: 100px;
+	background: red;
+	-webkit-transition-property: transform opacity;
+	-webkit-transition-duration: 4s;
+	transition-property: transform opacity;
+	transition-duration: 4s;
+	transform: translateY(0px);
+	-webkit-transform: translateY(0px);
+	opacity: 100;
+}
+
+#box {
+	width: 300px;
+	height: 300px;
+	border: 1px solid black;
+	overflow: hidden;
+}
+
+/*
+.animated {
+    width: 100px;
+    height: 100px;
+    background: red;
+    -webkit-transition-property: width;
+    -webkit-transition-duration: 2s;
+    transition-property: width;
+    transition-duration: 2s;
+}
+.animated:hover {
+    width: 300px;
+}
+*/
+
