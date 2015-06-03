@@ -1,29 +1,51 @@
-.default {
-	width: 100px;
-	height: 100px;
-	background: red;
-	-webkit-transform: translateY(2000px);
-	transform: translateY(2000px);
+body {
+	overflow: hidden;
+}
+
+.hide {
+	-webkit-transform: translateY(80px);
+	transform: translateY(80px);
 	opacity: 0;
 }
-.animating {
-	width: 100px;
-	height: 100px;
-	background: red;
+
+.appear {
 	-webkit-transition-property: transform opacity;
-	-webkit-transition-duration: 4s;
+	-webkit-transition-duration: .4s;
 	transition-property: transform opacity;
-	transition-duration: 4s;
+	transition-duration: .3s;
 	transform: translateY(0px);
 	-webkit-transform: translateY(0px);
 	opacity: 100;
 }
+
+#obj {
+	width: 100px;
+	height: 100px;
+	background: red;
+}	
 
 #box {
 	width: 300px;
 	height: 300px;
 	border: 1px solid black;
 	overflow: hidden;
+}
+
+#circle {
+	background-color: #cc3;
+	height: 150px;
+	width: 150px;
+	border-radius:75px;
+	-moz-border-radius:75px;
+	-webkit-border-radius: 75px;
+    transform-origin: 50% 50%;
+	
+}
+
+.circle-big {
+	transition-property: transform scale;
+	transition-duration: .8s;
+	transform: scale(10, 10);
 }
 
 /*
