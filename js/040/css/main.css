@@ -42,24 +42,8 @@ body {
 	
 }
 
-.circle-big {
+.scale {
 	transition-property: transform scale;
 	transition-duration: .8s;
 	transform: scale(10, 10);
 }
-
-/*
-.animated {
-    width: 100px;
-    height: 100px;
-    background: red;
-    -webkit-transition-property: width;
-    -webkit-transition-duration: 2s;
-    transition-property: width;
-    transition-duration: 2s;
-}
-.animated:hover {
-    width: 300px;
-}
-*/
-
