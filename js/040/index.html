@@ -8,13 +8,22 @@
     <script type="text/javascript" src="js/main.js"></script>
   </head>
   <body>
-    <canvas id="myChart" width="400" height="300"></canvas>
-
-    <div id="circle">
-      hoge
+    <div id="page-index">
+      <div id="circle">
+        <img class="img-invert" src="img/weather.png" width=100 />
+      </div>
+      
+      <div id="circle">
+        <img class="img-invert" src="img/temperature.png" height=130 />
+      </div>
     </div>
 
-    <div id="obj" class="hide"></div>
-    <div id="obj" class="hide"></div>
+    <div id="page-chart">
+      <div id="obj" class="invisible"></div>
+      <div id="obj" class="invisible"></div>
+
+      <canvas id="myChart" width="400" height="300"></canvas>
+    </div>
+
   </body>
 </html>

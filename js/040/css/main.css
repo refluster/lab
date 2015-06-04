@@ -2,7 +2,7 @@ body {
 	overflow: hidden;
 }
 
-.hide {
+.invisible {
 	-webkit-transform: translateY(80px);
 	transform: translateY(80px);
 	opacity: 0;
@@ -32,6 +32,9 @@ body {
 }
 
 #circle {
+	text-align: center;
+	line-height: 150px;
+	vertical-align: middle;
 	background-color: #cc3;
 	height: 150px;
 	width: 150px;
@@ -46,4 +49,16 @@ body {
 	transition-property: transform scale;
 	transition-duration: .8s;
 	transform: scale(10, 10);
+}
+
+.img-invert {
+    -webkit-filter: invert(100%);
+    -moz-filter: invert(100%);
+    -o-filter: invert(100%);
+    -ms-filter: invert(100%);
+    filter: invert(100%);
+}
+
+.hide {
+	
 }
