@@ -1,15 +1,33 @@
 window.onload = function() {
 	setTimeout(function() {
-		$("#obj").addClass("appear");
+		$("#obj").addClass("visible");
 	}, 1000);
 	
 	$("#obj").click(function(e) {
 		console.log("clicked");
 	});
 
-	$("#circle").click(function(e) {
-		$("#circle").addClass("scale");
+	$(".circle").click(function(e) {
+		console.log("hoge");
+		$(this).addClass("scale");
 	});
+	
+	function setPosition(elem, x, y) {
+		var w = elem.width();
+		var h = elem.height();
+		elem.css("-webkit-transform", "translate(" + (x - w/2) + "px, " + (y - h/2) + "px)");
+		elem.css("transform", "translate(" + (x - w/2) + "px, " + (y - h/2) + "px)");
+	}
+
+	$(".button1").each(function() {
+		setPosition($(this), 100, 300);
+	});
+
+	$(".button2").each(function() {
+		setPosition($(this), 200, 300);
+	});
+
+	////////////////////////////// graph //////////////////////////////
 
 	// Get context with jQuery - using jQuery's .get() method.
 	var ctx = $("#myChart").get(0).getContext("2d");
@@ -178,7 +196,5 @@ window.onload = function() {
 	
 	//var myLineChart = new Chart(ctx).Line(data, options);
 	var myLineChart = new Chart(ctx).Line(data, null);
-	
-	
 };
 

@@ -8,7 +8,7 @@ body {
 	opacity: 0;
 }
 
-.appear {
+.visible {
 	-webkit-transition-property: transform opacity;
 	-webkit-transition-duration: .4s;
 	transition-property: transform opacity;
@@ -16,6 +16,22 @@ body {
 	transform: translateY(0px);
 	-webkit-transform: translateY(0px);
 	opacity: 100;
+}
+
+.button1 {
+	position: absolute;
+}
+
+.button2 {
+	position: absolute;
+}
+
+.body {
+	border: 1px solid green;
+}
+
+.page {
+	border: 1px solid black;
 }
 
 #obj {
@@ -31,7 +47,7 @@ body {
 	overflow: hidden;
 }
 
-#circle {
+.circle {
 	text-align: center;
 	line-height: 150px;
 	vertical-align: middle;
@@ -52,11 +68,13 @@ body {
 }
 
 .img-invert {
+/*
     -webkit-filter: invert(100%);
     -moz-filter: invert(100%);
     -o-filter: invert(100%);
     -ms-filter: invert(100%);
     filter: invert(100%);
+*/
 }
 
 .hide {
