@@ -1,0 +1,31 @@
+body {
+	overflow: hidden;
+}
+
+.page {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	overflow: visible;
+	pointer-events: none;
+}
+
+#space {
+    background: radial-gradient(rgba(0, 0, 0, 1) 0,
+								rgba(0, 0, 0, 1) 50%,
+								rgba(0, 0, 0, 0.3) 60%,
+								rgba(0, 0, 0, 0.1) 65%,
+								rgba(240, 240, 240, 0) 70%);
+}
+
+#earth {
+	width: 10%;
+	height: 10%;
+	transform: translate(100px, 100px);
+    background: radial-gradient(#eee 20%,
+								#aaa 25%,
+								#555 35%,
+								#000 70%);
+}

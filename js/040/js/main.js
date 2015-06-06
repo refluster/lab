@@ -27,6 +27,12 @@ window.onload = function() {
 		setPosition($(this), 200, 300);
 	});
 
+	function showPage(idx) {
+		//// here here here !
+		$("#page-chart").css("display", "none");
+		$("#page-chart").css("display", "none");
+	}
+
 	////////////////////////////// graph //////////////////////////////
 
 	// Get context with jQuery - using jQuery's .get() method.

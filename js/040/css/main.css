@@ -58,11 +58,10 @@ body {
 	-moz-border-radius:75px;
 	-webkit-border-radius: 75px;
     transform-origin: 50% 50%;
-	
 }
 
 .scale {
-	transition-property: transform scale;
+	transition-property: transform;
 	transition-duration: .8s;
 	transform: scale(10, 10);
 }
