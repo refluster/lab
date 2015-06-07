@@ -13,6 +13,14 @@ Star.prototype.setPosition = function(x, y) {
 
 ////////////////////////////////////////////////////////////
 Space = function() {
+	this.color = [
+		{rad: -Math.PI*  1, r:    0, g: 4095, b:    0},
+		{rad: -Math.PI*0.5, r:    0, g:    0, b:    0},
+		{rad:            0, r:    0, g:    0, b:    0},
+		{rad:  Math.PI*0.5, r: 4095, g:    0, b:    0},
+		{rad:  Math.PI*  1, r:    0, g:    0, b:    0},
+	];
+
 	this.w = $("#page-space").width();
 	this.h = $("#page-space").height();
 	this.cx = this.w/2;
@@ -69,6 +77,24 @@ Space.prototype.earthRotate = function() {
 	var x = this.size/2 + ratio*this.size/2*Math.sin(this.earthRadian);
 	var y = this.size/2 + ratio*this.size/2*Math.cos(this.earthRadian);
 	this.earth.setPosition(x, y);
+
+	for (var i = 0; i < this.color.length; i++) {
+		if (this.color[i].rad > this.earthRadian) {
+			var a = this.color[i - 1];
+			var b = this.color[i];
+			var ratioA = (b.rad - this.earthRadian)/(b.rad - a.rad);
+			var ratioB = (this.earthRadian - a.rad)/(b.rad - a.rad);
+
+			var r = a.r*ratioA + b.r*ratioB;
+			var g = a.g*ratioA + b.g*ratioB;
+			var b = a.b*ratioA + b.b*ratioB;
+
+			console.log(this.earthRadian);
+			console.log({r: r, g: g, b: b, i: i});
+
+			break;
+		}
+	}
 };
 
 ////////////////////////////////////////////////////////////
@@ -76,7 +102,7 @@ window.onload = function() {
 	var space = new Space();
 
 	space.display();
-	setInterval(space.testRotate.bind(space), 100);
+//	setInterval(space.testRotate.bind(space), 100);
 //	space.testRotate();
 };
 
