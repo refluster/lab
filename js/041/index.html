@@ -6,12 +6,13 @@
     <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
   </head>
-  <body>
-    <div id="page-space" class="page">
-      <div id="space">
-        <div id="earth" class="star"></div>
-        <div id="brightstar" class="star"></div>
-        <div id="darkstar" class="half-star"></div>
+
+  <body onclick="console.log('hoge');">
+    <div id="page-space" class="page" style="z-index: 1px">
+      <div id="space" class="surface">
+        <div id="brightstar" class="surface star"></div>
+        <div id="darkstar" class="surface dark-star"></div>
+        <div id="earth" class="surface star"></div>
       </div>
     </div>
 
@@ -20,4 +21,5 @@
     </div>
 
   </body>
+
 </html>
