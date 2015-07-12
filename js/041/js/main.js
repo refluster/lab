@@ -105,4 +105,3 @@ window.onload = function() {
 //	setInterval(space.testRotate.bind(space), 100);
 //	space.testRotate();
 };
-

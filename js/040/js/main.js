@@ -1,44 +1,7 @@
 window.onload = function() {
-	setTimeout(function() {
-		$("#obj").addClass("visible");
-	}, 1000);
-	
-	$("#obj").click(function(e) {
-		console.log("clicked");
-	});
-
-	$(".circle").click(function(e) {
-		console.log("hoge");
-		$(this).addClass("scale");
-	});
-	
-	function setPosition(elem, x, y) {
-		var w = elem.width();
-		var h = elem.height();
-		elem.css("-webkit-transform", "translate(" + (x - w/2) + "px, " + (y - h/2) + "px)");
-		elem.css("transform", "translate(" + (x - w/2) + "px, " + (y - h/2) + "px)");
-	}
-
-	$(".button1").each(function() {
-		setPosition($(this), 100, 300);
-	});
-
-	$(".button2").each(function() {
-		setPosition($(this), 200, 300);
-	});
-
-	function showPage(idx) {
-		//// here here here !
-		$("#page-chart").css("display", "none");
-		$("#page-chart").css("display", "none");
-	}
-
-	////////////////////////////// graph //////////////////////////////
-
 	// Get context with jQuery - using jQuery's .get() method.
 	var ctx = $("#myChart").get(0).getContext("2d");
 	// This will get the first returned node in the jQuery collection.
-	var myNewChart = new Chart(ctx);
 
 	Chart.defaults.global = {
 		// Boolean - Whether to animate the chart
@@ -47,15 +10,6 @@ window.onload = function() {
 		// Number - Number of animation steps
 		animationSteps: 20,
 
-		// String - Animation easing effect
-		// Possible effects are:
-		// [easeInOutQuart, linear, easeOutBounce, easeInBack, easeInOutQuad,
-		//  easeOutQuart, easeOutQuad, easeInOutBounce, easeOutSine, easeInOutCubic,
-		//  easeInExpo, easeInOutBack, easeInCirc, easeInOutElastic, easeOutBack,
-		//  easeInQuad, easeInOutExpo, easeInQuart, easeOutQuint, easeInOutCirc,
-		//  easeInSine, easeOutExpo, easeOutCirc, easeOutCubic, easeInQuint,
-		//  easeInElastic, easeInOutSine, easeInOutQuint, easeInBounce,
-		//  easeOutElastic, easeInCubic]
 		animationEasing: "easeOutQuart",
 
 		// Boolean - If we should show the scale at all
@@ -175,7 +129,9 @@ window.onload = function() {
 	Chart.defaults.global.responsive = true;
 
 	var data = {
-		labels: ["January", "February", "March", "April", "May", "June", "July"],
+		labels: ["0000", "0001", "0002", "0003", "0004", "0005", "0006", "0007", "0008", "0009",
+				 "0010", "0011", "0012", "0013",
+				],
 		datasets: [
 			{
 				label: "My First dataset",
@@ -185,7 +141,8 @@ window.onload = function() {
 				pointStrokeColor: "#fff",
 				pointHighlightFill: "#fff",
 				pointHighlightStroke: "rgba(220,220,220,1)",
-				data: [65, 59, 80, 81, 56, 55, 40]
+				data: [65, 59, 80, 81, 56, 55, 40,
+					   65, 59, 80, 81, 56, 55, 40]
 			},
 			{
 				label: "My Second dataset",
@@ -195,12 +152,13 @@ window.onload = function() {
 				pointStrokeColor: "#fff",
 				pointHighlightFill: "#fff",
 				pointHighlightStroke: "rgba(151,187,205,1)",
-				data: [28, 48, 40, 19, 86, 27, 90]
+				data: [28, 48, 40, 19, 86, 27, 90,
+					   28, 48, 40, 19, 86, 27, 90,
+					  ]
 			}
 		]
 	};
-	
-	//var myLineChart = new Chart(ctx).Line(data, options);
+
 	var myLineChart = new Chart(ctx).Line(data, null);
 };
 
