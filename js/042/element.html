@@ -1,0 +1,103 @@
+<link rel="import"
+      href="bower_components/polymer/polymer.html">
+<link rel="import"
+      href="bower_components/iron-input/iron-input.html">
+
+<script>
+  // register a new element called proto-element
+  Polymer({
+    is: "proto-element",
+    // add a callback to the element's prototype
+    ready: function() {
+      this.textContent = "I'm a proto-element. Check out my prototype!"
+    }
+  });
+</script>
+
+<dom-module id="dom-element">
+  <template>
+    <p>I'm a DOM element. This is my local DOM!</p>
+    <div style="background-color: #8af">
+      div
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: "dom-element"
+    });
+  </script>
+</dom-module>
+
+<dom-module id="name-tag">
+  <template>
+    <!-- bind to the "owner" property -->
+    This is <b>{{owner}}</b>'s name-tag element.
+  </template>
+  <script>
+  Polymer({
+    is: "name-tag",
+    ready: function() {
+      // set this element's owner property
+      this.owner = "Daniel";
+    }
+  });
+  </script>
+
+</dom-module>
+
+<dom-module id="configurable-name-tag">
+  <template>
+    <!-- bind to the "owner" property -->
+    This is <b>{{owner}}</b>'s configurable-name-tag element.
+  </template>
+  <script>
+    Polymer({
+      is: "configurable-name-tag",
+      properties: {
+        // declare the owner property
+        owner: {
+          type: String,
+          value: "Daniel"
+        }
+      }
+    });
+  </script>
+</dom-module>
+
+<dom-module id="editable-name-tag">
+  <template>
+    <p>
+    This is a <strong>{{owner2}}</strong>'s editable-name-tag.
+    </p>
+    <!-- iron-input exposes a two-way bindable input value -->
+    <input is="iron-input" bind-value="{{owner2}}"
+      placeholder="Your name here...">
+  </template>
+  <script>
+    Polymer({
+      is: "editable-name-tag",
+      properties: {
+        owner2: {
+          type: String,
+          value: "Daniel"
+        }
+      }
+    });
+  </script>
+</dom-module>
+
+<!--
+
+.stripe {
+margin: 0;
+padding: 10px 20px;
+background-color: #53727d;
+background-image: -webkit-linear-gradient(-45deg, #455765 25%, transparent 25%, transparent 50%, #455765 50%, #455765 75%, transparent 75%, transparent);
+background-image: linear-gradient(-45deg, #455765 25%, transparent 25%, transparent 50%, #455765 50%, #455765 75%, transparent 75%, transparent);
+background-size: 20px 20px;/*数字を大きくすれば太く、小さくすれば細くなります。*/
+text-shadow:1px 1px 2px rgba(0,0,0,.3);
+}
+
+<div class="stripe">Basic example</div>
+
+-->
