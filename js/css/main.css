@@ -25,6 +25,11 @@ ul.demo-item {
 }
 
 ul.demo-item li {
+	height: 40px;
+	line-height: 40px;
+	background-color: #ffffff;
+	padding: 0px 20px;
+	margin: 6px 0px;
 }
 
 #header {
@@ -43,7 +48,7 @@ ul.demo-item li {
 
 #contents {
 	padding: 30px;
-	margin: 90px 30px;
+	margin: 90px 10px;
 	
 }
 
