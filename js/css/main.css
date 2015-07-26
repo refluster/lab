@@ -27,9 +27,11 @@ ul.demo-item {
 ul.demo-item li {
 	height: 40px;
 	line-height: 40px;
-	background-color: #ffffff;
 	padding: 0px 20px;
-	margin: 6px 0px;
+}
+
+ul.demo-item li + li {
+	border-top: 1px solid #e1e1e1;
 }
 
 #header {
