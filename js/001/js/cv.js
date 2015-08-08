@@ -4,27 +4,6 @@
 var panelApl = {}; // namespace
 
 (function($) {
-
-	/* const */
-	panelApl.con = {
-		id: { // id name
-			cvm: 'cv1',  // main Canvas
-			cvdiv: 'cvdiv1',  // main Canvas¤Îdiv
-			msgdiv: 'msg1',  // message display div
-		},
-		msg: { // instruction message
-			candr: 'draggable',
-			dring: 'dragging',
-			leave: 'dropped due to out of canvas',
-			pushb: 'press start button'
-		},
-		dtype: { // figure
-			cir: 'circle',
-			tri: 'triangle',
-			squ: 'square'
-		}
-	};
-
 	/* global var */
 	// drag state
 	panelApl.drag = {
@@ -37,7 +16,7 @@ var panelApl = {}; // namespace
 	 * return: none
 	 */
 	panelApl.start = function() {
-		var $cvdiv = $('#' + panelApl.con.id.cvdiv); // main Canvas¤Îdiv
+		var $cvdiv = $('#cvdiv1');
 		// set events to the canvas
 		$cvdiv.mousedown(panelApl.cvmsDown);
 		$cvdiv.mouseup(panelApl.cvmsUp);
@@ -116,7 +95,7 @@ var panelApl = {}; // namespace
 	/* body onload process */
 	$(window).load(function() {
 		// get canvas's DOM element and context
-		var canvas = document.getElementById(panelApl.con.id.cvm);
+		var canvas = $('#cv1')[0];
 		if ( ! canvas || ! canvas.getContext ) { return false; }
 		var ctx = canvas.getContext("2d");
 		ctx.lineWidth = 1;

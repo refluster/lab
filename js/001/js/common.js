@@ -34,7 +34,7 @@ var canvasManager = {}; // namespace
 		this.itemAr = []; // items
 
 		// set the position of the canvas on the browser
-		var $cvdiv = $('#' + names.con.id.cvdiv);
+		var $cvdiv = $('#cvdiv1');
 		this.cvpos.x = $cvdiv.offset().left;
 		this.cvpos.y = $cvdiv.offset().top;
 
@@ -70,11 +70,11 @@ var canvasManager = {}; // namespace
 			// initial position of items
 			this.itemAr = [];
 			this.itemAr[0] = new canvasManager.item(this.grSephf, this.grSephf,
-													names.con.dtype.cir);
+													'circle');
 			this.itemAr[1] = new canvasManager.item(this.grSephf, this.grSep + this.grSephf,
-													names.con.dtype.tri);
+													'triangle');
 			this.itemAr[2] = new canvasManager.item(this.grSephf,
-													this.grSep * 2 + this.grSephf, names.con.dtype.squ);
+													this.grSep * 2 + this.grSephf, 'square');
 		}
 
 		/* init canvas
@@ -112,15 +112,15 @@ var canvasManager = {}; // namespace
 			// draw items
 			for (var i = 0; i < this.itemAr.length; i++) {
 				switch (this.itemAr[i].type) {
-				case names.con.dtype.cir: {
+				case 'circle': {
 					this.drawCir(this.itemAr[i].x, this.itemAr[i].y);
 					break;
 				}
-				case names.con.dtype.tri: {
+				case 'triangle': {
 					this.drawTri(this.itemAr[i].x, this.itemAr[i].y);
 					break;
 				}
-				case names.con.dtype.squ: {
+				case 'square': {
 					this.drawSqu(this.itemAr[i].x, this.itemAr[i].y);
 					break;
 				}
