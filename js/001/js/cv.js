@@ -84,8 +84,8 @@ var Apl = function() {
 	this.ctx.globalAlpha = 0.7;
 	this.ctx.globalCompositeOperation = "source-over";
 
-	// initial position of items
-	this.item = []; // items
+	// create items
+	this.item = [];
 	this.item.push(new Item(Item.CIRCLE, this.gridWidth));
 	this.item.push(new Item(Item.TRIANGLE, this.gridWidth));
 	this.item.push(new Item(Item.SQUARE, this.gridWidth));
@@ -93,13 +93,13 @@ var Apl = function() {
 		this.item[i].setPosition(this.gridWidth/2, this.gridWidth/2 + this.gridWidth*i);
 	}
 
-	this.draw();
-	
 	// set events to the canvas
 	$canvas.mousedown(this.hDown.bind(this));
 	$canvas.mouseup(this.hUp.bind(this));
 	$canvas.mouseleave(this.hUp.bind(this));
 	$canvas.mousemove(this.hMove.bind(this));
+
+	this.draw();
 };
 Apl.prototype._blank = function() {
 	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -119,7 +119,6 @@ Apl.prototype._blank = function() {
 	}
 };
 Apl.prototype.draw = function() {
-	// init canvas
 	this._blank();
 	for (var i = 0; i < this.item.length; i++) {
 		this.item[i].draw(this.ctx);
@@ -136,26 +135,25 @@ Apl.prototype.checkItem = function(x, y) {
 Apl.prototype.hDown = function(evt) {
 	if (!this.dragging) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.canvasLeft;
-		var cy = evt.pageY - this.canvasTop;
+		var x = parseInt(evt.pageX - this.canvasLeft);
+		var y = parseInt(evt.pageY - this.canvasTop);
 		// check if any object is at the point
-		var itemIdx = this.checkItem(cx, cy);
+		var itemIdx = this.checkItem(x, y);
 		if (itemIdx != null) {
 			this.dragging = true;
 			this.dragItem = itemIdx;
 		}
 	}
-	return false;
 };
 Apl.prototype.hUp = function(evt) {
 	if (this.dragging) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.canvasLeft;
-		var cy = evt.pageY - this.canvasTop;
-		if (cx < 0) cx = 0;
-		if (cx > this.canvasWidth) cx = this.canvasWidth;
-		if (cy < 0) cy = 0;
-		if (cy > this.canvasHeight) cy = this.canvasHeight;
+		var x = parseInt(evt.pageX - this.canvasLeft);
+		var y = parseInt(evt.pageY - this.canvasTop);
+		if (x < 0) x = 0;
+		if (x > this.canvasWidth) x = this.canvasWidth;
+		if (y < 0) y = 0;
+		if (y > this.canvasHeight) y = this.canvasHeight;
 		// update canvas
 		this.draw();
 
@@ -166,17 +164,15 @@ Apl.prototype.hUp = function(evt) {
 Apl.prototype.hMove = function(evt) {
 	if (this.dragging) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.canvasLeft;
-		var cy = evt.pageY - this.canvasTop;
+		var x = parseInt(evt.pageX - this.canvasLeft);
+		var y = parseInt(evt.pageY - this.canvasTop);
 		// check if the canvas should be updated
-		var updSep = 1; // #. of pixels that canvas is updated if an object is moved by
-		if (Math.abs(cx - this.item[this.dragItem].x) >= updSep ||
-			Math.abs(cy - this.item[this.dragItem].y) >= updSep) {
-			this.item[this.dragItem].setPosition(cx, cy);
+		if (x != this.item[this.dragItem].x ||
+			y != this.item[this.dragItem].y) {
+			this.item[this.dragItem].setPosition(x, y);
 			this.draw();
 		}
 	}
-	return false;
 };
 
 $(function() {
