@@ -1,6 +1,56 @@
-/* HTML5 Canvas drag&drop
- * canvas is updated when an object is dragged by 1px
- */
+var Item = function(type, size) {
+	this.x = 0;
+	this.y = 0;
+	this.type = type;
+	this.size = size;
+	switch (this.type) {
+	case Item.CIRCLE:
+		this.draw = this._drawCircle;
+		break;
+	case Item.TRIANGLE:
+		this.draw = this._drawTriangle;
+		break;
+	case Item.SQUARE:
+		this.draw = this._drawSquare;
+		break;
+	default:
+		this.draw = this._drawCircle;
+		break;
+	}
+};
+Item.CIRCLE = 0;
+Item.TRIANGLE = 1;
+Item.SQUARE = 2;
+Item.prototype.setPosition = function(x, y) {
+	this.x = x; this.y = y;
+};
+Item.prototype._drawCircle = function(ctx) {
+	ctx.save();
+	ctx.fillStyle = 'green';
+	ctx.beginPath();
+	ctx.arc(this.x, this.y, this.size/2, 0, Math.PI*2, false);
+	ctx.fill();
+	ctx.restore();
+};
+Item.prototype._drawTriangle = function(ctx) {
+	ctx.save();
+	ctx.fillStyle = 'blue';
+	ctx.beginPath();
+	ctx.moveTo(this.x, this.y - this.size/2);
+	ctx.lineTo(this.x - this.size/2, this.y + this.size/2);
+	ctx.lineTo(this.x + this.size/2, this.y + this.size/2);
+	ctx.closePath();
+	ctx.fill();
+	ctx.restore();
+};
+Item.prototype._drawSquare = function(ctx) {
+	ctx.save();
+	ctx.fillStyle = 'purple';
+	ctx.fillRect(this.x - this.size/2, this.y - this.size/2,
+				 this.size, this.size);
+	ctx.restore();
+};
+
 var panelApl = function() {
 	this.dragging = false;
 	this.dragItem = null;
@@ -27,13 +77,13 @@ var panelApl = function() {
 
 	// initial position of items
 	this.itemAr = []; // items
-	this.itemAr[0] = {x: this.grSep/2, y: this.grSep/2, type: 'circle'};
-	this.itemAr[1] = {x: this.grSep/2, y: this.grSep/2 + this.grSep, type: 'triangle'};
-	this.itemAr[2] = {x: this.grSep/2, y: this.grSep/2 + this.grSep*2, type: 'square'};
+	this.itemAr.push(new Item(Item.CIRCLE, this.grSep));
+	this.itemAr.push(new Item(Item.TRIANGLE, this.grSep));
+	this.itemAr.push(new Item(Item.SQUARE, this.grSep));
+	for (var i = 0; i < this.itemAr.length; i++) {
+		this.itemAr[i].setPosition(this.grSep/2, this.grSep/2 + this.grSep*i);
+	}
 
-	// display
-	//	this.DRAG = new canvasManager(ctx, this.canvasWidth, this.canvasHeight);
-	//	this.DRAG.draw();
 	this.draw();
 	
 	// set events to the canvas
@@ -42,8 +92,6 @@ var panelApl = function() {
 	$canvas.mouseleave(this.cvmsUp.bind(this));
 	$canvas.mousemove(this.cvmsMove.bind(this));
 };
-
-//////////////////////////////
 
 panelApl.prototype._blank = function() {
 	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -66,52 +114,9 @@ panelApl.prototype._blank = function() {
 panelApl.prototype.draw = function() {
 	// init canvas
 	this._blank();
-	// draw items
 	for (var i = 0; i < this.itemAr.length; i++) {
-		switch (this.itemAr[i].type) {
-		case 'circle':
-			this.drawCircle(this.itemAr[i].x, this.itemAr[i].y);
-			break;
-		case 'triangle':
-			this.drawTriangle(this.itemAr[i].x, this.itemAr[i].y);
-			break;
-		case 'square':
-			this.drawSquare(this.itemAr[i].x, this.itemAr[i].y);
-			break;
-		default:
-			this.drawCircle(this.itemAr[i].x, this.itemAr[i].y);
-			break;
-		}
+		this.itemAr[i].draw(this.ctx);
 	}
-};
-
-panelApl.prototype.drawCircle = function(x, y) {
-	this.ctx.save();
-	this.ctx.fillStyle = 'green';
-	this.ctx.beginPath();
-	this.ctx.arc(x, y, this.grSep/2, 0, Math.PI*2, false);
-	this.ctx.fill();
-	this.ctx.restore();
-};
-
-panelApl.prototype.drawTriangle = function(x, y) {
-	this.ctx.save();
-	this.ctx.fillStyle = 'blue';
-	this.ctx.beginPath();
-	this.ctx.moveTo(x, y - this.grSep/2);
-	this.ctx.lineTo(x - this.grSep/2, y + this.grSep/2);
-	this.ctx.lineTo(x + this.grSep/2, y + this.grSep/2);
-	this.ctx.closePath();
-	this.ctx.fill();
-	this.ctx.restore();
-};
-
-panelApl.prototype.drawSquare = function(x, y) {
-	this.ctx.save();
-	this.ctx.fillStyle = 'purple';
-	this.ctx.fillRect(x - this.grSep/2, y - this.grSep/2,
-					  this.grSep, this.grSep);
-	this.ctx.restore();
 };
 
 panelApl.prototype.checkItem = function(x, y) {
