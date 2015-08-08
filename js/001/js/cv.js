@@ -7,37 +7,25 @@ var panelApl = function() {
 	
 	// get canvas's DOM element and context
 	var canvas = $('#cv1')[0];
-	if ( ! canvas || ! canvas.getContext ) { return false; }
+	if ( ! canvas || ! canvas.getContext ) {
+		return false;
+	}
 	var ctx = canvas.getContext("2d");
 	ctx.lineWidth = 1;
 	ctx.globalAlpha = 0.7;
 	ctx.globalCompositeOperation = "source-over";
 	
 	// display
-	this.DRAG = new canvasManager.canv(ctx, canvas.width, canvas.height, this);
+	this.DRAG = new canvasManager(ctx, canvas.width, canvas.height, this);
 	this.DRAG.init();
 	this.DRAG.draw();
 	
-	this.start();
-
-};
-
-
-/* button process
- * return: none
- */
-panelApl.prototype.start = function() {
-	var $cvdiv = $('#cvdiv1');
 	// set events to the canvas
+	var $cvdiv = $('#cvdiv1');
 	$cvdiv.mousedown(this.cvmsDown.bind(this));
 	$cvdiv.mouseup(this.cvmsUp.bind(this));
 	$cvdiv.mouseleave(this.cvmsUp.bind(this));
 	$cvdiv.mousemove(this.cvmsMove.bind(this));
-	// init canvas
-	this.DRAG.init();
-	this.DRAG.draw();
-	
-	this.gamestart = true;
 };
 
 /* mousedown process
