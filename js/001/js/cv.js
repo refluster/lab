@@ -6,22 +6,24 @@ var panelApl = function() {
 	this.dragItem = null;
 	
 	// get canvas's DOM element and context
-	var canvas = $('#cv1')[0];
-	if ( ! canvas || ! canvas.getContext ) {
+	var $canvas = $('#cv1');
+	if ( ! $canvas[0] || ! $canvas[0].getContext ) {
 		return false;
 	}
-	var ctx = canvas.getContext("2d");
+	var ctx = $canvas[0].getContext("2d");
 	
+	this.canvasLeft = $canvas.offset().left;
+	this.canvasTop = $canvas.offset().top;
+
 	// display
-	this.DRAG = new canvasManager(ctx, canvas.width, canvas.height);
+	this.DRAG = new canvasManager(ctx, $canvas.attr('width'), $canvas.attr('height'));
 	this.DRAG.draw();
 	
 	// set events to the canvas
-	var $cvdiv = $('#cvdiv1');
-	$cvdiv.mousedown(this.cvmsDown.bind(this));
-	$cvdiv.mouseup(this.cvmsUp.bind(this));
-	$cvdiv.mouseleave(this.cvmsUp.bind(this));
-	$cvdiv.mousemove(this.cvmsMove.bind(this));
+	$canvas.mousedown(this.cvmsDown.bind(this));
+	$canvas.mouseup(this.cvmsUp.bind(this));
+	$canvas.mouseleave(this.cvmsUp.bind(this));
+	$canvas.mousemove(this.cvmsMove.bind(this));
 };
 
 /* mousedown process
@@ -31,8 +33,8 @@ var panelApl = function() {
 panelApl.prototype.cvmsDown = function(evt) {
 	if (!this.dragging) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.DRAG.cvpos.x;
-		var cy = evt.pageY - this.DRAG.cvpos.y;
+		var cx = evt.pageX - this.canvasLeft;
+		var cy = evt.pageY - this.canvasTop;
 		// check if any object is at the point
 		var itemIdx = this.DRAG.checkItem(cx, cy);
 		if (itemIdx != null) {
@@ -49,8 +51,8 @@ panelApl.prototype.cvmsDown = function(evt) {
 panelApl.prototype.cvmsUp = function(evt) {
 	if (this.dragging) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.DRAG.cvpos.x;
-		var cy = evt.pageY - this.DRAG.cvpos.y;
+		var cx = evt.pageX - this.canvasLeft;
+		var cy = evt.pageY - this.canvasTop;
 		if (cx < 0) cx = 0;
 		if (cx > this.DRAG.area.w) cx = this.DRAG.area.w;
 		if (cy < 0) cy = 0;
@@ -69,8 +71,8 @@ panelApl.prototype.cvmsUp = function(evt) {
 panelApl.prototype.cvmsMove = function(evt) {
 	if (this.dragging) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.DRAG.cvpos.x;
-		var cy = evt.pageY - this.DRAG.cvpos.y;
+		var cx = evt.pageX - this.canvasLeft;
+		var cy = evt.pageY - this.canvasTop;
 		// check if the canvas should be updated
 		var updSep = 1; // #. of pixels that canvas is updated if an object is moved by
 		if (Math.abs(cx - this.DRAG.itemAr[this.dragItem].x) >= updSep ||

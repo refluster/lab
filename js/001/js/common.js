@@ -5,17 +5,11 @@ var canvasManager = function(ctx, w, h) {
 	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
 	this.grSep = 30;  // grid interval(px)
 
+	// context settnigs
+	this.ctx.strokeStyle = "#000";
 	this.ctx.lineWidth = 1;
 	this.ctx.globalAlpha = 0.7;
 	this.ctx.globalCompositeOperation = "source-over";
-
-	// set the position of the canvas on the browser
-	var $cvdiv = $('#cvdiv1');
-	this.cvpos.x = $cvdiv.offset().left;
-	this.cvpos.y = $cvdiv.offset().top;
-
-	// pre-calculate often used value
-	this.PI2 = Math.PI * 2; // 2*pi
 
 	// initial position of items
 	this.itemAr = []; // items
@@ -30,11 +24,6 @@ var canvasManager = function(ctx, w, h) {
 canvasManager.prototype.blank = function() {
 	// clear
 	this.ctx.clearRect(0, 0, this.area.w, this.area.h);
-	// show grids
-	this.ctx.save();
-	this.ctx.globalAlpha = 0.5;
-	this.ctx.strokeStyle = "#000033";
-	this.ctx.lineWidth = 1;
 
 	for (var x = 0; x < this.area.w; x += this.grSep) {
 		this.ctx.beginPath();
@@ -49,8 +38,6 @@ canvasManager.prototype.blank = function() {
 		this.ctx.lineTo(this.area.w, y);
 		this.ctx.stroke();
 	}
-
-	this.ctx.restore();
 };
 
 /* draw canvas
@@ -88,7 +75,7 @@ canvasManager.prototype.drawCir = function(x, y) {
 	this.ctx.save();
 	this.ctx.fillStyle = 'green';
 	this.ctx.beginPath();
-	this.ctx.arc(x, y, this.grSep/2, 0, this.PI2, false);
+	this.ctx.arc(x, y, this.grSep/2, 0, Math.PI*2, false);
 	this.ctx.fill();
 	this.ctx.restore();
 };
@@ -118,13 +105,8 @@ canvasManager.prototype.drawTri = function(x, y) {
 canvasManager.prototype.drawSqu = function(x, y) {
 	this.ctx.save();
 	this.ctx.fillStyle = 'purple';
-	this.ctx.beginPath();
-	this.ctx.moveTo(x - this.grSep/2, y - this.grSep/2);
-	this.ctx.lineTo(x - this.grSep/2, y + this.grSep/2);
-	this.ctx.lineTo(x + this.grSep/2, y + this.grSep/2);
-	this.ctx.lineTo(x + this.grSep/2, y - this.grSep/2);
-	this.ctx.closePath();
-	this.ctx.fill();
+	this.ctx.fillRect(x - this.grSep/2, y - this.grSep/2,
+					  this.grSep, this.grSep);
 	this.ctx.restore();
 };
 
@@ -144,4 +126,3 @@ canvasManager.prototype.checkItem = function(x, y) {
 	}
 	return null;
 };
-
