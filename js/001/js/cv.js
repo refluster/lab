@@ -11,13 +11,9 @@ var panelApl = function() {
 		return false;
 	}
 	var ctx = canvas.getContext("2d");
-	ctx.lineWidth = 1;
-	ctx.globalAlpha = 0.7;
-	ctx.globalCompositeOperation = "source-over";
 	
 	// display
-	this.DRAG = new canvasManager(ctx, canvas.width, canvas.height, this);
-	this.DRAG.init();
+	this.DRAG = new canvasManager(ctx, canvas.width, canvas.height);
 	this.DRAG.draw();
 	
 	// set events to the canvas
@@ -59,8 +55,6 @@ panelApl.prototype.cvmsUp = function(evt) {
 		if (cx > this.DRAG.area.w) cx = this.DRAG.area.w;
 		if (cy < 0) cy = 0;
 		if (cy > this.DRAG.area.h) cy = this.DRAG.area.h;
-		// set item position to the center of the grid
-		//this.DRAG.setCenter(this.drag.item, cx, cy);
 		// update canvas
 		this.DRAG.draw();
 
