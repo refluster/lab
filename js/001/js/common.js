@@ -112,22 +112,18 @@ var canvasManager = {}; // namespace
 			// draw items
 			for (var i = 0; i < this.itemAr.length; i++) {
 				switch (this.itemAr[i].type) {
-				case 'circle': {
+				case 'circle':
 					this.drawCir(this.itemAr[i].x, this.itemAr[i].y);
 					break;
-				}
-				case 'triangle': {
+				case 'triangle':
 					this.drawTri(this.itemAr[i].x, this.itemAr[i].y);
 					break;
-				}
-				case 'square': {
+				case 'square':
 					this.drawSqu(this.itemAr[i].x, this.itemAr[i].y);
 					break;
-				}
-				default: {
+				default:
 					this.drawCir(this.itemAr[i].x, this.itemAr[i].y);
 					break;
-				}
 				}
 			}
 		};
