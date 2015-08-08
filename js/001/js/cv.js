@@ -11,17 +11,12 @@ var panelApl = {}; // namespace
 			cvm: 'cv1',  // main Canvas
 			cvdiv: 'cvdiv1',  // main Canvas¤Îdiv
 			msgdiv: 'msg1',  // message display div
-			stbtn: 'stbtn1'  // start button
 		},
 		msg: { // instruction message
 			candr: 'draggable',
 			dring: 'dragging',
 			leave: 'dropped due to out of canvas',
 			pushb: 'press start button'
-		},
-		btnmsg: { // button message
-			start: 'start',
-			stop: 'stop'
 		},
 		dtype: { // figure
 			cir: 'circle',
@@ -43,39 +38,16 @@ var panelApl = {}; // namespace
 	 */
 	panelApl.start = function() {
 		var $cvdiv = $('#' + panelApl.con.id.cvdiv); // main Canvas¤Îdiv
-		var $btn = $('#' + panelApl.con.id.stbtn); // start button
-		if (!panelApl.gamestart) { // if not playing
-			// set events to the canvas
-			$cvdiv.mousedown(panelApl.cvmsDown);
-			$cvdiv.mouseup(panelApl.cvmsUp);
-			$cvdiv.mouseleave(panelApl.cvmsUp);
-			$cvdiv.mousemove(panelApl.cvmsMove);
-			// init canvas
-			panelApl.DRAG.init();
-			panelApl.DRAG.draw();
-
-			panelApl.gamestart = true;
-			panelApl.showmsg(panelApl.con.msg.candr);
-			$btn.text(panelApl.con.btnmsg.stop);
-		} else { // if playing
-			// delete events from the canvas
-			$cvdiv.unbind('mousedown', panelApl.cvmsDown);
-			$cvdiv.unbind('mouseup', panelApl.cvmsUp);
-			$cvdiv.unbind('mouseleave', panelApl.cvmsUp);
-			$cvdiv.unbind('mousemove', panelApl.cvmsMove);
-
-			panelApl.gamestart = false;
-			panelApl.showmsg(panelApl.con.msg.pushb);
-			$btn.text(panelApl.con.btnmsg.start);
-		}
-	};
-
-	/* display message
-	 * {string} msg: displayed message
-	 * return: none
-	 */
-	panelApl.showmsg = function(msg) {
-		$('#' + panelApl.con.id.msgdiv).html(msg);
+		// set events to the canvas
+		$cvdiv.mousedown(panelApl.cvmsDown);
+		$cvdiv.mouseup(panelApl.cvmsUp);
+		$cvdiv.mouseleave(panelApl.cvmsUp);
+		$cvdiv.mousemove(panelApl.cvmsMove);
+		// init canvas
+		panelApl.DRAG.init();
+		panelApl.DRAG.draw();
+		
+		panelApl.gamestart = true;
 	};
 
 	/* mousedown process
@@ -92,7 +64,6 @@ var panelApl = {}; // namespace
 			if (itemIdx != null) {
 				panelApl.drag.now = true;
 				panelApl.drag.item = itemIdx;
-				panelApl.showmsg(panelApl.con.msg.dring);
 			}
 		}
 		return false;
@@ -117,11 +88,6 @@ var panelApl = {}; // namespace
 
 			panelApl.drag.now = false;
 			panelApl.drag.item = null;
-			if (evt.type == 'mouseleave'){
-				panelApl.showmsg(panelApl.con.msg.leave);
-			} else if (panelApl.gamestart) {
-				panelApl.showmsg(panelApl.con.msg.candr);
-			}
 		}
 	};
 	/* mousemove process
@@ -162,14 +128,6 @@ var panelApl = {}; // namespace
 		panelApl.DRAG.init();
 		panelApl.DRAG.draw();
 
-		// set events
-		var $btn = $('#' + panelApl.con.id.stbtn); // start button
-		$btn.mousedown(panelApl.start);
-		$btn.text(panelApl.con.btnmsg.start);
-
-		// show message
-		panelApl.showmsg(panelApl.con.msg.pushb);
+		panelApl.start();
 	});
-
-
 })(jQuery);
