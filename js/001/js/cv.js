@@ -50,8 +50,17 @@ Item.prototype._drawSquare = function(ctx) {
 				 this.size, this.size);
 	ctx.restore();
 };
+Item.prototype.isInternal = function(x, y) {
+	if (x >= this.x - this.size/2 &&
+		x <= this.x + this.size/2 &&
+		y >= this.y - this.size/2 &&
+		y <= this.y + this.size/2) {
+		return true;
+	}
+	return false;
+}
 
-var panelApl = function() {
+var Apl = function() {
 	this.dragging = false;
 	this.dragItem = null;
 	
@@ -67,7 +76,7 @@ var panelApl = function() {
 	this.canvasWidth = $canvas.attr('width')
 	this.canvasHeight = $canvas.attr('height')
 
-	this.grSep = 30;  // grid interval(px)
+	this.gridWidth = 30;  // grid interval(px)
 
 	// context settnigs
 	this.ctx.strokeStyle = "#000";
@@ -76,68 +85,55 @@ var panelApl = function() {
 	this.ctx.globalCompositeOperation = "source-over";
 
 	// initial position of items
-	this.itemAr = []; // items
-	this.itemAr.push(new Item(Item.CIRCLE, this.grSep));
-	this.itemAr.push(new Item(Item.TRIANGLE, this.grSep));
-	this.itemAr.push(new Item(Item.SQUARE, this.grSep));
-	for (var i = 0; i < this.itemAr.length; i++) {
-		this.itemAr[i].setPosition(this.grSep/2, this.grSep/2 + this.grSep*i);
+	this.item = []; // items
+	this.item.push(new Item(Item.CIRCLE, this.gridWidth));
+	this.item.push(new Item(Item.TRIANGLE, this.gridWidth));
+	this.item.push(new Item(Item.SQUARE, this.gridWidth));
+	for (var i = 0; i < this.item.length; i++) {
+		this.item[i].setPosition(this.gridWidth/2, this.gridWidth/2 + this.gridWidth*i);
 	}
 
 	this.draw();
 	
 	// set events to the canvas
-	$canvas.mousedown(this.cvmsDown.bind(this));
-	$canvas.mouseup(this.cvmsUp.bind(this));
-	$canvas.mouseleave(this.cvmsUp.bind(this));
-	$canvas.mousemove(this.cvmsMove.bind(this));
+	$canvas.mousedown(this.hDown.bind(this));
+	$canvas.mouseup(this.hUp.bind(this));
+	$canvas.mouseleave(this.hUp.bind(this));
+	$canvas.mousemove(this.hMove.bind(this));
 };
-
-panelApl.prototype._blank = function() {
+Apl.prototype._blank = function() {
 	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 
-	for (var x = 0; x < this.canvasWidth; x += this.grSep) {
+	for (var x = 0; x < this.canvasWidth; x += this.gridWidth) {
 		this.ctx.beginPath();
 		this.ctx.moveTo(x, 0);
 		this.ctx.lineTo(x, this.canvasHeight);
 		this.ctx.stroke();
 	}
 
-	for (var y = 0; y < this.canvasHeight; y += this.grSep) {
+	for (var y = 0; y < this.canvasHeight; y += this.gridWidth) {
 		this.ctx.beginPath();
 		this.ctx.moveTo(0, y);
 		this.ctx.lineTo(this.canvasWidth, y);
 		this.ctx.stroke();
 	}
 };
-
-panelApl.prototype.draw = function() {
+Apl.prototype.draw = function() {
 	// init canvas
 	this._blank();
-	for (var i = 0; i < this.itemAr.length; i++) {
-		this.itemAr[i].draw(this.ctx);
+	for (var i = 0; i < this.item.length; i++) {
+		this.item[i].draw(this.ctx);
 	}
 };
-
-panelApl.prototype.checkItem = function(x, y) {
-	for (var i = 0; i < this.itemAr.length; i++) {
-		if (x >= this.itemAr[i].x - this.grSep/2 &&
-			x <= this.itemAr[i].x + this.grSep/2 &&
-			y >= this.itemAr[i].y - this.grSep/2 &&
-			y <= this.itemAr[i].y + this.grSep/2) {
+Apl.prototype.checkItem = function(x, y) {
+	for (var i = 0; i < this.item.length; i++) {
+		if (this.item[i].isInternal(x, y)) {
 			return i;
 		}
 	}
 	return null;
 };
-
-//////////////////////////////
-
-/* mousedown process
- * {event} evt: event obj
- * return: none
- */
-panelApl.prototype.cvmsDown = function(evt) {
+Apl.prototype.hDown = function(evt) {
 	if (!this.dragging) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canvasLeft;
@@ -151,11 +147,7 @@ panelApl.prototype.cvmsDown = function(evt) {
 	}
 	return false;
 };
-/* mouseup/mouseleave process
- * {event} evt: event obj
- * return: none
- */
-panelApl.prototype.cvmsUp = function(evt) {
+Apl.prototype.hUp = function(evt) {
 	if (this.dragging) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canvasLeft;
@@ -171,23 +163,16 @@ panelApl.prototype.cvmsUp = function(evt) {
 		this.dragItem = null;
 	}
 };
-/* mousemove process
- * {event} evt: evnet obj
- * return: none
- */
-panelApl.prototype.cvmsMove = function(evt) {
+Apl.prototype.hMove = function(evt) {
 	if (this.dragging) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canvasLeft;
 		var cy = evt.pageY - this.canvasTop;
 		// check if the canvas should be updated
 		var updSep = 1; // #. of pixels that canvas is updated if an object is moved by
-		if (Math.abs(cx - this.itemAr[this.dragItem].x) >= updSep ||
-			Math.abs(cy - this.itemAr[this.dragItem].y) >= updSep) {
-			// update the position of the item
-			this.itemAr[this.dragItem].x = cx;
-			this.itemAr[this.dragItem].y = cy;
-			// update the canvas
+		if (Math.abs(cx - this.item[this.dragItem].x) >= updSep ||
+			Math.abs(cy - this.item[this.dragItem].y) >= updSep) {
+			this.item[this.dragItem].setPosition(cx, cy);
 			this.draw();
 		}
 	}
@@ -195,5 +180,5 @@ panelApl.prototype.cvmsMove = function(evt) {
 };
 
 $(function() {
-	var panel = new panelApl();
+	var apl = new Apl();
 });
