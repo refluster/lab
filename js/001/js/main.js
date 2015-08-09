@@ -57,20 +57,24 @@ Item.prototype.isInternal = function(x, y) {
 var Apl = function() {
 	this.dragging = false;
 	this.dragItem = null;
+	this.gridWidth = 80;
 	
-	// get canvas's DOM element and context
+	// get canvas DOM element and context
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) {
 		return false;
 	}
 	this.ctx = $canvas[0].getContext("2d");
-	
+
+	// resize canvas
+	$canvas.attr('width', $canvas.width());
+	$canvas.attr('height', $canvas.height());
+
+	// get canvas info
 	this.canvasLeft = $canvas.offset().left;
 	this.canvasTop = $canvas.offset().top;
 	this.canvasWidth = $canvas.attr('width')
 	this.canvasHeight = $canvas.attr('height')
-
-	this.gridWidth = 80;  // grid interval(px)
 
 	// context settnigs
 	this.ctx.strokeStyle = "#888";
