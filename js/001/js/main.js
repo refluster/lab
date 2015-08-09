@@ -25,30 +25,24 @@ Item.prototype.setPosition = function(x, y) {
 	this.x = x; this.y = y;
 };
 Item.prototype._drawCircle = function(ctx) {
-	ctx.save();
-	ctx.fillStyle = 'green';
+	ctx.fillStyle = '#FF5722';
 	ctx.beginPath();
 	ctx.arc(this.x, this.y, this.size/2, 0, Math.PI*2, false);
 	ctx.fill();
-	ctx.restore();
 };
 Item.prototype._drawTriangle = function(ctx) {
-	ctx.save();
-	ctx.fillStyle = 'blue';
+	ctx.fillStyle = '#1E88E5';
 	ctx.beginPath();
 	ctx.moveTo(this.x, this.y - this.size/2);
 	ctx.lineTo(this.x - this.size/2, this.y + this.size/2);
 	ctx.lineTo(this.x + this.size/2, this.y + this.size/2);
 	ctx.closePath();
 	ctx.fill();
-	ctx.restore();
 };
 Item.prototype._drawSquare = function(ctx) {
-	ctx.save();
-	ctx.fillStyle = 'purple';
+	ctx.fillStyle = '#FFEB3B';
 	ctx.fillRect(this.x - this.size/2, this.y - this.size/2,
 				 this.size, this.size);
-	ctx.restore();
 };
 Item.prototype.isInternal = function(x, y) {
 	if (x >= this.x - this.size/2 &&
@@ -65,7 +59,7 @@ var Apl = function() {
 	this.dragItem = null;
 	
 	// get canvas's DOM element and context
-	var $canvas = $('#cv1');
+	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) {
 		return false;
 	}
@@ -76,12 +70,11 @@ var Apl = function() {
 	this.canvasWidth = $canvas.attr('width')
 	this.canvasHeight = $canvas.attr('height')
 
-	this.gridWidth = 30;  // grid interval(px)
+	this.gridWidth = 80;  // grid interval(px)
 
 	// context settnigs
-	this.ctx.strokeStyle = "#000";
+	this.ctx.strokeStyle = "#888";
 	this.ctx.lineWidth = 1;
-	this.ctx.globalAlpha = 0.7;
 	this.ctx.globalCompositeOperation = "source-over";
 
 	// create items
@@ -90,7 +83,10 @@ var Apl = function() {
 	this.item.push(new Item(Item.TRIANGLE, this.gridWidth));
 	this.item.push(new Item(Item.SQUARE, this.gridWidth));
 	for (var i = 0; i < this.item.length; i++) {
-		this.item[i].setPosition(this.gridWidth/2, this.gridWidth/2 + this.gridWidth*i);
+		// initialize position randomely in the canvas
+		var x = parseInt(Math.random()*(this.canvasWidth - this.gridWidth) + this.gridWidth/2);
+		var y = parseInt(Math.random()*(this.canvasHeight - this.gridWidth) + this.gridWidth/2);
+		this.item[i].setPosition(x, y);
 	}
 
 	// set events to the canvas
@@ -120,9 +116,11 @@ Apl.prototype._blank = function() {
 };
 Apl.prototype.draw = function() {
 	this._blank();
+	this.ctx.save();
 	for (var i = 0; i < this.item.length; i++) {
 		this.item[i].draw(this.ctx);
 	}
+	this.ctx.restore();
 };
 Apl.prototype.checkItem = function(x, y) {
 	for (var i = 0; i < this.item.length; i++) {
