@@ -19,7 +19,7 @@
       </form>
       
       <div>
-        <button>全て完了/未了</button>
+        <button ng-click="checkAll()">全て完了/未了</button>
 
         <button ng-click="changeFilter()"
                 ng-class="{active: !currentFilter}">
@@ -34,32 +34,21 @@
           完了
           <span>{{ remainingCount }}</span></button>
 
-        <button>完了アイテムを全て削除</button>
+        <button ng-click="removeDoneTodo()">完了アイテムを全て削除</button>
       </div>
 
       <li class="todo-item" ng-repeat="todo in todos | filter:currentFilter"
-          ng-class="{done: todo.done}">
-        <form>
+          ng-class="{done: todo.done, editing: todo == editing}">
+        <form name="todoForm" ng-submit="doneEdit(todoForm)">
           <input type="checkbox" ng-model="todo.done">
-          <span class="todo-title">{{ todo.title }}</span>
-          <button type="reset">削除</button>
+          <span ng-dblclick="editTodo(todo)" class="todo-title" ng-hide="todo == editing">
+            {{ todo.title }}</span>
+          <input type="text" required ng-model="todo.title" my-select="todo == editing"
+                 ng-show="todo == editing" ng-blur="doneEdit(todoForm)">
+          <button type="reset" ng-if="todo != editing" ng-click="removeTodo(todo)">削除</button>
         </form>
       </li>
       
-      <li class="todo-item done">
-        <form>
-          <input type="checkbox" checked>
-          <span class="todo-title">完了した ToDo</span>
-          <button type="reset">削除</button>
-        </form>
-      </li>
-
-      <li class="todo-item editing">
-        <form>
-          <input type="checkbox">
-          <input type="text" required value="編集中の ToDo">
-        </form>
-      </li>
     </div>
   </body>
 </html>
