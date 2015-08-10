@@ -13,12 +13,12 @@
       <script src="js/angular.min.js"></script>
       <script src="js/app.js"></script>
 
-      <form ng-submit="addTodo()">
+      <form ng-controller="RegisterController" ng-submit="addTodo()">
         <input type="text" required placeholder="新しい要件を入力" ng-model="newTitle">
         <button type="submit">追加</button>
       </form>
       
-      <div>
+      <div ng-controller="ToolbarController">
         <button ng-click="checkAll()">全て完了/未了</button>
 
         <button ng-click="changeFilter()"
@@ -37,18 +37,20 @@
         <button ng-click="removeDoneTodo()">完了アイテムを全て削除</button>
       </div>
 
-      <li class="todo-item" ng-repeat="todo in todos | filter:currentFilter"
-          ng-class="{done: todo.done, editing: todo == editing}">
-        <form name="todoForm" ng-submit="doneEdit(todoForm)">
-          <input type="checkbox" ng-model="todo.done">
-          <span ng-dblclick="editTodo(todo)" class="todo-title" ng-hide="todo == editing">
-            {{ todo.title }}</span>
-          <input type="text" required ng-model="todo.title" my-select="todo == editing"
-                 ng-show="todo == editing" ng-blur="doneEdit(todoForm)">
-          <button type="reset" ng-if="todo != editing" ng-click="removeTodo(todo)">削除</button>
-        </form>
-      </li>
-      
+      <ul ng-controller="TodoListController">
+        <li class="todo-item"
+            ng-repeat="todo in todoList | filter:currentFilter"
+            ng-class="{done: todo.done, editing: todo == editing}">
+          <form name="todoForm" ng-submit="doneEdit(todoForm)">
+            <input type="checkbox" ng-model="todo.done">
+            <span ng-dblclick="editTodo(todo)" class="todo-title" ng-hide="todo == editing">
+              {{ todo.title }}</span>
+            <input type="text" required ng-model="todo.title" my-select="todo == editing"
+                   ng-show="todo == editing" ng-blur="doneEdit(todoForm)">
+            <button type="reset" ng-if="todo != editing" ng-click="removeTodo(todo)">削除</button>
+          </form>
+        </li>
+      </ul>
     </div>
   </body>
 </html>

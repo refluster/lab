@@ -1,75 +1,124 @@
 angular.module('App', [])
-	.controller('MainController', ['$scope', '$filter', function ($scope, $filter) {
+	.service('todos', ['$rootScope', '$filter', function($scope, $filter) {
+		var list = [];
 		var where = $filter('filter');
 
-		$scope.todos = [];
-		$scope.newTitle = '';
+		$scope.$watch(function () {
+			return list;
+		}, function (value) {
+			$scope.$broadcast('change:list', value);
+		}, true);
+		
+		var done = {done: true};
+		var remaining = {done: false};
 
-		$scope.filter = {
-			done: {done: true},
-			remaining: {done: false}};
-		$scope.currentFilter = null;
+		this.filter = {
+			done: done,
+			remaining: remaining
+		};
 
-		$scope.addTodo = function () {
-			$scope.todos.push({
-				title: $scope.newTitle,
+		this.getDone = function() {
+			return where(list, done);
+		};
+
+		this.getRemaining = function() {
+			return where(list, remaining);
+		};
+
+		this.add = function(title) {
+			list.push({
+				title: title,
 				done: false
 			});
+		};
+
+		this.remove = function(_todo) {
+			list = where(list, function(todo) {
+				return todo !== _todo;
+			});
+		};
+
+		this.removeDone = function() {
+			list = where(list, remaining);
+		};
+
+		this.changeState = function(state) {
+			angular.forEach(list, function(todo) {
+				todo.done = state;
+			});
+		};
+	}])
+
+	.controller('RegisterController', ['$scope', 'todos', function($scope, todos) {
+		$scope.newTitle = '';
+
+		$scope.addTodo = function() {
+			todos.add($scope.newTitle);
 			$scope.newTitle = '';
+		};
+	}])
+
+	.controller('ToolbarController', ['$scope', 'todos', function($scope, todos) {
+		$scope.filter = todos.filter
+
+		$scope.$on('change:list', function(e, list) {
+			$scope.allCount = list.length;
+			$scope.doneCount = todos.getDone().length;
+			$scope.remainingCount = $scope.allCount - $scope.doneCount;
+		});
+
+		$scope.checkAll = function() {
+			todos.changeState(!!$scope.remainingCount);
 		};
 		
 		$scope.changeFilter = function(filter) {
-			$scope.currentFilter = filter;
+			$scope.$emit('change:filter', filter);
 		};
 
-		$scope.$watch('todos', function(todos) {
-			$scope.allCount = todos.length;
-			$scope.doneCount = where(todos, $scope.filter.done).length;
-			$scope.remainingCount = $scope.allCount - $scope.doneCount;
-		}, true);
+		$scope.removeDoneTodo = function() {
+			todos.removeDone();
+		};
+	}])
 
-
-		var originalTitle;     // todo contents before editing
-		$scope.editing = null; // todo model on editing mode
+	.controller('TodoListController', ['$scope', 'todos', function ($scope, todos) {
+		$scope.$on('change:list', function (e, list) {
+			$scope.todoList = list;
+		});
 		
-		$scope.editTodo = function(todo) {
+		var originalTitle;
+		
+		$scope.editing = null;
+		
+		$scope.editTodo = function (todo) {
 			originalTitle = todo.title;
 			$scope.editing = todo;
 		};
-
-		$scope.doneEdit = function(todoForm) {
+		
+		$scope.doneEdit = function (todoForm) {
 			if (todoForm.$invalid) {
 				$scope.editing.title = originalTitle;
 			}
 			$scope.editing = originalTitle = null;
 		};
-
-		$scope.checkAll = function() {
-			var state = !!$scope.remaininigCount;
-			
-			angular.forEach($scope.todos, function(todo) {
-				todo.done = state;
-			});
+		
+		$scope.removeTodo = function (todo) {
+			todos.remove(todo);
 		};
+	}])
 
-		$scope.removeDoneTodo = function() {
-			$scope.todos = where($scope.todos, $scope.filter.remaining);
-		};
-
-		$scope.removeTodo = function(currentTodo) {
-			$scope.todos = where($scope.todos, function(todo) {
-				return todo != currentTodo;
-			});
-		};
+	.controller('MainController', ['$scope', 'todos', function($scope, todo) {
+		$scope.currentFilter = null;
+		
+		$scope.$on('change:filter', function(e, filter) {
+			$scope.currentFilter = filter;
+		});
 	}])
 
 	.directive('mySelect', [function () {
 		return function (scope, $el, attrs) {
-			// scope - 現在の $scope オブジェクト
-			// $el   - jqLite オブジェクト(jQuery ライクオブジェクト)
-			//         jQuery 使用時なら jQuery オブジェクト
-			// attrs - DOM 属性のハッシュ(属性名は正規化されている)
-			
+			// scope - current scope object
+			// $el   - jqLite or jQuery object
+			// attrs - hash of DOM attribute
 			scope.$watch(attrs.mySelect, function (val) {
 				if (val) {
 					$el[0].select();
