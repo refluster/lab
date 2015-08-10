@@ -20,13 +20,24 @@
       
       <div>
         <button>全て完了/未了</button>
-        <button class="active">全部 <span>{{ todos.length }}</span></button>
-        <button>未了 <span>2</span></button>
-        <button>完了 <span>1</span></button>
+
+        <button ng-click="changeFilter()"
+                ng-class="{active: !currentFilter}">
+          全部
+          <span>{{ todos.length }}</span></button>
+        <button ng-click="changeFilter(filter.remaining)"
+                ng-class="{active: currentFilter == filter.remaining}">
+          未了
+          <span>2</span></button>
+        <button ng-click="changeFilter(filter.done)"
+                ng-class="{active: currentFilter == filter.done}">
+          完了
+          <span>1</span></button>
+
         <button>完了アイテムを全て削除</button>
       </div>
 
-      <li class="todo-item" ng-repeat="todo in todos"
+      <li class="todo-item" ng-repeat="todo in todos | filter:currentFilter"
           ng-class="{done: todo.done}">
         <form>
           <input type="checkbox" ng-model="todo.done">

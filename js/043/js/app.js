@@ -4,6 +4,11 @@ angular.module('App', [])
 		$scope.todos = [];
 		$scope.newTitle = '';
 
+		$scope.filter = {
+			done: {done: true},
+			remaining: {done: false}};
+		$scope.currentFilter = null;
+
 		$scope.addTodo = function () {
 			$scope.todos.push({
 				title: $scope.newTitle,
@@ -12,6 +17,9 @@ angular.module('App', [])
 			$scope.newTitle = '';
 		};
 		
+		$scope.changeFilter = function(filter) {
+			$scope.currentFilter = filter;
+		};
 	}]);
 
 
