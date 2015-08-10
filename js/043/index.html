@@ -24,15 +24,15 @@
         <button ng-click="changeFilter()"
                 ng-class="{active: !currentFilter}">
           全部
-          <span>{{ todos.length }}</span></button>
+          <span>{{ allCount }}</span></button>
         <button ng-click="changeFilter(filter.remaining)"
                 ng-class="{active: currentFilter == filter.remaining}">
           未了
-          <span>2</span></button>
+          <span>{{ doneCount }}</span></button>
         <button ng-click="changeFilter(filter.done)"
                 ng-class="{active: currentFilter == filter.done}">
           完了
-          <span>1</span></button>
+          <span>{{ remainingCount }}</span></button>
 
         <button>完了アイテムを全て削除</button>
       </div>
