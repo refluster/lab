@@ -2,13 +2,14 @@ angular.module('App', [])
 	.controller('MainController', ['$scope', function ($scope) {
 
 		$scope.todos = [];
+		$scope.newTitle = '';
 
 		$scope.addTodo = function () {
-			console.log('hoge');
 			$scope.todos.push({
-				title: Math.random(),
+				title: $scope.newTitle,
 				done: false
 			});
+			$scope.newTitle = '';
 		};
 		
 	}]);
