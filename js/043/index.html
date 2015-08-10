@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>Todo アプリ</title>
+  </head>
+  <body ng-app="App">
+    <div ng-controller="MainController">
+
+      <!--
+          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script>
+          -->
+      <script src="js/angular.min.js"></script>
+      <script src="js/app.js"></script>
+
+      <form ng-submit="addTodo()">
+        <input type="text" required placeholder="新しい要件を入力">
+        <button type="submit">追加</button>
+      </form>
+      
+      <div>
+        <button>全て完了/未了</button>
+        <button class="active">全部 <span>{{ todos.length }}</span></button>
+        <button>未了 <span>2</span></button>
+        <button>完了 <span>1</span></button>
+        <button>完了アイテムを全て削除</button>
+      </div>
+
+      <li class="todo-item" ng-repeat="todo in todos">
+        <form>
+          <input type="checkbox">
+          <span class="todo-title">{{ todo.title }}</span>
+          <button type="reset">削除</button>
+        </form>
+      </li>
+      
+      <li class="todo-item done">
+        <form>
+          <input type="checkbox" checked>
+          <span class="todo-title">完了した ToDo</span>
+          <button type="reset">削除</button>
+        </form>
+      </li>
+
+      <li class="todo-item editing">
+        <form>
+          <input type="checkbox">
+          <input type="text" required value="編集中の ToDo">
+        </form>
+      </li>
+    </div>
+  </body>
+</html>
