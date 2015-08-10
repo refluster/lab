@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>Todo アプリ</title>
+    <title>043: todo app</title>
   </head>
   <body ng-app="App">
     <div ng-controller="MainController">
@@ -14,27 +14,27 @@
       <script src="js/app.js"></script>
 
       <form ng-controller="RegisterController" ng-submit="addTodo()">
-        <input type="text" required placeholder="新しい要件を入力" ng-model="newTitle">
-        <button type="submit">追加</button>
+        <input type="text" required placeholder="enter new item" ng-model="newTitle">
+        <button type="submit">add</button>
       </form>
       
       <div ng-controller="ToolbarController">
-        <button ng-click="checkAll()">全て完了/未了</button>
+        <button ng-click="checkAll()">done/undone all </button>
 
         <button ng-click="changeFilter()"
                 ng-class="{active: !currentFilter}">
-          全部
+          all
           <span>{{ allCount }}</span></button>
         <button ng-click="changeFilter(filter.remaining)"
                 ng-class="{active: currentFilter == filter.remaining}">
-          未了
+          undone
           <span>{{ doneCount }}</span></button>
         <button ng-click="changeFilter(filter.done)"
                 ng-class="{active: currentFilter == filter.done}">
-          完了
+          done
           <span>{{ remainingCount }}</span></button>
 
-        <button ng-click="removeDoneTodo()">完了アイテムを全て削除</button>
+        <button ng-click="removeDoneTodo()">remove done items</button>
       </div>
 
       <ul ng-controller="TodoListController">
@@ -47,7 +47,7 @@
               {{ todo.title }}</span>
             <input type="text" required ng-model="todo.title" my-select="todo == editing"
                    ng-show="todo == editing" ng-blur="doneEdit(todoForm)">
-            <button type="reset" ng-if="todo != editing" ng-click="removeTodo(todo)">削除</button>
+            <button type="reset" ng-if="todo != editing" ng-click="removeTodo(todo)">remove</button>
           </form>
         </li>
       </ul>
