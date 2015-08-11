@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head lang="ja">
+  <head lang="ja">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>WebRTC</title>
-    <link rel="stylesheet" href="style.css">
+    <title>044: WebRTC demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="peer.js"></script>
-    <script type="text/javascript" src="script.js"></script>
-</head>
-<body>
-<div class="videosContainer">
-    <video id="myStream" class="video" autoplay muted="true"></video>
-</div>
-</body>
+    <script type="text/javascript" src="js/peer.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+  </head>
+  <body>
+    <div id="header"><h2 class="title">WebRTC demo</h2></div>
+    <div id="contents" ng-controller="MainController">
+      <ul class="chapter-toc">
+        <li>WebRTC by PeerJS</li>
+        <li>Skyway as a STUN/signaling server</li>
+      </ul>
+      
+      <div class="videosContainer">
+        <video id="myStream" class="video" autoplay muted="true"></video>
+      </div>
+    </div>
+  </body>
 </html>
