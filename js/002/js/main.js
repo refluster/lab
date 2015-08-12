@@ -161,12 +161,14 @@ Apl.prototype.hDown = function(e) {
 			this.dragItem = itemIdx;
 		}
 	}
+	e.preventDefault();
 };
 Apl.prototype.hUp = function(e) {
 	if (this.dragging) {
 		this.dragging = false;
 		this.dragItem = null;
 	}
+	e.preventDefault();
 };
 Apl.prototype.hMove = function(e) {
 	if (this.dragging) {
@@ -179,6 +181,7 @@ Apl.prototype.hMove = function(e) {
 			this.draw();
 		}
 	}
+	e.preventDefault();
 };
 
 $(function() {
