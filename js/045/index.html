@@ -5,13 +5,34 @@
     <title>045: pic manager demo</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <style type="text/css">
+      .pic-list-wide {
+        font-size: 0px;
+        line-height: 0px;
+      }
+      .pic-list-narrow {
+        line-height: 0px;
+        font-size: 0px;
+      }
+      .pic-list-wide div {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        background-size: cover;
+      }
+      .pic-list-narrow div {
+        width: 80px;
+        height: 80px;
+        display: inline-block;
+        background-size: cover;
+      }
+    </style>
   </head>
   <body ng-app="App">
     <div id="header"><h2 class="title">pic manager demo</h2></div>
     <div id="contents">
       <ul class="chapter-toc">
         <li>AngularJS as a web app framework</li>
-        <li>bootstrap for styling</li>
         <li>manage and view picture</li>
       </ul>
       <!--
@@ -20,6 +41,41 @@
       <script src="js/angular.min.js"></script>
       <script src="js/angular-route.min.js"></script>
       <script src="js/app.js"></script>
+
+      <div ng-view>
+      </div>
+
+      <script type="text/ng-template" id="tmpl-list-wide">
+        <h4 class="date">2015/08/12</h4>
+        <div class="pic-list-wide">
+          <a href="#/list-narrow"><div style="background-image: url(img/build000-80.jpg)"></div></a>
+          <a href="#/list-narrow"><div style="background-image: url(img/build001-80.jpg)"></div></a>
+          <a href="#/list-narrow"><div style="background-image: url(img/build002-80.jpg)"></div></a>
+          <a href="#/list-narrow"><div style="background-image: url(img/build003-80.jpg)"></div></a>
+          <a href="#/list-narrow"><div style="background-image: url(img/build004-80.jpg)"></div></a>
+          <a href="#/list-narrow"><div style="background-image: url(img/build005-80.jpg)"></div></a>
+          <a href="#/list-narrow"><div style="background-image: url(img/build006-80.jpg)"></div></a>
+          <a href="#/list-narrow"><div style="background-image: url(img/build007-80.jpg)"></div></a>
+        </div>
+      </script>
+      
+      <script type="text/ng-template" id="tmpl-list-narrow">
+        <h4 class="date">2015/08/12</h4>
+        <div class="pic-list-narrow">
+          <a href="#/show/build000.jpg"><div style="background-image: url(img/build000-80.jpg)"></div></a>
+          <a href="#/show/build001.jpg"><div style="background-image: url(img/build001-80.jpg)"></div></a>
+          <a href="#/show/build002.jpg"><div style="background-image: url(img/build002-80.jpg)"></div></a>
+          <a href="#/show/build003.jpg"><div style="background-image: url(img/build003-80.jpg)"></div></a>
+          <a href="#/show/build004.jpg"><div style="background-image: url(img/build004-80.jpg)"></div></a>
+          <a href="#/show/build005.jpg"><div style="background-image: url(img/build005-80.jpg)"></div></a>
+          <a href="#/show/build006.jpg"><div style="background-image: url(img/build006-80.jpg)"></div></a>
+          <a href="#/show/build007.jpg"><div style="background-image: url(img/build007-80.jpg)"></div></a>
+        </div>
+      </script>
+      
+      <script type="text/ng-template" id="tmpl-show">
+        <img src="img/build000.jpg" style="width: 100%">
+      </script>
 
     </div>
   </body>
