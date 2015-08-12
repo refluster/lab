@@ -54,11 +54,15 @@ app.service('list', ['$rootScope', '$filter', function($scope, $filter) {
 		for (var i = 0; i <= 15; i++) {
 			this.list[1].file.push(['park' + pad(i, 3) + '.jpg', 'park' + pad(i, 3) + '-80.jpg']);
 		}
-	};
+	}.bind(this);
 
 	this.get = function() {
 		return this.list;
-	};
+	}.bind(this);
+}]);
+
+app.controller('MainController', ['$scope', 'list', function($scope, list) {
+	list.load();
 }]);
 
 app.controller('ListWideController', ['$scope', 'list', function($scope, list) {
@@ -68,14 +72,12 @@ app.controller('ListWideController', ['$scope', 'list', function($scope, list) {
     });
 */
 
-	list.load();
 	$scope.pictureList = list.get();
 }]);
 
 app.controller('ListNarrowController', ['$scope', 'list', function($scope, list) {
-	list.load();
 	$scope.pictureList = list.get();
 }]);
 
-app.controller('ShowController', [function() {
+app.controller('ShowController', ['$scope', '$routeParams', 'list', function() {
 }]);
