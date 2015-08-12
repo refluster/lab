@@ -6,21 +6,20 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
     <style type="text/css">
+      .picture-list {
+        font-size: 0px;
+        line-height: 0px;
+      }
       .pic-list-wide {
-        font-size: 0px;
-        line-height: 0px;
+        margin-bottom: 16px;
       }
-      .pic-list-narrow {
-        line-height: 0px;
-        font-size: 0px;
-      }
-      .pic-list-wide div {
+      .pic-list-wide .sumb-nail {
         width: 30px;
         height: 30px;
         display: inline-block;
         background-size: cover;
       }
-      .pic-list-narrow div {
+      .pic-list-narrow .sumb-nail {
         width: 80px;
         height: 80px;
         display: inline-block;
@@ -46,25 +45,26 @@
       </div>
 
       <script type="text/ng-template" id="tmpl-list-wide">
-        <h4 class="date">2015/08/12</h4>
-
-        <div class="pic-list-wide">
-          <a ng-repeat="pict in pictureList[0].file" href="#/list-narrow">
-            <div style="background-image: url(img/{{pict[1]}})"></div></a>
+        <div ng-repeat="plist in pictureList" class="pic-list-wide">
+          <h4 class="date">{{plist.date}}</h4>
+          <div class="picture-list">
+            <a ng-repeat="pict in plist.file" href="#/list-narrow">
+              <div class="sumb-nail" style="background-image: url(img/{{pict[1]}})"></div></a>
+          </div>
         </div>
       </script>
       
       <script type="text/ng-template" id="tmpl-list-narrow">
         <h4 class="date">2015/08/12</h4>
         <div class="pic-list-narrow">
-          <a href="#/show/build000.jpg"><div style="background-image: url(img/build000-80.jpg)"></div></a>
-          <a href="#/show/build001.jpg"><div style="background-image: url(img/build001-80.jpg)"></div></a>
-          <a href="#/show/build002.jpg"><div style="background-image: url(img/build002-80.jpg)"></div></a>
-          <a href="#/show/build003.jpg"><div style="background-image: url(img/build003-80.jpg)"></div></a>
-          <a href="#/show/build004.jpg"><div style="background-image: url(img/build004-80.jpg)"></div></a>
-          <a href="#/show/build005.jpg"><div style="background-image: url(img/build005-80.jpg)"></div></a>
-          <a href="#/show/build006.jpg"><div style="background-image: url(img/build006-80.jpg)"></div></a>
-          <a href="#/show/build007.jpg"><div style="background-image: url(img/build007-80.jpg)"></div></a>
+          <a href="#/show/build000.jpg"><div class="sumb-nail" style="background-image: url(img/build000-80.jpg)"></div></a>
+          <a href="#/show/build001.jpg"><div class="sumb-nail" style="background-image: url(img/build001-80.jpg)"></div></a>
+          <a href="#/show/build002.jpg"><div class="sumb-nail" style="background-image: url(img/build002-80.jpg)"></div></a>
+          <a href="#/show/build003.jpg"><div class="sumb-nail" style="background-image: url(img/build003-80.jpg)"></div></a>
+          <a href="#/show/build004.jpg"><div class="sumb-nail" style="background-image: url(img/build004-80.jpg)"></div></a>
+          <a href="#/show/build005.jpg"><div class="sumb-nail" style="background-image: url(img/build005-80.jpg)"></div></a>
+          <a href="#/show/build006.jpg"><div class="sumb-nail" style="background-image: url(img/build006-80.jpg)"></div></a>
+          <a href="#/show/build007.jpg"><div class="sumb-nail" style="background-image: url(img/build007-80.jpg)"></div></a>
         </div>
       </script>
       
