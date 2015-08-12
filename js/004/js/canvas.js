@@ -18,9 +18,9 @@ var canvasManager = {}; // namespace
         this.lineWidth = 1;
         
 	// set the position of the canvas on the browser
-	var $cvdiv = $('#cvdiv1');
-	this.cvpos.x = $cvdiv.offset().left;
-	this.cvpos.y = $cvdiv.offset().top;
+	var $canvas = $('#cv1');
+	this.cvpos.x = $canvas.offset().left;
+	this.cvpos.y = $canvas.offset().top;
 
 	/* init process
 	 * return: none

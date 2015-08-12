@@ -18,30 +18,22 @@ var panelApl = {}; // namespace
      * return: none
      */
     panelApl.start = function() {
-		var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
-
+		var $canvas = $('#cv1'); // main Canvas¤Îdiv
+		
 		// add mouse events to the canvas
-		$cvdiv.mousedown(panelApl.cvmsDown);
-		$cvdiv.mouseup(panelApl.cvmsUp);
-		$cvdiv.mouseleave(panelApl.cvmsUp);
-		$cvdiv.mousemove(panelApl.cvmsMove);
+		$canvas.mousedown(panelApl.cvmsDown);
+		$canvas.mouseup(panelApl.cvmsUp);
+		$canvas.mouseleave(panelApl.cvmsUp);
+		$canvas.mousemove(panelApl.cvmsMove);
 		// add touch events to the canvas
-		$cvdiv.bind("touchstart", panelApl.cvmsDown);
-		$cvdiv.bind("touchend", panelApl.cvmsUp);
-		$cvdiv.bind("touchend", panelApl.cvmsUp);
-		$cvdiv.bind("touchmove", panelApl.cvmsMove);
+		$canvas.bind("touchstart", panelApl.cvmsDown);
+		$canvas.bind("touchend", panelApl.cvmsUp);
+		$canvas.bind("touchend", panelApl.cvmsUp);
+		$canvas.bind("touchmove", panelApl.cvmsMove);
 		// init canvas
 		panelApl.canv.init();
 			
 		panelApl.gamestart = true;
-    };
-
-    /* display message
-     * {string} msg: displayed message
-     * return: none
-     */
-    panelApl.showmsg = function(msg) {
-		$('#msg1').html(msg);
     };
 
     /* mousedown process
@@ -54,7 +46,6 @@ var panelApl = {}; // namespace
 		var cy = evt.pageY - panelApl.canv.cvpos.y;
 		panelApl.drag.now = true;
 		panelApl.canv.setPos({x:cx, y:cy});
-        panelApl.showmsg("drawing");
 		return false;
     };
     /* mouseup/mouseleave process
@@ -72,13 +63,7 @@ var panelApl = {}; // namespace
 			if (cy > panelApl.canv.area.h) cy = panelApl.canv.area.h;
 			
 			panelApl.drag.now = false;
-			if (evt.type == 'mouseleave'){
-				panelApl.showmsg('dropped due to out of canvas');
-			} else if (panelApl.gamestart) {
-				panelApl.showmsg('movable');
-			}
 		}
-        panelApl.showmsg("drawable");
     };
     /* mousemove process
      * {event} evt: evnet obj
