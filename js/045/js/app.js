@@ -72,7 +72,9 @@ app.controller('ListWideController', ['$scope', 'list', function($scope, list) {
 	$scope.pictureList = list.get();
 }]);
 
-app.controller('ListNarrowController', [function() {
+app.controller('ListNarrowController', ['$scope', 'list', function($scope, list) {
+	list.load();
+	$scope.pictureList = list.get();
 }]);
 
 app.controller('ShowController', [function() {
