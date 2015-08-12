@@ -10,7 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 			templateUrl: 'tmpl-list-narrow',
 			controller: 'ListNarrowController'
 		})
-		.when('/show/:id', {
+		.when('/show/:file', {
 			templateUrl: 'tmpl-show',
 			controller: 'ShowController'
 		})
@@ -79,5 +79,7 @@ app.controller('ListNarrowController', ['$scope', 'list', function($scope, list)
 	$scope.pictureList = list.get();
 }]);
 
-app.controller('ShowController', ['$scope', '$routeParams', 'list', function() {
+app.controller('ShowController', ['$scope', '$routeParams', 'list', function($scope, $params, sheets) {
+	$scope.file = $params.file;
+	
 }]);
