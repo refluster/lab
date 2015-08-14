@@ -19,14 +19,14 @@ app.config(['$routeProvider', function ($routeProvider) {
 		});
 }]);
 
-app.service('list', ['$rootScope', '$filter', function($scope, $filter) {
+app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter, $http) {
 	this.list = [];
 
-    $scope.$watch(function () {
-        return this.list;
-    }.bind(this), function (value) {
-        $scope.$broadcast('change:list', value);
-    }.bind(this), true);
+	$scope.$watch(function () {
+		return this.list;
+	}.bind(this), function (value) {
+		$scope.$broadcast('change:list', value);
+	}.bind(this), true);
 	
 	function pad(n, len) {
 		s = n.toString();
@@ -54,6 +54,10 @@ app.service('list', ['$rootScope', '$filter', function($scope, $filter) {
 		for (var i = 0; i <= 15; i++) {
 			this.list[1].file.push(['park' + pad(i, 3) + '.jpg', 'park' + pad(i, 3) + '-80.jpg']);
 		}
+
+		$http.get("db.json").success(function(db) {
+			// insert db into list
+		}.bind(this));
 	}.bind(this);
 
 	this.get = function() {
@@ -66,11 +70,9 @@ app.controller('MainController', ['$scope', 'list', function($scope, list) {
 }]);
 
 app.controller('ListWideController', ['$scope', 'list', function($scope, list) {
-/*
-    $scope.$on('change:list', function (e, list) {
+	$scope.$on('change:list', function (e, list) {
 		$scope.pictureList = list;
-    });
-*/
+	});
 
 	$scope.pictureList = list.get();
 }]);
@@ -81,5 +83,5 @@ app.controller('ListNarrowController', ['$scope', 'list', function($scope, list)
 
 app.controller('ShowController', ['$scope', '$routeParams', 'list', function($scope, $params, sheets) {
 	$scope.file = $params.file;
-	
 }]);
+
