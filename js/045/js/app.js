@@ -37,31 +37,18 @@ app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter,
 	}
 	
 	this.load = function() {
-		this.list = {
-			'2015/08/12': [],
-			'2015/08/13': [],
-			'2015/08/10': [],
-			'2015/08/18': [],
-		};
-		
-		for (var i = 0; i <= 6; i++) {
-			this.list['2015/08/12'].push({fileOrig: 'build' + pad(i, 3) + '.jpg',
-										  fileLarge: 'build' + pad(i, 3) + '.jpg',
-										  fileThumb: 'build' + pad(i, 3) + '-80.jpg'});
-		}
-		for (var i = 0; i <= 10; i++) {
-			this.list['2015/08/13'].push({fileOrig: 'drink' + pad(i, 3) + '.jpg',
-										  fileLarge: 'drink' + pad(i, 3) + '.jpg',
-										  fileThumb: 'drink' + pad(i, 3) + '-80.jpg'});
-		}
-		for (var i = 0; i <= 15; i++) {
-			this.list['2015/08/13'].push({fileOrig: 'park' + pad(i, 3) + '.jpg',
-										  fileLarge: 'park' + pad(i, 3) + '.jpg',
-										  fileThumb: 'park' + pad(i, 3) + '-80.jpg'});
-		}
-		
+		this.list = {};
 		$http.get("db.json").success(function(db) {
 			// insert db into list
+			angular.forEach(db, function(v) {
+				if (this.list[v.date] == undefined) {
+					this.list[v.date] = [];
+				}
+				this.list[v.date].push({
+					fileOrig: v.fileOrig,
+					fileLarge: v.fileLarge,
+					fileThumb: v.fileThumb});
+			}.bind(this));
 		}.bind(this));
 	}.bind(this);
 
