@@ -61,9 +61,9 @@ def main()
   end
 
   for i in 0..14 do
-    row = [sprintf("\"fileOrig\":\"room%03d.jpg\"", i),
-           sprintf("\"fileLarge\":\"room%03d.jpg\"", i),
-           sprintf("\"fileThumb\":\"room%03d-80.jpg\"", i),
+    row = [sprintf("\"fileOrig\":\"img/room%03d.jpg\"", i),
+           sprintf("\"fileLarge\":\"img/room%03d.jpg\"", i),
+           sprintf("\"fileThumb\":\"img/room%03d-80.jpg\"", i),
            sprintf("\"date\":\"%s\"", "2015-08-15")]
     rows.push "{" + row.join(',') + "}"
   end
