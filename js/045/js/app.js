@@ -58,22 +58,18 @@ app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter,
 }]);
 
 app.controller('MainController', ['$scope', 'list', function($scope, list) {
+	$scope.$on('change:list', function (e, list) {
+		$scope.pictureList = list;
+	});
+
 	list.load();
 }]);
 
 app.controller('ListWideController', ['$scope', 'list', function($scope, list) {
-	$scope.$on('change:list', function (e, list) {
-		$scope.pictureList = list;
-	});
-
 	$scope.pictureList = list.get();
 }]);
 
 app.controller('ListNarrowController', ['$scope', 'list', function($scope, list) {
-	$scope.$on('change:list', function (e, list) {
-		$scope.pictureList = list;
-	});
-
 	$scope.pictureList = list.get();
 }]);
 
