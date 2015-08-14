@@ -49,7 +49,7 @@
           <h4 class="date">{{date}}</h4>
           <div class="picture-list">
             <a ng-repeat="file in files" href="#/list-narrow">
-              <div class="sumb-nail" style="background-image: url(img/{{file[1]}})"></div></a>
+              <div class="sumb-nail" style="background-image: url(img/{{file.fileThumb}})"></div></a>
           </div>
         </div>
       </script>
@@ -58,8 +58,8 @@
         <div ng-repeat="(date, files) in pictureList" class="pic-list-narrow">
           <h4 class="date">{{date}}</h4>
           <div class="picture-list">
-            <a ng-repeat="file in files" href="#/show/{{file[0]}}">
-              <div class="sumb-nail" style="background-image: url(img/{{file[1]}})"></div></a>
+            <a ng-repeat="file in files" href="#/show/{{file.fileLarge}}">
+              <div class="sumb-nail" style="background-image: url(img/{{file.fileThumb}})"></div></a>
           </div>
         </div>
       </script>

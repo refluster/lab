@@ -45,13 +45,19 @@ app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter,
 		};
 		
 		for (var i = 0; i <= 6; i++) {
-			this.list['2015/08/12'].push(['build' + pad(i, 3) + '.jpg', 'build' + pad(i, 3) + '-80.jpg']);
+			this.list['2015/08/12'].push({fileOrig: 'build' + pad(i, 3) + '.jpg',
+										  fileLarge: 'build' + pad(i, 3) + '.jpg',
+										  fileThumb: 'build' + pad(i, 3) + '-80.jpg'});
 		}
 		for (var i = 0; i <= 10; i++) {
-			this.list['2015/08/13'].push(['drink' + pad(i, 3) + '.jpg', 'drink' + pad(i, 3) + '-80.jpg']);
+			this.list['2015/08/13'].push({fileOrig: 'drink' + pad(i, 3) + '.jpg',
+										  fileLarge: 'drink' + pad(i, 3) + '.jpg',
+										  fileThumb: 'drink' + pad(i, 3) + '-80.jpg'});
 		}
 		for (var i = 0; i <= 15; i++) {
-			this.list['2015/08/13'].push(['park' + pad(i, 3) + '.jpg', 'park' + pad(i, 3) + '-80.jpg']);
+			this.list['2015/08/13'].push({fileOrig: 'park' + pad(i, 3) + '.jpg',
+										  fileLarge: 'park' + pad(i, 3) + '.jpg',
+										  fileThumb: 'park' + pad(i, 3) + '-80.jpg'});
 		}
 		
 		$http.get("db.json").success(function(db) {
