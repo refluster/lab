@@ -45,21 +45,21 @@
       </div>
 
       <script type="text/ng-template" id="tmpl-list-wide">
-        <div ng-repeat="plist in pictureList" class="pic-list-wide">
-          <h4 class="date">{{plist.date}}</h4>
+        <div ng-repeat="(date, files) in pictureList" class="pic-list-wide">
+          <h4 class="date">{{date}}</h4>
           <div class="picture-list">
-            <a ng-repeat="pict in plist.file" href="#/list-narrow">
-              <div class="sumb-nail" style="background-image: url(img/{{pict[1]}})"></div></a>
+            <a ng-repeat="file in files" href="#/list-narrow">
+              <div class="sumb-nail" style="background-image: url(img/{{file[1]}})"></div></a>
           </div>
         </div>
       </script>
       
       <script type="text/ng-template" id="tmpl-list-narrow">
-        <div ng-repeat="plist in pictureList" class="pic-list-narrow">
-          <h4 class="date">{{plist.date}}</h4>
+        <div ng-repeat="(date, files) in pictureList" class="pic-list-narrow">
+          <h4 class="date">{{date}}</h4>
           <div class="picture-list">
-            <a ng-repeat="pict in plist.file" href="#/show/{{pict[0]}}">
-              <div class="sumb-nail" style="background-image: url(img/{{pict[1]}})"></div></a>
+            <a ng-repeat="file in files" href="#/show/{{file[0]}}">
+              <div class="sumb-nail" style="background-image: url(img/{{file[1]}})"></div></a>
           </div>
         </div>
       </script>

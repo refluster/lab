@@ -37,24 +37,23 @@ app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter,
 	}
 	
 	this.load = function() {
-		this.list = [{
-			date: '2015/08/12',
-			file: []
-		}, {
-			date: '2015/08/13',
-			file: []
-		}];
-
+		this.list = {
+			'2015/08/12': [],
+			'2015/08/13': [],
+			'2015/08/10': [],
+			'2015/08/18': [],
+		};
+		
 		for (var i = 0; i <= 6; i++) {
-			this.list[0].file.push(['build' + pad(i, 3) + '.jpg', 'build' + pad(i, 3) + '-80.jpg']);
+			this.list['2015/08/12'].push(['build' + pad(i, 3) + '.jpg', 'build' + pad(i, 3) + '-80.jpg']);
 		}
 		for (var i = 0; i <= 10; i++) {
-			this.list[1].file.push(['drink' + pad(i, 3) + '.jpg', 'drink' + pad(i, 3) + '-80.jpg']);
+			this.list['2015/08/13'].push(['drink' + pad(i, 3) + '.jpg', 'drink' + pad(i, 3) + '-80.jpg']);
 		}
 		for (var i = 0; i <= 15; i++) {
-			this.list[1].file.push(['park' + pad(i, 3) + '.jpg', 'park' + pad(i, 3) + '-80.jpg']);
+			this.list['2015/08/13'].push(['park' + pad(i, 3) + '.jpg', 'park' + pad(i, 3) + '-80.jpg']);
 		}
-
+		
 		$http.get("db.json").success(function(db) {
 			// insert db into list
 		}.bind(this));
@@ -78,6 +77,10 @@ app.controller('ListWideController', ['$scope', 'list', function($scope, list) {
 }]);
 
 app.controller('ListNarrowController', ['$scope', 'list', function($scope, list) {
+	$scope.$on('change:list', function (e, list) {
+		$scope.pictureList = list;
+	});
+
 	$scope.pictureList = list.get();
 }]);
 
