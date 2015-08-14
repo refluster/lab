@@ -10,7 +10,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 			templateUrl: 'tmpl-list-narrow',
 			controller: 'ListNarrowController'
 		})
-		.when('/show/:file', {
+		.when('/show/:file*', {
 			templateUrl: 'tmpl-show',
 			controller: 'ShowController'
 		})
