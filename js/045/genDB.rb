@@ -29,33 +29,33 @@ def main()
   rows = []
 
   for i in 0..6 do
-    row = [sprintf("\"fileOrig\":\"build%03d.jpg\"", i),
-           sprintf("\"fileLarge\":\"build%03d.jpg\"", i),
-           sprintf("\"fileThumb\":\"build%03d-80.jpg\"", i),
+    row = [sprintf("\"fileOrig\":\"img/build%03d.jpg\"", i),
+           sprintf("\"fileLarge\":\"img/build%03d.jpg\"", i),
+           sprintf("\"fileThumb\":\"img/build%03d-80.jpg\"", i),
            sprintf("\"date\":\"%s\"", "2015-08-12")]
     rows.push "{" + row.join(',') + "}"
   end
 
   for i in 0..10 do
-    row = [sprintf("\"fileOrig\":\"drink%03d.jpg\"", i),
-           sprintf("\"fileLarge\":\"drink%03d.jpg\"", i),
-           sprintf("\"fileThumb\":\"drink%03d-80.jpg\"", i),
+    row = [sprintf("\"fileOrig\":\"img/drink%03d.jpg\"", i),
+           sprintf("\"fileLarge\":\"img/drink%03d.jpg\"", i),
+           sprintf("\"fileThumb\":\"img/drink%03d-80.jpg\"", i),
            sprintf("\"date\":\"%s\"", "2015-08-13")]
     rows.push "{" + row.join(',') + "}"
   end
 
   for i in 0..15 do
-    row = [sprintf("\"fileOrig\":\"park%03d.jpg\"", i),
-           sprintf("\"fileLarge\":\"park%03d.jpg\"", i),
-           sprintf("\"fileThumb\":\"park%03d-80.jpg\"", i),
+    row = [sprintf("\"fileOrig\":\"img/park%03d.jpg\"", i),
+           sprintf("\"fileLarge\":\"img/park%03d.jpg\"", i),
+           sprintf("\"fileThumb\":\"img/park%03d-80.jpg\"", i),
            sprintf("\"date\":\"%s\"", "2015-08-13")]
     rows.push "{" + row.join(',') + "}"
   end
 
   for i in 0..7 do
-    row = [sprintf("\"fileOrig\":\"road%03d.jpg\"", i),
-           sprintf("\"fileLarge\":\"road%03d.jpg\"", i),
-           sprintf("\"fileThumb\":\"road%03d-80.jpg\"", i),
+    row = [sprintf("\"fileOrig\":\"img/road%03d.jpg\"", i),
+           sprintf("\"fileLarge\":\"img/road%03d.jpg\"", i),
+           sprintf("\"fileThumb\":\"img/road%03d-80.jpg\"", i),
            sprintf("\"date\":\"%s\"", "2015-08-15")]
     rows.push "{" + row.join(',') + "}"
   end
