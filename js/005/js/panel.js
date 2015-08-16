@@ -1,28 +1,18 @@
-/* HTML5 Canvas drag&drop
- * canvas is updated when an object is dragged by 1px
- */
 var panelApl = {}; // namespace
 
 (function($) {
-    // timer
     panelApl.timer = $.timer();
 
-    /* button process
-     * return: none
-     */
     panelApl.start = function() {
-		var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
-
 		// init canvas
 		panelApl.canv.init();
-		
         panelApl.timer.play();
     };
 
     /* body onload process */
     $(window).load(function() {
 		// get canvas's DOM element and context
-		var canvas = document.getElementById('cv1');
+		var canvas = document.getElementById('canvas');
 		if ( ! canvas || ! canvas.getContext ) { return false; }
 		var ctx = canvas.getContext("2d");
 		ctx.lineWidth = 1;
