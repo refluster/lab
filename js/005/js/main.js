@@ -5,7 +5,9 @@ var Apl = function() {
 	this.ctx.lineWidth = 1;
 	this.ctx.globalCompositeOperation = "source-over";
 	
-	this.canvas(canvas.width, canvas.height);
+	this.canvas();
+	this.canvasWidth = canvas.width;
+	this.canvasHeight = canvas.height;
 	this.draw();
 	
     this.timer = $.timer();
@@ -18,8 +20,7 @@ var Apl = function() {
     });
 	this.timer.play();
 };
-Apl.prototype.canvas = function(w, h) {
-	this.area = {w:w, h:h};  // the area
+Apl.prototype.canvas = function() {
 	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
 	this.prevPos = {x:0, y:0}; // previous position of the cursor
 	this.color = 'black';
@@ -51,7 +52,7 @@ Apl.prototype.canvas = function(w, h) {
 	});
 };
 Apl.prototype.blank = function() {
-	this.ctx.clearRect(0, 0, this.area.w, this.area.h);
+	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 Apl.prototype.draw = function() {
 	this.blank();
@@ -73,16 +74,16 @@ Apl.prototype.moveObj = function() {
 	for (var i = 0; i < this.ball.length; i++) {
 		this.ball[i].pos.x += this.ball[i].speed.x;
 		this.ball[i].pos.y += this.ball[i].speed.y;
-		if (this.ball[i].pos.x + this.radius > this.area.w) {
-			this.ball[i].pos.x = this.area.w - (this.ball[i].pos.x + this.radius - this.area.w) - this.radius;
+		if (this.ball[i].pos.x + this.radius > this.canvasWidth) {
+			this.ball[i].pos.x = this.canvasWidth - (this.ball[i].pos.x + this.radius - this.canvasWidth) - this.radius;
 			this.ball[i].speed.x = -this.ball[i].speed.x;
 		}
 		if (this.ball[i].pos.x - this.radius < 0) {
 			this.ball[i].pos.x = -(this.ball[i].pos.x - this.radius) + this.radius;
 			this.ball[i].speed.x = -this.ball[i].speed.x;
 		}
-		if (this.ball[i].pos.y + this.radius > this.area.h) {
-			this.ball[i].pos.y = this.area.h - (this.ball[i].pos.y + this.radius - this.area.h) - this.radius;
+		if (this.ball[i].pos.y + this.radius > this.canvasHeight) {
+			this.ball[i].pos.y = this.canvasHeight - (this.ball[i].pos.y + this.radius - this.canvasHeight) - this.radius;
 			this.ball[i].speed.y = -this.ball[i].speed.y;
 		}
 		if (this.ball[i].pos.y - this.radius < 0) {
