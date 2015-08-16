@@ -3,7 +3,7 @@ canvasManager = function(ctx, w, h, names) {
 	this.area = {w:w, h:h};  // the area
 	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
 	this.prevPos = {x:0, y:0}; // previous position of the cursor
-	this.color = 'black'
+	this.color = 'black';
 	this.lineWidth = 1;
 	this.PI2 = Math.PI * 2; // 2*pi
 	this.radius = 30; // raduis of balls
@@ -15,24 +15,21 @@ canvasManager = function(ctx, w, h, names) {
 
 	this.ball = [];
 
-	/* init process
-	 * return: none
-	 */
-	this.ball[0] = {
+	this.ball.push({
 		pos:{x:100, y:100},
 		speed:{x:2, y:4},
 		color:'green'
-	};
-	this.ball[1] = {
+	});
+	this.ball.push({
 		pos:{x:150, y:100},
 		speed:{x:4, y:-2},
 		color:'red'
-	};
-	this.ball[2] = {
+	});
+	this.ball.push({
 		pos:{x:200, y:100},
 		speed:{x:-4, y:2},
 		color:'blue'
-	};
+	});
 };
 
 canvasManager.prototype.blank = function() {
