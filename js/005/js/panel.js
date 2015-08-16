@@ -7,7 +7,7 @@ var Apl = function() {
 	ctx.lineWidth = 1;
 	ctx.globalCompositeOperation = "source-over";
 	
-	this.canv = new canvasManager.canv(ctx, canvas.width, canvas.height, this);
+	this.canv = new canvasManager(ctx, canvas.width, canvas.height, this);
 	this.canv.draw();
 	
     this.timer.set({
