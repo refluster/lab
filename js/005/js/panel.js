@@ -1,26 +1,26 @@
-var panelApl = {}; // namespace
-
-$(function() {
-    panelApl.timer = $.timer();
-
-	// get canvas's DOM element and context
-	var canvas = document.getElementById('canvas');
+var Apl = function() {
+    this.timer = $.timer();
+	
+	var canvas = $('#canvas')[0];
 	if ( ! canvas || ! canvas.getContext ) { return false; }
 	var ctx = canvas.getContext("2d");
 	ctx.lineWidth = 1;
 	ctx.globalCompositeOperation = "source-over";
 	
-	// display
-	panelApl.canv = new canvasManager.canv(ctx, canvas.width, canvas.height, panelApl);
-	panelApl.canv.draw();
+	this.canv = new canvasManager.canv(ctx, canvas.width, canvas.height, this);
+	this.canv.draw();
 	
-    panelApl.timer.set({
+    this.timer.set({
         action: function() {
-            panelApl.canv.moveObj();
-            panelApl.canv.draw();
-        },
+            this.canv.moveObj();
+            this.canv.draw();
+        }.bind(this),
         time: 15
     });
 	
-	panelApl.timer.play();
+	this.timer.play();
+};
+
+$(function() {
+	apl = new Apl();
 });
