@@ -31,12 +31,10 @@ canvasManager = function(ctx, w, h, names) {
 		color:'blue'
 	});
 };
-
 canvasManager.prototype.blank = function() {
 	// clear
 	this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 };
-
 canvasManager.prototype.draw = function() {
 	this.blank();
 	this.ctx.save();
@@ -53,7 +51,6 @@ canvasManager.prototype.draw = function() {
 	
 	this.ctx.restore();
 };
-
 canvasManager.prototype.moveObj = function() {
 	for (var i = 0; i < this.ball.length; i++) {
 		this.ball[i].pos.x += this.ball[i].speed.x;
@@ -76,3 +73,30 @@ canvasManager.prototype.moveObj = function() {
 		}
 	}            
 };
+
+var Apl = function() {
+    this.timer = $.timer();
+	
+	var canvas = $('#canvas')[0];
+	if ( ! canvas || ! canvas.getContext ) { return false; }
+	var ctx = canvas.getContext("2d");
+	ctx.lineWidth = 1;
+	ctx.globalCompositeOperation = "source-over";
+	
+	this.canv = new canvasManager(ctx, canvas.width, canvas.height, this);
+	this.canv.draw();
+	
+    this.timer.set({
+        action: function() {
+            this.canv.moveObj();
+            this.canv.draw();
+        }.bind(this),
+        time: 15
+    });
+	
+	this.timer.play();
+};
+
+$(function() {
+	apl = new Apl();
+});
