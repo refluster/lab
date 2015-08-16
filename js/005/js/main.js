@@ -1,15 +1,14 @@
 var Apl = function() {
-    this.timer = $.timer();
-	
 	var canvas = $('#canvas')[0];
 	if ( ! canvas || ! canvas.getContext ) { return false; }
-	var ctx = canvas.getContext("2d");
-	ctx.lineWidth = 1;
-	ctx.globalCompositeOperation = "source-over";
+	this.ctx = canvas.getContext("2d");
+	this.ctx.lineWidth = 1;
+	this.ctx.globalCompositeOperation = "source-over";
 	
-	this.canvas(ctx, canvas.width, canvas.height);
+	this.canvas(canvas.width, canvas.height);
 	this.draw();
 	
+    this.timer = $.timer();
     this.timer.set({
         action: function() {
 			this.moveObj();
@@ -17,11 +16,9 @@ var Apl = function() {
         }.bind(this),
         time: 15
     });
-	
 	this.timer.play();
 };
-Apl.prototype.canvas = function(ctx, w, h) {
-	this.ctx = ctx; // the context
+Apl.prototype.canvas = function(w, h) {
 	this.area = {w:w, h:h};  // the area
 	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
 	this.prevPos = {x:0, y:0}; // previous position of the cursor
