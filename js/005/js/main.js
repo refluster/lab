@@ -1,4 +1,26 @@
-canvasManager = function(ctx, w, h, names) {
+var Apl = function() {
+    this.timer = $.timer();
+	
+	var canvas = $('#canvas')[0];
+	if ( ! canvas || ! canvas.getContext ) { return false; }
+	var ctx = canvas.getContext("2d");
+	ctx.lineWidth = 1;
+	ctx.globalCompositeOperation = "source-over";
+	
+	this.canvas(ctx, canvas.width, canvas.height);
+	this.draw();
+	
+    this.timer.set({
+        action: function() {
+			this.moveObj();
+			this.draw();
+        }.bind(this),
+        time: 15
+    });
+	
+	this.timer.play();
+};
+Apl.prototype.canvas = function(ctx, w, h) {
 	this.ctx = ctx; // the context
 	this.area = {w:w, h:h};  // the area
 	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
@@ -31,11 +53,10 @@ canvasManager = function(ctx, w, h, names) {
 		color:'blue'
 	});
 };
-canvasManager.prototype.blank = function() {
-	// clear
+Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 };
-canvasManager.prototype.draw = function() {
+Apl.prototype.draw = function() {
 	this.blank();
 	this.ctx.save();
 	this.ctx.strokeStyle = this.color;
@@ -51,7 +72,7 @@ canvasManager.prototype.draw = function() {
 	
 	this.ctx.restore();
 };
-canvasManager.prototype.moveObj = function() {
+Apl.prototype.moveObj = function() {
 	for (var i = 0; i < this.ball.length; i++) {
 		this.ball[i].pos.x += this.ball[i].speed.x;
 		this.ball[i].pos.y += this.ball[i].speed.y;
@@ -72,29 +93,6 @@ canvasManager.prototype.moveObj = function() {
 			this.ball[i].speed.y = -this.ball[i].speed.y;
 		}
 	}            
-};
-
-var Apl = function() {
-    this.timer = $.timer();
-	
-	var canvas = $('#canvas')[0];
-	if ( ! canvas || ! canvas.getContext ) { return false; }
-	var ctx = canvas.getContext("2d");
-	ctx.lineWidth = 1;
-	ctx.globalCompositeOperation = "source-over";
-	
-	this.canv = new canvasManager(ctx, canvas.width, canvas.height, this);
-	this.canv.draw();
-	
-    this.timer.set({
-        action: function() {
-            this.canv.moveObj();
-            this.canv.draw();
-        }.bind(this),
-        time: 15
-    });
-	
-	this.timer.play();
 };
 
 $(function() {
