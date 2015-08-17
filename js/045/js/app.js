@@ -57,6 +57,21 @@ app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter,
 	}.bind(this);
 }]);
 
+app.service('serverPolling', ['$rootScope', '$http', function($scope, $http) {
+	this.setInterval = function(url, msec, callback) {
+		this.timer = setInterval(function() {
+			$http.get(url).success(function(status) {
+				callback(status);
+			}.bind(this));
+		}, msec);
+		
+	}.bind(this);
+
+	this.clearInterval = function() {
+		clearInterval(this.timer);
+	}.bind(this);
+}]);
+
 app.controller('MainController', ['$scope', 'list', function($scope, list) {
 	$scope.$on('change:list', function (e, list) {
 		$scope.pictureList = list;
@@ -65,21 +80,17 @@ app.controller('MainController', ['$scope', 'list', function($scope, list) {
 	list.load();
 }]);
 
-app.controller('ListWideController', ['$scope', 'list', '$http', function($scope, list, $http) {
+app.controller('ListWideController', ['$scope', 'list', 'serverPolling', function($scope, list, serverPolling) {
 	$scope.pictureList = list.get();
 
 	$scope.importImage = function() {
-		$scope.getStatusTimer = setInterval(function() {
-			$http.get("import").success(function(status) {
-				console.log(status);
-				if (status == 'standby') {
-					clearInterval($scope.getStatusTimer);
-				}
-			}.bind(this));
-		}, 500);
-
-		console.log('image import');
-	}.bind(this);
+		serverPolling.setInterval('import', 1000, function(status) {
+			console.log(status);
+			if (status == 'standby') {
+				serverPolling.clearInterval();
+			}
+		});
+	};
 }]);
 
 app.controller('ListNarrowController', ['$scope', 'list', function($scope, list) {
