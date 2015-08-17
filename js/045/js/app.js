@@ -80,13 +80,17 @@ app.controller('MainController', ['$scope', 'list', function($scope, list) {
 	list.load();
 }]);
 
-app.controller('ListWideController', ['$scope', 'list', 'serverPolling', function($scope, list, serverPolling) {
+app.controller('ListWideController', ['$scope', '$http', 'list', 'serverPolling', function($scope, $http, list, serverPolling) {
 	$scope.pictureList = list.get();
+	$scope.status = 'standby';
 
 	$scope.importImage = function() {
-		serverPolling.setInterval('import', 1000, function(status) {
-			console.log(status);
-			if (status == 'standby') {
+		$http.get('import').success(function(res) {});
+
+		serverPolling.setInterval('status', 1000, function(res) {
+			$scope.status = res;
+			console.log(res);
+			if (res == 'standby') {
 				serverPolling.clearInterval();
 			}
 		});
