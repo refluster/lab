@@ -45,6 +45,7 @@
       </div>
 
       <script type="text/ng-template" id="tmpl-list-wide">
+        <button ng-click="importImage()">import photo</button>
         <div ng-repeat="(date, files) in pictureList" class="pic-list-wide">
           <h4 class="date">{{date}}</h4>
           <div class="picture-list">

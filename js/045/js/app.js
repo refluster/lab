@@ -65,8 +65,21 @@ app.controller('MainController', ['$scope', 'list', function($scope, list) {
 	list.load();
 }]);
 
-app.controller('ListWideController', ['$scope', 'list', function($scope, list) {
+app.controller('ListWideController', ['$scope', 'list', '$http', function($scope, list, $http) {
 	$scope.pictureList = list.get();
+
+	$scope.importImage = function() {
+		$scope.getStatusTimer = setInterval(function() {
+			$http.get("import").success(function(status) {
+				console.log(status);
+				if (status == 'standby') {
+					clearInterval($scope.getStatusTimer);
+				}
+			}.bind(this));
+		}, 500);
+
+		console.log('image import');
+	}.bind(this);
 }]);
 
 app.controller('ListNarrowController', ['$scope', 'list', function($scope, list) {
