@@ -25,6 +25,25 @@
         display: inline-block;
         background-size: cover;
       }
+      .import-image {
+          color: #fff;
+          background-color: #2196F3;
+          display: inline-block;
+          padding: 6px 12px;
+          font-size: 14px;
+          line-height: 1.42857143;
+          text-align: center;
+          white-space: nowrap;
+          -ms-touch-action: manipulation;
+          touch-action: manipulation;
+          cursor: pointer;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          border: none;
+          border-radius: 4px;
+      }
     </style>
   </head>
   <body ng-app="App">
@@ -45,7 +64,7 @@
       </div>
 
       <script type="text/ng-template" id="tmpl-list-wide">
-        <button ng-click="importImage()">import photo</button>
+        <button class="import-image" ng-click="importImage()">import photo</button>
         <div ng-repeat="(date, files) in pictureList" class="pic-list-wide">
           <h4 class="date">{{date}}</h4>
           <div class="picture-list">
