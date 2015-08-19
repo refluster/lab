@@ -57,21 +57,6 @@ app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter,
 	}.bind(this);
 }]);
 
-app.service('serverPolling', ['$rootScope', '$http', function($scope, $http) {
-	this.setInterval = function(url, msec, callback) {
-		this.timer = setInterval(function() {
-			$http.get(url).success(function(status) {
-				callback(status);
-			}.bind(this));
-		}, msec);
-		
-	}.bind(this);
-
-	this.clearInterval = function() {
-		clearInterval(this.timer);
-	}.bind(this);
-}]);
-
 app.controller('MainController', ['$scope', 'list', function($scope, list) {
 	$scope.$on('change:list', function (e, list) {
 		$scope.pictureList = list;
@@ -85,20 +70,11 @@ app.controller('MainController', ['$scope', 'list', function($scope, list) {
 	list.load();
 }]);
 
-app.controller('ListWideController', ['$scope', '$http', 'list', 'serverPolling', function($scope, $http, list, serverPolling) {
+app.controller('ListWideController', ['$scope', '$http', 'list', function($scope, $http, list) {
 	$scope.pictureList = list.get();
-	$scope.status = 'standby';
 
 	$scope.importImage = function() {
 		$http.get('import').success(function(res) {});
-
-		serverPolling.setInterval('status', 1000, function(res) {
-			$scope.status = res;
-			console.log(res);
-			if (res == 'standby') {
-				serverPolling.clearInterval();
-			}
-		});
 	};
 }]);
 
