@@ -77,6 +77,11 @@ app.controller('MainController', ['$scope', 'list', function($scope, list) {
 		$scope.pictureList = list;
 	});
 
+	var es = new EventSource("/sse");
+	es.onmessage = function (event) {
+		console.log(event.data);
+	};
+
 	list.load();
 }]);
 
