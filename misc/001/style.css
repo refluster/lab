@@ -1,0 +1,11 @@
+body {
+    width: 640px;
+	font-family: 'Times New Roman';
+}
+
+pre {
+    border: 1px solid black;
+	padding: 8px;
+    background-color: #d0e0f0;
+}
+
