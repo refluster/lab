@@ -57,21 +57,33 @@ app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter,
 	}.bind(this);
 }]);
 
-app.controller('MainController', ['$scope', 'list', function($scope, list) {
+app.service('sse', ['$rootScope', function($scope) {
+	this.connect = function() {
+		this.es = new EventSource("/sse");
+	};
+
+	this.setCallback = function(callback) {
+		this.es.onmessage = function (event) {
+			console.log(event.data);
+			callback(event.data);
+		};
+	}.bind(this);
+}]);
+
+app.controller('MainController', ['$scope', 'list', 'sse', function($scope, list, sse) {
 	$scope.$on('change:list', function (e, list) {
 		$scope.pictureList = list;
 	});
 
-	var es = new EventSource("/sse");
-	es.onmessage = function (event) {
-		console.log(event.data);
-	};
-
 	list.load();
+	sse.connect();
 }]);
 
-app.controller('ListWideController', ['$scope', '$http', 'list', function($scope, $http, list) {
+app.controller('ListWideController', ['$scope', '$http', 'list', 'sse', function($scope, $http, list, sse) {
 	$scope.pictureList = list.get();
+	sse.setCallback(function(data) {
+		console.log(data);
+	});
 
 	$scope.importImage = function() {
 		$http.get('import').success(function(res) {});
