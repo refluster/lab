@@ -6,21 +6,21 @@ var client = {}; // namespace
 
 	// running state
 	client.run = false;
-	
+
 	// socket
 	client.socket = new io.connect("http://183.181.8.119:8081");
-	
+
 	// my session id
 	client.sessionId = null;
-	
+
 	// client database, [0] is mine
 	client.client_db = new Array();
-	
+
 	// display message
 	client.showmsg = function(msg) {
 		$('#msg1').html(msg);
 	};
-	
+
 	// button function: start
 	client.start = function() {
 		var $cvdiv = $('#cvdiv1');
@@ -35,7 +35,7 @@ var client = {}; // namespace
 			$cvdiv.bind("touchend", client.cvmsUp);
 			$cvdiv.bind("touchend", client.cvmsUp);
 			$cvdiv.bind("touchmove", client.cvmsMove);
-			
+
 			client.run = true;
 			client.showmsg('drawable');
 			$btn.text('stop');
@@ -49,44 +49,44 @@ var client = {}; // namespace
 			$cvdiv.unbind("touchend", client.cvmsUp);
 			$cvdiv.unbind("touchend", client.cvmsUp);
 			$cvdiv.unbind("touchmove", client.cvmsMove);
-			
+
 			client.run = false;
 			client.showmsg('press start button');
 			$btn.text('start');
 		}
 	};
-	
+
 	// button function: save image
 	client.saveImage = function() {
 		var imgData = client.canvas.toDataURL();
 		client.socket.emit('saveImage', {imgData:imgData});
 	};
-	
+
 	// button function: restore image
 	client.restoreImage = function() {
 		client.socket.emit('restoreImage');
 	};
-	
+
 	// button function: clear image
 	client.clearImage = function() {
 		client.socket.emit('clearImage');
 		client.canvMng.blank();
 	};
-	
+
 	// button function: display image
 	client.displayImage = function() {
 		var imgData = client.canvas.toDataURL();
-		
+
 		window.open(imgData);
 	};
-	
+
 	// button function: download image
 	client.downloadImage = function() {
 		var data = client.canvas.toDataURL().
 			replace('image/png', 'application/octet-stream');;
 		location.href = data;
 	};
-	
+
 	// mousedown event
 	client.cvmsDown = function(evt) {
 		var cx = evt.pageX - client.cvpos.x;
@@ -95,7 +95,7 @@ var client = {}; // namespace
 		client.dragging = true;
 		client.client_db[0].prevPos = {x:cx, y:cy};
 		client.socket.emit('setPos', {sid:client.sessionId,
-										to:{x:cx, y:cy}});
+									  to:{x:cx, y:cy}});
 		client.showmsg("drawing");
 		return false;
 	};
@@ -123,11 +123,11 @@ var client = {}; // namespace
 		client.canvMng.draw({x:cx, y:cy});
 		conf.prevPos = {x:cx, y:cy};
 		client.socket.emit('drawLine', {sid:client.sessionId,
-										  to:{x:cx, y:cy}});
+										to:{x:cx, y:cy}});
 
 		return false;
 	};
-	
+
 	// color setting
 	client.setColor = function(_color) {
 		client.client_db[0].color = _color;
@@ -145,7 +145,7 @@ var client = {}; // namespace
 	client.setColorYellow = function() {
 		client.setColor('yellow');
 	};
-	
+
 	// line width setting
 	client.setLineWidth = function(_lineWidth) {
 		client.client_db[0].lineWidth = _lineWidth;
@@ -160,7 +160,7 @@ var client = {}; // namespace
 	client.setLineWidth5px = function() {
 		client.setLineWidth(5);
 	};
-	
+
 	$(window).load(function() {
 		// show message
 		client.showmsg('initializing');
@@ -169,7 +169,7 @@ var client = {}; // namespace
 		client.cvpos = {x:0, y:0};
 		client.cvpos.x = $cvdiv.offset().left;
 		client.cvpos.y = $cvdiv.offset().top;
-		
+
 		// get canvas's DOM element and context
 		client.canvas = document.getElementById('cv1');
 		if ( ! client.canvas || ! client.canvas.getContext ) { return false; }
@@ -177,10 +177,10 @@ var client = {}; // namespace
 		ctx.lineWidth = 1;
 		ctx.globalAlpha = 0.7;
 		ctx.globalCompositeOperation = "source-over";
-		
+
 		// create canvas manager
 		client.canvMng = new canvasManager.canv(ctx, client.canvas.width,
-												  client.canvas.height, client);
+												client.canvas.height, client);
 		client.canvMng.draw({x:0, y:0});
 
 		// bind button event
@@ -204,7 +204,7 @@ var client = {}; // namespace
 		$('#line-3px').bind('mousedown', client.setLineWidth3px);
 		$('#line-5px').bind('touchstart', client.setLineWidth5px);
 		$('#line-5px').bind('mousedown', client.setLineWidth5px);
-		
+
 		// bind socket.io event
 		client.socket.on("connect", function(){
 			console.log('connected');
@@ -248,7 +248,7 @@ var client = {}; // namespace
 		client.socket.on('clear image', function(data) {
 			client.canvMng.blank();
 		});
-		
+
 		// show message
 		client.showmsg('press start button');
 	});
