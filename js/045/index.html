@@ -40,10 +40,10 @@
           width: 100%;
           height: 100%;
           background-color: black;
-          z-index:1001;
-          -moz-opacity: 0.8;
-          opacity:.80;
-          filter: alpha(opacity=80);
+          z-index: 1;
+          -moz-opacity: 0.5;
+          opacity: .5;
+          filter: alpha(opacity=50);
       }
       .active {
           position: absolute;
@@ -51,10 +51,8 @@
           left: 25%;
           width: 50%;
           height: 50%;
-          padding: 16px;
-          border: 16px solid orange;
           background-color: white;
-          z-index:1002;
+          z-index: 2;
           overflow: auto;
       }
       .import-image {
@@ -113,10 +111,6 @@
           <div class="active-bg">
           </div>
         </div>
-
-<!--
-        <div ng-show="importing" class="dark">
--->
       </script>
       
       <script type="text/ng-template" id="tmpl-list-narrow">
