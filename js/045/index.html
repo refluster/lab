@@ -25,6 +25,38 @@
         display: inline-block;
         background-size: cover;
       }
+      .fullscreen {
+          top: 0;
+          left: 0;
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+      }
+      .active-bg {
+          position: absolute;
+          top: 0%;
+          left: 0%;
+          width: 100%;
+          height: 100%;
+          background-color: black;
+          z-index:1001;
+          -moz-opacity: 0.8;
+          opacity:.80;
+          filter: alpha(opacity=80);
+      }
+      .active {
+          position: absolute;
+          top: 25%;
+          left: 25%;
+          width: 50%;
+          height: 50%;
+          padding: 16px;
+          border: 16px solid orange;
+          background-color: white;
+          z-index:1002;
+          overflow: auto;
+      }
       .import-image {
           color: #fff;
           background-color: #2196F3;
@@ -72,6 +104,19 @@
               <div class="sumb-nail" style="background-image: url({{file.fileThumb}})"></div></a>
           </div>
         </div>
+
+        <div class="fullscreen">
+          <div class="active">
+            <progress max="100"></progress>
+            {{progress.complete}}
+          </div>
+          <div class="active-bg">
+          </div>
+        </div>
+
+<!--
+        <div ng-show="importing" class="dark">
+-->
       </script>
       
       <script type="text/ng-template" id="tmpl-list-narrow">
