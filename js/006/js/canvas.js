@@ -19,9 +19,9 @@ var canvasManager = {}; // namespace
         this.radius = 30; // raduis of balls
         
 	// set the position of the canvas on the browser
-	var $cvdiv = $('#cvdiv1');
-	this.cvpos.x = $cvdiv.offset().left;
-	this.cvpos.y = $cvdiv.offset().top;
+	var $canvas = $('#canvas');
+	this.cvpos.x = $canvas.offset().left;
+	this.cvpos.y = $canvas.offset().top;
 
         this.ball = [];
         this.holdBallIdx = null; // index of the hold ball (for positioning)

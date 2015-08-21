@@ -20,18 +20,18 @@ var panelApl = {}; // namespace
 	 * return: none
 	 */
 	panelApl.start = function() {
-		var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
+		var $canvas = $('#canvas'); // main Canvas¤Îdiv
 
 		// add mouse events to the canvas
-		$cvdiv.mousedown(panelApl.cvmsDown);
-		$cvdiv.mouseup(panelApl.cvmsUp);
-		$cvdiv.mouseleave(panelApl.cvmsUp);
-		$cvdiv.mousemove(panelApl.cvmsMove);
+		$canvas.mousedown(panelApl.cvmsDown);
+		$canvas.mouseup(panelApl.cvmsUp);
+		$canvas.mouseleave(panelApl.cvmsUp);
+		$canvas.mousemove(panelApl.cvmsMove);
 		// add touch events to the canvas
-		$cvdiv.bind("touchstart", panelApl.cvmsDown);
-		$cvdiv.bind("touchend", panelApl.cvmsUp);
-		$cvdiv.bind("touchend", panelApl.cvmsUp);
-		$cvdiv.bind("touchmove", panelApl.cvmsMove);
+		$canvas.bind("touchstart", panelApl.cvmsDown);
+		$canvas.bind("touchend", panelApl.cvmsUp);
+		$canvas.bind("touchend", panelApl.cvmsUp);
+		$canvas.bind("touchmove", panelApl.cvmsMove);
 
 		// init canvas
 		panelApl.canv.init();
@@ -90,7 +90,7 @@ var panelApl = {}; // namespace
 	/* body onload process */
 	$(window).load(function() {
 		// get canvas's DOM element and context
-		var canvas = document.getElementById('cv1');
+		var canvas = document.getElementById('canvas');
 		if ( ! canvas || ! canvas.getContext ) { return false; }
 		var ctx = canvas.getContext("2d");
 		ctx.lineWidth = 1;
