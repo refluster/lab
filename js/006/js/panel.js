@@ -16,8 +16,14 @@ var panelApl = function() {
 	ctx.lineWidth = 1;
 	ctx.globalCompositeOperation = "source-over";
 	
+    // get canvas info
+    this.canvasLeft = $canvas.offset().left;
+    this.canvasTop = $canvas.offset().top;
+    this.canvasWidth = $canvas.attr('width')
+    this.canvasHeight = $canvas.attr('height')
+	
 	// display
-	this.canv = new canvasManager.canv(ctx, $canvas[0].width, $canvas[0].height, this);
+	this.canv = new canvasManager(ctx, $canvas[0].width, $canvas[0].height, this);
 	this.canv.init();
 	this.canv.draw();
 	
@@ -57,49 +63,55 @@ panelApl.prototype.start = function() {
 	this.timer.play();
 };
 
+
+panelApl.prototype.getCanvasPosition = function(e) {
+    if (e.originalEvent.touches != undefined && e.originalEvent.touches.length > 0) {
+        return {x: parseInt(e.originalEvent.touches[0].pageX - this.canvasLeft),
+                y: parseInt(e.originalEvent.touches[0].pageY - this.canvasTop)};
+    } else {
+        return {x: parseInt(e.pageX - this.canvasLeft),
+                y: parseInt(e.pageY - this.canvasTop)};
+    }
+};
+
 /* mousedown process
  * {event} evt: event obj
  * return: none
  */
-panelApl.prototype.cvmsDown = function(evt) {
+panelApl.prototype.cvmsDown = function(e) {
 	// convert coordinate from point to canvas
-	var cx = evt.pageX - this.canv.cvpos.x;
-	var cy = evt.pageY - this.canv.cvpos.y;
+    var p = this.getCanvasPosition(e);
 	this.dragging = true;
-	this.canv.holdAt({x:cx, y:cy});
+	this.canv.holdAt(p);
 	return false;
 };
 /* mouseup/mouseleave process
  * {event} evt: event obj
  * return: none
  */
-panelApl.prototype.cvmsUp = function(evt) {
+panelApl.prototype.cvmsUp = function(e) {
 	if (this.dragging) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.canv.cvpos.x;
-		var cy = evt.pageY - this.canv.cvpos.y;
-		if (cx < 0) cx = 0;
-		if (cx > this.canv.area.w) cx = this.canv.area.w;
-		if (cy < 0) cy = 0;
-		if (cy > this.canv.area.h) cy = this.canv.area.h;
+		var p = this.getCanvasPosition(e);
+		if (p.x < 0) p.x = 0;
+		if (p.x > this.canv.area.w) p.x = this.canv.area.w;
+		if (p.y < 0) p.y = 0;
+		if (p.y > this.canv.area.h) p.y = this.canv.area.h;
 
 		this.dragging = false;
-		this.canv.releaseAt({x:cx, y:cy});
+		this.canv.releaseAt(p);
 	}
 };
 /* mousemove process
  * {event} evt: evnet obj
  * return: none
  */
-panelApl.prototype.cvmsMove = function(evt) {
+panelApl.prototype.cvmsMove = function(e) {
 	if (this.dragging) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.canv.cvpos.x;
-		var cy = evt.pageY - this.canv.cvpos.y;
-		// check if the canvas should be updated
-		var updSep = 1; // #. of pixels that canvas is updated if an object is moved by
+		var p = this.getCanvasPosition(e);
 		// update the canvas
-		this.canv.moveTo({x:cx, y:cy});
+		this.canv.moveTo(p);
 	}
 	return false;
 };
