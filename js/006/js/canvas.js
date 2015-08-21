@@ -1,4 +1,3 @@
-/* HTML5 Canvas drag&drop */
 var canvasManager = function(ctx, w, h, names) {
 	this.ctx = ctx; // the context
 	this.area = {w:w, h:h};  // the area
@@ -19,44 +18,18 @@ var canvasManager = function(ctx, w, h, names) {
 	this.prevCorsorPos = {x:0, y:0}; // previous cursor position (updated by event)
 	this.prevHoldBallPos = {x:0, y:0}; // previous hold ball pos (updated by timer)
 
-	/* init process
-	 * return: none
-	 */
 	this.ball[0] = {
 		pos:{x:100, y:100},
 		speed:{x:0, y:0},
 		color:'green',
 		moveNow: false
 	};
-	/*
-	  this.ball[1] = {
-	  pos:{x:150, y:100},
-	  speed:{x:4, y:-2},
-	  color:'red'
-	  };
-	  this.ball[2] = {
-	  pos:{x:200, y:100},
-	  speed:{x:-4, y:2},
-	  color:'blue'
-	  };
-	*/
 };
 
-/* init canvas
- * return: none
- */
 canvasManager.prototype.blank = function() {
-	// clear
 	this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 };
 
-canvasManager.prototype.init = function() {
-
-};
-
-/* draw canvas
- * return: none
- */
 canvasManager.prototype.draw = function() {
 	this.blank();
 	this.ctx.save();
@@ -128,7 +101,6 @@ canvasManager.prototype.holdAt = function(pos) {
 			this.ball[i].pos.x + this.radius > pos.x &&
 			this.ball[i].pos.y - this.radius < pos.y &&
 			this.ball[i].pos.y + this.radius > pos.y) {
-			//this.ball[i].moveNow;
 			this.holdBallIdx = i;
 			this.prevCursorPos = pos;
 			this.ball[i].moveNow = false;
@@ -150,5 +122,3 @@ canvasManager.prototype.moveTo = function(pos) {
 		this.prevCursorPos = pos;
 	}
 };
-
-
