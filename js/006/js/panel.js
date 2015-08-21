@@ -4,24 +4,20 @@
 var panelApl = function() {
 	/* global var */
 	// drag state
-	this.drag = {
-		now: false, // true if dragging
-		idx: null // index of dragged item
-	};
-	this.gamestart = false;  // true if playing
+	this.dragging = false;
 
 	// timer
 	this.timer = $.timer();
 	
 	// get canvas's DOM element and context
-	var canvas = document.getElementById('canvas');
-	if ( ! canvas || ! canvas.getContext ) { return false; }
-	var ctx = canvas.getContext("2d");
+	var $canvas = $('#canvas');
+	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
+	var ctx = $canvas[0].getContext("2d");
 	ctx.lineWidth = 1;
 	ctx.globalCompositeOperation = "source-over";
 	
 	// display
-	this.canv = new canvasManager.canv(ctx, canvas.width, canvas.height, this);
+	this.canv = new canvasManager.canv(ctx, $canvas[0].width, $canvas[0].height, this);
 	this.canv.init();
 	this.canv.draw();
 	
@@ -57,9 +53,8 @@ panelApl.prototype.start = function() {
 	// init canvas
 	this.canv.init();
 
-	this.gamestart = true;
+	// start timer
 	this.timer.play();
-	console.log('start ');
 };
 
 /* mousedown process
@@ -70,7 +65,7 @@ panelApl.prototype.cvmsDown = function(evt) {
 	// convert coordinate from point to canvas
 	var cx = evt.pageX - this.canv.cvpos.x;
 	var cy = evt.pageY - this.canv.cvpos.y;
-	this.drag.now = true;
+	this.dragging = true;
 	this.canv.holdAt({x:cx, y:cy});
 	return false;
 };
@@ -79,7 +74,7 @@ panelApl.prototype.cvmsDown = function(evt) {
  * return: none
  */
 panelApl.prototype.cvmsUp = function(evt) {
-	if (this.drag.now) {
+	if (this.dragging) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canv.cvpos.x;
 		var cy = evt.pageY - this.canv.cvpos.y;
@@ -88,7 +83,7 @@ panelApl.prototype.cvmsUp = function(evt) {
 		if (cy < 0) cy = 0;
 		if (cy > this.canv.area.h) cy = this.canv.area.h;
 
-		this.drag.now = false;
+		this.dragging = false;
 		this.canv.releaseAt({x:cx, y:cy});
 	}
 };
@@ -97,7 +92,7 @@ panelApl.prototype.cvmsUp = function(evt) {
  * return: none
  */
 panelApl.prototype.cvmsMove = function(evt) {
-	if (this.drag.now) {
+	if (this.dragging) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canv.cvpos.x;
 		var cy = evt.pageY - this.canv.cvpos.y;
