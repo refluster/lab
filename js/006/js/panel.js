@@ -1,7 +1,4 @@
-/* HTML5 Canvas drag&drop
- * canvas is updated when an object is dragged by 1px
- */
-var panelApl = function() {
+var Apl = function() {
 	/* global var */
 	// drag state
 	this.dragging = false;
@@ -21,7 +18,6 @@ var panelApl = function() {
 	
 	// display
 	this.canv = new canvasManager(ctx, $canvas[0].width, $canvas[0].height, this);
-	this.canv.init();
 	this.canv.draw();
 	
 	// timer
@@ -46,14 +42,11 @@ var panelApl = function() {
 	$canvas.bind("touchend", this.cvmsUp.bind(this));
 	$canvas.bind("touchmove", this.cvmsMove.bind(this));
 
-	// init canvas
-	this.canv.init();
-
 	// start timer
 	this.timer.play();
 };
 
-panelApl.prototype.getCanvasPosition = function(e) {
+Apl.prototype.getCanvasPosition = function(e) {
     if (e.originalEvent.touches != undefined && e.originalEvent.touches.length > 0) {
         return {x: parseInt(e.originalEvent.touches[0].pageX - this.canvasLeft),
                 y: parseInt(e.originalEvent.touches[0].pageY - this.canvasTop)};
@@ -63,24 +56,15 @@ panelApl.prototype.getCanvasPosition = function(e) {
     }
 };
 
-/* mousedown process
- * {event} evt: event obj
- * return: none
- */
-panelApl.prototype.cvmsDown = function(e) {
-	// convert coordinate from point to canvas
+Apl.prototype.cvmsDown = function(e) {
     var p = this.getCanvasPosition(e);
 	this.dragging = true;
 	this.canv.holdAt(p);
 	return false;
 };
-/* mouseup/mouseleave process
- * {event} evt: event obj
- * return: none
- */
-panelApl.prototype.cvmsUp = function(e) {
+
+Apl.prototype.cvmsUp = function(e) {
 	if (this.dragging) {
-		// convert coordinate from point to canvas
 		var p = this.getCanvasPosition(e);
 		if (p.x < 0) p.x = 0;
 		if (p.x > this.canv.area.w) p.x = this.canv.area.w;
@@ -91,20 +75,15 @@ panelApl.prototype.cvmsUp = function(e) {
 		this.canv.releaseAt(p);
 	}
 };
-/* mousemove process
- * {event} evt: evnet obj
- * return: none
- */
-panelApl.prototype.cvmsMove = function(e) {
+
+Apl.prototype.cvmsMove = function(e) {
 	if (this.dragging) {
-		// convert coordinate from point to canvas
 		var p = this.getCanvasPosition(e);
-		// update the canvas
 		this.canv.moveTo(p);
 	}
 	return false;
 };
 
 $(function() {
-	apl = new panelApl();
+	apl = new Apl();
 });
