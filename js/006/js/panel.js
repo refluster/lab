@@ -6,9 +6,6 @@ var panelApl = function() {
 	// drag state
 	this.dragging = false;
 
-	// timer
-	this.timer = $.timer();
-	
 	// get canvas's DOM element and context
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
@@ -27,6 +24,8 @@ var panelApl = function() {
 	this.canv.init();
 	this.canv.draw();
 	
+	// timer
+	this.timer = $.timer();
 	this.timer.set({
 		action: function() {
 			this.canv.moveObj();
@@ -35,15 +34,6 @@ var panelApl = function() {
 		}.bind(this),
 		time: 40
 	});
-
-	this.start();
-};
-
-/* button process
- * return: none
- */
-panelApl.prototype.start = function() {
-	var $canvas = $('#canvas'); // main Canvas¤Îdiv
 
 	// add mouse events to the canvas
 	$canvas.mousedown(this.cvmsDown.bind(this));
@@ -62,7 +52,6 @@ panelApl.prototype.start = function() {
 	// start timer
 	this.timer.play();
 };
-
 
 panelApl.prototype.getCanvasPosition = function(e) {
     if (e.originalEvent.touches != undefined && e.originalEvent.touches.length > 0) {
