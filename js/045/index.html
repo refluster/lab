@@ -46,14 +46,18 @@
           filter: alpha(opacity=50);
       }
       .active {
+          display: block;
+          margin: auto;
           position: absolute;
-          top: 10%;
-          left: 10%;
+          top: 0%;
+          bottom: 0%;
+          left: 0%;
+          right: 0%;
           width: 80%;
-          height: 80%;
+          height: 150px;
           background-color: white;
           z-index: 2;
-          overflow: auto;
+          text-align: center;
       }
       .import-image {
           color: #fff;
@@ -104,8 +108,10 @@
         </div>
         <div class="fullscreen" ng-show="importing == true">
           <div class="active">
-            <progress max="100"></progress>
-            {{progress.complete}}
+            <h2 class="popup-title">importing</h2>
+            <progress value="{{progress.complete}}" max="{{progress.total}}"></progress>
+            <br>
+            {{progress.complete}} / {{progress.total}}
           </div>
           <div class="active-bg">
           </div>

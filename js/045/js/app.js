@@ -81,6 +81,8 @@ app.controller('MainController', ['$scope', 'list', 'sse', function($scope, list
 
 app.controller('ListWideController', ['$scope', '$http', 'list', 'sse', function($scope, $http, list, sse) {
 	$scope.pictureList = list.get();
+	$scope.importing = false;
+
 	sse.setCallback(function(jsonString) {
 		var data = angular.fromJson(jsonString);
 		$scope.$apply(function () {
