@@ -81,13 +81,12 @@ app.controller('MainController', ['$scope', 'list', 'sse', function($scope, list
 
 app.controller('ListWideController', ['$scope', '$http', 'list', 'sse', function($scope, $http, list, sse) {
 	$scope.pictureList = list.get();
-	sse.setCallback(function(data) {
-		if (data.complete == data.total) {
-			$scope.importing = false;
-		} else {
-			$scope.importing = true;
-		}
-		$scope.progress = data;
+	sse.setCallback(function(jsonString) {
+		var data = angular.fromJson(jsonString);
+		$scope.$apply(function () {
+			$scope.importing = (data.complete != data.total);
+			$scope.progress = data;
+        });
 		console.log(data);
 	});
 

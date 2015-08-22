@@ -47,10 +47,10 @@
       }
       .active {
           position: absolute;
-          top: 25%;
-          left: 25%;
-          width: 50%;
-          height: 50%;
+          top: 10%;
+          left: 10%;
+          width: 80%;
+          height: 80%;
           background-color: white;
           z-index: 2;
           overflow: auto;
@@ -102,8 +102,7 @@
               <div class="sumb-nail" style="background-image: url({{file.fileThumb}})"></div></a>
           </div>
         </div>
-
-        <div class="fullscreen">
+        <div class="fullscreen" ng-show="importing == true">
           <div class="active">
             <progress max="100"></progress>
             {{progress.complete}}
