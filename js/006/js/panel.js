@@ -32,15 +32,15 @@ var Apl = function() {
 	});
 
 	// add mouse events to the canvas
-	$canvas.mousedown(this.cvmsDown.bind(this));
-	$canvas.mouseup(this.cvmsUp.bind(this));
-	$canvas.mouseleave(this.cvmsUp.bind(this));
-	$canvas.mousemove(this.cvmsMove.bind(this));
+	$canvas.mousedown(this.hDown.bind(this));
+	$canvas.mouseup(this.hUp.bind(this));
+	$canvas.mouseleave(this.hUp.bind(this));
+	$canvas.mousemove(this.hMove.bind(this));
 	// add touch events to the canvas
-	$canvas.bind("touchstart", this.cvmsDown.bind(this));
-	$canvas.bind("touchend", this.cvmsUp.bind(this));
-	$canvas.bind("touchend", this.cvmsUp.bind(this));
-	$canvas.bind("touchmove", this.cvmsMove.bind(this));
+	$canvas.bind("touchstart", this.hDown.bind(this));
+	$canvas.bind("touchend", this.hUp.bind(this));
+	$canvas.bind("touchend", this.hUp.bind(this));
+	$canvas.bind("touchmove", this.hMove.bind(this));
 
 	// start timer
 	this.timer.play();
@@ -56,14 +56,14 @@ Apl.prototype.getCanvasPosition = function(e) {
     }
 };
 
-Apl.prototype.cvmsDown = function(e) {
+Apl.prototype.hDown = function(e) {
     var p = this.getCanvasPosition(e);
 	this.dragging = true;
 	this.canv.holdAt(p);
 	return false;
 };
 
-Apl.prototype.cvmsUp = function(e) {
+Apl.prototype.hUp = function(e) {
 	if (this.dragging) {
 		var p = this.getCanvasPosition(e);
 		if (p.x < 0) p.x = 0;
@@ -76,7 +76,7 @@ Apl.prototype.cvmsUp = function(e) {
 	}
 };
 
-Apl.prototype.cvmsMove = function(e) {
+Apl.prototype.hMove = function(e) {
 	if (this.dragging) {
 		var p = this.getCanvasPosition(e);
 		this.canv.moveTo(p);
