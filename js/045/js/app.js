@@ -91,6 +91,7 @@ app.controller('ListWideController', ['$scope', '$http', 'list', 'sse', function
 	});
 
 	$scope.$on('change:list', function (e, list) {
+		$scope.pictureList = list;
 		$scope.status = undefined;
 	});
 
