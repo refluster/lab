@@ -88,6 +88,10 @@ app.controller('ListWideController', ['$scope', '$http', 'list', 'sse', function
 		$scope.$apply(function () {
 			$scope.importing = (data.complete != data.total);
 			$scope.progress = data;
+			if (! $scope.importing) {
+				list.load();
+				$scope.pictureList = list.get();
+			}
         });
 		console.log(data);
 	});
