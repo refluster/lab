@@ -107,9 +107,9 @@
               <div class="sumb-nail" style="background-image: url({{file.fileThumb}})"></div></a>
           </div>
         </div>
-        <div class="fullscreen" ng-show="importing == true">
+        <div class="fullscreen" ng-show="status != undefined">
           <div class="active">
-            <h2 class="popup-title">importing</h2>
+            <h2 class="popup-title">{{status}}</h2>
             <progress value="{{progress.complete}}" max="{{progress.total}}"></progress>
             <br>
             {{progress.complete}} / {{progress.total}}

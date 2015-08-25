@@ -22,12 +22,6 @@ app.config(['$routeProvider', function ($routeProvider) {
 app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter, $http) {
 	this.list = [];
 
-	$scope.$watch(function () {
-		return this.list;
-	}.bind(this), function (value) {
-		$scope.$broadcast('change:list', value);
-	}.bind(this), true);
-	
 	function pad(n, len) {
 		s = n.toString();
 		if (s.length < len) {
@@ -49,6 +43,7 @@ app.service('list', ['$rootScope', '$filter', '$http', function($scope, $filter,
 					fileLarge: v.fileLarge,
 					fileThumb: v.fileThumb});
 			}.bind(this));
+			$scope.$broadcast('change:list', this.list);
 		}.bind(this));
 	}.bind(this);
 
@@ -80,24 +75,27 @@ app.controller('MainController', ['$scope', 'list', 'sse', function($scope, list
 }]);
 
 app.controller('ListWideController', ['$scope', '$http', 'list', 'sse', function($scope, $http, list, sse) {
+	$scope.status = undefined;
 	$scope.pictureList = list.get();
-	$scope.importing = false;
 
 	sse.setCallback(function(jsonString) {
 		var data = angular.fromJson(jsonString);
 		$scope.$apply(function () {
-			$scope.importing = (data.complete != data.total);
 			$scope.progress = data;
-			if (! $scope.importing) {
+			if (data.complete == data.total) {
+				$scope.status = 'updating';
 				list.load();
-				$scope.pictureList = list.get();
 			}
         });
 		console.log(data);
 	});
 
+	$scope.$on('change:list', function (e, list) {
+		$scope.status = undefined;
+	});
+
 	$scope.importImage = function() {
-		$scope.importing = true;
+		$scope.status = 'importing';
 		$http.get('import').success(function(res) {});
 	};
 }]);
