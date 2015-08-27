@@ -32,14 +32,13 @@ var Client = function() {
 	this.canvMng.draw({x:0, y:0});
 
 	// bind mouse/touch events
-	$canvas.mousedown(this.cvmsDown.bind(this));
-	$canvas.mouseup(this.cvmsUp.bind(this));
-	$canvas.mouseleave(this.cvmsUp.bind(this));
-	$canvas.mousemove(this.cvmsMove.bind(this));
-	$canvas.bind("touchstart", this.cvmsDown.bind(this));
-	$canvas.bind("touchend", this.cvmsUp.bind(this));
-	$canvas.bind("touchend", this.cvmsUp.bind(this));
-	$canvas.bind("touchmove", this.cvmsMove.bind(this));
+	$canvas.mousedown(this.hDown.bind(this));
+	$canvas.mouseup(this.hUp.bind(this));
+	$canvas.mouseleave(this.hUp.bind(this));
+	$canvas.mousemove(this.hMove.bind(this));
+	$canvas.bind("touchstart", this.hDown.bind(this));
+	$canvas.bind("touchend", this.hUp.bind(this));
+	$canvas.bind("touchmove", this.hMove.bind(this));
 	// bind button event
 	$('#savebtn').mousedown(this.saveImage.bind(this));
 	$('#restorebtn').mousedown(this.restoreImage.bind(this));
@@ -142,29 +141,29 @@ Client.prototype.downloadImage = function() {
 };
 
 // mousedown event
-Client.prototype.cvmsDown = function(evt) {
-	var cx = evt.pageX - client.cvpos.x;
-	var cy = evt.pageY - client.cvpos.y;
+Client.prototype.hDown = function(evt) {
+	var cx = evt.pageX - this.cvpos.x;
+	var cy = evt.pageY - this.cvpos.y;
 
 	this.dragging = true;
 	this.client_db[0].prevPos = {x:cx, y:cy};
-	this.socket.emit('setPos', {sid:client.sessionId,
+	this.socket.emit('setPos', {sid:this.sessionId,
 								to:{x:cx, y:cy}});
 	return false;
 };
 
 // mouseup/mouseleave event
-Client.prototype.cvmsUp = function(evt) {
+Client.prototype.hUp = function(evt) {
 	this.dragging = false;
 };
 
 // mousemove event
-Client.prototype.cvmsMove = function(evt) {
+Client.prototype.hMove = function(evt) {
 	if (!this.dragging) {
 		return false;
 	}
-	var cx = evt.pageX - client.cvpos.x;
-	var cy = evt.pageY - client.cvpos.y;
+	var cx = evt.pageX - this.cvpos.x;
+	var cy = evt.pageY - this.cvpos.y;
 	var conf = this.client_db[0];
 
 	// update the canvas
@@ -174,7 +173,7 @@ Client.prototype.cvmsMove = function(evt) {
 
 	this.canvMng.draw({x:cx, y:cy});
 	conf.prevPos = {x:cx, y:cy};
-	client.socket.emit('drawLine', {sid:client.sessionId,
+	this.socket.emit('drawLine', {sid:this.sessionId,
 									to:{x:cx, y:cy}});
 
 	return false;
