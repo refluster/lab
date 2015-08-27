@@ -1,228 +1,220 @@
-var client = {}; // namespace
+//var client = {}; // namespace
 
-(function($) {
+var Client = function() {
 	// drag state
-	client.dragging = false;
-
-	// running state
-	client.run = false;
+	this.dragging = false;
 
 	// socket
 	//client.socket = new io.connect("http://183.181.8.119:8081");
-	client.socket = new io.connect("http://localhost:8081");
+	this.socket = new io.connect("http://localhost:8081");
 
 	// my session id
-	client.sessionId = null;
+	this.sessionId = null;
 
 	// client database, [0] is mine
-	client.client_db = new Array();
+	this.client_db = [];
 
-	// button function: start
-	client.start = function() {
-		var $canvas = $('#canvas');
+	var $canvas = $('#canvas');
+	this.cvpos = {x:0, y:0};
+	this.cvpos.x = $canvas.offset().left;
+	this.cvpos.y = $canvas.offset().top;
 
-		// bind mouse/touch events
-		$canvas.mousedown(client.cvmsDown);
-		$canvas.mouseup(client.cvmsUp);
-		$canvas.mouseleave(client.cvmsUp);
-		$canvas.mousemove(client.cvmsMove);
-		$canvas.bind("touchstart", client.cvmsDown);
-		$canvas.bind("touchend", client.cvmsUp);
-		$canvas.bind("touchend", client.cvmsUp);
-		$canvas.bind("touchmove", client.cvmsMove);
-		
-		client.run = true;
-	};
+	// get canvas's DOM element and context
+	if ( ! $canvas[0] || !$canvas[0].getContext ) { return false; }
+	var ctx = $canvas[0].getContext("2d");
+	ctx.lineWidth = 1;
+	ctx.globalAlpha = 0.7;
+	ctx.globalCompositeOperation = "source-over";
 
-	// button function: save image
-	client.saveImage = function() {
-		var $canvas = $('#canvas');
+	// create canvas manager
+	this.canvMng = new canvasManager.canv(ctx, $canvas.width(),
+										  $canvas.height(), this);
+	this.canvMng.draw({x:0, y:0});
 
-		var imgData = $canvas[0].toDataURL();
-		client.socket.emit('saveImage', {imgData:imgData});
-	};
+	// bind mouse/touch events
+	$canvas.mousedown(this.cvmsDown.bind(this));
+	$canvas.mouseup(this.cvmsUp.bind(this));
+	$canvas.mouseleave(this.cvmsUp.bind(this));
+	$canvas.mousemove(this.cvmsMove.bind(this));
+	$canvas.bind("touchstart", this.cvmsDown.bind(this));
+	$canvas.bind("touchend", this.cvmsUp.bind(this));
+	$canvas.bind("touchend", this.cvmsUp.bind(this));
+	$canvas.bind("touchmove", this.cvmsMove.bind(this));
+	// bind button event
+	$('#savebtn').mousedown(this.saveImage.bind(this));
+	$('#restorebtn').mousedown(this.restoreImage.bind(this));
+	$('#clearbtn').mousedown(this.clearImage.bind(this));
+	$('#dispimgbtn').mousedown(this.displayImage.bind(this));
+	$('#dlimgbtn').mousedown(this.downloadImage.bind(this));
+	$('#color-black').bind('touchstart', this.setColorBlack.bind(this));
+	$('#color-black').bind('mousedown', this.setColorBlack.bind(this));
+	$('#color-red').bind('touchstart', this.setColorRed.bind(this));
+	$('#color-red').bind('mousedown', this.setColorRed.bind(this));
+	$('#color-blue').bind('touchstart', this.setColorBlue.bind(this));
+	$('#color-blue').bind('mousedown', this.setColorBlue.bind(this));
+	$('#color-yellow').bind('touchstart', this.setColorYellow.bind(this));
+	$('#color-yellow').bind('mousedown', this.setColorYellow.bind(this));
+	$('#line-1px').bind('touchstart', this.setLineWidth1px.bind(this));
+	$('#line-1px').bind('mousedown', this.setLineWidth1px.bind(this));
+	$('#line-3px').bind('touchstart', this.setLineWidth3px.bind(this));
+	$('#line-3px').bind('mousedown', this.setLineWidth3px.bind(this));
+	$('#line-5px').bind('touchstart', this.setLineWidth5px.bind(this));
+	$('#line-5px').bind('mousedown', this.setLineWidth5px.bind(this));
 
-	// button function: restore image
-	client.restoreImage = function() {
-		client.socket.emit('restoreImage');
-	};
+	// bind socket.io event
+	this.socket.on("connect", function(){
+		console.log('connected');
+	}.bind(this));
+	this.socket.on('setPos', function (data) {
+		// draw line by another client
+		this.client_db[data.sid].prevPos = data.to;
+	}.bind(this));
+	this.socket.on('setColor', function (data) {
+		// draw line by another client
+		this.client_db[data.sid].color = data.color;
+	}.bind(this));
+	this.socket.on('setLineWidth', function (data) {
+		// draw line by another client
+		this.client_db[data.sid].lineWidth = data.lineWidth;
+	}.bind(this));
+	this.socket.on('drawLine', function (data) {
+		// draw line by another client
+		var conf = this.client_db[data.sid];
+		this.canvMng.setPos({x:conf.prevPos.x, y:conf.prevPos.y});
+		this.canvMng.setColor(conf.color);
+		this.canvMng.setLineWidth(conf.lineWidth);
+		this.canvMng.draw({x:data.to.x, y:data.to.y});
+		conf.prevPos = data.to
+	}.bind(this));
+	this.socket.on('your sid', function (sid) {
+		// get my session id from server
+		console.log("session id: %d", sid);
+		this.sessionId = sid;
+		this.client_db[0] = {color:'black', lineWidth:1, prevPos:{x:0, y:0}};
+	}.bind(this));
+	this.socket.on('client connected', function (sid) {
+		// new client connected
+		this.client_db[sid] = {color:'black', lineWidth:1, prevPos:{x:0, y:0}};
+	}.bind(this));
+	this.socket.on('client disconnected', function (data) {
+	}.bind(this));
+	this.socket.on('restore image', function(data) {
+		this.canvMng.restoreImage(data);
+	}.bind(this));
+	this.socket.on('clear image', function(data) {
+		this.canvMng.blank();
+	}.bind(this));
+};
 
-	// button function: clear image
-	client.clearImage = function() {
-		client.socket.emit('clearImage');
-		client.canvMng.blank();
-	};
+// button function: save image
+Client.prototype.saveImage = function() {
+	var $canvas = $('#canvas');
 
-	// button function: display image
-	client.displayImage = function() {
-		var $canvas = $('#canvas');
-		var imgData = $canvas[0].toDataURL();
+	var imgData = $canvas[0].toDataURL();
+	this.socket.emit('saveImage', {imgData:imgData});
+};
 
-		window.open(imgData);
-	};
+// button function: restore image
+Client.prototype.restoreImage = function() {
+	this.socket.emit('restoreImage');
+};
 
-	// button function: download image
-	client.downloadImage = function() {
-		var $canvas = $('#canvas');
-		var data = canvas[0].toDataURL().
-			replace('image/png', 'application/octet-stream');;
-		location.href = data;
-	};
+// button function: clear image
+Client.prototype.clearImage = function() {
+	this.socket.emit('clearImage');
+	this.canvMng.blank();
+};
 
-	// mousedown event
-	client.cvmsDown = function(evt) {
-		var cx = evt.pageX - client.cvpos.x;
-		var cy = evt.pageY - client.cvpos.y;
+// button function: display image
+Client.prototype.displayImage = function() {
+	var $canvas = $('#canvas');
+	var imgData = $canvas[0].toDataURL();
 
-		client.dragging = true;
-		client.client_db[0].prevPos = {x:cx, y:cy};
-		client.socket.emit('setPos', {sid:client.sessionId,
-									  to:{x:cx, y:cy}});
+	window.open(imgData);
+};
+
+// button function: download image
+Client.prototype.downloadImage = function() {
+	var $canvas = $('#canvas');
+	var data = canvas[0].toDataURL().
+		replace('image/png', 'application/octet-stream');;
+	location.href = data;
+};
+
+// mousedown event
+Client.prototype.cvmsDown = function(evt) {
+	var cx = evt.pageX - client.cvpos.x;
+	var cy = evt.pageY - client.cvpos.y;
+
+	this.dragging = true;
+	this.client_db[0].prevPos = {x:cx, y:cy};
+	this.socket.emit('setPos', {sid:client.sessionId,
+								to:{x:cx, y:cy}});
+	return false;
+};
+
+// mouseup/mouseleave event
+Client.prototype.cvmsUp = function(evt) {
+	this.dragging = false;
+};
+
+// mousemove event
+Client.prototype.cvmsMove = function(evt) {
+	if (!this.dragging) {
 		return false;
-	};
+	}
+	var cx = evt.pageX - client.cvpos.x;
+	var cy = evt.pageY - client.cvpos.y;
+	var conf = this.client_db[0];
 
-	// mouseup/mouseleave event
-	client.cvmsUp = function(evt) {
-		client.dragging = false;
-	};
+	// update the canvas
+	this.canvMng.setColor(conf.color);
+	this.canvMng.setLineWidth(conf.lineWidth);
+	this.canvMng.setPos(conf.prevPos);
 
-	// mousemove event
-	client.cvmsMove = function(evt) {
-		if (!client.dragging) {
-			return false;
-		}
-		var cx = evt.pageX - client.cvpos.x;
-		var cy = evt.pageY - client.cvpos.y;
-		var conf = client.client_db[0];
+	this.canvMng.draw({x:cx, y:cy});
+	conf.prevPos = {x:cx, y:cy};
+	client.socket.emit('drawLine', {sid:client.sessionId,
+									to:{x:cx, y:cy}});
 
-		// update the canvas
-		client.canvMng.setColor(conf.color);
-		client.canvMng.setLineWidth(conf.lineWidth);
-		client.canvMng.setPos(conf.prevPos);
+	return false;
+};
 
-		client.canvMng.draw({x:cx, y:cy});
-		conf.prevPos = {x:cx, y:cy};
-		client.socket.emit('drawLine', {sid:client.sessionId,
-										to:{x:cx, y:cy}});
+// color setting
+Client.prototype.setColor = function(_color) {
+	this.client_db[0].color = _color;
+	this.socket.emit("setColor", {sid:this.sessionId, color:_color});
+};
+Client.prototype.setColorBlack = function() {
+	this.setColor('black');
+};
+Client.prototype.setColorRed = function() {
+	this.setColor('red');
+};
+Client.prototype.setColorBlue = function() {
+	this.setColor('blue');
+};
+Client.prototype.setColorYellow = function() {
+	this.setColor('yellow');
+};
 
-		return false;
-	};
+// line width setting
+Client.prototype.setLineWidth = function(_lineWidth) {
+	this.client_db[0].lineWidth = _lineWidth;
+	this.socket.emit("setLineWidth", {sid:this.sessionId, lineWidth:_lineWidth});
+};
+Client.prototype.setLineWidth1px = function() {
+	this.setLineWidth(1);
+};
+Client.prototype.setLineWidth3px = function() {
+	this.setLineWidth(3);
+};
+Client.prototype.setLineWidth5px = function() {
+	this.setLineWidth(5);
+};
 
-	// color setting
-	client.setColor = function(_color) {
-		client.client_db[0].color = _color;
-		client.socket.emit("setColor", {sid:client.sessionId, color:_color});
-	};
-	client.setColorBlack = function() {
-		client.setColor('black');
-	};
-	client.setColorRed = function() {
-		client.setColor('red');
-	};
-	client.setColorBlue = function() {
-		client.setColor('blue');
-	};
-	client.setColorYellow = function() {
-		client.setColor('yellow');
-	};
-
-	// line width setting
-	client.setLineWidth = function(_lineWidth) {
-		client.client_db[0].lineWidth = _lineWidth;
-		client.socket.emit("setLineWidth", {sid:client.sessionId, lineWidth:_lineWidth});
-	};
-	client.setLineWidth1px = function() {
-		client.setLineWidth(1);
-	};
-	client.setLineWidth3px = function() {
-		client.setLineWidth(3);
-	};
-	client.setLineWidth5px = function() {
-		client.setLineWidth(5);
-	};
-
-	$(window).load(function() {
-		var $canvas = $('#canvas');
-		client.cvpos = {x:0, y:0};
-		client.cvpos.x = $canvas.offset().left;
-		client.cvpos.y = $canvas.offset().top;
-
-		// get canvas's DOM element and context
-		if ( ! $canvas[0] || !$canvas[0].getContext ) { return false; }
-		var ctx = $canvas[0].getContext("2d");
-		ctx.lineWidth = 1;
-		ctx.globalAlpha = 0.7;
-		ctx.globalCompositeOperation = "source-over";
-
-		// create canvas manager
-		client.canvMng = new canvasManager.canv(ctx, $canvas.width(),
-												$canvas.height(), client);
-		client.canvMng.draw({x:0, y:0});
-
-		client.start();
-		// bind button event
-		$('#savebtn').mousedown(client.saveImage);
-		$('#restorebtn').mousedown(client.restoreImage);
-		$('#clearbtn').mousedown(client.clearImage);
-		$('#dispimgbtn').mousedown(client.displayImage);
-		$('#dlimgbtn').mousedown(client.downloadImage);
-		$('#color-black').bind('touchstart', client.setColorBlack);
-		$('#color-black').bind('mousedown', client.setColorBlack);
-		$('#color-red').bind('touchstart', client.setColorRed);
-		$('#color-red').bind('mousedown', client.setColorRed);
-		$('#color-blue').bind('touchstart', client.setColorBlue);
-		$('#color-blue').bind('mousedown', client.setColorBlue);
-		$('#color-yellow').bind('touchstart', client.setColorYellow);
-		$('#color-yellow').bind('mousedown', client.setColorYellow);
-		$('#line-1px').bind('touchstart', client.setLineWidth1px);
-		$('#line-1px').bind('mousedown', client.setLineWidth1px);
-		$('#line-3px').bind('touchstart', client.setLineWidth3px);
-		$('#line-3px').bind('mousedown', client.setLineWidth3px);
-		$('#line-5px').bind('touchstart', client.setLineWidth5px);
-		$('#line-5px').bind('mousedown', client.setLineWidth5px);
-
-		// bind socket.io event
-		client.socket.on("connect", function(){
-			console.log('connected');
-		});
-		client.socket.on('setPos', function (data) {
-			// draw line by another client
-			client.client_db[data.sid].prevPos = data.to;
-		});
-		client.socket.on('setColor', function (data) {
-			// draw line by another client
-			client.client_db[data.sid].color = data.color;
-		});
-		client.socket.on('setLineWidth', function (data) {
-			// draw line by another client
-			client.client_db[data.sid].lineWidth = data.lineWidth;
-		});
-		client.socket.on('drawLine', function (data) {
-			// draw line by another client
-			var conf = client.client_db[data.sid];
-			client.canvMng.setPos({x:conf.prevPos.x, y:conf.prevPos.y});
-			client.canvMng.setColor(conf.color);
-			client.canvMng.setLineWidth(conf.lineWidth);
-			client.canvMng.draw({x:data.to.x, y:data.to.y});
-			conf.prevPos = data.to
-		});
-		client.socket.on('your sid', function (sid) {
-			// get my session id from server
-			console.log("session id: %d", sid);
-			client.sessionId = sid;
-			client.client_db[0] = {color:'black', lineWidth:1, prevPos:{x:0, y:0}};
-		});
-		client.socket.on('client connected', function (sid) {
-			// new client connected
-			client.client_db[sid] = {color:'black', lineWidth:1, prevPos:{x:0, y:0}};
-		});
-		client.socket.on('client disconnected', function (data) {
-		});
-		client.socket.on('restore image', function(data) {
-			client.canvMng.restoreImage(data);
-		});
-		client.socket.on('clear image', function(data) {
-			client.canvMng.blank();
-		});
-	});
-})(jQuery);
+$(function() {
+//window.onload = function() {
+	client = new Client();
+});
+//};
