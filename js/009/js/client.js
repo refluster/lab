@@ -19,24 +19,26 @@ var client = {}; // namespace
 
 	// button function: start
 	client.start = function() {
-		var $cvdiv = $('#cvdiv1');
+		var $canvas = $('#canvas');
 
 		// bind mouse/touch events
-		$cvdiv.mousedown(client.cvmsDown);
-		$cvdiv.mouseup(client.cvmsUp);
-		$cvdiv.mouseleave(client.cvmsUp);
-		$cvdiv.mousemove(client.cvmsMove);
-		$cvdiv.bind("touchstart", client.cvmsDown);
-		$cvdiv.bind("touchend", client.cvmsUp);
-		$cvdiv.bind("touchend", client.cvmsUp);
-		$cvdiv.bind("touchmove", client.cvmsMove);
+		$canvas.mousedown(client.cvmsDown);
+		$canvas.mouseup(client.cvmsUp);
+		$canvas.mouseleave(client.cvmsUp);
+		$canvas.mousemove(client.cvmsMove);
+		$canvas.bind("touchstart", client.cvmsDown);
+		$canvas.bind("touchend", client.cvmsUp);
+		$canvas.bind("touchend", client.cvmsUp);
+		$canvas.bind("touchmove", client.cvmsMove);
 		
 		client.run = true;
 	};
 
 	// button function: save image
 	client.saveImage = function() {
-		var imgData = client.canvas.toDataURL();
+		var $canvas = $('#canvas');
+
+		var imgData = $canvas[0].toDataURL();
 		client.socket.emit('saveImage', {imgData:imgData});
 	};
 
@@ -53,14 +55,16 @@ var client = {}; // namespace
 
 	// button function: display image
 	client.displayImage = function() {
-		var imgData = client.canvas.toDataURL();
+		var $canvas = $('#canvas');
+		var imgData = $canvas[0].toDataURL();
 
 		window.open(imgData);
 	};
 
 	// button function: download image
 	client.downloadImage = function() {
-		var data = client.canvas.toDataURL().
+		var $canvas = $('#canvas');
+		var data = canvas[0].toDataURL().
 			replace('image/png', 'application/octet-stream');;
 		location.href = data;
 	};
@@ -138,22 +142,21 @@ var client = {}; // namespace
 	};
 
 	$(window).load(function() {
-		var $cvdiv = $('#cvdiv1');
+		var $canvas = $('#canvas');
 		client.cvpos = {x:0, y:0};
-		client.cvpos.x = $cvdiv.offset().left;
-		client.cvpos.y = $cvdiv.offset().top;
+		client.cvpos.x = $canvas.offset().left;
+		client.cvpos.y = $canvas.offset().top;
 
 		// get canvas's DOM element and context
-		client.canvas = document.getElementById('cv1');
-		if ( ! client.canvas || ! client.canvas.getContext ) { return false; }
-		var ctx = client.canvas.getContext("2d");
+		if ( ! $canvas[0] || !$canvas[0].getContext ) { return false; }
+		var ctx = $canvas[0].getContext("2d");
 		ctx.lineWidth = 1;
 		ctx.globalAlpha = 0.7;
 		ctx.globalCompositeOperation = "source-over";
 
 		// create canvas manager
-		client.canvMng = new canvasManager.canv(ctx, client.canvas.width,
-												client.canvas.height, client);
+		client.canvMng = new canvasManager.canv(ctx, $canvas.width(),
+												$canvas.height(), client);
 		client.canvMng.draw({x:0, y:0});
 
 		client.start();
