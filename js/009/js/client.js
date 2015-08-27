@@ -8,7 +8,8 @@ var client = {}; // namespace
 	client.run = false;
 
 	// socket
-	client.socket = new io.connect("http://183.181.8.119:8081");
+	//client.socket = new io.connect("http://183.181.8.119:8081");
+	client.socket = new io.connect("http://localhost:8081");
 
 	// my session id
 	client.sessionId = null;
