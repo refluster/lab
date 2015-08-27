@@ -17,44 +17,21 @@ var client = {}; // namespace
 	// client database, [0] is mine
 	client.client_db = new Array();
 
-	// display message
-	client.showmsg = function(msg) {
-		$('#msg1').html(msg);
-	};
-
 	// button function: start
 	client.start = function() {
 		var $cvdiv = $('#cvdiv1');
-		var $btn = $('#stbtn1');
-		if (!client.run) {
-			// bind mouse/touch events
-			$cvdiv.mousedown(client.cvmsDown);
-			$cvdiv.mouseup(client.cvmsUp);
-			$cvdiv.mouseleave(client.cvmsUp);
-			$cvdiv.mousemove(client.cvmsMove);
-			$cvdiv.bind("touchstart", client.cvmsDown);
-			$cvdiv.bind("touchend", client.cvmsUp);
-			$cvdiv.bind("touchend", client.cvmsUp);
-			$cvdiv.bind("touchmove", client.cvmsMove);
 
-			client.run = true;
-			client.showmsg('drawable');
-			$btn.text('stop');
-		} else {
-			// unbind mouse/touch events
-			$cvdiv.unbind('mousedown', client.cvmsDown);
-			$cvdiv.unbind('mouseup', client.cvmsUp);
-			$cvdiv.unbind('mouseleave', client.cvmsUp);
-			$cvdiv.unbind('mousemove', client.cvmsMove);
-			$cvdiv.unbind("touchstart", client.cvmsDown);
-			$cvdiv.unbind("touchend", client.cvmsUp);
-			$cvdiv.unbind("touchend", client.cvmsUp);
-			$cvdiv.unbind("touchmove", client.cvmsMove);
-
-			client.run = false;
-			client.showmsg('press start button');
-			$btn.text('start');
-		}
+		// bind mouse/touch events
+		$cvdiv.mousedown(client.cvmsDown);
+		$cvdiv.mouseup(client.cvmsUp);
+		$cvdiv.mouseleave(client.cvmsUp);
+		$cvdiv.mousemove(client.cvmsMove);
+		$cvdiv.bind("touchstart", client.cvmsDown);
+		$cvdiv.bind("touchend", client.cvmsUp);
+		$cvdiv.bind("touchend", client.cvmsUp);
+		$cvdiv.bind("touchmove", client.cvmsMove);
+		
+		client.run = true;
 	};
 
 	// button function: save image
@@ -97,14 +74,12 @@ var client = {}; // namespace
 		client.client_db[0].prevPos = {x:cx, y:cy};
 		client.socket.emit('setPos', {sid:client.sessionId,
 									  to:{x:cx, y:cy}});
-		client.showmsg("drawing");
 		return false;
 	};
 
 	// mouseup/mouseleave event
 	client.cvmsUp = function(evt) {
 		client.dragging = false;
-		client.showmsg("drawable");
 	};
 
 	// mousemove event
@@ -163,9 +138,6 @@ var client = {}; // namespace
 	};
 
 	$(window).load(function() {
-		// show message
-		client.showmsg('initializing');
-
 		var $cvdiv = $('#cvdiv1');
 		client.cvpos = {x:0, y:0};
 		client.cvpos.x = $cvdiv.offset().left;
@@ -184,8 +156,8 @@ var client = {}; // namespace
 												client.canvas.height, client);
 		client.canvMng.draw({x:0, y:0});
 
+		client.start();
 		// bind button event
-		$('#stbtn1').mousedown(client.start);
 		$('#savebtn').mousedown(client.saveImage);
 		$('#restorebtn').mousedown(client.restoreImage);
 		$('#clearbtn').mousedown(client.clearImage);
@@ -249,8 +221,5 @@ var client = {}; // namespace
 		client.socket.on('clear image', function(data) {
 			client.canvMng.blank();
 		});
-
-		// show message
-		client.showmsg('press start button');
 	});
 })(jQuery);
