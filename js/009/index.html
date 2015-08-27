@@ -19,6 +19,7 @@
         display:block;
     }
     .toolbar li {
+        display: inline-block;
         width:44px;
         height:44px;
         margin:auto;
@@ -26,8 +27,6 @@
         border:1px solid #ccc;
         border-radius:6px;
         margin:10px;
-        display:block;
-        float:left;
     }
     #color-black {
         background-color:black;
@@ -80,13 +79,11 @@
         <li id="color-blue"></li>
         <li id="color-yellow"></li>
       </ul>
-      <div style="clear: both;"></div>
       <ul class="toolbar">
         <li id="line-1px">S</li>
         <li id="line-3px">M</li>
         <li id="line-5px">L</li>
       </ul>
-      <div style="clear: both;"></div>
       <div id="cvdiv1"><canvas id="cv1" class="cv" width="300" height="300"></canvas></div>
       <button id="clearbtn" class="btn">clear image</button>
       <button id="savebtn" class="btn">save image</button>
