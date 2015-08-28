@@ -21,15 +21,19 @@ var Client = function() {
 
 	// get canvas's DOM element and context
 	if ( ! $canvas[0] || !$canvas[0].getContext ) { return false; }
-	var ctx = $canvas[0].getContext("2d");
-	ctx.lineWidth = 1;
-	ctx.globalAlpha = 0.7;
-	ctx.globalCompositeOperation = "source-over";
+	this.ctx = $canvas[0].getContext("2d");
+	this.ctx.lineWidth = 1;
+	this.ctx.globalCompositeOperation = "source-over";
+	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+	this.canvasWidth = $canvas.width();
+	this.canvasHeight = $canvas.height();
 
 	// create canvas manager
-	this.canvMng = new canvasManager.canv(ctx, $canvas.width(),
-										  $canvas.height(), this);
-	this.canvMng.draw({x:0, y:0});
+	//	this.canvMng = new canvasManager.canv(ctx, $canvas.width(),
+	//										  $canvas.height(), this);
+	//
+	//this.canvMng.draw({x:0, y:0});
 
 	// bind mouse/touch events
 	$canvas.mousedown(this.hDown.bind(this));
@@ -77,13 +81,15 @@ var Client = function() {
 		this.client_db[data.sid].lineWidth = data.lineWidth;
 	}.bind(this));
 	this.socket.on('drawLine', function (data) {
-		// draw line by another client
 		var conf = this.client_db[data.sid];
-		this.canvMng.setPos({x:conf.prevPos.x, y:conf.prevPos.y});
-		this.canvMng.setColor(conf.color);
-		this.canvMng.setLineWidth(conf.lineWidth);
-		this.canvMng.draw({x:data.to.x, y:data.to.y});
-		conf.prevPos = data.to
+		this.ctx.strokeStyle = conf.color;
+		this.ctx.lineWidth = conf.lineWidth;
+		this.ctx.beginPath();
+		this.ctx.moveTo(conf.prevPos.x, conf.prevPos.y);
+		this.ctx.lineTo(data.to.x, data.to.y);
+		this.ctx.stroke();
+		conf.prevPos.x = data.to.x;
+		conf.prevPos.y = data.to.y;
 	}.bind(this));
 	this.socket.on('your sid', function (sid) {
 		// get my session id from server
@@ -95,13 +101,19 @@ var Client = function() {
 		// new client connected
 		this.client_db[sid] = {color:'black', lineWidth:1, prevPos:{x:0, y:0}};
 	}.bind(this));
-	this.socket.on('client disconnected', function (data) {
+	this.socket.on('client disconnected', function (sid) {
+		this.client_db[sid] = undefined;
 	}.bind(this));
 	this.socket.on('restore image', function(data) {
-		this.canvMng.restoreImage(data);
+		var img = new Image();
+		var alpha = this.ctx.globalAlpha;
+		img.src = imgData;
+		this.ctx.globalAlpha = 1.0;
+		this.ctx.drawImage(img, 0, 0);
+		this.ctx.globalAlpha = alpha;
 	}.bind(this));
 	this.socket.on('clear image', function(data) {
-		this.canvMng.blank();
+		this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 	}.bind(this));
 };
 
@@ -121,7 +133,7 @@ Client.prototype.restoreImage = function() {
 // button function: clear image
 Client.prototype.clearImage = function() {
 	this.socket.emit('clearImage');
-	this.canvMng.blank();
+	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
 // button function: display image
@@ -165,14 +177,14 @@ Client.prototype.hMove = function(evt) {
 	var cx = evt.pageX - this.cvpos.x;
 	var cy = evt.pageY - this.cvpos.y;
 	var conf = this.client_db[0];
-
-	// update the canvas
-	this.canvMng.setColor(conf.color);
-	this.canvMng.setLineWidth(conf.lineWidth);
-	this.canvMng.setPos(conf.prevPos);
-
-	this.canvMng.draw({x:cx, y:cy});
-	conf.prevPos = {x:cx, y:cy};
+	this.ctx.strokeStyle = conf.color;
+	this.ctx.lineWidth = conf.lineWidth;
+	this.ctx.beginPath();
+	this.ctx.moveTo(conf.prevPos.x, conf.prevPos.y);
+	this.ctx.lineTo(cx, cy);
+	this.ctx.stroke();
+	conf.prevPos.x = cx;
+	conf.prevPos.y = cy;
 	this.socket.emit('drawLine', {sid:this.sessionId,
 									to:{x:cx, y:cy}});
 
