@@ -46,7 +46,7 @@ socket.on('connection', function(client){
 	// receive draw line {sid, to{x, y}}
 	client.on('drawLine', function(data) {
 		client.broadcast.emit('drawLine', data);
-		console.log('drawline ' + data.sid + " " + data.to.x + " " + data.to.y);
+		//console.log('drawline ' + data.sid + " " + data.to.x + " " + data.to.y);
 	});
 	
 	client.on('disconnect', function() {
