@@ -1,4 +1,4 @@
-var panelApl = function() {
+var Apl = function() {
 	this.width;
 	this.height;
 	this.renderer;
@@ -10,7 +10,7 @@ var panelApl = function() {
 	this.baseTime = +new Date;
 };
 
-panelApl.prototype.initThree = function() {
+Apl.prototype.initThree = function() {
 	this.width = document.getElementById('canvas-frame').clientWidth;
 	this.height = document.getElementById('canvas-frame').clientHeight;
 	this.renderer = new THREE.WebGLRenderer({antialias: true});
@@ -19,7 +19,7 @@ panelApl.prototype.initThree = function() {
 	this.renderer.setClearColorHex(0x000000, 1.0);
 };
 
-panelApl.prototype.initCamera = function() {
+Apl.prototype.initCamera = function() {
 	this.camera = new THREE.PerspectiveCamera( 45 , this.width / this.height,
 											   1 , 10000 );
 	this.camera.position.x = 100;
@@ -31,17 +31,17 @@ panelApl.prototype.initCamera = function() {
 	this.camera.lookAt( {x:0, y:0, z:0 } );
 };
 
-panelApl.prototype.initScene = function() {
+Apl.prototype.initScene = function() {
 	this.scene = new THREE.Scene();
 };
 
-panelApl.prototype.initLight = function() {
+Apl.prototype.initLight = function() {
 	this.light = new THREE.DirectionalLight(0xFF0000, 1.0, 0);
 	this.light.position.set( 100, 100, 200 );
 	this.scene.add(this.light);
 };
 
-panelApl.prototype.initObject = function(){
+Apl.prototype.initObject = function(){
 	this.cube = new THREE.Mesh(
 		new THREE.CubeGeometry(50,50,50), // set model
 		new THREE.MeshLambertMaterial({color: 0xff0000}) // set material
@@ -50,13 +50,13 @@ panelApl.prototype.initObject = function(){
 	this.cube.position.set(0,0,0);
 };
 
-panelApl.prototype.render = function() {
+Apl.prototype.render = function() {
 	requestAnimationFrame(this.render.bind(this));
 	this.cube.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
 	this.renderer.render(this.scene, this.camera);
 };
 
-panelApl.prototype.threeStart = function() {
+Apl.prototype.threeStart = function() {
 	this.initThree();
 	this.initCamera();
 	this.initScene();
@@ -67,6 +67,6 @@ panelApl.prototype.threeStart = function() {
 };
 
 $(function() {
-	var apl = new panelApl();
+	var apl = new Apl();
 	apl.threeStart();
 });
