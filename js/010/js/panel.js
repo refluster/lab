@@ -13,9 +13,7 @@ var panelApl = function() {
 panelApl.prototype.initThree = function() {
 	this.width = document.getElementById('canvas-frame').clientWidth;
 	this.height = document.getElementById('canvas-frame').clientHeight;
-	console.log('oge');
 	this.renderer = new THREE.WebGLRenderer({antialias: true});
-	console.log('oge');
 	this.renderer.setSize(this.width, this.height );
 	document.getElementById('canvas-frame').appendChild(this.renderer.domElement);
 	this.renderer.setClearColorHex(0x000000, 1.0);
@@ -23,7 +21,7 @@ panelApl.prototype.initThree = function() {
 
 panelApl.prototype.initCamera = function() {
 	this.camera = new THREE.PerspectiveCamera( 45 , this.width / this.height,
-												   1 , 10000 );
+											   1 , 10000 );
 	this.camera.position.x = 100;
 	this.camera.position.y = 20;
 	this.camera.position.z = 50;
@@ -45,8 +43,8 @@ panelApl.prototype.initLight = function() {
 
 panelApl.prototype.initObject = function(){
 	this.cube = new THREE.Mesh(
-		new THREE.CubeGeometry(50,50,50), //形状の設定
-		new THREE.MeshLambertMaterial({color: 0xff0000}) //材質の設定
+		new THREE.CubeGeometry(50,50,50), // set model
+		new THREE.MeshLambertMaterial({color: 0xff0000}) // set material
 	);
 	this.scene.add(this.cube);
 	this.cube.position.set(0,0,0);
@@ -54,7 +52,6 @@ panelApl.prototype.initObject = function(){
 
 panelApl.prototype.render = function() {
 	requestAnimationFrame(this.render.bind(this));
-	//    cube.position.x = 30*(+new Date - baseTime)/1000;
 	this.cube.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
 	this.renderer.render(this.scene, this.camera);
 };
