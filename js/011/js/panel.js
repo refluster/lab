@@ -24,11 +24,6 @@ panelApl.prototype.initCamera = function() {
 	this.camera.position.x = 0;
 	this.camera.position.y = 4;
 	this.camera.position.z = 8;
-	/*
-	  this.camera.up.x = 0;
-	  this.camera.up.y = 0;
-	  this.camera.up.z = 1;
-	*/
 	this.camera.lookAt( {x:0, y:0, z:0 } );
 };
 
@@ -70,7 +65,6 @@ panelApl.prototype.threeStart = function() {
 	this.renderer.clear();
 	this.render();
 };
-
 
 $(function() {
     var apl = new panelApl();
