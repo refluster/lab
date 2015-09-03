@@ -1,15 +1,8 @@
 var canvasManager = function(ctx, w, h) {
 	this.ctx = ctx; // the context
-	this.area = {w:w, h:h};  // the area
-	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
-	this.color = 'black'
-	this.lineWidth = 1;
+	this.canvasWidth = w;
+	this.canvasHeight = h;
 	this.PI2 = Math.PI * 2; // 2*pi
-
-	// set the position of the canvas on the browser
-	var $canvas = $('#canvas');
-	this.cvpos.x = $canvas.offset().left;
-	this.cvpos.y = $canvas.offset().top;
 
 	this.raindrop = [];
 	this.wave = [];
@@ -19,14 +12,14 @@ var canvasManager = function(ctx, w, h) {
 	}
 
 	// set initial height of raindrop randomly
-	for (var i = 0; i < 10; i++) {
-		this.raindrop[i].y = 160-i*100;
+	for (var i = 0; i < this.raindrop.length; i++) {
+		this.raindrop[i].y = 160 - i*100;
 	}
 };
 
 canvasManager.prototype.blank = function() {
 	this.ctx.fillStyle = "black";
-	this.ctx.fillRect(0, 0, this.area.w, this.area.h);
+	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
 canvasManager.prototype.random = function() {
@@ -53,15 +46,15 @@ canvasManager.prototype.newWave = function(x, y, z) {
 
 canvasManager.prototype.draw = function() {
 	this.blank();
-	this.ctx.strokeStyle = 'rgb(160,160,160)';//this.color;
+	this.ctx.strokeStyle = 'rgb(160,160,160)';
 
 	// draw drop
 	for (var i = 0; i < this.wave.length; i++) {
 		var a, x, y, z, r;
 		z = this.wave[i].pos.z;
 		a = 100/z;
-		x = this.area.w/2 - (this.area.w/2 - this.wave[i].pos.x)*a;
-		y = this.area.h/2 - (this.area.h/2 - this.wave[i].pos.y)*a;
+		x = this.canvasWidth/2 - (this.canvasWidth/2 - this.wave[i].pos.x)*a;
+		y = this.canvasHeight/2 - (this.canvasHeight/2 - this.wave[i].pos.y)*a;
 		r = this.wave[i].radius*a;
 
 		this.ctx.strokeEllipse(x - r, y - r/4,
@@ -73,8 +66,8 @@ canvasManager.prototype.draw = function() {
 		var x, y, z, r, vx, vy;
 		z = this.raindrop[i].pos.z;
 		a = 100/z;
-		x = this.area.w/2 - (this.area.w/2 - this.raindrop[i].pos.x)*a;
-		y = this.area.h/2 - (this.area.h/2 - this.raindrop[i].pos.y)*a;
+		x = this.canvasWidth/2 - (this.canvasWidth/2 - this.raindrop[i].pos.x)*a;
+		y = this.canvasHeight/2 - (this.canvasHeight/2 - this.raindrop[i].pos.y)*a;
 		vx = this.raindrop[i].speed.x*a;
 		vy = this.raindrop[i].speed.y*a;
 
@@ -91,9 +84,9 @@ canvasManager.prototype.moveObj = function() {
 		this.raindrop[i].pos.x += this.raindrop[i].speed.x;
 		this.raindrop[i].pos.y += this.raindrop[i].speed.y;
 
-		if (this.raindrop[i].pos.y > this.area.h - 10) {
+		if (this.raindrop[i].pos.y > this.canvasHeight - 10) {
 			this.newWave(this.raindrop[i].pos.x,
-						 this.area.h - 10,
+						 this.canvasHeight - 10,
 						 this.raindrop[i].pos.z);
 			this.raindrop.shift();
 			this.newDrop();
