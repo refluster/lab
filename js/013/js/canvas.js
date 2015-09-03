@@ -1,4 +1,4 @@
-var canvasManager = function(ctx, w, h, names) {
+var canvasManager = function(ctx, w, h) {
 	this.ctx = ctx; // the context
 	this.area = {w:w, h:h};  // the area
 	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
@@ -47,7 +47,6 @@ canvasManager.prototype.newDrop = function() {
 
 canvasManager.prototype.draw = function() {
 	this.blank();
-	this.ctx.save();
 	this.ctx.strokeStyle = 'rgb(160,160,160)';//this.color;
 
 	// draw drop
@@ -59,10 +58,8 @@ canvasManager.prototype.draw = function() {
 		y = this.area.h/2 - (this.area.h/2 - this.wave[i].pos.y)*a;
 		r = this.wave[i].radius*a;
 
-		this.ctx.strokeEllipse(x - r,
-							   y - r/4,
-							   x + r,
-							   y + r/4);
+		this.ctx.strokeEllipse(x - r, y - r/4,
+							   x + r, y + r/4);
 	}
 
 	// draw raindrop
@@ -86,8 +83,6 @@ canvasManager.prototype.draw = function() {
 					this.raindrop[i].pos.z,
 					this.raindrop.length);
 	}
-
-	this.ctx.restore();
 };
 
 canvasManager.prototype.moveObj = function() {
@@ -112,7 +107,7 @@ canvasManager.prototype.moveObj = function() {
 		}
 	}
 	for (var i = 0; i < this.wave.length; i++) {
-		this.wave[i].radius += 2;//this.wave[i].speed;
+		this.wave[i].radius += 2;
 		if (this.wave[i].radius > 160) {
 			this.wave.shift();
 		}
