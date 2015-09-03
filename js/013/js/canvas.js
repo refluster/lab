@@ -1,15 +1,9 @@
 /* HTML5 Canvas drag&drop */
-var canvasManager = {}; // namespace
 
-(function($) {
-	/* canvas class
-	 * {canvas context} ctx: the context
-	 * {int} w: width
-	 * {int} h: height
-	 * {objext} names: caller namespace
-	 */
-
-	canvasManager.canv = function(ctx, w, h, names) {
+/* init canvas
+ * return: none
+ */
+var canvasManager = function(ctx, w, h, names) {
 		this.ctx = ctx; // the context
 		this.area = {w:w, h:h};  // the area
 		this.cvpos = {x:0, y:0};  // position of the canvas on the browser
@@ -24,19 +18,22 @@ var canvasManager = {}; // namespace
 
 		this.raindrop = [];
 		this.wave = [];
+}; // namespace
 
-
-		/* init canvas
-		 * return: none
-		 */
-		this.blank = function() {
+/* canvas class
+ * {canvas context} ctx: the context
+ * {int} w: width
+ * {int} h: height
+ * {objext} names: caller namespace
+ */
+canvasManager.prototype.blank = function() {
 			// clear
 			//this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 			this.ctx.fillStyle = "black";
 			this.ctx.fillRect(0, 0, this.area.w, this.area.h);
-		};
+};
 
-		this.init = function() {
+canvasManager.prototype.init = function() {
 			/* init process
 			 * return: none
 			 */
@@ -49,16 +46,13 @@ var canvasManager = {}; // namespace
 			for (var i = 0; i < 10; i++) {
 				this.raindrop[i].y = 160-i*100;
 			}
-		};
+};
 
-		var _r = 0x12345678;
-		this.random = function() {
-			//_r = (_r*0x5719342) & 0xffffffff;
-			_r = Math.random()*1024;
-			return _r;
-		};
+canvasManager.prototype.random = function() {
+			return Math.random()*1024;
+};
 
-		this.newDrop = function() {
+canvasManager.prototype.newDrop = function() {
 			var x = this.random()%1000 - 100;
 			var start_y = this.random()%200 - 300;
 			//var start_y = 0;
@@ -69,12 +63,12 @@ var canvasManager = {}; // namespace
 				color:'gray'
 			});
 			console.log("newdrop (%d,%d,%d)", x, start_y, z);
-		};
+};
 
-		/* draw canvas
-		 * return: none
-		 */
-		this.draw = function() {
+/* draw canvas
+ * return: none
+ */
+canvasManager.prototype.draw = function() {
 			this.blank();
 			this.ctx.save();
 			this.ctx.strokeStyle = 'rgb(160,160,160)';//this.color;
@@ -118,9 +112,9 @@ var canvasManager = {}; // namespace
 			}
 
 			this.ctx.restore();
-		};
+};
 
-		this.moveObj = function() {
+canvasManager.prototype.moveObj = function() {
 			for (var i = 0; i < this.raindrop.length; i++) {
 				this.raindrop[i].pos.x += this.raindrop[i].speed.x;
 				this.raindrop[i].pos.y += this.raindrop[i].speed.y;
@@ -147,11 +141,9 @@ var canvasManager = {}; // namespace
 					this.wave.shift();
 				}
 			}
-		};
-	}
+};
 
-	CanvasRenderingContext2D.prototype.strokeEllipse = 
-		function(left, top, right, bottom) {
+CanvasRenderingContext2D.prototype.strokeEllipse = function(left, top, right, bottom) {
 			var halfWidth = (right - left) / 2.0;
 			var halfHeight = (bottom - top) / 2.0;
 			var x0 = left + halfWidth;
@@ -165,6 +157,5 @@ var canvasManager = {}; // namespace
 			this.bezierCurveTo(x0 - cw, bottom, left, y1 + ch, left, y1);
 			this.bezierCurveTo(left, y1 - ch, x0 - cw, top, x0, top);
 			this.stroke();
-		};
-})(jQuery);
+};
 
