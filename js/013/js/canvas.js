@@ -18,9 +18,9 @@ var canvasManager = {}; // namespace
 		this.PI2 = Math.PI * 2; // 2*pi
 
 		// set the position of the canvas on the browser
-		var $cvdiv = $('#cvdiv1');
-		this.cvpos.x = $cvdiv.offset().left;
-		this.cvpos.y = $cvdiv.offset().top;
+		var $canvas = $('#canvas');
+		this.cvpos.x = $canvas.offset().left;
+		this.cvpos.y = $canvas.offset().top;
 
 		this.raindrop = [];
 		this.wave = [];
