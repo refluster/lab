@@ -42,7 +42,13 @@ canvasManager.prototype.newDrop = function() {
 		speed:{x:0, y:16},
 		color:'gray'
 	});
-	console.log("newdrop (%d,%d,%d)", x, start_y, z);
+};
+
+canvasManager.prototype.newWave = function(x, y, z) {
+	this.wave.push({
+		pos: {x: x, y: y, z: z},
+		speed: 1,
+		radius: 1});
 };
 
 canvasManager.prototype.draw = function() {
@@ -77,11 +83,6 @@ canvasManager.prototype.draw = function() {
 		this.ctx.moveTo(x, y);
 		this.ctx.lineTo(x + vx, y + vy);
 		this.ctx.stroke();
-		console.log("draw drop[%d] = (%d,%d) <- (%d,%d,%d) length:%d",
-					i, x, y,
-					this.raindrop[i].pos.x, this.raindrop[i].pos.y,
-					this.raindrop[i].pos.z,
-					this.raindrop.length);
 	}
 };
 
@@ -91,19 +92,11 @@ canvasManager.prototype.moveObj = function() {
 		this.raindrop[i].pos.y += this.raindrop[i].speed.y;
 
 		if (this.raindrop[i].pos.y > this.area.h - 10) {
-			var newWave = {
-				pos: {x: this.raindrop[i].pos.x,
-					  y: this.area.h - 10,
-					  z: this.raindrop[i].pos.z},
-				speed: 1,
-				radius: 1};
-			this.wave.push(newWave);
-
-			//
-			//this.raindrop[i].pos.y = 10;
+			this.newWave(this.raindrop[i].pos.x,
+						 this.area.h - 10,
+						 this.raindrop[i].pos.z);
 			this.raindrop.shift();
 			this.newDrop();
-			console.log("call newdrop in moveobj");
 		}
 	}
 	for (var i = 0; i < this.wave.length; i++) {
