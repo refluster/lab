@@ -1,5 +1,9 @@
 var panelApl = function() {
 	// get canvas's DOM element and context
+	var $canvas = $('canvas');
+	$canvas.attr('width', $canvas.width());
+	$canvas.attr('height', '300');
+
 	var canvas = document.getElementById('canvas');
 	if ( ! canvas || ! canvas.getContext ) { return false; }
 	var ctx = canvas.getContext("2d");
