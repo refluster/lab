@@ -1,39 +1,29 @@
 var panelApl = function() {
-	// get canvas's DOM element and context
 	var $canvas = $('canvas');
 	$canvas.attr('width', $canvas.width());
 	$canvas.attr('height', '300');
+	this.canvasWidth = $canvas.width();
+	this.canvasHeight = $canvas.height();
 
-	var canvas = document.getElementById('canvas');
-	if ( ! canvas || ! canvas.getContext ) { return false; }
-	var ctx = canvas.getContext("2d");
-	ctx.lineWidth = 1;
-	ctx.globalCompositeOperation = "source-over";
+	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
+	this.ctx = $canvas[0].getContext("2d");
+	this.ctx.lineWidth = 1;
+	this.ctx.globalCompositeOperation = "source-over";
 
 	// init canvas
-	this.ctx = ctx; // the context
-	this.canvasWidth = canvas.width;
-	this.canvasHeight = canvas.height;
-	this.PI2 = Math.PI * 2; // 2*pi
 	this.raindrop = [];
 	this.wave = [];
 
 	for (var i = 0; i < 10; i++) {
 		this.newDrop();
-	}
-
-	// set initial height of raindrop randomly
-	for (var i = 0; i < this.raindrop.length; i++) {
+		// set initial height of raindrop randomly
 		this.raindrop[i].y = 160 - i*100;
 	}
-
-	this.draw();
 
 	// start timer
 	this.timer = $.timer();
 	this.timer.set({
 		action: function() {
-			this.count ++;
 			this.moveObj();
 			this.draw();
 		}.bind(this),
@@ -42,32 +32,13 @@ var panelApl = function() {
 	this.timer.play();
 };
 
-var canvasManager = function(ctx, w, h) {
-	this.ctx = ctx; // the context
-	this.canvasWidth = w;
-	this.canvasHeight = h;
-	this.PI2 = Math.PI * 2; // 2*pi
-
-	this.raindrop = [];
-	this.wave = [];
-
-	for (var i = 0; i < 10; i++) {
-		this.newDrop();
-	}
-
-	// set initial height of raindrop randomly
-	for (var i = 0; i < this.raindrop.length; i++) {
-		this.raindrop[i].y = 160 - i*100;
-	}
-};
-
 panelApl.prototype.blank = function() {
 	this.ctx.fillStyle = "black";
 	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
 panelApl.prototype.random = function() {
-	return Math.random()*1024;
+	return Math.random()*4096;
 };
 
 panelApl.prototype.newDrop = function() {
@@ -94,22 +65,19 @@ panelApl.prototype.draw = function() {
 
 	// draw drop
 	for (var i = 0; i < this.wave.length; i++) {
-		var a, x, y, z, r;
-		z = this.wave[i].pos.z;
-		a = 100/z;
+		var a, x, y, r;
+		a = 100/this.wave[i].pos.z;
 		x = this.canvasWidth/2 - (this.canvasWidth/2 - this.wave[i].pos.x)*a;
 		y = this.canvasHeight/2 - (this.canvasHeight/2 - this.wave[i].pos.y)*a;
 		r = this.wave[i].radius*a;
 
-		this.ctx.strokeEllipse(x - r, y - r/4,
-							   x + r, y + r/4);
+		this.ctx.strokeEllipse(x - r, y - r/4, x + r, y + r/4);
 	}
 
 	// draw raindrop
 	for (var i = 0; i < this.raindrop.length; i++) {
-		var x, y, z, r, vx, vy;
-		z = this.raindrop[i].pos.z;
-		a = 100/z;
+		var x, y, r, vx, vy;
+		a = 100/this.raindrop[i].pos.z;
 		x = this.canvasWidth/2 - (this.canvasWidth/2 - this.raindrop[i].pos.x)*a;
 		y = this.canvasHeight/2 - (this.canvasHeight/2 - this.raindrop[i].pos.y)*a;
 		vx = this.raindrop[i].speed.x*a;
@@ -159,8 +127,6 @@ CanvasRenderingContext2D.prototype.strokeEllipse = function(left, top, right, bo
 	this.bezierCurveTo(left, y1 - ch, x0 - cw, top, x0, top);
 	this.stroke();
 };
-
-
 
 $(function() {
 	var apl = new panelApl();
