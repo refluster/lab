@@ -64,31 +64,31 @@ Apl.prototype.draw = function() {
 	this.ctx.strokeStyle = 'rgb(160,160,160)';
 
 	// draw drop
-	for (var i = 0; i < this.wave.length; i++) {
+	this.wave.forEach(function(w) {
 		var a, x, y, r;
-		a = 100/this.wave[i].pos.z;
-		x = this.canvasWidth/2 - (this.canvasWidth/2 - this.wave[i].pos.x)*a;
-		y = this.canvasHeight/2 - (this.canvasHeight/2 - this.wave[i].pos.y)*a;
-		r = this.wave[i].radius*a;
+		a = 100/w.pos.z;
+		x = this.canvasWidth/2 - (this.canvasWidth/2 - w.pos.x)*a;
+		y = this.canvasHeight/2 - (this.canvasHeight/2 - w.pos.y)*a;
+		r = w.radius*a;
 
 		this.ctx.strokeEllipse(x - r, y - r/4, x + r, y + r/4);
-	}
-
+	}.bind(this));
+	
 	// draw raindrop
-	for (var i = 0; i < this.raindrop.length; i++) {
+	this.raindrop.forEach(function(r) {
 		var x, y, r, vx, vy;
-		a = 100/this.raindrop[i].pos.z;
-		x = this.canvasWidth/2 - (this.canvasWidth/2 - this.raindrop[i].pos.x)*a;
-		y = this.canvasHeight/2 - (this.canvasHeight/2 - this.raindrop[i].pos.y)*a;
-		vx = this.raindrop[i].speed.x*a;
-		vy = this.raindrop[i].speed.y*a;
+		a = 100/r.pos.z;
+		x = this.canvasWidth/2 - (this.canvasWidth/2 - r.pos.x)*a;
+		y = this.canvasHeight/2 - (this.canvasHeight/2 - r.pos.y)*a;
+		vx = r.speed.x*a;
+		vy = r.speed.y*a;
 
-		this.ctx.fillStyle = this.raindrop[i].color;
+		this.ctx.fillStyle = r.color;
 		this.ctx.beginPath();
 		this.ctx.moveTo(x, y);
 		this.ctx.lineTo(x + vx, y + vy);
 		this.ctx.stroke();
-	}
+	}.bind(this));
 };
 
 Apl.prototype.moveObj = function() {
