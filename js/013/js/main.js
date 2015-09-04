@@ -1,4 +1,4 @@
-var panelApl = function() {
+var Apl = function() {
 	var $canvas = $('canvas');
 	$canvas.attr('width', $canvas.width());
 	$canvas.attr('height', '300');
@@ -32,16 +32,16 @@ var panelApl = function() {
 	this.timer.play();
 };
 
-panelApl.prototype.blank = function() {
+Apl.prototype.blank = function() {
 	this.ctx.fillStyle = "black";
 	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
-panelApl.prototype.random = function() {
+Apl.prototype.random = function() {
 	return Math.random()*4096;
 };
 
-panelApl.prototype.newDrop = function() {
+Apl.prototype.newDrop = function() {
 	var x = this.random()%1000 - 100;
 	var start_y = this.random()%200 - 300;
 	var z = this.random()%500 + 100;
@@ -52,14 +52,14 @@ panelApl.prototype.newDrop = function() {
 	});
 };
 
-panelApl.prototype.newWave = function(x, y, z) {
+Apl.prototype.newWave = function(x, y, z) {
 	this.wave.push({
 		pos: {x: x, y: y, z: z},
 		speed: 1,
 		radius: 1});
 };
 
-panelApl.prototype.draw = function() {
+Apl.prototype.draw = function() {
 	this.blank();
 	this.ctx.strokeStyle = 'rgb(160,160,160)';
 
@@ -91,7 +91,7 @@ panelApl.prototype.draw = function() {
 	}
 };
 
-panelApl.prototype.moveObj = function() {
+Apl.prototype.moveObj = function() {
 	for (var i = 0; i < this.raindrop.length; i++) {
 		this.raindrop[i].pos.x += this.raindrop[i].speed.x;
 		this.raindrop[i].pos.y += this.raindrop[i].speed.y;
@@ -129,5 +129,5 @@ CanvasRenderingContext2D.prototype.strokeEllipse = function(left, top, right, bo
 };
 
 $(function() {
-	var apl = new panelApl();
+	var apl = new Apl();
 });
