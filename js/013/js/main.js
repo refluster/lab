@@ -1,3 +1,47 @@
+var panelApl = function() {
+	// get canvas's DOM element and context
+	var $canvas = $('canvas');
+	$canvas.attr('width', $canvas.width());
+	$canvas.attr('height', '300');
+
+	var canvas = document.getElementById('canvas');
+	if ( ! canvas || ! canvas.getContext ) { return false; }
+	var ctx = canvas.getContext("2d");
+	ctx.lineWidth = 1;
+	ctx.globalCompositeOperation = "source-over";
+
+	// init canvas
+	this.ctx = ctx; // the context
+	this.canvasWidth = canvas.width;
+	this.canvasHeight = canvas.height;
+	this.PI2 = Math.PI * 2; // 2*pi
+	this.raindrop = [];
+	this.wave = [];
+
+	for (var i = 0; i < 10; i++) {
+		this.newDrop();
+	}
+
+	// set initial height of raindrop randomly
+	for (var i = 0; i < this.raindrop.length; i++) {
+		this.raindrop[i].y = 160 - i*100;
+	}
+
+	this.draw();
+
+	// start timer
+	this.timer = $.timer();
+	this.timer.set({
+		action: function() {
+			this.count ++;
+			this.moveObj();
+			this.draw();
+		}.bind(this),
+		time: 40
+	});
+	this.timer.play();
+};
+
 var canvasManager = function(ctx, w, h) {
 	this.ctx = ctx; // the context
 	this.canvasWidth = w;
@@ -17,16 +61,16 @@ var canvasManager = function(ctx, w, h) {
 	}
 };
 
-canvasManager.prototype.blank = function() {
+panelApl.prototype.blank = function() {
 	this.ctx.fillStyle = "black";
 	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
-canvasManager.prototype.random = function() {
+panelApl.prototype.random = function() {
 	return Math.random()*1024;
 };
 
-canvasManager.prototype.newDrop = function() {
+panelApl.prototype.newDrop = function() {
 	var x = this.random()%1000 - 100;
 	var start_y = this.random()%200 - 300;
 	var z = this.random()%500 + 100;
@@ -37,14 +81,14 @@ canvasManager.prototype.newDrop = function() {
 	});
 };
 
-canvasManager.prototype.newWave = function(x, y, z) {
+panelApl.prototype.newWave = function(x, y, z) {
 	this.wave.push({
 		pos: {x: x, y: y, z: z},
 		speed: 1,
 		radius: 1});
 };
 
-canvasManager.prototype.draw = function() {
+panelApl.prototype.draw = function() {
 	this.blank();
 	this.ctx.strokeStyle = 'rgb(160,160,160)';
 
@@ -79,7 +123,7 @@ canvasManager.prototype.draw = function() {
 	}
 };
 
-canvasManager.prototype.moveObj = function() {
+panelApl.prototype.moveObj = function() {
 	for (var i = 0; i < this.raindrop.length; i++) {
 		this.raindrop[i].pos.x += this.raindrop[i].speed.x;
 		this.raindrop[i].pos.y += this.raindrop[i].speed.y;
@@ -116,3 +160,8 @@ CanvasRenderingContext2D.prototype.strokeEllipse = function(left, top, right, bo
 	this.stroke();
 };
 
+
+
+$(function() {
+	var apl = new panelApl();
+});
