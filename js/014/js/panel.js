@@ -1,20 +1,9 @@
-/* HTML5 Canvas drag&drop
- * canvas is updated when an object is dragged by 1px
- */
-var panelApl = {}; // namespace
+var panelApl = {};
 
 (function($) {
-
-	/* global var */
-	// drag state
 	panelApl.dragging = false;
-
-	// timer
 	panelApl.timer = $.timer();
 
-	/* button process
-	 * return: none
-	 */
 	panelApl.start = function() {
 		var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 		// add mouse events to the canvas
@@ -35,10 +24,6 @@ var panelApl = {}; // namespace
 		panelApl.timer.play();
 	};
 
-	/* mousedown process
-	 * {event} evt: event obj
-	 * return: none
-	 */
 	panelApl.cvmsDown = function(evt) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - panelApl.canv.cvpos.x;
@@ -46,10 +31,6 @@ var panelApl = {}; // namespace
 		panelApl.dragging = true;
 		return false;
 	};
-	/* mouseup/mouseleave process
-	 * {event} evt: event obj
-	 * return: none
-	 */
 	panelApl.cvmsUp = function(evt) {
 		if (panelApl.dragging == true) {
 			// convert coordinate from point to canvas
@@ -63,10 +44,6 @@ var panelApl = {}; // namespace
 			panelApl.dragging = false;
 		}
 	};
-	/* mousemove process
-	 * {event} evt: evnet obj
-	 * return: none
-	 */
 	panelApl.cvmsMove = function(evt) {
 		if (panelApl.dragging == true) {
 			// convert coordinate from point to canvas
@@ -106,7 +83,6 @@ var panelApl = {}; // namespace
 			},
 			time: 60
 		});
-		//        panelApl.timer.play();
 
 		panelApl.start();
 
