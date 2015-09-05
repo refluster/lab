@@ -32,15 +32,15 @@ var panelApl = function() {
 panelApl.prototype.start = function() {
 	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 	// add mouse events to the canvas
-	$cvdiv.mousedown(this.cvmsDown.bind(this));
-	$cvdiv.mouseup(this.cvmsUp.bind(this));
-	$cvdiv.mouseleave(this.cvmsUp.bind(this));
-	$cvdiv.mousemove(this.cvmsMove.bind(this));
+	$cvdiv.mousedown(this.hDown.bind(this));
+	$cvdiv.mouseup(this.hUp.bind(this));
+	$cvdiv.mouseleave(this.hUp.bind(this));
+	$cvdiv.mousemove(this.hMove.bind(this));
 	// add touch events to the canvas
-	$cvdiv.bind("touchstart", this.cvmsDown.bind(this));
-	$cvdiv.bind("touchend", this.cvmsUp.bind(this));
-	$cvdiv.bind("touchend", this.cvmsUp.bind(this));
-	$cvdiv.bind("touchmove", this.cvmsMove.bind(this));
+	$cvdiv.bind("touchstart", this.hDown.bind(this));
+	$cvdiv.bind("touchend", this.hUp.bind(this));
+	$cvdiv.bind("touchend", this.hUp.bind(this));
+	$cvdiv.bind("touchmove", this.hMove.bind(this));
 	
 	// init canvas
 	this.canv.init();
@@ -49,14 +49,14 @@ panelApl.prototype.start = function() {
 	this.timer.play();
 };
 
-panelApl.prototype.cvmsDown = function(evt) {
+panelApl.prototype.hDown = function(evt) {
 	// convert coordinate from point to canvas
 	var cx = evt.pageX - this.canv.cvpos.x;
 	var cy = evt.pageY - this.canv.cvpos.y;
 	this.dragging = true;
 	return false;
 };
-panelApl.prototype.cvmsUp = function(evt) {
+panelApl.prototype.hUp = function(evt) {
 	if (this.dragging == true) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canv.cvpos.x;
@@ -69,7 +69,7 @@ panelApl.prototype.cvmsUp = function(evt) {
 		this.dragging = false;
 	}
 };
-panelApl.prototype.cvmsMove = function(evt) {
+panelApl.prototype.hMove = function(evt) {
 	if (this.dragging == true) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canv.cvpos.x;
