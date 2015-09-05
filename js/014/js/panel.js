@@ -7,10 +7,7 @@ var panelApl = {}; // namespace
 
 	/* global var */
 	// drag state
-	panelApl.drag = {
-		now: false, // true if dragging
-		idx: null // index of dragged item
-	};
+	panelApl.dragging = false;
 
 	// timer
 	panelApl.timer = $.timer();
@@ -46,7 +43,7 @@ var panelApl = {}; // namespace
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - panelApl.canv.cvpos.x;
 		var cy = evt.pageY - panelApl.canv.cvpos.y;
-		panelApl.drag.now = true;
+		panelApl.dragging = true;
 		return false;
 	};
 	/* mouseup/mouseleave process
@@ -54,7 +51,7 @@ var panelApl = {}; // namespace
 	 * return: none
 	 */
 	panelApl.cvmsUp = function(evt) {
-		if (panelApl.drag.now) {
+		if (panelApl.dragging == true) {
 			// convert coordinate from point to canvas
 			var cx = evt.pageX - panelApl.canv.cvpos.x;
 			var cy = evt.pageY - panelApl.canv.cvpos.y;
@@ -63,7 +60,7 @@ var panelApl = {}; // namespace
 			if (cy < 0) cy = 0;
 			if (cy > panelApl.canv.area.h) cy = panelApl.canv.area.h;
 
-			panelApl.drag.now = false;
+			panelApl.dragging = false;
 		}
 	};
 	/* mousemove process
@@ -71,7 +68,7 @@ var panelApl = {}; // namespace
 	 * return: none
 	 */
 	panelApl.cvmsMove = function(evt) {
-		if (panelApl.drag.now) {
+		if (panelApl.dragging == true) {
 			// convert coordinate from point to canvas
 			var cx = evt.pageX - panelApl.canv.cvpos.x;
 			var cy = evt.pageY - panelApl.canv.cvpos.y;
