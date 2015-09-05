@@ -11,7 +11,6 @@ var panelApl = {}; // namespace
 		now: false, // true if dragging
 		idx: null // index of dragged item
 	};
-	panelApl.gamestart = false;  // true if playing
 
 	// timer
 	panelApl.timer = $.timer();
@@ -21,51 +20,22 @@ var panelApl = {}; // namespace
 	 */
 	panelApl.start = function() {
 		var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
-		var $btn = $('#stbtn1'); // start button
-		if (!panelApl.gamestart) { // if not playing
-			// add mouse events to the canvas
-			$cvdiv.mousedown(panelApl.cvmsDown);
-			$cvdiv.mouseup(panelApl.cvmsUp);
-			$cvdiv.mouseleave(panelApl.cvmsUp);
-			$cvdiv.mousemove(panelApl.cvmsMove);
-			// add touch events to the canvas
-			$cvdiv.bind("touchstart", panelApl.cvmsDown);
-			$cvdiv.bind("touchend", panelApl.cvmsUp);
-			$cvdiv.bind("touchend", panelApl.cvmsUp);
-			$cvdiv.bind("touchmove", panelApl.cvmsMove);
+		// add mouse events to the canvas
+		$cvdiv.mousedown(panelApl.cvmsDown);
+		$cvdiv.mouseup(panelApl.cvmsUp);
+		$cvdiv.mouseleave(panelApl.cvmsUp);
+		$cvdiv.mousemove(panelApl.cvmsMove);
+		// add touch events to the canvas
+		$cvdiv.bind("touchstart", panelApl.cvmsDown);
+		$cvdiv.bind("touchend", panelApl.cvmsUp);
+		$cvdiv.bind("touchend", panelApl.cvmsUp);
+		$cvdiv.bind("touchmove", panelApl.cvmsMove);
+		
+		// init canvas
+		panelApl.canv.init();
 
-			// init canvas
-			panelApl.canv.init();
-
-			panelApl.gamestart = true;
-			panelApl.timer.play();
-			panelApl.showmsg('drag in the box');
-			$btn.text('stop');
-		} else { // if playing
-			// delete mouse events from the canvas
-			$cvdiv.unbind('mousedown', panelApl.cvmsDown);
-			$cvdiv.unbind('mouseup', panelApl.cvmsUp);
-			$cvdiv.unbind('mouseleave', panelApl.cvmsUp);
-			$cvdiv.unbind('mousemove', panelApl.cvmsMove);
-			// delete touch events from the canvas
-			$cvdiv.unbind("touchstart", panelApl.cvmsDown);
-			$cvdiv.unbind("touchend", panelApl.cvmsUp);
-			$cvdiv.unbind("touchend", panelApl.cvmsUp);
-			$cvdiv.unbind("touchmove", panelApl.cvmsMove);
-
-			panelApl.gamestart = false;
-			panelApl.timer.pause();
-			panelApl.showmsg('paused');
-			$btn.text('start');
-		}
-	};
-
-	/* display message
-	 * {string} msg: displayed message
-	 * return: none
-	 */
-	panelApl.showmsg = function(msg) {
-		$('#msg1').html(msg);
+		// init timer
+		panelApl.timer.play();
 	};
 
 	/* mousedown process
@@ -77,7 +47,6 @@ var panelApl = {}; // namespace
 		var cx = evt.pageX - panelApl.canv.cvpos.x;
 		var cy = evt.pageY - panelApl.canv.cvpos.y;
 		panelApl.drag.now = true;
-		panelApl.showmsg("moving");
 		return false;
 	};
 	/* mouseup/mouseleave process
@@ -95,11 +64,6 @@ var panelApl = {}; // namespace
 			if (cy > panelApl.canv.area.h) cy = panelApl.canv.area.h;
 
 			panelApl.drag.now = false;
-			if (evt.type == 'mouseleave'){
-				panelApl.showmsg('dropped due to out of canvas');
-			} else if (panelApl.gamestart) {
-				panelApl.showmsg('flick the ball');
-			}
 		}
 	};
 	/* mousemove process
@@ -134,14 +98,6 @@ var panelApl = {}; // namespace
 		panelApl.canv.init();
 		panelApl.canv.draw();
 
-		// set events
-		var $btn = $('#stbtn1'); // start button
-		$btn.mousedown(panelApl.start);
-		$btn.text('start');
-
-		// show message
-		panelApl.showmsg('press start button');
-
 		panelApl.timer.set({
 			action: function() {
 				panelApl.canv.moveObj();
@@ -154,5 +110,8 @@ var panelApl = {}; // namespace
 			time: 60
 		});
 		//        panelApl.timer.play();
+
+		panelApl.start();
+
 	});
 })(jQuery);
