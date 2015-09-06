@@ -3,14 +3,14 @@ var panelApl = function() {
 	this.timer = $.timer();
 
 	// get canvas's DOM element and context
-	var canvas = document.getElementById('canvas');
-	if ( ! canvas || ! canvas.getContext ) { return false; }
-	var ctx = canvas.getContext("2d");
+	var $canvas = $('canvas');
+	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
+	var ctx = $canvas[0].getContext("2d");
 	ctx.lineWidth = 1;
 	ctx.globalCompositeOperation = "source-over";
 	
 	// display
-	this.canv = new canvasManager(ctx, canvas.width, canvas.height, this);
+	this.canv = new canvasManager(ctx, $canvas.width(), $canvas.height(), this);
 	this.canv.init();
 	this.canv.draw();
 	
