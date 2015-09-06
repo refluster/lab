@@ -5,21 +5,44 @@ var panelApl = function() {
 	// get canvas's DOM element and context
 	var $canvas = $('canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
-	var ctx = $canvas[0].getContext("2d");
-	ctx.lineWidth = 1;
-	ctx.globalCompositeOperation = "source-over";
+	this.ctx = $canvas[0].getContext("2d");
+	this.ctx.lineWidth = 1;
+	this.ctx.globalCompositeOperation = "source-over";
 	
 	// display
-	this.canv = new canvasManager(ctx, $canvas.width(), $canvas.height(), this);
-	this.canv.init();
-	this.canv.draw();
+	//this.canv = new canvasManager(ctx, $canvas.width(), $canvas.height(), this);
+	this.canvasWidth = $canvas.width();
+	this.canvasHeight = $canvas.height();
+	this.canvasLeft = $canvas.offset().left;
+	this.canvasTop = $canvas.offset().top;
+	
+	this.effectiveRadius = 30; // raduis of balls
+
+	this.prevCursorPos = {x:0, y:0}; // cursor position of previous frame
+	this.cursorPos = {x:0, y:0};
+
+	this.glass = [];
+	this.glassColor = 'black';
+	this.glassLength = 10;
+	this.glassBack = 2;
+
+	for (var i = 0; i < 40; i++) {
+		for (var j = 0; j < 40; j++) {
+			this.glass[i*40+j] = {
+				pos: {x:i*5, y:j*5},
+				posHead: {x:i*5, y:j*5}
+			};
+		}
+	}
+
+	this.draw();
 	
 	this.timer.set({
 		action: function() {
-			this.canv.moveObj();
-			this.canv.draw();
+			this.moveObj();
+			this.draw();
 			
-			if (!this.canv.needToUpdate()) {
+			if (!this.needToUpdate()) {
 				this.timer.pause();
 			}
 		}.bind(this),
@@ -42,29 +65,26 @@ panelApl.prototype.start = function() {
 	$canvas.bind("touchend", this.hUp.bind(this));
 	$canvas.bind("touchmove", this.hMove.bind(this));
 
-	// init canvas
-	this.canv.init();
-
 	// init timer
 	this.timer.play();
 };
 
 panelApl.prototype.hDown = function(evt) {
 	// convert coordinate from point to canvas
-	var cx = evt.pageX - this.canv.cvpos.x;
-	var cy = evt.pageY - this.canv.cvpos.y;
+	var cx = evt.pageX - this.canvasLeft;
+	var cy = evt.pageY - this.canvasTop;
 	this.dragging = true;
 	return false;
 };
 panelApl.prototype.hUp = function(evt) {
 	if (this.dragging == true) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.canv.cvpos.x;
-		var cy = evt.pageY - this.canv.cvpos.y;
+		var cx = evt.pageX - this.canvasLeft;
+		var cy = evt.pageY - this.canvasTop;
 		if (cx < 0) cx = 0;
-		if (cx > this.canv.area.w) cx = this.canv.area.w;
+		if (cx > this.canvasWidth) cx = this.canvasWidth;
 		if (cy < 0) cy = 0;
-		if (cy > this.canv.area.h) cy = this.canv.area.h;
+		if (cy > this.canvasHeight) cy = this.canvasHeight;
 
 		this.dragging = false;
 	}
@@ -72,58 +92,22 @@ panelApl.prototype.hUp = function(evt) {
 panelApl.prototype.hMove = function(evt) {
 	if (this.dragging == true) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.canv.cvpos.x;
-		var cy = evt.pageY - this.canv.cvpos.y;
+		var cx = evt.pageX - this.canvasLeft;
+		var cy = evt.pageY - this.canvasTop;
 		// check if the canvas should be updated
 		var updSep = 1; // #. of pixels that canvas is updated if an object is moved by
 		// update the canvas
-		this.canv.moveTo({x:cx, y:cy});
+		this.moveTo({x:cx, y:cy});
 		this.timer.play();
 	}
 	return false;
 };
 
-var canvasManager = function(ctx, w, h, names) {
-	this.ctx = ctx; // the context
-	this.area = {w:w, h:h};  // the area
-	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
-	this.lineWidth = 1;
-	this.PI2 = Math.PI * 2; // 2*pi
-	this.effectiveRadius = 30; // raduis of balls
-
-	// set the position of the canvas on the browser
-	var $canvas = $('#canvas');
-	this.cvpos.x = $canvas.offset().left;
-	this.cvpos.y = $canvas.offset().top;
-
-	this.prevCursorPos = {x:0, y:0}; // cursor position of previous frame
-	this.cursorPos = {x:0, y:0};
-
-	this.glass = [];
-	this.glassColor = 'black';
-	this.glassLength = 10;
-	this.glassBack = 2;
-
-	for (var i = 0; i < 40; i++) {
-		for (var j = 0; j < 40; j++) {
-			this.glass[i*40+j] = {
-				pos:{x:i*5, y:j*5},
-				posHead:{x:i*5, y:j*5}
-			};
-		}
-	}
-
+panelApl.prototype.blank = function() {
+	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
-canvasManager.prototype.blank = function() {
-	this.ctx.clearRect(0, 0, this.area.w, this.area.h);
-};
-
-canvasManager.prototype.init = function() {
-
-};
-
-canvasManager.prototype.draw = function() {
+panelApl.prototype.draw = function() {
 	this.blank();
 	this.ctx.save();
 	this.ctx.strokeStyle = this.glassColor;
@@ -139,7 +123,7 @@ canvasManager.prototype.draw = function() {
 	this.ctx.restore();
 };
 
-canvasManager.prototype.moveObj = function() {
+panelApl.prototype.moveObj = function() {
 	var cursordx = this.cursorPos.x - this.prevCursorPos.x;
 	var cursordy = this.cursorPos.y - this.prevCursorPos.y;
 
@@ -181,11 +165,11 @@ canvasManager.prototype.moveObj = function() {
 	this.prevCursorPos = this.cursorPos;
 };
 
-canvasManager.prototype.moveTo = function(pos) {
+panelApl.prototype.moveTo = function(pos) {
 	this.cursorPos = pos;
 };
 
-canvasManager.prototype.needToUpdate = function() {
+panelApl.prototype.needToUpdate = function() {
 	return true;
 };
 
