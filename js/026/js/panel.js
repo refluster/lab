@@ -1,4 +1,4 @@
-var panelApl = function() {
+var Apl = function() {
 	this.simulating = false;
 	this.timer = $.timer();
 	this.fps = 30;
@@ -44,7 +44,7 @@ var panelApl = function() {
 	});
 };
 
-panelApl.prototype.start = function() {
+Apl.prototype.start = function() {
 	var $btn = $('#stbtn1'); // start button
 
 	if (!this.simulating) { // if not playing
@@ -60,21 +60,21 @@ panelApl.prototype.start = function() {
 	}
 };
 
-panelApl.prototype.blank = function() {
+Apl.prototype.blank = function() {
 	this.ctx.fillStyle = 'black';
 	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
-panelApl.prototype.init = function() {
+Apl.prototype.init = function() {
 	this.sph = new Sph();
 	this.sph.init();
 };
 
-panelApl.prototype.moveObj = function() {
+Apl.prototype.moveObj = function() {
 	this.sph.step();
 };
 
-panelApl.prototype.draw = function() {
+Apl.prototype.draw = function() {
 	this.blank();
 	this.ctx.fillStyle = 'white';
 	var p = this.sph.get_particle();
@@ -87,5 +87,5 @@ panelApl.prototype.draw = function() {
 };
 
 $(function() {
-    var apl = new panelApl();
+    var apl = new Apl();
 });
