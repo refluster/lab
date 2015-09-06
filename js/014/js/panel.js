@@ -2,23 +2,20 @@ var panelApl = function() {
 	this.dragging = false;
 	this.timer = $.timer();
 
-	// get canvas's DOM element and context
 	var $canvas = $('canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	this.ctx = $canvas[0].getContext("2d");
 	this.ctx.lineWidth = 1;
 	this.ctx.globalCompositeOperation = "source-over";
 	
-	// display
-	//this.canv = new canvasManager(ctx, $canvas.width(), $canvas.height(), this);
 	this.canvasWidth = $canvas.width();
 	this.canvasHeight = $canvas.height();
 	this.canvasLeft = $canvas.offset().left;
 	this.canvasTop = $canvas.offset().top;
 	
-	this.effectiveRadius = 30; // raduis of balls
+	this.effectiveRadius = 30;
 
-	this.prevCursorPos = {x:0, y:0}; // cursor position of previous frame
+	this.prevCursorPos = {x:0, y:0};
 	this.cursorPos = {x:0, y:0};
 
 	this.glass = [];
@@ -35,25 +32,6 @@ var panelApl = function() {
 		}
 	}
 
-	this.draw();
-	
-	this.timer.set({
-		action: function() {
-			this.moveObj();
-			this.draw();
-			
-			if (!this.needToUpdate()) {
-				this.timer.pause();
-			}
-		}.bind(this),
-		time: 60
-	});
-	
-	this.start();
-};
-
-panelApl.prototype.start = function() {
-	var $canvas = $('#canvas'); // main Canvas¤Îdiv
 	// add mouse events to the canvas
 	$canvas.mousedown(this.hDown.bind(this));
 	$canvas.mouseup(this.hUp.bind(this));
@@ -65,7 +43,18 @@ panelApl.prototype.start = function() {
 	$canvas.bind("touchend", this.hUp.bind(this));
 	$canvas.bind("touchmove", this.hMove.bind(this));
 
-	// init timer
+	// timer
+	this.timer.set({
+		action: function() {
+			this.moveObj();
+			this.draw();
+			
+			if (!this.needToUpdate()) {
+				this.timer.pause();
+			}
+		}.bind(this),
+		time: 60
+	});
 	this.timer.play();
 };
 
@@ -97,30 +86,22 @@ panelApl.prototype.hMove = function(evt) {
 		// check if the canvas should be updated
 		var updSep = 1; // #. of pixels that canvas is updated if an object is moved by
 		// update the canvas
-		this.moveTo({x:cx, y:cy});
+		this.cursorPos = {x: cx, y: cy};
 		this.timer.play();
 	}
 	return false;
 };
 
-panelApl.prototype.blank = function() {
-	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-};
-
 panelApl.prototype.draw = function() {
-	this.blank();
-	this.ctx.save();
+	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 	this.ctx.strokeStyle = this.glassColor;
 
 	for (var i = 0; i < this.glass.length; i++) {
-		this.ctx.fillStyle = this.glassColor;
 		this.ctx.beginPath();
 		this.ctx.moveTo(this.glass[i].pos.x, this.glass[i].pos.y);
 		this.ctx.lineTo(this.glass[i].posHead.x, this.glass[i].posHead.y);
 		this.ctx.stroke();
 	}
-
-	this.ctx.restore();
 };
 
 panelApl.prototype.moveObj = function() {
@@ -138,9 +119,8 @@ panelApl.prototype.moveObj = function() {
 			ph.y += cursordy;
 			var dx = ph.x - p.x;
 			var dy = ph.y - p.y;
-			var rmax = this.glassLength;
-			if (dx*dx + dy*dy > rmax*rmax) {
-				var r = Math.sqrt(rmax*rmax/(dx*dx + dy*dy));
+			if (dx*dx + dy*dy > this.glassLength*this.glassLength) {
+				var r = Math.sqrt(this.glassLength*this.glassLength/(dx*dx + dy*dy));
 				ph.x = p.x + (ph.x - p.x)*r;
 				ph.y = p.y + (ph.y - p.y)*r;
 			}
@@ -163,10 +143,6 @@ panelApl.prototype.moveObj = function() {
 		}
 	}
 	this.prevCursorPos = this.cursorPos;
-};
-
-panelApl.prototype.moveTo = function(pos) {
-	this.cursorPos = pos;
 };
 
 panelApl.prototype.needToUpdate = function() {
