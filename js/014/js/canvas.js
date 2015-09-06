@@ -7,9 +7,9 @@ var canvasManager = function(ctx, w, h, names) {
 	this.effectiveRadius = 30; // raduis of balls
 
 	// set the position of the canvas on the browser
-	var $cvdiv = $('#cvdiv1');
-	this.cvpos.x = $cvdiv.offset().left;
-	this.cvpos.y = $cvdiv.offset().top;
+	var $canvas = $('#canvas');
+	this.cvpos.x = $canvas.offset().left;
+	this.cvpos.y = $canvas.offset().top;
 
 	this.prevCursorPos = {x:0, y:0}; // cursor position of previous frame
 	this.cursorPos = {x:0, y:0};

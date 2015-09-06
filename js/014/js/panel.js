@@ -3,7 +3,7 @@ var panelApl = function() {
 	this.timer = $.timer();
 
 	// get canvas's DOM element and context
-	var canvas = document.getElementById('cv1');
+	var canvas = document.getElementById('canvas');
 	if ( ! canvas || ! canvas.getContext ) { return false; }
 	var ctx = canvas.getContext("2d");
 	ctx.lineWidth = 1;
@@ -30,18 +30,18 @@ var panelApl = function() {
 };
 
 panelApl.prototype.start = function() {
-	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
+	var $canvas = $('#canvas'); // main Canvas¤Îdiv
 	// add mouse events to the canvas
-	$cvdiv.mousedown(this.hDown.bind(this));
-	$cvdiv.mouseup(this.hUp.bind(this));
-	$cvdiv.mouseleave(this.hUp.bind(this));
-	$cvdiv.mousemove(this.hMove.bind(this));
+	$canvas.mousedown(this.hDown.bind(this));
+	$canvas.mouseup(this.hUp.bind(this));
+	$canvas.mouseleave(this.hUp.bind(this));
+	$canvas.mousemove(this.hMove.bind(this));
 	// add touch events to the canvas
-	$cvdiv.bind("touchstart", this.hDown.bind(this));
-	$cvdiv.bind("touchend", this.hUp.bind(this));
-	$cvdiv.bind("touchend", this.hUp.bind(this));
-	$cvdiv.bind("touchmove", this.hMove.bind(this));
-	
+	$canvas.bind("touchstart", this.hDown.bind(this));
+	$canvas.bind("touchend", this.hUp.bind(this));
+	$canvas.bind("touchend", this.hUp.bind(this));
+	$canvas.bind("touchmove", this.hMove.bind(this));
+
 	// init canvas
 	this.canv.init();
 
