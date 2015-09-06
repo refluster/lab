@@ -1,15 +1,5 @@
 /* HTML5 Canvas drag&drop */
-var canvasManager = {}; // namespace
-
-(function($) {
-	/* canvas class
-	 * {canvas context} ctx: the context
-	 * {int} w: width
-	 * {int} h: height
-	 * {objext} names: caller namespace
-	 */
-
-	canvasManager.canv = function(ctx, w, h, names) {
+var canvasManager = function(ctx, w, h, names) {
 		this.ctx = ctx; // the context
 		this.area = {w:w, h:h};  // the area
 		this.cvpos = {x:0, y:0};  // position of the canvas on the browser
@@ -56,22 +46,24 @@ var canvasManager = {}; // namespace
 			}
 		}
 
+};
+
 		/* init canvas
 		 * return: none
 		 */
-		this.blank = function() {
+canvasManager.prototype.blank = function() {
 			// clear
 			this.ctx.clearRect(0, 0, this.area.w, this.area.h);
-		};
+};
 
-		this.init = function() {
+canvasManager.prototype.init = function() {
 
-		};
+};
 
 		/* draw canvas
 		 * return: none
 		 */
-		this.draw = function() {
+canvasManager.prototype.draw = function() {
 			this.blank();
 			this.ctx.save();
 			this.ctx.strokeStyle = this.glassColor;
@@ -87,9 +79,9 @@ var canvasManager = {}; // namespace
 			}
 
 			this.ctx.restore();
-		};
+};
 
-		this.moveObj = function() {
+canvasManager.prototype.moveObj = function() {
 			// cursor difference
 			var cursordx = this.cursorPos.x - this.prevCursorPos.x;
 			var cursordy = this.cursorPos.y - this.prevCursorPos.y;
@@ -135,17 +127,14 @@ var canvasManager = {}; // namespace
 				}
 			}
 			this.prevCursorPos = this.cursorPos;
-		};
+};
 
-		this.moveTo = function(pos) {
+canvasManager.prototype.moveTo = function(pos) {
 			this.cursorPos = pos;
-		};
+};
 
 		//needToUpdate
-		this.needToUpdate = function() {
+canvasManager.prototype.needToUpdate = function() {
 			return true;
-		};
-	}
-
-})(jQuery);
+};
 
