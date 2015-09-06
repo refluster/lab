@@ -58,7 +58,7 @@ ul.chapter-toc {
 }
 
 #contents {
-	margin: 120px 70px 40px 10px;
+	margin: 120px 20px 40px 20px;
 }
 
 @media screen and (max-width:479px) {
