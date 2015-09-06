@@ -37,7 +37,6 @@ panelApl.prototype.start = function() {
 		// init canvas
 		this.canv.init();
 		this.simulating = true;
-		this.canv.setFps(this.fps);
 		this.timer.play();
 		$btn.text('stop');
 	} else { // if playing
