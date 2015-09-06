@@ -8,7 +8,7 @@ var panelApl = function() {
 	var ctx = $canvas[0].getContext("2d");
 
 	// canvas
-	this.canv = new canvasManager.canv(ctx, $canvas.width(), $canvas.height());
+	this.canv = new canvasManager(ctx, $canvas.width(), $canvas.height());
 	this.canv.init();
 	this.canv.draw();
 
@@ -31,7 +31,6 @@ var panelApl = function() {
 };
 
 panelApl.prototype.start = function() {
-	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 	var $btn = $('#stbtn1'); // start button
 
 	if (!this.simulating) { // if not playing

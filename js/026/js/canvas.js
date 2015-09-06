@@ -1,7 +1,4 @@
-var canvasManager = {}; // namespace
-
-(function($) {
-	canvasManager.canv = function(ctx, w, h) {
+var canvasManager = function(ctx, w, h, nams) {
 		this.ctx = ctx; // the context
 		this.area = {w:w, h:h};  // the area
 		this.cvpos = {x:0, y:0};  // position of the canvas on the browser
@@ -10,7 +7,7 @@ var canvasManager = {}; // namespace
 		this.PI2 = Math.PI * 2; // 2*pi
 
 		// set the position of the canvas on the browser
-		var $cvdiv = $('#cvdiv1');
+		var $cvdiv = $('#canvas');
 		this.cvpos.x = $cvdiv.offset().left;
 		this.cvpos.y = $cvdiv.offset().top;
 
@@ -22,27 +19,28 @@ var canvasManager = {}; // namespace
 
 		this.ctx.lineWidth = 1;
 		this.ctx.globalCompositeOperation = "source-over";
+}; // namespace
 
-		this.blank = function() {
+canvasManager.prototype.blank = function() {
 			//this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 			this.ctx.fillStyle = 'black';
 			this.ctx.fillRect(0, 0, this.area.w, this.area.h);
-		};
+};
 
-		this.init = function() {
+canvasManager.prototype.init = function() {
 			this.sph = new Sph();
 			this.sph.init();
-		};
+};
 
-		this.setFps = function(fps) {
+canvasManager.prototype.setFps = function(fps) {
 			this.drawInterval = 1000/fps;
-		};
+};
 
-		this.moveObj = function() {
+canvasManager.prototype.moveObj = function() {
 			this.sph.step();
-		};
+};
 
-		this.draw = function() {
+canvasManager.prototype.draw = function() {
 			this.blank();
 			this.ctx.save();
 
@@ -60,9 +58,5 @@ var canvasManager = {}; // namespace
 			}
 
 			this.ctx.restore();
-		};
-
-	}
-
-})(jQuery);
+};
 
