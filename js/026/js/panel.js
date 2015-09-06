@@ -3,12 +3,12 @@ var panelApl = function() {
 	this.timer = $.timer();
 	this.fps = 30;
 
-	var canvas = document.getElementById('cv1');
-	if ( ! canvas || ! canvas.getContext ) { return false; }
-	var ctx = canvas.getContext("2d");
+	var $canvas = $('#canvas');
+	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
+	var ctx = $canvas[0].getContext("2d");
 
 	// canvas
-	this.canv = new canvasManager.canv(ctx, canvas.width, canvas.height);
+	this.canv = new canvasManager.canv(ctx, $canvas.width(), $canvas.height());
 	this.canv.init();
 	this.canv.draw();
 
