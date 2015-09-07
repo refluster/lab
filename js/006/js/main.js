@@ -1,23 +1,21 @@
 var Apl = function() {
-	/* global var */
 	// drag state
 	this.dragging = false;
 
-	// get canvas's DOM element and context
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	this.ctx = $canvas[0].getContext("2d");
 	this.ctx.lineWidth = 1;
 	this.ctx.globalCompositeOperation = "source-over";
 	
-    // get canvas info
     this.canvasLeft = $canvas.offset().left;
     this.canvasTop = $canvas.offset().top;
-    this.canvasWidth = $canvas.attr('width')
-    this.canvasHeight = $canvas.attr('height')
+    this.canvasWidth = $canvas.width();
+    this.canvasHeight = $canvas.height();
+	$canvas.attr('width', this.canvasWidth);
+	$canvas.attr('height', this.canvasHeight);
 	
-	// display
-	this.PI2 = Math.PI * 2; // 2*pi
+	this.PI2 = Math.PI * 2;
 	this.radius = 30; // raduis of balls
 	this.holdBallIdx = null; // index of the hold ball (for positioning)
 	this.releasedBallIdx = null; // index of the released ball (for speed setting)
@@ -31,9 +29,6 @@ var Apl = function() {
 		moveNow: false
 	};
 
-	this.draw();
-	
-	// timer
 	this.timer = $.timer();
 	this.timer.set({
 		action: function() {
