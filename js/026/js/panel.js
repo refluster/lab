@@ -1,69 +1,91 @@
-/* HTML5 Canvas drag&drop
- * canvas is updated when an object is dragged by 1px
- */
-var panelApl = {}; // namespace
+var Apl = function() {
+	this.simulating = false;
+	this.timer = $.timer();
+	this.fps = 30;
 
-(function($) {
-    panelApl.start = false;  // true if playing
-    panelApl.timer = $.timer();
-    panelApl.fps = 30;
-    
-    /* button process
-     * return: none
-     */
-    panelApl.start = function() {
-	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
-	var $btn = $('#stbtn1'); // start button
-        
-	if (!panelApl.start) { // if not playing
-	    // init canvas
-	    panelApl.canv.init();
-	    panelApl.start = true;
-            panelApl.canv.setFps(panelApl.fps);
-	    panelApl.showmsg('moving');
-            panelApl.timer.play();
-	    $btn.text('stop');
-	} else { // if playing
-	    panelApl.start = false;
-            panelApl.timer.pause();
-	    panelApl.showmsg('paused');
-	    $btn.text('start');
-	}
-    };
+	var $canvas = $('#canvas');
+	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
+	this.ctx = $canvas[0].getContext("2d");
 
-    panelApl.showmsg = function(msg) {
-	$('#msg1').html(msg);
-    };
+	// canvas
+	this.canvasWidth = $canvas.width();
+	this.canvasHeight = $canvas.height();
+	this.prevPos = {x:0, y:0}; // previous position of the cursor
+	this.lineWidth = 1;
+	this.PI2 = Math.PI * 2; // 2*pi
 
-    /* body onload process */
-    $(window).load(function() {
-	// get canvas's DOM element and context
-	var canvas = document.getElementById('cv1');
-	if ( ! canvas || ! canvas.getContext ) { return false; }
-	var ctx = canvas.getContext("2d");
-        
-        // canvas
-	panelApl.canv = new canvasManager.canv(ctx, canvas.width,
-                                               canvas.height);
-	panelApl.canv.init();
-	panelApl.canv.draw();
-        
+	// set the position of the canvas on the browser
+	var $cvdiv = $('#canvas');
+	this.canvasLeft = $cvdiv.offset().left;
+	this.canvasTop = $cvdiv.offset().top;
+
+	// environment parameter
+	this.radius = 1; // raduis of balls
+	this.particles = [];
+	this.sph;
+
+	this.ctx.lineWidth = 1;
+	this.ctx.globalCompositeOperation = "source-over";
+
+	this.init();
+	this.draw();
+
 	// set events
 	var $btn = $('#stbtn1'); // start button
-	$btn.mousedown(panelApl.start);
+	$btn.mousedown(this.start.bind(this));
 	$btn.text('start');
-	
-	// show message
-	panelApl.showmsg('press start button');
-        window.addEventListener('devicemotion', panelApl.readGravity);
-        
-        panelApl.timer.set({
-            action: function() {
-                panelApl.canv.moveObj();
-                panelApl.canv.draw();
-            },
-            time: 1000/panelApl.fps
-        });
-        
-    });
-})(jQuery);
+
+	this.timer.set({
+		action: function() {
+			this.moveObj();
+			this.draw();
+		}.bind(this),
+		time: 1000/this.fps
+	});
+};
+
+Apl.prototype.start = function() {
+	var $btn = $('#stbtn1'); // start button
+
+	if (!this.simulating) { // if not playing
+		// init canvas
+		this.init();
+		this.simulating = true;
+		this.timer.play();
+		$btn.text('stop');
+	} else { // if playing
+		this.simulating = false;
+		this.timer.pause();
+		$btn.text('start');
+	}
+};
+
+Apl.prototype.blank = function() {
+	this.ctx.fillStyle = 'black';
+	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+};
+
+Apl.prototype.init = function() {
+	this.sph = new Sph();
+	this.sph.init();
+};
+
+Apl.prototype.moveObj = function() {
+	this.sph.step();
+};
+
+Apl.prototype.draw = function() {
+	this.blank();
+	this.ctx.fillStyle = 'white';
+	var p = this.sph.get_particle();
+	for (var i = 0; i < p.length; i++) {
+		this.ctx.beginPath();
+		this.ctx.arc(p[i].pos.x*8, this.canvasHeight - p[i].pos.y*8,
+					 this.radius, 0, this.PI2, false);
+		this.ctx.fill();
+	}
+};
+
+$(function() {
+    var apl = new Apl();
+});
