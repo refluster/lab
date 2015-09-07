@@ -5,6 +5,8 @@ var Apl = function() {
 	this.ctx.globalCompositeOperation = "source-over";
 	this.canvasWidth = $canvas.width();
 	this.canvasHeight = $canvas.height();
+	$canvas.attr('width', this.canvasWidth);
+	$canvas.attr('height', this.canvasHeight);
 
 	this.leaf = [];
 	for (var i = 0; i < 1000; i++) {
