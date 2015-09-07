@@ -33,17 +33,16 @@ Apl.prototype.draw = function() {
 	this.ctx.strokeStyle = 'white';
 	this.ctx.globalAlpha = 0.5;
 
-	for (var i = 0; i < this.leaf.length; i++) {
-		var l = this.leaf[i];
+	this.leaf.forEach(function(l) {
 		this.ctx.beginPath();
-		for (var j = 0; j < cos5.length; j++) {
-			this.ctx.moveTo(l.pos.x + Math.floor(l.radius*cos5[j]),
-							l.pos.y + Math.floor(l.radius*sin5[j]));
-			this.ctx.lineTo(l.pos.x - Math.floor(l.radius*cos5[j]),
-							l.pos.y - Math.floor(l.radius*sin5[j]));
+		for (var i = 0; i < cos5.length; i++) {
+			this.ctx.moveTo(l.pos.x + Math.floor(l.radius*cos5[i]),
+							l.pos.y + Math.floor(l.radius*sin5[i]));
+			this.ctx.lineTo(l.pos.x - Math.floor(l.radius*cos5[i]),
+							l.pos.y - Math.floor(l.radius*sin5[i]));
 		}
 		this.ctx.stroke();
-	}
+	}.bind(this));
 };
 
 $(function() {
