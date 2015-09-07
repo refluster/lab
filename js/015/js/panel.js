@@ -1,4 +1,4 @@
-var panelApl = function() {
+var Apl = function() {
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	this.ctx = $canvas[0].getContext("2d");
@@ -20,7 +20,7 @@ var panelApl = function() {
 	}
 };
 
-panelApl.prototype.draw = function() {
+Apl.prototype.draw = function() {
 	var sin5 = [], cos5 = [];
 	for (var i = 0; i < 5; i++) {
 		sin5[i] = Math.sin(i*Math.PI/5);
@@ -47,6 +47,6 @@ panelApl.prototype.draw = function() {
 };
 
 $(function() {
-    var apl = new panelApl();
+    var apl = new Apl();
 	apl.draw();
 });
