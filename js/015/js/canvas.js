@@ -1,15 +1,4 @@
-/* HTML5 Canvas drag&drop */
-var canvasManager = {}; // namespace
-
-(function($) {
-	/* canvas class
-	 * {canvas context} ctx: the context
-	 * {int} w: width
-	 * {int} h: height
-	 * {objext} names: caller namespace
-	 */
-
-	canvasManager.canv = function(ctx, w, h, names) {
+var canvasManager = function(ctx, w, h, names) {
 		this.ctx = ctx; // the context
 		this.area = {w:w, h:h};  // the area
 		this.cvpos = {x:0, y:0};  // position of the canvas on the browser
@@ -25,18 +14,19 @@ var canvasManager = {}; // namespace
 		this.radius = 30; // raduis of balls
 
 		this.leaf = [];
+};
 
 		/* init canvas
 		 * return: none
 		 */
-		this.blank = function() {
+canvasManager.prototype.blank = function() {
 			// clear
 			this.ctx.fillStyle = 'black';
 			//this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 			this.ctx.fillRect(0, 0, this.area.w, this.area.h);
-		};
+};
 
-		this.init = function() {
+canvasManager.prototype.init = function() {
 			for (var i = 0; i < 1000; i++) {
 				var rand = Math.floor(Math.random()*1024*1024);
 				var x = rand%(this.area.w - 1);
@@ -52,12 +42,12 @@ var canvasManager = {}; // namespace
 					radius:r
 				});
 			}
-		};
+};
 
 		/* draw canvas
 		 * return: none
 		 */
-		this.draw = function() {
+canvasManager.prototype.draw = function() {
 			var sin5 = []
 			var cos5 = [];
 
@@ -87,8 +77,4 @@ var canvasManager = {}; // namespace
 			}
 
 			this.ctx.restore();
-		};
-
-	}
-
-})(jQuery);
+};

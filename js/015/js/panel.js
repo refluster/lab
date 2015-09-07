@@ -6,7 +6,7 @@ var panelApl = function() {
 	ctx.globalCompositeOperation = "source-over";
 	
 	// display
-	this.canv = new canvasManager.canv(ctx, canvas.width, canvas.height, this);
+	this.canv = new canvasManager(ctx, canvas.width, canvas.height, this);
 	this.canv.init();
 	this.canv.draw();
 };
