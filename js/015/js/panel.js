@@ -18,7 +18,6 @@ var panelApl = {}; // namespace
 	 */
 	panelApl.start = function() {
 		var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
-		var $btn = $('#stbtn1'); // start button
 		if (!panelApl.gamestart) { // if not playing
 			// add mouse events to the canvas
 			$cvdiv.mousedown(panelApl.cvmsDown);
@@ -35,8 +34,6 @@ var panelApl = {}; // namespace
 			panelApl.canv.init();
 
 			panelApl.gamestart = true;
-			panelApl.showmsg('');
-			$btn.text('');
 		} else { // if playing
 			// delete mouse events from the canvas
 			$cvdiv.unbind('mousedown', panelApl.cvmsDown);
@@ -50,17 +47,7 @@ var panelApl = {}; // namespace
 			$cvdiv.unbind("touchmove", panelApl.cvmsMove);
 
 			panelApl.gamestart = false;
-			panelApl.showmsg('');
-			$btn.text('');
 		}
-	};
-
-	/* display message
-	 * {string} msg: displayed message
-	 * return: none
-	 */
-	panelApl.showmsg = function(msg) {
-		$('#msg1').html(msg);
 	};
 
 	/* mousedown process
@@ -72,7 +59,6 @@ var panelApl = {}; // namespace
 		var cx = evt.pageX - panelApl.canv.cvpos.x;
 		var cy = evt.pageY - panelApl.canv.cvpos.y;
 		panelApl.drag.now = true;
-		panelApl.showmsg("");
 		return false;
 	};
 	/* mouseup/mouseleave process
@@ -90,11 +76,6 @@ var panelApl = {}; // namespace
 			if (cy > panelApl.canv.area.h) cy = panelApl.canv.area.h;
 
 			panelApl.drag.now = false;
-			if (evt.type == 'mouseleave'){
-				panelApl.showmsg('');
-			} else if (panelApl.gamestart) {
-				panelApl.showmsg('');
-			}
 		}
 	};
 	/* mousemove process
@@ -113,7 +94,7 @@ var panelApl = {}; // namespace
 	/* body onload process */
 	$(window).load(function() {
 		// get canvas's DOM element and context
-		var canvas = document.getElementById('cv1');
+		var canvas = document.getElementById('canvas');
 		if ( ! canvas || ! canvas.getContext ) { return false; }
 		var ctx = canvas.getContext("2d");
 		ctx.globalCompositeOperation = "source-over";
@@ -123,15 +104,5 @@ var panelApl = {}; // namespace
 											   canvas.height, panelApl);
 		panelApl.canv.init();
 		panelApl.canv.draw();
-
-		// set events
-		var $btn = $('#stbtn1'); // start button
-		$btn.mousedown(panelApl.start);
-		$btn.text('');
-
-		// show message
-		panelApl.showmsg('');
 	});
-
-
 })(jQuery);
