@@ -1,21 +1,16 @@
-/* HTML5 Canvas drag&drop
- * canvas is updated when an object is dragged by 1px
- */
-var panelApl = {}; // namespace
+var panelApl = function() {
+	// get canvas's DOM element and context
+	var canvas = document.getElementById('canvas');
+	if ( ! canvas || ! canvas.getContext ) { return false; }
+	var ctx = canvas.getContext("2d");
+	ctx.globalCompositeOperation = "source-over";
+	
+	// display
+	this.canv = new canvasManager.canv(ctx, canvas.width, canvas.height, this);
+	this.canv.init();
+	this.canv.draw();
+};
 
-(function($) {
-	/* body onload process */
-	$(window).load(function() {
-		// get canvas's DOM element and context
-		var canvas = document.getElementById('canvas');
-		if ( ! canvas || ! canvas.getContext ) { return false; }
-		var ctx = canvas.getContext("2d");
-		ctx.globalCompositeOperation = "source-over";
-
-		// display
-		panelApl.canv = new canvasManager.canv(ctx, canvas.width,
-											   canvas.height, panelApl);
-		panelApl.canv.init();
-		panelApl.canv.draw();
-	});
-})(jQuery);
+$(function() {
+    var apl = new panelApl();
+});
