@@ -1,6 +1,6 @@
 var panelApl = function() {
 	// timer
-	panelApl.timer = $.timer();
+	this.timer = $.timer();
 
 	// get canvas's DOM element and context
 	var canvas = document.getElementById('canvas');
@@ -10,19 +10,18 @@ var panelApl = function() {
 	ctx.globalCompositeOperation = "source-over";
 
 	// display
-	panelApl.canv = new canvasManager(ctx, canvas.width,
-									  canvas.height, panelApl);
-	panelApl.canv.init();
-	panelApl.canv.draw();
+	this.canv = new canvasManager(ctx, canvas.width,
+									  canvas.height, this);
+	this.canv.init();
 
-	panelApl.timer.set({
+	this.timer.set({
 		action: function() {
-			panelApl.canv.moveObj();
-			panelApl.canv.draw();
-		},
+			this.canv.moveObj();
+			this.canv.draw();
+		}.bind(this),
 		time: 40
 	});
-	panelApl.timer.play();
+	this.timer.play();
 };
 
 var canvasManager = function(ctx, w, h, name) {
