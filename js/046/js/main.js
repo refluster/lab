@@ -49,11 +49,11 @@ Apl.prototype.initObject = function(){
 	var vec = [
 		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100},
 		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100},
-		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100}
+		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100},
 	];
 
-	var addObjects = function(step, root, size, p, direction) {
-		if (step == 3) {
+	var addObjects = function(step, root, size, p) {
+		if (step == 5) {
 			return;
 		}
 
@@ -63,20 +63,22 @@ Apl.prototype.initObject = function(){
 			geometry.vertices.push(v3origin, vector);
 			var line = new THREE.Line( geometry, material );
 			line.position.set(p.x, p.y, p.z);
+			line.rotation.set(p.x, p.y, p.z);
 			root.add(line);
-			addObjects(step + 1, line, size * 0.8, vector, direction);
+			addObjects(step + 1, line, size * 0.6, vector);
 		}
 	};
 
-	var obj = new THREE.Object3D();
-	addObjects(0, obj, 0.2, {x: 0, y: 0, z: 0}, {x: 0, y: 1, z: 0});
+	this.obj = new THREE.Object3D();
+	this.obj.position.set(0, 0, -20);
+	addObjects(0, this.obj, .8, {x: 0, y: 0, z: 0}, {x: 0, y: 1, z: 0});
 	
-	this.scene.add(obj);
+	this.scene.add(this.obj);
 };
 
 Apl.prototype.render = function() {
 	requestAnimationFrame(this.render.bind(this));
-//	this.cube.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
+	this.obj.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
 	this.renderer.render(this.scene, this.camera);
 };
 
