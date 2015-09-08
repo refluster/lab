@@ -10,8 +10,8 @@ var panelApl = function() {
 	ctx.globalCompositeOperation = "source-over";
 
 	// display
-	panelApl.canv = new canvasManager.canv(ctx, canvas.width,
-										   canvas.height, panelApl);
+	panelApl.canv = new canvasManager(ctx, canvas.width,
+									  canvas.height, panelApl);
 	panelApl.canv.init();
 	panelApl.canv.draw();
 
@@ -28,5 +28,5 @@ var panelApl = function() {
 };
 
 $(function() {
-	var apl = new Apl();
+	var apl = new panelApl();
 });

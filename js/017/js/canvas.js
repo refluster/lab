@@ -1,15 +1,4 @@
-/* HTML5 Canvas drag&drop */
-var canvasManager = {}; // namespace
-
-(function($) {
-	/* canvas class
-	 * {canvas context} ctx: the context
-	 * {int} w: width
-	 * {int} h: height
-	 * {objext} names: caller namespace
-	 */
-
-	canvasManager.canv = function(ctx, w, h, names) {
+var canvasManager = function(ctx, w, h, name) {
 		this.ctx = ctx; // the context
 		this.area = {w:w, h:h};  // the area
 		this.cvpos = {x:0, y:0};  // position of the canvas on the browser
@@ -29,27 +18,27 @@ var canvasManager = {}; // namespace
 		this.radius = 18; // raduis of balls
 
 		this.ball = [];
-
-		this.blank = function() {
+};
+canvasManager.prototype.blank = function() {
 			//this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 			this.ctx.fillStyle = 'black';
 			this.ctx.fillRect(0, 0, this.area.w, this.area.h);
-		};
+};
 
-		this.init = function() {
+canvasManager.prototype.init = function() {
 			this.ball[0] = {
 				pos:{x:100, y:100},
 				v:{x:2, y:4},
 			};
-		};
+};
 
-		this.getNormalVector = function(dst, src) {
+canvasManager.prototype.getNormalVector = function(dst, src) {
 			var v = {x:dst.x - src.x, y:dst.y - src.y};
 			var d = Math.sqrt(v.x*v.x + v.y*v.y);
 			return {x:v.x/d, y:v.y/d};
-		};
+};
 
-		this.moveObj = function() {
+canvasManager.prototype.moveObj = function() {
 			// calc pos
 			for (var i = 0; i < this.ball.length; i++) {
 				this.ball[i].pos.x += this.ball[i].v.x;
@@ -62,9 +51,9 @@ var canvasManager = {}; // namespace
 				this.ball[i].v.x += nvec.x*this.accel;
 				this.ball[i].v.y += nvec.y*this.accel;
 			}
-		};
+};
 
-		this.draw = function() {
+canvasManager.prototype.draw = function() {
 			this.blank();
 			this.ctx.save();
 
@@ -92,9 +81,6 @@ var canvasManager = {}; // namespace
 			}
 
 			this.ctx.restore();
-		};
+};
 
-	}
-
-})(jQuery);
 
