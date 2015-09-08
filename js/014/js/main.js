@@ -1,4 +1,4 @@
-var panelApl = function() {
+var Apl = function() {
 	this.dragging = false;
 	this.timer = $.timer();
 
@@ -58,14 +58,14 @@ var panelApl = function() {
 	this.timer.play();
 };
 
-panelApl.prototype.hDown = function(evt) {
+Apl.prototype.hDown = function(evt) {
 	// convert coordinate from point to canvas
 	var cx = evt.pageX - this.canvasLeft;
 	var cy = evt.pageY - this.canvasTop;
 	this.dragging = true;
 	return false;
 };
-panelApl.prototype.hUp = function(evt) {
+Apl.prototype.hUp = function(evt) {
 	if (this.dragging == true) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canvasLeft;
@@ -78,7 +78,7 @@ panelApl.prototype.hUp = function(evt) {
 		this.dragging = false;
 	}
 };
-panelApl.prototype.hMove = function(evt) {
+Apl.prototype.hMove = function(evt) {
 	if (this.dragging == true) {
 		// convert coordinate from point to canvas
 		var cx = evt.pageX - this.canvasLeft;
@@ -92,7 +92,7 @@ panelApl.prototype.hMove = function(evt) {
 	return false;
 };
 
-panelApl.prototype.draw = function() {
+Apl.prototype.draw = function() {
 	this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 	this.ctx.strokeStyle = this.glassColor;
 
@@ -104,7 +104,7 @@ panelApl.prototype.draw = function() {
 	}
 };
 
-panelApl.prototype.moveObj = function() {
+Apl.prototype.moveObj = function() {
 	var cursordx = this.cursorPos.x - this.prevCursorPos.x;
 	var cursordy = this.cursorPos.y - this.prevCursorPos.y;
 
@@ -145,10 +145,10 @@ panelApl.prototype.moveObj = function() {
 	this.prevCursorPos = this.cursorPos;
 };
 
-panelApl.prototype.needToUpdate = function() {
+Apl.prototype.needToUpdate = function() {
 	return true;
 };
 
 $(function() {
-    var apl = new panelApl();
+    var apl = new Apl();
 });
