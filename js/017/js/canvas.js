@@ -1,3 +1,30 @@
+var panelApl = function() {
+	// timer
+	panelApl.timer = $.timer();
+
+	// get canvas's DOM element and context
+	var canvas = document.getElementById('canvas');
+	if ( ! canvas || ! canvas.getContext ) { return false; }
+	var ctx = canvas.getContext("2d");
+	ctx.lineWidth = 1;
+	ctx.globalCompositeOperation = "source-over";
+
+	// display
+	panelApl.canv = new canvasManager(ctx, canvas.width,
+									  canvas.height, panelApl);
+	panelApl.canv.init();
+	panelApl.canv.draw();
+
+	panelApl.timer.set({
+		action: function() {
+			panelApl.canv.moveObj();
+			panelApl.canv.draw();
+		},
+		time: 40
+	});
+	panelApl.timer.play();
+};
+
 var canvasManager = function(ctx, w, h, name) {
 	this.ctx = ctx; // the context
 	this.area = {w:w, h:h};  // the area
@@ -82,3 +109,8 @@ canvasManager.prototype.draw = function() {
 
 	this.ctx.restore();
 };
+
+$(function() {
+	var apl = new panelApl();
+});
+
