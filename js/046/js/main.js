@@ -16,7 +16,6 @@ Apl.prototype.initThree = function() {
 	this.renderer = new THREE.WebGLRenderer({antialias: true});
 	this.renderer.setSize(this.width, this.height );
 	document.getElementById('canvas-frame').appendChild(this.renderer.domElement);
-	this.renderer.setClearColorHex(0x000000, 1.0);
 };
 
 Apl.prototype.initCamera = function() {
@@ -43,7 +42,7 @@ Apl.prototype.initLight = function() {
 
 Apl.prototype.initObject = function(){
 	this.cube = new THREE.Mesh(
-		new THREE.CubeGeometry(50,50,50), // set model
+		new THREE.BoxGeometry(50,50,50), // set model
 		new THREE.MeshLambertMaterial({color: 0xff0000}) // set material
 	);
 	this.scene.add(this.cube);
