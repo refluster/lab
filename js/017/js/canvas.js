@@ -19,7 +19,7 @@ var canvasManager = {}; // namespace
 		this.PI2 = Math.PI * 2; // 2*pi
 
 		// set the position of the canvas on the browser
-		var $cvdiv = $('#cvdiv1');
+		var $cvdiv = $('#canvas');
 		this.cvpos.x = $cvdiv.offset().left;
 		this.cvpos.y = $cvdiv.offset().top;
 
