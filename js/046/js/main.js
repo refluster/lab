@@ -46,28 +46,25 @@ Apl.prototype.initObject = function(){
 	});
 	var v3origin = new THREE.Vector3( 0, 0, 0 );
 
+	var vec = [
+		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100},
+		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100},
+		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100}
+	];
+
 	var addObjects = function(step, root, size, p, direction) {
 		if (step == 3) {
 			return;
 		}
 
-		{
+		for (var i = 0; i < vec.length; i++) {
 			var geometry = new THREE.Geometry();
-			var v = new THREE.Vector3( 0, 20*size, 80*size)
-			geometry.vertices.push(v3origin, v);
+			var vector = new THREE.Vector3( vec[i].x*size, vec[i].y*size, vec[i].z*size)
+			geometry.vertices.push(v3origin, vector);
 			var line = new THREE.Line( geometry, material );
 			line.position.set(p.x, p.y, p.z);
 			root.add(line);
-			addObjects(step + 1, line, size * 0.8, v, direction);
-		}
-		{
-			var geometry = new THREE.Geometry();
-			var v = new THREE.Vector3( 10*size, -20*size, -10*size )
-			geometry.vertices.push(v3origin, v);
-			var line = new THREE.Line( geometry, material );
-			line.position.set(p.x, p.y, p.z);
-			root.add(line);
-			addObjects(step + 1, line, size * 0.8, v, direction);
+			addObjects(step + 1, line, size * 0.8, vector, direction);
 		}
 	};
 
