@@ -8,7 +8,7 @@
         margin: 32px;
         font-size: 16px;
     }
-    .cv {
+    #canvas {
         border: solid 1px #808080;
     }
     /* button */
@@ -41,8 +41,8 @@
     <div id="header"><h2 class="title">mossy (parameter)</h2></div>
     <div id="contents">
       <ul class="chapter-toc">
-        <li>drawing on canvas</li>
-        <li>mouse events</li>
+        <li>configurable moss</li>
+        <li>generating animation</li>
       </ul>
       <form name="form1" action="">
 	      number: <input name="input_number" type="text" id="txt1" value="1000" /><br>
@@ -53,11 +53,7 @@
 	      <input name="btn" type="button" id="btn1" value="update" />
       </form>
       <p />
-      <div id="cvdiv1">
-	      <canvas id="cv1" class="cv" width="300" height="300">
-	      </canvas>
-      </div>
-      <div id="msg1" class="msg"></div>
+	    <canvas id="canvas" width="300" height="300"></canvas>
     </div>
   </body>
 </html>

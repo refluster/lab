@@ -12,12 +12,7 @@ var panelApl = {}; // namespace
 	panelApl.rmin; // min radius of leaves
 	panelApl.rmax; // max radius of leaves
 
-	panelApl.showmsg = function(msg) {
-		$('#msg1').html(msg);
-	};
-
 	panelApl.update = function() {
-		console.log("update");
 		var number = document.form1.input_number.value;
 		var rmin = document.form1.input_rmin.value;
 		var rmax = document.form1.input_rmax.value;
@@ -27,7 +22,7 @@ var panelApl = {}; // namespace
 		// check if inputs are number
 		if (isNaN(number) || isNaN(rmin) || isNaN(rmax) ||
 			isNaN(seconds) || isNaN(fps)) {
-			panelApl.showmsg("incorrect input");
+			//panelApl.showmsg("incorrect input");
 			return;
 		}
 
@@ -38,12 +33,12 @@ var panelApl = {}; // namespace
 		fps = Number(fps);
 
 		if (number < 0 || rmin < 0 || rmax < 0 || seconds < 0 || fps < 0) {
-			panelApl.showmsg("values must be positive");
+			//panelApl.showmsg("values must be positive");
 			return;
 		}
 
 		if (rmin > rmax) {
-			panelApl.showmsg("rmax must be larger than rmin");
+			//panelApl.showmsg("rmax must be larger than rmin");
 			return;
 		}
 
@@ -79,7 +74,7 @@ var panelApl = {}; // namespace
 		console.log("window.load");
 
 		// get canvas's DOM element and context
-		var canvas = document.getElementById('cv1');
+		var canvas = document.getElementById('canvas');
 		if ( ! canvas || ! canvas.getContext ) { return false; }
 		var ctx = canvas.getContext("2d");
 		ctx.globalCompositeOperation = "source-over";
