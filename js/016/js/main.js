@@ -18,6 +18,9 @@ var Apl = function() {
 	this.color = 'white';
 	this.leaf = [];
 
+	$canvas.attr('width', this.canvasWidth);
+	$canvas.attr('height', this.canvasHeight);
+
 	// set event
 	var $btn = $('#btn1'); // start button
 	$btn.mousedown(this.update.bind(this));
