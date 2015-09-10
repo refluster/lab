@@ -6,29 +6,41 @@ for (var i = 0; i < 5; i++) {
 	cos5[i] = Math.cos(i*Math.PI/5);
 }
 
-var canvasManager = function(ctx, w, h) {
-	this.ctx = ctx; // the context
-	this.canvasWidth = w;
-	this.canvasHeight = h;
+var panelApl = function() {
+	var $canvas = $('#canvas');
+	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
+	this.ctx = $canvas[0].getContext("2d");
+	this.ctx.globalCompositeOperation = "source-over";
+
+	// display
+	this.canvasWidth = $canvas.width();
+	this.canvasHeight = $canvas.height();
 	this.color = 'white';
 	this.leaf = [];
+
+	// set event
+	var $btn = $('#btn1'); // start button
+	$btn.mousedown(this.update.bind(this));
+	$btn.text("update");
+
+	setTimeout(this.update.bind(this), 1000);
 };
 
-canvasManager.prototype.blank = function() {
+panelApl.prototype.blank = function() {
 	this.ctx.fillStyle = 'black';
 	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
-canvasManager.prototype.init = function() {
+panelApl.prototype.init = function() {
 	this.blank();
 	this.clearLeaf();
 };
 
-canvasManager.prototype.clearLeaf = function() {
+panelApl.prototype.clearLeaf = function() {
 	this.leaf = [];
 };
 
-canvasManager.prototype.addLeaf = function(number, rmin, rmax) {
+panelApl.prototype.addLeaf = function(number, rmin, rmax) {
 	for (var i = 0; i < number; i++) {
 		var rand = Math.floor(Math.random()*1024*1024);
 		var x = rand%(this.canvasWidth- 1);
@@ -42,7 +54,7 @@ canvasManager.prototype.addLeaf = function(number, rmin, rmax) {
 	}
 };
 
-canvasManager.prototype.draw = function() {
+panelApl.prototype.draw = function() {
 	this.ctx.strokeStyle = this.color;
 	this.ctx.globalAlpha = 0.5;
 
@@ -56,22 +68,6 @@ canvasManager.prototype.draw = function() {
 		}
 		this.ctx.stroke();
 	}.bind(this));
-};
-
-var panelApl = function() {
-	var $canvas = $('#canvas');
-	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
-	var ctx = $canvas[0].getContext("2d");
-	ctx.globalCompositeOperation = "source-over";
-
-	// display
-	this.canv = new canvasManager(ctx, $canvas.width(), $canvas.height());
-	// set event
-	var $btn = $('#btn1'); // start button
-	$btn.mousedown(this.update.bind(this));
-	$btn.text("update");
-
-	setTimeout(this.update.bind(this), 1000);
 };
 
 panelApl.prototype.update = function() {
@@ -104,21 +100,21 @@ panelApl.prototype.update = function() {
 		return;
 	}
 
-	this.canv.init();
+	this.init();
 
 	var curNumber = 0;
 	var incNumber = number/(seconds*fps);
 
 	var addAndDraw = function() {
-		this.canv.clearLeaf();
+		this.clearLeaf();
 		if (curNumber + incNumber > number) {
-			this.canv.addLeaf(number - curNumber, rmin, rmax);
+			this.addLeaf(number - curNumber, rmin, rmax);
 		} else {
 			setTimeout(addAndDraw, 1000/fps);
-			this.canv.addLeaf(incNumber, rmin, rmax);
+			this.addLeaf(incNumber, rmin, rmax);
 			curNumber += incNumber;
 		}
-		this.canv.draw();
+		this.draw();
 	}.bind(this);
 
 	var timer = setTimeout(addAndDraw, 50);
