@@ -1,11 +1,11 @@
 var panelApl = function() {
-	var canvas = document.getElementById('canvas');
-	if ( ! canvas || ! canvas.getContext ) { return false; }
-	var ctx = canvas.getContext("2d");
+	var $canvas = $('#canvas');
+	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
+	var ctx = $canvas[0].getContext("2d");
 	ctx.globalCompositeOperation = "source-over";
 
 	// display
-	this.canv = new canvasManager(ctx, canvas.width, canvas.height, this);
+	this.canv = new canvasManager(ctx, $canvas.width(), $canvas.height());
 	// set event
 	var $btn = $('#btn1'); // start button
 	$btn.mousedown(this.update.bind(this));
