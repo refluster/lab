@@ -6,7 +6,7 @@ for (var i = 0; i < 5; i++) {
 	cos5[i] = Math.cos(i*Math.PI/5);
 }
 
-var panelApl = function() {
+var Apl = function() {
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	this.ctx = $canvas[0].getContext("2d");
@@ -26,21 +26,21 @@ var panelApl = function() {
 	setTimeout(this.update.bind(this), 1000);
 };
 
-panelApl.prototype.blank = function() {
+Apl.prototype.blank = function() {
 	this.ctx.fillStyle = 'black';
 	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
-panelApl.prototype.init = function() {
+Apl.prototype.init = function() {
 	this.blank();
 	this.clearLeaf();
 };
 
-panelApl.prototype.clearLeaf = function() {
+Apl.prototype.clearLeaf = function() {
 	this.leaf = [];
 };
 
-panelApl.prototype.addLeaf = function(number, rmin, rmax) {
+Apl.prototype.addLeaf = function(number, rmin, rmax) {
 	for (var i = 0; i < number; i++) {
 		var rand = Math.floor(Math.random()*1024*1024);
 		var x = rand%(this.canvasWidth- 1);
@@ -54,7 +54,7 @@ panelApl.prototype.addLeaf = function(number, rmin, rmax) {
 	}
 };
 
-panelApl.prototype.draw = function() {
+Apl.prototype.draw = function() {
 	this.ctx.strokeStyle = this.color;
 	this.ctx.globalAlpha = 0.5;
 
@@ -70,7 +70,7 @@ panelApl.prototype.draw = function() {
 	}.bind(this));
 };
 
-panelApl.prototype.update = function() {
+Apl.prototype.update = function() {
 	var number = document.form1.input_number.value;
 	var rmin = document.form1.input_rmin.value;
 	var rmax = document.form1.input_rmax.value;
@@ -121,5 +121,5 @@ panelApl.prototype.update = function() {
 };
 
 $(function() {
-	var apl = new panelApl();
+	var apl = new Apl();
 });
