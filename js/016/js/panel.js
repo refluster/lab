@@ -1,18 +1,4 @@
-/* HTML5 Canvas drag&drop
- * canvas is updated when an object is dragged by 1px
- */
 var panelApl = function() {
-	// display message
-	// {string} msg: displayed message
-	// return: none
-	this.text = $("#txt1");
-	this.number; // the number of leaves
-	this.rmin; // min radius of leaves
-	this.rmax; // max radius of leaves
-
-	console.log("window.load");
-
-	// get canvas's DOM element and context
 	var canvas = document.getElementById('canvas');
 	if ( ! canvas || ! canvas.getContext ) { return false; }
 	var ctx = canvas.getContext("2d");
@@ -27,8 +13,6 @@ var panelApl = function() {
 	$btn.text("update");
 
 	setTimeout(this.update.bind(this), 1000);
-
-	// update by initial parameter
 };
 
 panelApl.prototype.update = function() {
@@ -61,14 +45,7 @@ panelApl.prototype.update = function() {
 		return;
 	}
 
-	this.number = number;
-	this.rmin = rmin;
-	this.rmax = rmax;
-
 	this.canv.init();
-
-	//this.canv.addLeaf(number, rmin, rmax);
-	//this.canv.draw();
 
 	var curNumber = 0;
 	var incNumber = number/(seconds*fps);
@@ -85,10 +62,9 @@ panelApl.prototype.update = function() {
 		this.canv.draw();
 	}.bind(this);
 
-	var timer = setTimeout(addAndDraw, 50);//1000/fps);
+	var timer = setTimeout(addAndDraw, 50);
 };
 
 $(function() {
 	var apl = new panelApl();
 });
-
