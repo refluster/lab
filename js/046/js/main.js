@@ -47,7 +47,7 @@ Apl.prototype.initObject = function(){
 	var v3origin = new THREE.Vector3( 0, 0, 0 );
 
 	var genVector = function() {
-		return {x: Math.random()*100, y: Math.random()*100, z: Math.random()*100};
+		return {x: (Math.random() - 0.5)*100, y: (Math.random() - 0.5)*100, z: Math.random()*50};
 	};
 
 	var vec = [
