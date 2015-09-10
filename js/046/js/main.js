@@ -46,10 +46,14 @@ Apl.prototype.initObject = function(){
 	});
 	var v3origin = new THREE.Vector3( 0, 0, 0 );
 
+	var genVector = function() {
+		return {x: Math.random()*100, y: Math.random()*100, z: Math.random()*100};
+	};
+
 	var vec = [
-		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100},
-		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100},
-		{x: Math.random()*100, y: Math.random()*100, z: Math.random()*100},
+		genVector(),
+		genVector(),
+		genVector()
 	];
 
 	var addObjects = function(step, root, size, p) {
@@ -60,10 +64,11 @@ Apl.prototype.initObject = function(){
 		for (var i = 0; i < vec.length; i++) {
 			var geometry = new THREE.Geometry();
 			var vector = new THREE.Vector3( vec[i].x*size, vec[i].y*size, vec[i].z*size)
+			var length = vector.length();
 			geometry.vertices.push(v3origin, vector);
 			var line = new THREE.Line( geometry, material );
 			line.position.set(p.x, p.y, p.z);
-			line.rotation.set(p.x, p.y, p.z);
+			line.rotation.set(p.x/length, p.y/length, p.z/length);
 			root.add(line);
 			addObjects(step + 1, line, size * 0.6, vector);
 		}
