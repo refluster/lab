@@ -5,8 +5,7 @@ var panelApl = function() {
 	ctx.globalCompositeOperation = "source-over";
 
 	// display
-	this.canv = new canvasManager.canv(ctx, canvas.width,
-									   canvas.height, this);
+	this.canv = new canvasManager(ctx, canvas.width, canvas.height, this);
 	// set event
 	var $btn = $('#btn1'); // start button
 	$btn.mousedown(this.update.bind(this));
