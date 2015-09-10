@@ -68,7 +68,7 @@ Apl.prototype.initObject = function(){
 			geometry.vertices.push(v3origin, vector);
 			var line = new THREE.Line( geometry, material );
 			line.position.set(p.x, p.y, p.z);
-			line.rotation.set(p.x/length, p.y/length, p.z/length);
+			line.rotation.set(p.x/length, p.y/length, 0);
 			root.add(line);
 			addObjects(step + 1, line, size * 0.6, vector);
 		}
