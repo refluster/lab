@@ -1,5 +1,4 @@
-var panelApl = function() {
-	// get canvas's DOM element and context
+var Apl = function() {
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	this.ctx = $canvas[0].getContext("2d");
@@ -37,16 +36,16 @@ var panelApl = function() {
 	});
 	this.timer.play();
 };
-panelApl.prototype.blank = function() {
+Apl.prototype.blank = function() {
 	this.ctx.fillStyle = 'black';
 	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
-panelApl.prototype.getNormalVector = function(dst, src) {
+Apl.prototype.getNormalVector = function(dst, src) {
 	var v = {x:dst.x - src.x, y:dst.y - src.y};
 	var d = Math.sqrt(v.x*v.x + v.y*v.y);
 	return {x:v.x/d, y:v.y/d};
 };
-panelApl.prototype.moveObj = function() {
+Apl.prototype.moveObj = function() {
 	// calc pos
 	for (var i = 0; i < this.ball.length; i++) {
 		this.ball[i].pos.x += this.ball[i].v.x;
@@ -60,13 +59,13 @@ panelApl.prototype.moveObj = function() {
 		this.ball[i].v.y += nvec.y*this.accel;
 	}
 };
-panelApl.prototype.draw = function() {
+Apl.prototype.draw = function() {
 	this.blank();
 	this.ctx.strokeStyle = 'rgb(160,160,160)';
 	var r = 600;
-	var n = 17;
+
 	this.ctx.beginPath();
-	for (var i = 0; i < n; i++) {
+	for (var i = 0; i < this.sin.length; i++) {
 		this.ctx.moveTo(this.center.x + r*this.cos[i], this.center.y + r*this.sin[i]);
 		this.ctx.lineTo(this.center.x - r*this.cos[i], this.center.y - r*this.sin[i]);
 	}
@@ -82,6 +81,5 @@ panelApl.prototype.draw = function() {
 };
 
 $(function() {
-	var apl = new panelApl();
+	var apl = new Apl();
 });
-
