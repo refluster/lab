@@ -1,17 +1,16 @@
 var Apl = function() {
 	this.simulating = false;
 	this.timer = $.timer();
-	this.fps = 30;
+	this.fps = 60;
 
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	this.ctx = $canvas[0].getContext("2d");
+	this.ctx.globalCompositeOperation = "source-over";
 
 	// canvas
 	this.canvasWidth = $canvas.width();
 	this.canvasHeight = $canvas.height();
-	this.prevPos = {x:0, y:0}; // previous position of the cursor
-	this.lineWidth = 1;
 	this.PI2 = Math.PI * 2; // 2*pi
 
 	// set the position of the canvas on the browser
@@ -23,9 +22,6 @@ var Apl = function() {
 	this.radius = 1; // raduis of balls
 	this.particles = [];
 	this.sph;
-
-	this.ctx.lineWidth = 1;
-	this.ctx.globalCompositeOperation = "source-over";
 
 	this.init();
 	this.draw();
@@ -60,11 +56,6 @@ Apl.prototype.start = function() {
 	}
 };
 
-Apl.prototype.blank = function() {
-	this.ctx.fillStyle = 'black';
-	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
-};
-
 Apl.prototype.init = function() {
 	this.sph = new Sph();
 	this.sph.init();
@@ -75,14 +66,15 @@ Apl.prototype.moveObj = function() {
 };
 
 Apl.prototype.draw = function() {
-	this.blank();
-	this.ctx.fillStyle = 'white';
+	this.ctx.fillStyle = '#000000';
+	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+	this.ctx.fillStyle = '#aaaaff';
 	var p = this.sph.get_particle();
 	for (var i = 0; i < p.length; i++) {
-		this.ctx.beginPath();
-		this.ctx.arc(p[i].pos.x*8, this.canvasHeight - p[i].pos.y*8,
-					 this.radius, 0, this.PI2, false);
-		this.ctx.fill();
+        this.ctx.fillRect(p[i].pos.x*8 - this.radius,
+						  this.canvasHeight - p[i].pos.y*8,
+						  this.radius*2, this.radius*2);
 	}
 };
 
