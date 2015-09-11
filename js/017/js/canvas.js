@@ -6,7 +6,6 @@ var panelApl = function() {
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	var ctx = $canvas[0].getContext("2d");
-	ctx.lineWidth = 1;
 	ctx.globalCompositeOperation = "source-over";
 
 	$canvas.attr('width', $canvas.width());
@@ -29,17 +28,9 @@ var panelApl = function() {
 
 var canvasManager = function(ctx, w, h, name) {
 	this.ctx = ctx; // the context
-	this.area = {w:w, h:h};  // the area
-	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
-	this.prevPos = {x:0, y:0}; // previous position of the cursor
-	this.color = 'black';
-	this.lineWidth = 1;
+	this.canvasWidth = w;
+	this.canvasHeight = h;
 	this.PI2 = Math.PI * 2; // 2*pi
-
-	// set the position of the canvas on the browser
-	var $canvas = $('#canvas');
-	this.cvpos.x = $canvas.offset().left;
-	this.cvpos.y = $canvas.offset().top;
 
 	this.center = {x:200, y:200};
 	this.accel = 25.0 /(1000/40);
@@ -49,9 +40,8 @@ var canvasManager = function(ctx, w, h, name) {
 	this.ball = [];
 };
 canvasManager.prototype.blank = function() {
-	//this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 	this.ctx.fillStyle = 'black';
-	this.ctx.fillRect(0, 0, this.area.w, this.area.h);
+	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
 
 canvasManager.prototype.init = function() {
