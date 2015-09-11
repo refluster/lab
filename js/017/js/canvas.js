@@ -5,59 +5,43 @@ var panelApl = function() {
 	// get canvas's DOM element and context
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
-	var ctx = $canvas[0].getContext("2d");
-	ctx.globalCompositeOperation = "source-over";
+	this.ctx = $canvas[0].getContext("2d");
+	this.ctx.globalCompositeOperation = "source-over";
+	this.canvasWidth = $canvas.width();
+	this.canvasHeight = $canvas.height();
+	$canvas.attr('width', this.canvasWidth);
+	$canvas.attr('height', this.canvasHeight);
 
-	$canvas.attr('width', $canvas.width());
-	$canvas.attr('height', $canvas.height());
+	this.PI2 = Math.PI * 2; // 2*pi
 
-	// display
-	this.canv = new canvasManager(ctx, $canvas.width(),
-								  $canvas.height(), this);
-	this.canv.init();
+	this.center = {x:200, y:200};
+	this.accel = 25.0 /(1000/40);
+	this.radius = 18; // raduis of balls
+	this.ball = [];
+	this.ball.push({
+		pos:{x:100, y:100},
+		v:{x:2, y:4},
+	});
 
 	this.timer.set({
 		action: function() {
-			this.canv.moveObj();
-			this.canv.draw();
+			this.moveObj();
+			this.draw();
 		}.bind(this),
 		time: 40
 	});
 	this.timer.play();
 };
-
-var canvasManager = function(ctx, w, h, name) {
-	this.ctx = ctx; // the context
-	this.canvasWidth = w;
-	this.canvasHeight = h;
-	this.PI2 = Math.PI * 2; // 2*pi
-
-	this.center = {x:200, y:200};
-	this.accel = 25.0 /(1000/40);
-
-	this.radius = 18; // raduis of balls
-
-	this.ball = [];
-};
-canvasManager.prototype.blank = function() {
+panelApl.prototype.blank = function() {
 	this.ctx.fillStyle = 'black';
 	this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 };
-
-canvasManager.prototype.init = function() {
-	this.ball[0] = {
-		pos:{x:100, y:100},
-		v:{x:2, y:4},
-	};
-};
-
-canvasManager.prototype.getNormalVector = function(dst, src) {
+panelApl.prototype.getNormalVector = function(dst, src) {
 	var v = {x:dst.x - src.x, y:dst.y - src.y};
 	var d = Math.sqrt(v.x*v.x + v.y*v.y);
 	return {x:v.x/d, y:v.y/d};
 };
-
-canvasManager.prototype.moveObj = function() {
+panelApl.prototype.moveObj = function() {
 	// calc pos
 	for (var i = 0; i < this.ball.length; i++) {
 		this.ball[i].pos.x += this.ball[i].v.x;
@@ -71,8 +55,7 @@ canvasManager.prototype.moveObj = function() {
 		this.ball[i].v.y += nvec.y*this.accel;
 	}
 };
-
-canvasManager.prototype.draw = function() {
+panelApl.prototype.draw = function() {
 	this.blank();
 	this.ctx.save();
 
