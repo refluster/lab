@@ -9,6 +9,9 @@ var panelApl = function() {
 	ctx.lineWidth = 1;
 	ctx.globalCompositeOperation = "source-over";
 
+	$canvas.attr('width', $canvas.width());
+	$canvas.attr('height', $canvas.height());
+
 	// display
 	this.canv = new canvasManager(ctx, $canvas.width(),
 								  $canvas.height(), this);
