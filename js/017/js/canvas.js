@@ -1,7 +1,4 @@
 var panelApl = function() {
-	// timer
-	this.timer = $.timer();
-
 	// get canvas's DOM element and context
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
@@ -13,7 +10,6 @@ var panelApl = function() {
 	$canvas.attr('height', this.canvasHeight);
 
 	this.PI2 = Math.PI * 2; // 2*pi
-
 	this.center = {x:200, y:200};
 	this.accel = 25.0 /(1000/40);
 	this.radius = 18; // raduis of balls
@@ -23,6 +19,15 @@ var panelApl = function() {
 		v:{x:2, y:4},
 	});
 
+	var n = 17;
+	this.sin = [];
+	this.cos = [];
+	for (var i = 0; i < n; i++) {
+		this.sin[i] = Math.sin(Math.PI/n*i);
+		this.cos[i] = Math.cos(Math.PI/n*i);
+	}
+
+	this.timer = $.timer();
 	this.timer.set({
 		action: function() {
 			this.moveObj();
@@ -57,23 +62,16 @@ panelApl.prototype.moveObj = function() {
 };
 panelApl.prototype.draw = function() {
 	this.blank();
-	this.ctx.save();
-
 	this.ctx.strokeStyle = 'rgb(160,160,160)';
 	var r = 600;
 	var n = 17;
 	this.ctx.beginPath();
 	for (var i = 0; i < n; i++) {
-		var dx = r*Math.cos(Math.PI/n*i);
-		var dy = r*Math.sin(Math.PI/n*i);
-		this.ctx.moveTo(this.center.x + dx, this.center.y + dy);
-		this.ctx.lineTo(this.center.x - dx, this.center.y - dy);
+		this.ctx.moveTo(this.center.x + r*this.cos[i], this.center.y + r*this.sin[i]);
+		this.ctx.lineTo(this.center.x - r*this.cos[i], this.center.y - r*this.sin[i]);
 	}
 	this.ctx.stroke();
 
-	// draw ball
-	this.ctx.fillStyle = 'white';
-	//this.ctx.globalAlpha = 0.5;
 	for (var i = 0; i < this.ball.length; i++) {
 		this.ctx.fillStyle = this.ball[i].color;
 		this.ctx.beginPath();
@@ -81,8 +79,6 @@ panelApl.prototype.draw = function() {
 					 this.radius, 0, this.PI2, false);
 		this.ctx.fill();
 	}
-
-	this.ctx.restore();
 };
 
 $(function() {
