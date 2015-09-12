@@ -9,6 +9,8 @@ var Apl = function() {
 
 	this.baseTime = +new Date;
 	
+	this.generateCoreVectors();
+
 	this.depth = $('#depth').val();
 	this.branch = $('#branch').val();
 	
@@ -52,20 +54,19 @@ Apl.prototype.initLight = function() {
 	this.scene.add(this.light);
 };
 
+Apl.prototype.generateCoreVectors = function() {
+	this.vectors = [];
+	for (var i = 0; i < 10; i++) {
+		this.vectors.push({x: (Math.random() - 0.5)*100, y: (Math.random() - 0.5)*100,
+						   z: Math.random()*50});
+	}
+};
+
 Apl.prototype.initObject = function(){
 	var material = new THREE.LineBasicMaterial({
 		color: 0xaaaaff
 	});
 	var v3origin = new THREE.Vector3( 0, 0, 0 );
-
-	var genVector = function() {
-		return {x: (Math.random() - 0.5)*100, y: (Math.random() - 0.5)*100, z: Math.random()*50};
-	};
-
-	var vec = [];
-	for (var i = 0; i < 10; i++) {
-		vec.push(genVector());
-	}
 
 	var addObjects = function(step, root, size, p, depth, geometries) {
 		if (step == depth) {
@@ -74,7 +75,8 @@ Apl.prototype.initObject = function(){
 
 		for (var i = 0; i < this.branch; i++) {
 			var geometry = new THREE.Geometry();
-			var vector = new THREE.Vector3( vec[i].x*size, vec[i].y*size, vec[i].z*size)
+			var vector = new THREE.Vector3(this.vectors[i].x*size, this.vectors[i].y*size,
+										   this.vectors[i].z*size);
 			var length = vector.length();
 			geometry.vertices.push(v3origin, vector);
 			var line = new THREE.Line( geometry, material );
