@@ -8,6 +8,13 @@ var Apl = function() {
 	this.cube;
 
 	this.baseTime = +new Date;
+	
+	this.depth = $('#depth').val();
+	
+	$('#depth').change(function() {
+		this.depth = $('#depth').val();		
+		this.threeRestart();
+	}.bind(this));
 };
 
 Apl.prototype.initThree = function() {
@@ -56,8 +63,8 @@ Apl.prototype.initObject = function(){
 		genVector()
 	];
 
-	var addObjects = function(step, root, size, p) {
-		if (step == 5) {
+	var addObjects = function(step, root, size, p, depth, geometries) {
+		if (step == depth) {
 			return;
 		}
 
@@ -70,13 +77,15 @@ Apl.prototype.initObject = function(){
 			line.position.set(p.x, p.y, p.z);
 			line.rotation.set(p.x/length, p.y/length, 0);
 			root.add(line);
-			addObjects(step + 1, line, size * 0.6, vector);
+			geometries.push(geometry);
+			addObjects(step + 1, line, size * 0.6, vector, depth, geometries);
 		}
 	};
 
 	this.obj = new THREE.Object3D();
 	this.obj.position.set(0, 0, -20);
-	addObjects(0, this.obj, .8, {x: 0, y: 0, z: 0}, {x: 0, y: 1, z: 0});
+	this.geometries = [];
+	addObjects(0, this.obj, .8, {x: 0, y: 0, z: 0}, this.depth, this.geometries);
 	
 	this.scene.add(this.obj);
 };
@@ -92,6 +101,16 @@ Apl.prototype.threeStart = function() {
 	this.initCamera();
 	this.initScene();
 	this.initLight();
+	this.initObject();
+	this.renderer.clear();
+	this.render();
+};
+
+Apl.prototype.threeRestart = function() {
+	this.scene.remove(this.obj);
+	this.geometries.forEach(function(g) {
+		g.dispose();
+	});
 	this.initObject();
 	this.renderer.clear();
 	this.render();
