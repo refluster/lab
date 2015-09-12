@@ -22,6 +22,11 @@ var Apl = function() {
 		this.branch = $('#branch').val();
 		this.threeRestart();
 	}.bind(this));
+	$('#recalc').bind('tap click', function() {
+		this.generateCoreVectors();
+		this.threeRestart();
+		return false;
+	}.bind(this));
 };
 
 Apl.prototype.initThree = function() {
