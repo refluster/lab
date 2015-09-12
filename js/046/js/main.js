@@ -10,9 +10,14 @@ var Apl = function() {
 	this.baseTime = +new Date;
 	
 	this.depth = $('#depth').val();
+	this.branch = $('#branch').val();
 	
 	$('#depth').change(function() {
 		this.depth = $('#depth').val();		
+		this.threeRestart();
+	}.bind(this));
+	$('#branch').change(function() {
+		this.branch = $('#branch').val();
 		this.threeRestart();
 	}.bind(this));
 };
@@ -57,18 +62,17 @@ Apl.prototype.initObject = function(){
 		return {x: (Math.random() - 0.5)*100, y: (Math.random() - 0.5)*100, z: Math.random()*50};
 	};
 
-	var vec = [
-		genVector(),
-		genVector(),
-		genVector()
-	];
+	var vec = [];
+	for (var i = 0; i < 10; i++) {
+		vec.push(genVector());
+	}
 
 	var addObjects = function(step, root, size, p, depth, geometries) {
 		if (step == depth) {
 			return;
 		}
 
-		for (var i = 0; i < vec.length; i++) {
+		for (var i = 0; i < this.branch; i++) {
 			var geometry = new THREE.Geometry();
 			var vector = new THREE.Vector3( vec[i].x*size, vec[i].y*size, vec[i].z*size)
 			var length = vector.length();
@@ -78,14 +82,14 @@ Apl.prototype.initObject = function(){
 			line.rotation.set(p.x/length, p.y/length, 0);
 			root.add(line);
 			geometries.push(geometry);
-			addObjects(step + 1, line, size * 0.6, vector, depth, geometries);
+			addObjects.call(this, step + 1, line, size * 0.6, vector, depth, geometries);
 		}
 	};
 
 	this.obj = new THREE.Object3D();
 	this.obj.position.set(0, 0, -20);
 	this.geometries = [];
-	addObjects(0, this.obj, .8, {x: 0, y: 0, z: 0}, this.depth, this.geometries);
+	addObjects.call(this, 0, this.obj, .8, {x: 0, y: 0, z: 0}, this.depth, this.geometries);
 	
 	this.scene.add(this.obj);
 };
