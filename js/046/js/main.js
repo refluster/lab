@@ -22,12 +22,18 @@ var Apl = function() {
 		this.branch = $('#branch').val();
 		this.threeRestart();
 	}.bind(this));
-	$('#recalc').bind('tap click', function() {
+	$('#recalc').on('tap click', function() {
 		this.generateCoreVectors();
 		this.threeRestart();
 		return false;
 	}.bind(this));
 };
+
+$(function() {
+	$('#volume').slider().on('slide', function(e) {
+		console.log(e.value);
+	});
+});
 
 Apl.prototype.initThree = function() {
 	this.width = document.getElementById('canvas-frame').clientWidth;
