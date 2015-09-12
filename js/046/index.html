@@ -14,6 +14,34 @@
         height: 300px;
         background-color: #EEEEEE;
     }
+    .input-item {
+        margin: 4px 0px;
+    }
+    button {
+        color: #fff;
+        background-color: #2196F3;
+        display: inline-block;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: none;
+        border-radius: 4px;
+    }
+    input[type=checkbox]:checked {
+        box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+    }
     @media screen and (max-width:420px) {
         div#canvas-frame{
             width: 100%;
@@ -42,13 +70,21 @@
         <li>requestAnimationFrame for registering function to call when the system is ready to update</li>
       </ul>
 
-      <input id="volume" type="text" data-slider-id="volumeSlider" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="50" data-slider-tooltip="hide" />
-
-      depth<input type="number" id="depth" min="1" max="10" step="1" value="5">
-      branch<input type="number" id="branch" min="1" max="10" step="1" value="3">
-      rotate<input type="checkbox" id="rotate" checked="checked">
-      <button id="recalc">recalc</button>
-
+      <div class="input-item">
+        depth<br>
+        <input id="depth" type="text" data-slider-id="volumeSlider"
+               data-slider-min="0" data-slider-max="10" data-slider-step="1"
+               data-slider-value="5" data-slider-tooltip="hide" /><br>
+      </div>
+      <div class="input-item">
+        branch<br>
+        <input id="branch" type="text" data-slider-id="volumeSlider"
+               data-slider-min="0" data-slider-max="10" data-slider-step="1"
+               data-slider-value="3" data-slider-tooltip="hide" /><br>
+      </div>
+      <div class="input-item">
+        <button id="recalc">recalc</button><br>
+      <div class="input-item">
       <div id="canvas-frame"></div>
     </div>
   </body>

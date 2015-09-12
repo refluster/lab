@@ -11,14 +11,14 @@ var Apl = function() {
 	
 	this.generateCoreVectors();
 
-	this.depth = $('#depth').val();
-	this.branch = $('#branch').val();
+	this.depth = 5;
+	this.branch = 3;
 	
-	$('#depth').change(function() {
+	$('#depth').slider().on('slide', function(e) {
 		this.depth = $('#depth').val();		
 		this.threeRestart();
 	}.bind(this));
-	$('#branch').change(function() {
+	$('#branch').slider().on('slide', function(e) {
 		this.branch = $('#branch').val();
 		this.threeRestart();
 	}.bind(this));
@@ -28,12 +28,6 @@ var Apl = function() {
 		return false;
 	}.bind(this));
 };
-
-$(function() {
-	$('#volume').slider().on('slide', function(e) {
-		console.log(e.value);
-	});
-});
 
 Apl.prototype.initThree = function() {
 	this.width = document.getElementById('canvas-frame').clientWidth;
