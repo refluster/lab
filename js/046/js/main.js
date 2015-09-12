@@ -34,6 +34,7 @@ Apl.prototype.initThree = function() {
 	this.height = document.getElementById('canvas-frame').clientHeight;
 	this.renderer = new THREE.WebGLRenderer({antialias: true});
 	this.renderer.setSize(this.width, this.height );
+	this.renderer.setClearColor( 0x000000 );
 	document.getElementById('canvas-frame').appendChild(this.renderer.domElement);
 };
 
