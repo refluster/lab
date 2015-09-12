@@ -8,6 +8,25 @@ var Apl = function() {
 	this.cube;
 
 	this.baseTime = +new Date;
+	
+	this.generateCoreVectors();
+
+	this.depth = 5;
+	this.branch = 3;
+	
+	$('#depth').slider().on('slide', function(e) {
+		this.depth = $('#depth').val();		
+		this.threeRestart();
+	}.bind(this));
+	$('#branch').slider().on('slide', function(e) {
+		this.branch = $('#branch').val();
+		this.threeRestart();
+	}.bind(this));
+	$('#recalc').on('tap click', function() {
+		this.generateCoreVectors();
+		this.threeRestart();
+		return false;
+	}.bind(this));
 };
 
 Apl.prototype.initThree = function() {
@@ -40,43 +59,44 @@ Apl.prototype.initLight = function() {
 	this.scene.add(this.light);
 };
 
+Apl.prototype.generateCoreVectors = function() {
+	this.vectors = [];
+	for (var i = 0; i < 10; i++) {
+		this.vectors.push({x: (Math.random() - 0.5)*100, y: (Math.random() - 0.5)*100,
+						   z: Math.random()*50});
+	}
+};
+
 Apl.prototype.initObject = function(){
 	var material = new THREE.LineBasicMaterial({
 		color: 0xaaaaff
 	});
 	var v3origin = new THREE.Vector3( 0, 0, 0 );
 
-	var genVector = function() {
-		return {x: (Math.random() - 0.5)*100, y: (Math.random() - 0.5)*100, z: Math.random()*50};
-	};
-
-	var vec = [
-		genVector(),
-		genVector(),
-		genVector()
-	];
-
-	var addObjects = function(step, root, size, p) {
-		if (step == 5) {
+	var addObjects = function(step, root, size, p, depth, geometries) {
+		if (step == depth) {
 			return;
 		}
 
-		for (var i = 0; i < vec.length; i++) {
+		for (var i = 0; i < this.branch; i++) {
 			var geometry = new THREE.Geometry();
-			var vector = new THREE.Vector3( vec[i].x*size, vec[i].y*size, vec[i].z*size)
+			var vector = new THREE.Vector3(this.vectors[i].x*size, this.vectors[i].y*size,
+										   this.vectors[i].z*size);
 			var length = vector.length();
 			geometry.vertices.push(v3origin, vector);
 			var line = new THREE.Line( geometry, material );
 			line.position.set(p.x, p.y, p.z);
 			line.rotation.set(p.x/length, p.y/length, 0);
 			root.add(line);
-			addObjects(step + 1, line, size * 0.6, vector);
+			geometries.push(geometry);
+			addObjects.call(this, step + 1, line, size * 0.6, vector, depth, geometries);
 		}
 	};
 
 	this.obj = new THREE.Object3D();
 	this.obj.position.set(0, 0, -20);
-	addObjects(0, this.obj, .8, {x: 0, y: 0, z: 0}, {x: 0, y: 1, z: 0});
+	this.geometries = [];
+	addObjects.call(this, 0, this.obj, .8, {x: 0, y: 0, z: 0}, this.depth, this.geometries);
 	
 	this.scene.add(this.obj);
 };
@@ -92,6 +112,16 @@ Apl.prototype.threeStart = function() {
 	this.initCamera();
 	this.initScene();
 	this.initLight();
+	this.initObject();
+	this.renderer.clear();
+	this.render();
+};
+
+Apl.prototype.threeRestart = function() {
+	this.scene.remove(this.obj);
+	this.geometries.forEach(function(g) {
+		g.dispose();
+	});
 	this.initObject();
 	this.renderer.clear();
 	this.render();
