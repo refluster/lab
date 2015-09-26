@@ -1,7 +1,9 @@
 app = angular.module('App', []);
 
 app.service('system', ['$rootScope', function($scope) {
-	var formula = "";
+	const re = /^[\+\-Ff]*$/;
+	var formula = {'.': ''};
+	var isValid = true;
 
 	$scope.$watch(function () {
 		return formula;
@@ -9,15 +11,26 @@ app.service('system', ['$rootScope', function($scope) {
 		$scope.$broadcast('change:system', formula);
 	}, true);
 	
-	this.add = function(f) {
-		formula = f;
+	this.update = function(v, f) {
+		if (re.exec(f) == null) {
+			isValid = false;
+			return;
+		}
+		formula[v] = f;
+
+		for (var i = 0; i < f.length; i++) {
+			var c = f.charAt(i);
+
+			if (c == '+' || c == '-') {
+			} else if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
+				formula[c] = '';
+			}
+		}
+
 	};
 
 	this.valid = function() {
-		if (formula.length == 0) {
-			return false;
-		}
-		return true;
+		return isValid;
 	};
 }]);
 
@@ -89,15 +102,15 @@ app.service('canvas', ['$rootScope', function($scope) {
 }]);
 
 app.controller('RegisterController', ['$scope', 'system', 'canvas', function($scope, system, canvas) {
-	$scope.formula = {};
 	$scope.editingVar = null;
 
-	$scope.hash = {a: 'aa', b: 'bb'};
+    $scope.$on('change:system', function(e, formula) {
+		$scope.formula = formula;
+	});
 
 	$scope.setFormula = function(v, f) {
-		$scope.formula[v] = f;
 		console.log({v: v, f: f});
-		system.add($scope.formula);
+		system.update(v, f);
 	};
 }]);
 
