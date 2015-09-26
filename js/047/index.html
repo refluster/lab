@@ -28,43 +28,8 @@
         </span>
       </form>
       
-      <div ng-controller="ToolbarController" style="margin-top: 10px;">
-        <button ng-click="checkAll()" class="btn btn-primary">done/undone all </button>
+      <canvas width="300" height="300"></canvas>
 
-        <div class="btn-group">
-          <button ng-click="changeFilter()" ng-class="{active: !currentFilter}" class="btn btn-default">
-            all ({{ allCount }})</button>
-          <button ng-click="changeFilter(filter.remaining)"
-                  ng-class="{active: currentFilter == filter.remaining}"
-                  class="btn btn-default">
-            undone ({{ doneCount }})</button>
-          <button ng-click="changeFilter(filter.done)" ng-class="{active: currentFilter == filter.done}"
-                  class="btn btn-default">
-            done ({{ remainingCount }})</button>
-        </div>
-        
-        <button ng-click="removeDoneTodo()" class="btn btn-danger">remove done items</button>
-        </div>
-
-      <ul ng-controller="TodoListController" class="list-group">
-        <li class="todo-item"
-            ng-repeat="todo in todoList | filter:currentFilter"
-            ng-class="{done: todo.done, editing: todo == editing}">
-          <form name="todoForm" ng-submit="doneEdit(todoForm)" class="input-group">
-            <label class="input-group-addon">
-              <input type="checkbox" ng-model="todo.done">
-            </label>
-            <span ng-dblclick="editTodo(todo)" class="todo-title form-control" ng-hide="todo == editing">
-              {{ todo.title }}</span>
-            <input type="text" required ng-model="todo.title" my-select="todo == editing"
-                   ng-show="todo == editing" ng-blur="doneEdit(todoForm)" class="form-control">
-            <span class="input-group-btn">
-              <button type="reset" ng-if="todo != editing" ng-click="removeTodo(todo)"
-                      class="btn btn-danger" style="text-align: right">remove</button>
-            </span>
-          </form>
-        </li>
-      </ul>
     </div>
   </body>
 </html>
