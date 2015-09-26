@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <style type="text/css">
+      label.input-group-addon {
+      width: 60px;
+      }
+    </style>
   </head>
   <body ng-app="App">
     <div id="header"><h2 class="title">tree generation</h2></div>
@@ -24,6 +29,9 @@
       <ul ng-controller="RegisterController" class="list-unstyled">
         <li ng-repeat="(v, f) in hash">
           <form name="formula-input" ng-submit="setFormula(v, f)" class="input-group">
+            <label class="input-group-addon">
+              {{v}} &#x2192;
+            </label>
             <input type="text" placeholder="enter formula"
                    required ng-model="f" class="form-control">
             <span class="input-group-btn">
