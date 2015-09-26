@@ -1,36 +1,37 @@
-app = angular.module('App', [])
-	.service('system', ['$rootScope', '$filter', function($scope, $filter) {
-		var formula = [];
-		var where = $filter('filter');
+app = angular.module('App', []);
 
-		$scope.$watch(function () {
-			return formula;
-		}, function (value) {
-			$scope.$broadcast('change:system', formula);
-		}, true);
-		
-		this.add = function(f) {
-			formula.push(f);
-		};
-	}])
+app.service('system', ['$rootScope', '$filter', function($scope, $filter) {
+	var formula = [];
+	var where = $filter('filter');
 
-	.controller('RegisterController', ['$scope', 'system', function($scope, system) {
-		$scope.formula = '';
+	$scope.$watch(function () {
+		return formula;
+	}, function (value) {
+		$scope.$broadcast('change:system', formula);
+	}, true);
+	
+	this.add = function(f) {
+		formula.push(f);
+	};
+}]);
 
-		$scope.addFormula = function() {
-			system.add($scope.formula);
-			for (var i = 0; i < $scope.formula.length; i++) {
-				console.log($scope.formula.charAt(i));
-			}
-		};
-	}])
+app.controller('RegisterController', ['$scope', 'system', function($scope, system) {
+	$scope.formula = '';
 
-	.controller('CanvasController', ['$scope', 'system', function($scope, system) {
-        $scope.$on('change:system', function(e, formula) {
-            console.log("change ===");
-            console.log(formula);
-		});
-	}])
+	$scope.addFormula = function() {
+		system.add($scope.formula);
+		for (var i = 0; i < $scope.formula.length; i++) {
+			console.log($scope.formula.charAt(i));
+		}
+	};
+}]);
 
-	.controller('MainController', ['$scope', 'system', function($scope, system) {
-	}]);
+app.controller('CanvasController', ['$scope', 'system', function($scope, system) {
+    $scope.$on('change:system', function(e, formula) {
+        console.log("change ===");
+        console.log(formula);
+	});
+}]);
+
+app.controller('MainController', ['$scope', 'system', function($scope, system) {
+}]);
