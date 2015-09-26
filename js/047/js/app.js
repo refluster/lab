@@ -31,11 +31,6 @@ app.service('canvas', ['$rootScope', function($scope) {
 		this.canvasHeight = canvas.height;
 		this.ctx = canvas.getContext("2d");
 
-		this.context = {};
-		this.context.x = this.canvasWidth/2;
-		this.context.y = this.canvasHeight*.8;
-		this.context.angle = -Math.PI/2;
-
 		this.distance = 30;
 		this.angle = Math.PI/2;
 
@@ -43,6 +38,11 @@ app.service('canvas', ['$rootScope', function($scope) {
 	};
 
 	this.update = function(formula) {
+		this.context = {};
+		this.context.x = this.canvasWidth/2;
+		this.context.y = this.canvasHeight*.8;
+		this.context.angle = -Math.PI/2;
+
 		this.ctx.beginPath();
 		this.ctx.moveTo(this.context.x, this.context.y);
 
@@ -89,9 +89,14 @@ app.service('canvas', ['$rootScope', function($scope) {
 }]);
 
 app.controller('RegisterController', ['$scope', 'system', 'canvas', function($scope, system, canvas) {
-	$scope.formula = '';
+	$scope.formula = {};
+	$scope.editingVar = null;
 
-	$scope.addFormula = function() {
+	$scope.hash = {a: 'aa', b: 'bb'};
+
+	$scope.setFormula = function(v, f) {
+		$scope.formula[v] = f;
+		console.log({v: v, f: f});
 		system.add($scope.formula);
 	};
 }]);
