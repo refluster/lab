@@ -12,6 +12,10 @@ app.service('system', ['$rootScope', function($scope) {
 	this.add = function(f) {
 		formula.push(f);
 	};
+
+	this.valid = function() {
+		return true;
+	};
 }]);
 
 app.service('canvas', ['$rootScope', function($scope) {
@@ -25,7 +29,9 @@ app.service('canvas', ['$rootScope', function($scope) {
 		this.ctx = canvas.getContext("2d");
 
 		this.clear();
+	};
 
+	this.update = function() {
 		this.ctx.fillStyle = '#FF5722';
 		this.ctx.beginPath();
 		this.ctx.arc(30, 40, 40, 0, Math.PI*2, false);
@@ -37,7 +43,7 @@ app.service('canvas', ['$rootScope', function($scope) {
 	};
 }]);
 
-app.controller('RegisterController', ['$scope', 'system', function($scope, system) {
+app.controller('RegisterController', ['$scope', 'system', 'canvas', function($scope, system, canvas) {
 	$scope.formula = '';
 
 	$scope.addFormula = function() {
@@ -50,10 +56,11 @@ app.controller('RegisterController', ['$scope', 'system', function($scope, syste
 
 app.controller('CanvasController', ['$scope', 'system', 'canvas', function($scope, system, canvas) {
 	canvas.setCanvas(document.getElementById("canvas"));
-	console.log(this);
+
     $scope.$on('change:system', function(e, formula) {
-        console.log("change ===");
-        console.log(formula);
+		if (system.valid() == true) {
+			canvas.update();
+		}
 	});
 }]);
 
