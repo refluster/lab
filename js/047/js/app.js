@@ -1,67 +1,36 @@
-angular.module('App', [])
-	.service('todos', ['$rootScope', '$filter', function($scope, $filter) {
-		var list = [];
+app = angular.module('App', [])
+	.service('system', ['$rootScope', '$filter', function($scope, $filter) {
+		var formula = [];
 		var where = $filter('filter');
 
 		$scope.$watch(function () {
-			return list;
+			return formula;
 		}, function (value) {
-			$scope.$broadcast('change:list', value);
+			$scope.$broadcast('change:system', formula);
 		}, true);
 		
-		var done = {done: true};
-		var remaining = {done: false};
-
-		this.filter = {
-			done: done,
-			remaining: remaining
-		};
-
-		this.getDone = function() {
-			return where(list, done);
-		};
-
-		this.getRemaining = function() {
-			return where(list, remaining);
-		};
-
-		this.add = function(title) {
-			list.push({
-				title: title,
-				done: false
-			});
-		};
-
-		this.remove = function(_todo) {
-			list = where(list, function(todo) {
-				return todo !== _todo;
-			});
-		};
-
-		this.removeDone = function() {
-			list = where(list, remaining);
-		};
-
-		this.changeState = function(state) {
-			angular.forEach(list, function(todo) {
-				todo.done = state;
-			});
+		this.add = function(f) {
+			formula.push(f);
 		};
 	}])
 
-	.controller('RegisterController', ['$scope', 'todos', function($scope, todos) {
-		$scope.newTitle = '';
+	.controller('RegisterController', ['$scope', 'system', function($scope, system) {
+		$scope.formula = '';
 
-		$scope.addTodo = function() {
-			todos.add($scope.newTitle);
-			$scope.newTitle = '';
+		$scope.addFormula = function() {
+			system.add($scope.formula);
+			for (var i = 0; i < $scope.formula.length; i++) {
+				console.log($scope.formula.charAt(i));
+			}
 		};
 	}])
 
-	.controller('MainController', ['$scope', 'todos', function($scope, todo) {
-		$scope.currentFilter = null;
-		
-		$scope.$on('change:filter', function(e, filter) {
-			$scope.currentFilter = filter;
+	.controller('CanvasController', ['$scope', 'system', function($scope, system) {
+        $scope.$on('change:system', function(e, formula) {
+            console.log("change ===");
+            console.log(formula);
 		});
+	}])
+
+	.controller('MainController', ['$scope', 'system', function($scope, system) {
 	}]);
