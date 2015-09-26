@@ -28,14 +28,56 @@ app.service('canvas', ['$rootScope', function($scope) {
 		this.canvasHeight = canvas.height;
 		this.ctx = canvas.getContext("2d");
 
+		this.context = {};
+		this.context.x = this.canvasWidth/2;
+		this.context.y = this.canvasHeight*.8;
+		this.context.angle = -Math.PI/2;
+
+		this.distance = 30;
+		this.angle = Math.PI/2;
+
 		this.clear();
 	};
 
-	this.update = function() {
-		this.ctx.fillStyle = '#FF5722';
+	this.update = function(formula) {
 		this.ctx.beginPath();
-		this.ctx.arc(30, 40, 40, 0, Math.PI*2, false);
-		this.ctx.fill();
+		this.ctx.moveTo(this.context.x, this.context.y);
+
+		for (var i = 0; i < formula.length; i++) {
+			switch (formula.charAt(i)) {
+			case 'F':
+				this.moveFowardLine();
+				break;
+			case 'f':
+				this.moveFoward();
+				break;
+			case '+':
+				this.turnRight();
+				break;
+			case '-':
+				this.turnLeft();
+				break;
+			}
+		}
+
+		this.ctx.stroke();
+	};
+
+	this.moveFowardLine = function() {
+		this.context.x += this.distance * Math.cos(this.context.angle);
+		this.context.y += this.distance * Math.sin(this.context.angle);
+		this.ctx.lineTo(this.context.x, this.context.y);
+	};
+	this.moveFoward = function() {
+		this.context.x += this.distance * Math.cos(this.context.angle);
+		this.context.y += this.distance * Math.sin(this.context.angle);
+		this.ctx.moveTo(this.context.x, this.context.y);
+	};
+	this.turnRight = function() {
+		this.context.angle -= this.angle;
+	};
+	this.turnLeft = function() {
+		this.context.angle += this.angle;
 	};
 
 	this.clear = function() {
@@ -48,9 +90,6 @@ app.controller('RegisterController', ['$scope', 'system', 'canvas', function($sc
 
 	$scope.addFormula = function() {
 		system.add($scope.formula);
-		for (var i = 0; i < $scope.formula.length; i++) {
-			console.log($scope.formula.charAt(i));
-		}
 	};
 }]);
 
@@ -59,7 +98,8 @@ app.controller('CanvasController', ['$scope', 'system', 'canvas', function($scop
 
     $scope.$on('change:system', function(e, formula) {
 		if (system.valid() == true) {
-			canvas.update();
+			//			canvas.update(system.formula);
+			canvas.update("F+F+FFfF");
 		}
 	});
 }]);
