@@ -1,7 +1,7 @@
 app = angular.module('App', []);
 
 app.service('system', ['$rootScope', function($scope) {
-	var formula = [];
+	var formula = "";
 
 	$scope.$watch(function () {
 		return formula;
@@ -10,10 +10,13 @@ app.service('system', ['$rootScope', function($scope) {
 	}, true);
 	
 	this.add = function(f) {
-		formula.push(f);
+		formula = f;
 	};
 
 	this.valid = function() {
+		if (formula.length == 0) {
+			return false;
+		}
 		return true;
 	};
 }]);
@@ -98,8 +101,7 @@ app.controller('CanvasController', ['$scope', 'system', 'canvas', function($scop
 
     $scope.$on('change:system', function(e, formula) {
 		if (system.valid() == true) {
-			//			canvas.update(system.formula);
-			canvas.update("F+F+FFfF");
+			canvas.update(formula);
 		}
 	});
 }]);
