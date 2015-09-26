@@ -17,16 +17,18 @@ app.service('system', ['$rootScope', function($scope) {
 			return;
 		}
 		formula[v] = f;
+		isValid = true;
 
 		for (var i = 0; i < f.length; i++) {
 			var c = f.charAt(i);
 
 			if (c == '+' || c == '-') {
 			} else if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
-				formula[c] = '';
+				if (formula[c] == undefined) {
+					formula[c] = '';
+				}
 			}
 		}
-
 	};
 
 	this.valid = function() {
@@ -51,6 +53,14 @@ app.service('canvas', ['$rootScope', function($scope) {
 	};
 
 	this.update = function(formula) {
+		var f = formula['.'];
+
+		for (var i = 0; i < 3; i++) {
+			f = f.replace(/F/g, formula.F);
+		}
+
+		this.clear();
+
 		this.context = {};
 		this.context.x = this.canvasWidth/2;
 		this.context.y = this.canvasHeight*.8;
@@ -59,8 +69,8 @@ app.service('canvas', ['$rootScope', function($scope) {
 		this.ctx.beginPath();
 		this.ctx.moveTo(this.context.x, this.context.y);
 
-		for (var i = 0; i < formula.length; i++) {
-			switch (formula.charAt(i)) {
+		for (var i = 0; i < f.length; i++) {
+			switch (f.charAt(i)) {
 			case 'F':
 				this.moveFowardLine();
 				break;
@@ -105,6 +115,8 @@ app.controller('RegisterController', ['$scope', 'system', 'canvas', function($sc
 	$scope.editingVar = null;
 
     $scope.$on('change:system', function(e, formula) {
+		console.log(formula);
+
 		$scope.formula = formula;
 	});
 
