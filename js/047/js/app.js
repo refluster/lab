@@ -85,6 +85,12 @@ app.service('canvas', ['$rootScope', function($scope) {
 			case '-':
 				this.turnLeft();
 				break;
+			case '[':
+				this.pushContext();
+				break;
+			case ']':
+				this.popContext();
+				break;
 			}
 		}
 
