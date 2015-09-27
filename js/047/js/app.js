@@ -46,8 +46,9 @@ app.service('canvas', ['$rootScope', function($scope) {
 		this.canvasHeight = canvas.height;
 		this.ctx = canvas.getContext("2d");
 
-		this.distance = 30;
+		this.distance = 2;
 		this.angle = Math.PI/2;
+		this.recursive = 4;
 
 		this.clear();
 	};
@@ -55,7 +56,7 @@ app.service('canvas', ['$rootScope', function($scope) {
 	this.update = function(formula) {
 		var f = formula['.'];
 
-		for (var i = 0; i < 3; i++) {
+		for (var i = 0; i < this.recursive; i++) {
 			f = f.replace(/F/g, formula.F);
 		}
 
