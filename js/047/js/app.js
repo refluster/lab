@@ -61,13 +61,15 @@ app.service('canvas', ['$rootScope', function($scope) {
 
 		this.clear();
 
-		this.context = {};
-		this.context.x = this.canvasWidth/2;
-		this.context.y = this.canvasHeight*.8;
-		this.context.angle = -Math.PI/2;
+		this.context = [];
+		this.context.push({x: this.canvasWidth/2,
+						   y: this.canvasHeight*.8,
+						   angle: -Math.PI/2});
+
+		var c = this.context[this.context.length - 1];
 
 		this.ctx.beginPath();
-		this.ctx.moveTo(this.context.x, this.context.y);
+		this.ctx.moveTo(c.x, c.y);
 
 		for (var i = 0; i < f.length; i++) {
 			switch (f.charAt(i)) {
@@ -90,20 +92,28 @@ app.service('canvas', ['$rootScope', function($scope) {
 	};
 
 	this.moveFowardLine = function() {
-		this.context.x += this.distance * Math.cos(this.context.angle);
-		this.context.y += this.distance * Math.sin(this.context.angle);
-		this.ctx.lineTo(this.context.x, this.context.y);
+		var c = this.context[this.context.length - 1];
+
+		c.x += this.distance * Math.cos(c.angle);
+		c.y += this.distance * Math.sin(c.angle);
+		this.ctx.lineTo(c.x, c.y);
 	};
 	this.moveFoward = function() {
-		this.context.x += this.distance * Math.cos(this.context.angle);
-		this.context.y += this.distance * Math.sin(this.context.angle);
-		this.ctx.moveTo(this.context.x, this.context.y);
+		var c = this.context[this.context.length - 1];
+
+		c.x += this.distance * Math.cos(c.angle);
+		c.y += this.distance * Math.sin(c.angle);
+		this.ctx.moveTo(c.x, c.y);
 	};
 	this.turnRight = function() {
-		this.context.angle -= this.angle;
+		var c = this.context[this.context.length - 1];
+
+		c.angle -= this.angle;
 	};
 	this.turnLeft = function() {
-		this.context.angle += this.angle;
+		var c = this.context[this.context.length - 1];
+
+		c.angle += this.angle;
 	};
 
 	this.clear = function() {
