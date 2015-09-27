@@ -28,7 +28,7 @@
 
       <ul ng-controller="RegisterController" class="list-unstyled">
         <li ng-repeat="(k, v) in param">
-          <form name="param" ng-submit="setParam(k, v)" class="input-group">
+          <form name="param-form" ng-submit="setParam(k, v)" class="input-group">
             <label class="input-group-addon">
               {{k}}
             </label>
@@ -41,7 +41,7 @@
         </li>
 
         <li ng-repeat="(v, f) in formula">
-          <form name="formula" ng-submit="setFormula(v, f)" class="input-group">
+          <form name="formula-form" ng-submit="setFormula(v, f)" class="input-group">
             <label class="input-group-addon">
               {{v}} &#x2192;
             </label>

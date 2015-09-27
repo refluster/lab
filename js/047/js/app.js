@@ -68,10 +68,14 @@ app.service('canvas', ['$rootScope', function($scope) {
 		var f = formula['.'];
 
 		for (var i = 0; i < this.recursive; i++) {
-			f = f.replace(/F/g, formula.F);
+			angular.forEach(formula, function(_f, _v) {
+				if (_v == '.') {
+					return;
+				}
+				var re = new RegExp(_v, 'g');
+				f = f.replace(re, _f);
+			});
 		}
-
-		this.clear();
 
 		this.context = [];
 		this.context.push({x: this.canvasWidth/2,
@@ -80,6 +84,7 @@ app.service('canvas', ['$rootScope', function($scope) {
 
 		var c = this.context[this.context.length - 1];
 
+		this.clear();
 		this.ctx.beginPath();
 		this.ctx.moveTo(c.x, c.y);
 
