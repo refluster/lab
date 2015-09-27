@@ -1,7 +1,7 @@
 app = angular.module('App', []);
 
 app.service('system', ['$rootScope', function($scope) {
-	const re = /^[\+\-Ff\[\]]*$/;
+	const re = /^[\+\-\[\]A-Zf]*$/;
 	var formula = {'.': ''};
 	var isValid = true;
 	var param = {length: 8, angle: 90, n: 3};
@@ -34,7 +34,7 @@ app.service('system', ['$rootScope', function($scope) {
 			var c = f.charAt(i);
 
 			if (c == '+' || c == '-' || c == '[' || c == ']') {
-			} else if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
+			} else if (c >= 'A' && c <= 'Z' || c == 'f') {
 				if (formula[c] == undefined) {
 					formula[c] = '';
 				}
