@@ -4,13 +4,24 @@ app.service('system', ['$rootScope', function($scope) {
 	const re = /^[\+\-Ff\[\]]*$/;
 	var formula = {'.': ''};
 	var isValid = true;
+	var param = {length: 8, angle: 90, n: 3};
+
+	$scope.$watch(function () {
+		return param;
+	}, function (value) {
+		$scope.$broadcast('change:system', param, formula);
+	}, true);
 
 	$scope.$watch(function () {
 		return formula;
 	}, function (value) {
-		$scope.$broadcast('change:system', formula);
+		$scope.$broadcast('change:system', param, formula);
 	}, true);
-	
+
+	this.updateParam = function(k, v) {
+		param[k] = v;
+	};
+
 	this.update = function(v, f) {
 		if (re.exec(f) == null) {
 			isValid = false;
@@ -46,14 +57,14 @@ app.service('canvas', ['$rootScope', function($scope) {
 		this.canvasHeight = canvas.height;
 		this.ctx = canvas.getContext("2d");
 
-		this.distance = 8;
-		this.angle = Math.PI/2;
-		this.recursive = 4;
-
 		this.clear();
 	};
 
-	this.update = function(formula) {
+	this.update = function(param, formula) {
+		this.length = param.length;
+		this.angle = param.angle/180*Math.PI;
+		this.recursive = param.n;
+
 		var f = formula['.'];
 
 		for (var i = 0; i < this.recursive; i++) {
@@ -102,15 +113,15 @@ app.service('canvas', ['$rootScope', function($scope) {
 		var c = this.context[this.context.length - 1];
 
 		this.ctx.moveTo(c.x, c.y);
-		c.x += this.distance * Math.cos(c.angle);
-		c.y += this.distance * Math.sin(c.angle);
+		c.x += this.length * Math.cos(c.angle);
+		c.y += this.length * Math.sin(c.angle);
 		this.ctx.lineTo(c.x, c.y);
 	};
 	this.moveFoward = function() {
 		var c = this.context[this.context.length - 1];
 
-		c.x += this.distance * Math.cos(c.angle);
-		c.y += this.distance * Math.sin(c.angle);
+		c.x += this.length * Math.cos(c.angle);
+		c.y += this.length * Math.sin(c.angle);
 		this.ctx.moveTo(c.x, c.y);
 	};
 	this.turnRight = function() {
@@ -140,11 +151,18 @@ app.service('canvas', ['$rootScope', function($scope) {
 app.controller('RegisterController', ['$scope', 'system', 'canvas', function($scope, system, canvas) {
 	$scope.editingVar = null;
 
-    $scope.$on('change:system', function(e, formula) {
+    $scope.$on('change:system', function(e, param, formula) {
+		console.log(param);
 		console.log(formula);
 
+		$scope.param = param;
 		$scope.formula = formula;
 	});
+
+	$scope.setParam = function(k, v) {
+		console.log({k: k, v: v});
+		system.updateParam(k, v);
+	};
 
 	$scope.setFormula = function(v, f) {
 		console.log({v: v, f: f});
@@ -155,9 +173,9 @@ app.controller('RegisterController', ['$scope', 'system', 'canvas', function($sc
 app.controller('CanvasController', ['$scope', 'system', 'canvas', function($scope, system, canvas) {
 	canvas.setCanvas(document.getElementById("canvas"));
 
-    $scope.$on('change:system', function(e, formula) {
+    $scope.$on('change:system', function(e, param, formula) {
 		if (system.valid() == true) {
-			canvas.update(formula);
+			canvas.update(param, formula);
 		}
 	});
 }]);
