@@ -1,7 +1,7 @@
 app = angular.module('App', []);
 
 app.service('system', ['$rootScope', function($scope) {
-	const re = /^[\+\-Ff]*$/;
+	const re = /^[\+\-Ff\[\]]*$/;
 	var formula = {'.': ''};
 	var isValid = true;
 
@@ -22,7 +22,7 @@ app.service('system', ['$rootScope', function($scope) {
 		for (var i = 0; i < f.length; i++) {
 			var c = f.charAt(i);
 
-			if (c == '+' || c == '-') {
+			if (c == '+' || c == '-' || c == '[' || c == ']') {
 			} else if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
 				if (formula[c] == undefined) {
 					formula[c] = '';
@@ -46,7 +46,7 @@ app.service('canvas', ['$rootScope', function($scope) {
 		this.canvasHeight = canvas.height;
 		this.ctx = canvas.getContext("2d");
 
-		this.distance = 2;
+		this.distance = 8;
 		this.angle = Math.PI/2;
 		this.recursive = 4;
 
@@ -101,6 +101,7 @@ app.service('canvas', ['$rootScope', function($scope) {
 	this.moveFowardLine = function() {
 		var c = this.context[this.context.length - 1];
 
+		this.ctx.moveTo(c.x, c.y);
 		c.x += this.distance * Math.cos(c.angle);
 		c.y += this.distance * Math.sin(c.angle);
 		this.ctx.lineTo(c.x, c.y);
@@ -121,6 +122,14 @@ app.service('canvas', ['$rootScope', function($scope) {
 		var c = this.context[this.context.length - 1];
 
 		c.angle += this.angle;
+	};
+	this.pushContext = function() {
+		var c = this.context[this.context.length - 1];
+
+		this.context.push({x: c.x, y: c.y, angle: c.angle});
+	};
+	this.popContext = function() {
+		this.context.pop();
 	};
 
 	this.clear = function() {
