@@ -2,9 +2,9 @@ app = angular.module('App', []);
 
 app.service('system', ['$rootScope', function($scope) {
 	const re = /^[\+\-\[\]A-Zf]*$/;
-	var formula = {'.': ''};
+	var formula = {'.': '+F--F--F--F', 'F': 'FF--F--F--F--FF'};
 	var isValid = true;
-	var param = {length: 8, angle: 90, n: 3};
+	var param = {length: 3, angle: 45, n: 4};
 
 	$scope.$watch(function () {
 		return param;
