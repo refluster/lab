@@ -53,7 +53,7 @@ Map.prototype.update = function(users) {
 //////////////////////////////
 
 var Comm = function() {
-    this.socket = new io.connect("http://localhost:8087");
+    this.socket = new io.connect("http://183.181.8.119:8087");
 };
 
 Comm.prototype.setHandler = function(callback) {
