@@ -32,10 +32,16 @@ Map.prototype.addUser = function(id) {
 		info: infowindow
 	};
 
-	console.log('adduser');
+	console.log('adduser:' + id);
 };
 
 Map.prototype.update = function(users) {
+	var existUsers = {};
+
+	for (var id in this.users) {
+		existUsers[id] = false;
+	}
+
 	for (var id in users) {
 		var u = users[id];
 
@@ -46,6 +52,17 @@ Map.prototype.update = function(users) {
 		this.users[id].marker.setPosition( new google.maps.LatLng(u.pos.lat, u.pos.lng));
 		this.users[id].info.setContent(u.name);
 		this.users[id].info.open(this.map, this.users[id].marker);
+		existUsers[id] = true;
+	}
+
+	// delete unexist users
+	for (var id in existUsers) {
+		if (existUsers[id] == false) {
+			// delete user data
+			console.log('delete ' + id);
+			this.users[id].marker.setMap(null);
+			delete this.users[id];
+		}
 	}
 };
 
@@ -57,19 +74,19 @@ var Comm = function() {
 };
 
 Comm.prototype.setHandler = function(callback) {
-	this.socket.on('update', function(userList) {
-		console.log(userList);
-		callback(userList);
+	this.socket.on('update', function(users) {
+		console.log(users);
+		callback(users);
 	});
+
+	setInterval(this.sendPos.bind(this), 1000);
 };
 
 Comm.prototype.setName = function(name) {
     this.socket.emit('set/name', name);
-	setInterval(this.setPos.bind(this), 1000);
 };
 
-Comm.prototype.setPos = function() {
-
+Comm.prototype.sendPos = function() {
 	if (!navigator.geolocation){
 		$('#msg').text("<p>Geolocation is not supported by your browser</p>");
 		return;
@@ -89,7 +106,6 @@ Comm.prototype.setPos = function() {
 	};
 
 	navigator.geolocation.getCurrentPosition(success.bind(this), error);
-
 };
 
 function initMap() {
