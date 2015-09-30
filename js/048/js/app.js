@@ -49,11 +49,11 @@ Map.prototype.update = function(users) {
 	}
 };
 
-
 //////////////////////////////
 
 var Comm = function() {
-    this.socket = new io.connect("http://183.181.8.119:8087");
+	this.socket = new io.connect("http://183.181.8.119:8087");
+	this.pos = {};
 };
 
 Comm.prototype.setHandler = function(callback) {
@@ -65,11 +65,31 @@ Comm.prototype.setHandler = function(callback) {
 
 Comm.prototype.setName = function(name) {
     this.socket.emit('set/name', name);
-	setInterval(this.setPos.bind(this));
+	setInterval(this.setPos.bind(this), 1000);
 };
 
 Comm.prototype.setPos = function() {
-    this.socket.emit('set/pos', 34.8, 135.244);
+
+	if (!navigator.geolocation){
+		$('#msg').text("<p>Geolocation is not supported by your browser</p>");
+		return;
+	}
+
+	function success(position) {
+		this.pos.lat = position.coords.latitude;
+		this.pos.lng = position.coords.longitude;
+
+		this.socket.emit('set/pos', this.pos.lat, this.pos.lng);
+		$('#msg').text('lat:' + this.pos.lat + ' lng:' + this.pos.lng);
+		console.log(this.pos);
+	};
+
+	function error() {
+		console.log('error');
+	};
+
+	navigator.geolocation.getCurrentPosition(success.bind(this), error);
+
 };
 
 function initMap() {
