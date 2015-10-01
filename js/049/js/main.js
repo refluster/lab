@@ -40,16 +40,20 @@ Apl.prototype.initLight = function() {
 };
 
 Apl.prototype.initObject = function(){
-	this.fish = []
-	this.fish.push(new Fish());
-	this.fish.push(new Fish());
-	this.fish.push(new Fish());
-	
-	this.fish[0].setPosition(20, 0, 5);
-	this.fish[1].setPosition(-20, 10, -5);
-	this.fish[2].setPosition(40, 0, 10);
+	const fishNum = 10;
+
+	this.fish = [];
+	for (var i = 0; i < fishNum; i++) {
+		this.fish.push(new Fish());
+	}
 
 	this.fish.forEach(function(f) {
+		const volume = 30;
+		var x = Math.random() * volume;
+		var y = Math.random() * volume;
+		var z = Math.random() * volume;
+		f.setPosition(x, y, z);
+		f.setSeed(Math.random() * Math.PI * 2);
 		this.scene.add(f.get3DObject());
 	}.bind(this));
 };
@@ -93,6 +97,10 @@ var Fish = function() {
 
 	this.line = new THREE.Line( geometry, material );
 	this.state = 0;
+};
+
+Fish.prototype.setSeed = function(s) {
+	this.state = s;
 };
 
 Fish.prototype.get3DObject = function() {
