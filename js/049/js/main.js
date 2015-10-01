@@ -10,55 +10,6 @@ var Apl = function() {
 	this.baseTime = +new Date;
 };
 
-//////////////////////////////
-hoge = function() {
-	var material = new THREE.LineBasicMaterial({
-		color: 0xaaaaff
-	});
-	var v3origin = new THREE.Vector3( 0, 0, 0 );
-
-	var length = vector.length();
-	geometry.vertices.push(v3origin, vector);
-	var line = new THREE.Line( geometry, material );
-	line.position.set(p.x, p.y, p.z);
-	line.rotation.set(p.x/length, p.y/length, 0);
-	root.add(line);
-
-	//////////////////////////////
-	var material = new THREE.LineBasicMaterial({
-		color: 0xaaaaff
-	});
-	var v3origin = new THREE.Vector3( 0, 0, 0 );
-
-	var addObjects = function(step, root, size, p, depth, geometries) {
-		if (step == depth) {
-			return;
-		}
-
-		for (var i = 0; i < this.branch; i++) {
-			var geometry = new THREE.Geometry();
-			var vector = new THREE.Vector3(this.vectors[i].x*size, this.vectors[i].y*size,
-										   this.vectors[i].z*size);
-			var length = vector.length();
-			geometry.vertices.push(v3origin, vector);
-			var line = new THREE.Line( geometry, material );
-			line.position.set(p.x, p.y, p.z);
-			line.rotation.set(p.x/length, p.y/length, 0);
-			root.add(line);
-			geometries.push(geometry);
-			addObjects.call(this, step + 1, line, size * 0.6, vector, depth, geometries);
-		}
-	};
-
-	this.obj = new THREE.Object3D();
-	this.obj.position.set(0, 0, -20);
-	this.geometries = [];
-	addObjects.call(this, 0, this.obj, .8, {x: 0, y: 0, z: 0}, this.depth, this.geometries);
-
-	this.scene.add(this.obj);
-};
-//////////////////////////////
-
 Apl.prototype.initThree = function() {
 	this.width = document.getElementById('canvas-frame').clientWidth;
 	this.height = document.getElementById('canvas-frame').clientHeight;
@@ -91,17 +42,35 @@ Apl.prototype.initLight = function() {
 };
 
 Apl.prototype.initObject = function(){
-	this.cube = new THREE.Mesh(
-		new THREE.CubeGeometry(50,50,50), // set model
-		new THREE.MeshLambertMaterial({color: 0xff0000}) // set material
-	);
-	this.scene.add(this.cube);
-	this.cube.position.set(0,0,0);
+	var material = new THREE.LineBasicMaterial({
+		color: 0xaaaaff
+	});
+	var points = [];
+	points.push(new THREE.Vector3( 0,  0,  0));
+	points.push(new THREE.Vector3(10,  0, 10));
+	points.push(new THREE.Vector3(20,  0,  0));
+	points.push(new THREE.Vector3(25,  0,  5));
+	points.push(new THREE.Vector3(25,  0, -5));
+	points.push(new THREE.Vector3(20,  0,  0));
+	points.push(new THREE.Vector3(10,  0,-10));
+	points.push(new THREE.Vector3( 0,  0,  0));
+
+    var geometry = new THREE.Geometry();
+	for (var i = 0; i < points.length; i++) {
+		geometry.vertices.push(points[i]);
+	}
+
+	this.line = new THREE.Line( geometry, material );
+	this.scene.add(this.line);
 };
 
+var tmp = 0;
 Apl.prototype.render = function() {
 	requestAnimationFrame(this.render.bind(this));
-	this.cube.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
+//	this.line.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
+
+	this.line.geometry.vertices[0].x += 1;
+	this.line.geometry.verticesNeedUpdate = true;
 	this.renderer.render(this.scene, this.camera);
 };
 
