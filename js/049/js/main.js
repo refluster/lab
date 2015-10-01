@@ -40,14 +40,25 @@ Apl.prototype.initLight = function() {
 };
 
 Apl.prototype.initObject = function(){
-	this.fish = new Fish();
-	this.fish.setPosition(20, 0, 5);
-	this.scene.add(this.fish.get3DObject());
+	this.fish = []
+	this.fish.push(new Fish());
+	this.fish.push(new Fish());
+	this.fish.push(new Fish());
+	
+	this.fish[0].setPosition(20, 0, 5);
+	this.fish[1].setPosition(-20, 10, -5);
+	this.fish[2].setPosition(40, 0, 10);
+
+	this.fish.forEach(function(f) {
+		this.scene.add(f.get3DObject());
+	}.bind(this));
 };
 
 Apl.prototype.render = function() {
 	requestAnimationFrame(this.render.bind(this));
-	this.fish.animate();
+	this.fish.forEach(function(f) {
+		f.animate();
+	});
 	this.renderer.render(this.scene, this.camera);
 };
 
@@ -81,9 +92,7 @@ var Fish = function() {
 	}
 
 	this.line = new THREE.Line( geometry, material );
-//	this.baseTime = +new Date;
-
-	this.state = 0; //
+	this.state = 0;
 };
 
 Fish.prototype.get3DObject = function() {
@@ -92,7 +101,7 @@ Fish.prototype.get3DObject = function() {
 
 Fish.prototype.animate = function() {
 	this.line.geometry.vertices.forEach(function(v) {
-		v.y = Math.sin(v.x / 8 + this.state);
+		v.y = Math.cos(v.x / 8 - this.state);
 	}.bind(this));
 	this.line.geometry.verticesNeedUpdate = true;
 	this.state += 0.1;
