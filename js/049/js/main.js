@@ -6,8 +6,6 @@ var Apl = function() {
 	this.scene;
 	this.light;
 	this.cube;
-
-	this.baseTime = +new Date;
 };
 
 Apl.prototype.initThree = function() {
@@ -82,6 +80,7 @@ var Fish = function() {
 	}
 
 	this.line = new THREE.Line( geometry, material );
+//	this.baseTime = +new Date;
 };
 
 Fish.prototype.get3DObject = function() {
