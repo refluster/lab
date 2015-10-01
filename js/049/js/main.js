@@ -42,6 +42,27 @@ Apl.prototype.initLight = function() {
 };
 
 Apl.prototype.initObject = function(){
+	this.fish = new Fish();
+	this.scene.add(this.fish.get3DObject());
+};
+
+Apl.prototype.render = function() {
+	requestAnimationFrame(this.render.bind(this));
+	this.fish.animate();
+	this.renderer.render(this.scene, this.camera);
+};
+
+Apl.prototype.threeStart = function() {
+	this.initThree();
+	this.initCamera();
+	this.initScene();
+	this.initLight();
+	this.initObject();
+	this.renderer.clear();
+	this.render();
+};
+
+var Fish = function() {
 	var material = new THREE.LineBasicMaterial({
 		color: 0xaaaaff
 	});
@@ -61,27 +82,16 @@ Apl.prototype.initObject = function(){
 	}
 
 	this.line = new THREE.Line( geometry, material );
-	this.scene.add(this.line);
 };
 
-var tmp = 0;
-Apl.prototype.render = function() {
-	requestAnimationFrame(this.render.bind(this));
-//	this.line.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
+Fish.prototype.get3DObject = function() {
+	return this.line;
+};
 
+Fish.prototype.animate = function() {
+//	this.line.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
 	this.line.geometry.vertices[0].x += 1;
 	this.line.geometry.verticesNeedUpdate = true;
-	this.renderer.render(this.scene, this.camera);
-};
-
-Apl.prototype.threeStart = function() {
-	this.initThree();
-	this.initCamera();
-	this.initScene();
-	this.initLight();
-	this.initObject();
-	this.renderer.clear();
-	this.render();
 };
 
 $(function() {
