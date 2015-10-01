@@ -81,6 +81,8 @@ var Fish = function() {
 
 	this.line = new THREE.Line( geometry, material );
 //	this.baseTime = +new Date;
+
+	this.state = 0; //
 };
 
 Fish.prototype.get3DObject = function() {
@@ -88,9 +90,11 @@ Fish.prototype.get3DObject = function() {
 };
 
 Fish.prototype.animate = function() {
-//	this.line.rotation.z = 0.5*(+new Date - this.baseTime)/1000;
-	this.line.geometry.vertices[0].x += 1;
+	this.line.geometry.vertices.forEach(function(v) {
+		v.y = Math.sin(v.x / 8 + this.state);
+	}.bind(this));
 	this.line.geometry.verticesNeedUpdate = true;
+	this.state += 0.1;
 };
 
 $(function() {
