@@ -41,6 +41,7 @@ Apl.prototype.initLight = function() {
 
 Apl.prototype.initObject = function(){
 	this.fish = new Fish();
+	this.fish.setPosition(20, 0, 5);
 	this.scene.add(this.fish.get3DObject());
 };
 
@@ -95,6 +96,10 @@ Fish.prototype.animate = function() {
 	}.bind(this));
 	this.line.geometry.verticesNeedUpdate = true;
 	this.state += 0.1;
+};
+
+Fish.prototype.setPosition = function(x, y, z) {
+	this.line.position.set(x, y, z);
 };
 
 $(function() {
