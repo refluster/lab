@@ -18,11 +18,11 @@ Apl.prototype.initThree = function() {
 };
 
 Apl.prototype.initCamera = function() {
-	this.camera = new THREE.PerspectiveCamera( 45 , this.width / this.height,
+	this.camera = new THREE.PerspectiveCamera( 60 , this.width / this.height,
 											   1 , 10000 );
 	this.camera.position.x = 100;
 	this.camera.position.y = 20;
-	this.camera.position.z = 50;
+	this.camera.position.z = 20;
 	this.camera.up.x = 0;
 	this.camera.up.y = 0;
 	this.camera.up.z = 1;
@@ -40,7 +40,7 @@ Apl.prototype.initLight = function() {
 };
 
 Apl.prototype.initObject = function(){
-	const fishNum = 10;
+	const fishNum = 20;
 
 	this.fish = [];
 	for (var i = 0; i < fishNum; i++) {
@@ -48,10 +48,10 @@ Apl.prototype.initObject = function(){
 	}
 
 	this.fish.forEach(function(f) {
-		const volume = 30;
-		var x = Math.random() * volume;
-		var y = Math.random() * volume;
-		var z = Math.random() * volume;
+		const volume = 70;
+		var x = (Math.random() - 0.5) * volume;
+		var y = (Math.random() - 0.5) * volume;
+		var z = (Math.random() - 0.5) * volume;
 		f.setPosition(x, y, z);
 		f.setSeed(Math.random() * Math.PI * 2);
 		this.scene.add(f.get3DObject());
@@ -101,6 +101,10 @@ var Fish = function() {
 
 Fish.prototype.setSeed = function(s) {
 	this.state = s;
+};
+
+Fish.prototype.setSize = function(s) {
+	this.line.position.set(x, y, z);
 };
 
 Fish.prototype.get3DObject = function() {
