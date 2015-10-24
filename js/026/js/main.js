@@ -31,8 +31,15 @@ var Apl = function() {
 	$btn.mousedown(this.start.bind(this));
 	$btn.text('start');
 
+	var count = 0;
+	var dateOrigin = new Date();
+
 	this.timer.set({
 		action: function() {
+			count ++;
+			if (count == 400) {
+				console.log(new Date() - dateOrigin);
+			}
 			this.moveObj();
 			this.draw();
 		}.bind(this),
