@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Info windows</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js" charset="EUC-JP"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDr3zvZEFPC90JIS2JMPVatUApvQokCktU&signed_in=true&callback=initMap"></script>
+    <script src="http://183.181.8.119:8087/socket.io/socket.io.js"></script> 
+    <script src="js/app.js"></script>
+    <form id="messageForm">
+      name:<input id="name" type="text">
+      <input id="button" type="submit" value="submit">
+      <br>
+      <div id="msg"><div>
+    </form>
+  </body>
+</html>
+
