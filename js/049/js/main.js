@@ -18,9 +18,9 @@ Apl.prototype.initThree = function() {
 };
 
 Apl.prototype.initCamera = function() {
-	this.camera = new THREE.PerspectiveCamera( 60 , this.width / this.height,
+	this.camera = new THREE.PerspectiveCamera( 80 , this.width / this.height,
 											   1 , 10000 );
-	this.camera.position.x = 100;
+	this.camera.position.x = 70;
 	this.camera.position.y = 20;
 	this.camera.position.z = 20;
 	this.camera.up.x = 0;
