@@ -83,20 +83,15 @@ var Fish = function() {
         color: this.color,
         side: THREE.DoubleSide
     });
-	var points = [];
-	points.push(new THREE.Vector3( 0,  0,  0));
-	points.push(new THREE.Vector3(10,  0, 10));
-	points.push(new THREE.Vector3(20,  0,  0));
-	points.push(new THREE.Vector3(25,  0,  5));
-	points.push(new THREE.Vector3(25,  0, -5));
-	points.push(new THREE.Vector3(20,  0,  0));
-	points.push(new THREE.Vector3(10,  0,-10));
-	points.push(new THREE.Vector3( 0,  0,  0));
-
     var geometry = new THREE.Geometry();
-	for (var i = 0; i < points.length; i++) {
-		geometry.vertices.push(points[i]);
-	}
+	geometry.vertices.push(new THREE.Vector3( 0,  0,  0));
+	geometry.vertices.push(new THREE.Vector3(10,  0, 10));
+	geometry.vertices.push(new THREE.Vector3(20,  0,  0));
+	geometry.vertices.push(new THREE.Vector3(25,  0,  5));
+	geometry.vertices.push(new THREE.Vector3(25,  0, -5));
+	geometry.vertices.push(new THREE.Vector3(20,  0,  0));
+	geometry.vertices.push(new THREE.Vector3(10,  0,-10));
+	geometry.vertices.push(new THREE.Vector3( 0,  0,  0));
 	geometry.faces.push(new THREE.Face3(0, 1, 2));
 	geometry.faces.push(new THREE.Face3(2, 3, 4));
 	geometry.faces.push(new THREE.Face3(5, 6, 7));
