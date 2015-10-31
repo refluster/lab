@@ -77,9 +77,12 @@ Apl.prototype.threeStart = function() {
 };
 
 var Fish = function() {
-	var material = new THREE.LineBasicMaterial({
-		color: 0xaaaaff
-	});
+	this.color = Math.random()*0xffffff;
+
+	var material = new THREE.MeshBasicMaterial({
+        color: this.color,
+        side: THREE.DoubleSide
+    });
 	var points = [];
 	points.push(new THREE.Vector3( 0,  0,  0));
 	points.push(new THREE.Vector3(10,  0, 10));
@@ -94,8 +97,11 @@ var Fish = function() {
 	for (var i = 0; i < points.length; i++) {
 		geometry.vertices.push(points[i]);
 	}
+	geometry.faces.push(new THREE.Face3(0, 1, 2));
+	geometry.faces.push(new THREE.Face3(2, 3, 4));
+	geometry.faces.push(new THREE.Face3(5, 6, 7));
 
-	this.line = new THREE.Line( geometry, material );
+	this.line = new THREE.Mesh(geometry, material);
 	this.state = 0;
 };
 
