@@ -18,9 +18,9 @@ Apl.prototype.initThree = function() {
 };
 
 Apl.prototype.initCamera = function() {
-	this.camera = new THREE.PerspectiveCamera( 60 , this.width / this.height,
+	this.camera = new THREE.PerspectiveCamera( 80 , this.width / this.height,
 											   1 , 10000 );
-	this.camera.position.x = 100;
+	this.camera.position.x = 70;
 	this.camera.position.y = 20;
 	this.camera.position.z = 20;
 	this.camera.up.x = 0;
@@ -77,25 +77,26 @@ Apl.prototype.threeStart = function() {
 };
 
 var Fish = function() {
-	var material = new THREE.LineBasicMaterial({
-		color: 0xaaaaff
-	});
-	var points = [];
-	points.push(new THREE.Vector3( 0,  0,  0));
-	points.push(new THREE.Vector3(10,  0, 10));
-	points.push(new THREE.Vector3(20,  0,  0));
-	points.push(new THREE.Vector3(25,  0,  5));
-	points.push(new THREE.Vector3(25,  0, -5));
-	points.push(new THREE.Vector3(20,  0,  0));
-	points.push(new THREE.Vector3(10,  0,-10));
-	points.push(new THREE.Vector3( 0,  0,  0));
+	this.color = Math.random()*0xffffff;
 
+	var material = new THREE.MeshBasicMaterial({
+        color: this.color,
+        side: THREE.DoubleSide
+    });
     var geometry = new THREE.Geometry();
-	for (var i = 0; i < points.length; i++) {
-		geometry.vertices.push(points[i]);
-	}
+	geometry.vertices.push(new THREE.Vector3( 0,  0,  0));
+	geometry.vertices.push(new THREE.Vector3(10,  0, 10));
+	geometry.vertices.push(new THREE.Vector3(20,  0,  0));
+	geometry.vertices.push(new THREE.Vector3(25,  0,  5));
+	geometry.vertices.push(new THREE.Vector3(25,  0, -5));
+	geometry.vertices.push(new THREE.Vector3(20,  0,  0));
+	geometry.vertices.push(new THREE.Vector3(10,  0,-10));
+	geometry.vertices.push(new THREE.Vector3( 0,  0,  0));
+	geometry.faces.push(new THREE.Face3(0, 1, 2));
+	geometry.faces.push(new THREE.Face3(2, 3, 4));
+	geometry.faces.push(new THREE.Face3(5, 6, 7));
 
-	this.line = new THREE.Line( geometry, material );
+	this.line = new THREE.Mesh(geometry, material);
 	this.state = 0;
 };
 
