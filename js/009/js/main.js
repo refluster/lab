@@ -5,8 +5,8 @@ var Client = function() {
 	this.dragging = false;
 
 	// socket
-	//client.socket = new io.connect("http://183.181.8.119:8081");
-	this.socket = new io.connect("http://localhost:8081");
+	this.socket = new io.connect("http://183.181.8.119:8081");
+	//this.socket = new io.connect("http://localhost:8081");
 
 	// my session id
 	this.sessionId = null;
