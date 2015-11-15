@@ -1,16 +1,21 @@
+const space = {x: [-200, 200], y: [0, 60], z: [-200, 200]};
+const fishNum = 60;
+
 var App = function() {
 	this.camera, this.scene, this.renderer;
 	this.effect, this.controls;
 	this.element, this.container;
-	this.clock = new THREE.Clock();
+	this.clock;
 	this.fish;
 };
 
 App.prototype.init = function() {
 	this.renderer = new THREE.WebGLRenderer();
+	this.renderer.setClearColor(new THREE.Color(0x000000));
 	this.element = this.renderer.domElement;
 	this.container = document.getElementById('example');
 	this.container.appendChild(this.element);
+	this.clock = new THREE.Clock();
 
 	this.effect = new THREE.StereoEffect(this.renderer);
 
@@ -77,18 +82,17 @@ App.prototype.init = function() {
 };
 
 App.prototype.initObject = function(){
-	const fishNum = 20;
-
 	this.fish = [];
+
 	for (var i = 0; i < fishNum; i++) {
 		this.fish.push(new Fish());
 	}
 
 	this.fish.forEach(function(f) {
 		const volume = 70;
-		var x = (Math.random() - 0.5) * volume;
-		var y = (Math.random() - 0.5) * volume;
-		var z = (Math.random() - 0.5) * volume;
+		var x = (Math.random()*(space.x[1] - space.x[0]) + space.x[0]);
+		var y = (Math.random()*(space.y[1] - space.y[0]) + space.y[0]);
+		var z = (Math.random()*(space.z[1] - space.z[0]) + space.z[0]);
 		f.setPosition(x, y, z);
 		f.setSize(.4);
 		f.setSeed(Math.random() * Math.PI * 2);
