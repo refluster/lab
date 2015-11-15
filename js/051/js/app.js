@@ -30,6 +30,7 @@ App.prototype.init = function() {
 	this.controls.noZoom = true;
 	this.controls.noPan = true;
 
+	var fn;
 	function setOrientationControls(e) {
 		if (!e.alpha) {
 			return;
@@ -41,10 +42,10 @@ App.prototype.init = function() {
 
 		this.element.addEventListener('click', this.fullscreen.bind(this), false);
 
-		window.removeEventListener('deviceorientation', setOrientationControls.bind(this), true);
+		window.removeEventListener('deviceorientation', fn, true);
 	}
-	window.addEventListener('deviceorientation', setOrientationControls.bind(this), true);
-
+	fn = setOrientationControls.bind(this);
+	window.addEventListener('deviceorientation', fn, true);
 
 	var light = new THREE.HemisphereLight(0x777777, 0x000000, 0.6);
 	this.scene.add(light);
@@ -74,12 +75,6 @@ App.prototype.init = function() {
 	window.addEventListener('resize', this.resize.bind(this), false);
 	setTimeout(this.resize.bind(this), 1);
 
-/*
-	this.fish = new Fish();
-	this.fish.setPosition(20, 40, 100);
-	this.fish.setSeed(0);
-	this.scene.add(this.fish.get3DObject());
-*/
 	this.initObject();
 };
 
@@ -132,7 +127,6 @@ App.prototype.animate = function(t) {
 	this.update(this.clock.getDelta());
 	this.render(this.clock.getDelta());
 
-	//	this.fish.animate();
 	this.fish.forEach(function(f) {
 		f.animate();
 	});
