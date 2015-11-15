@@ -6,17 +6,17 @@ var Fish = function() {
         side: THREE.DoubleSide
     });
     var geometry = new THREE.Geometry();
-	geometry.vertices.push(new THREE.Vector3( 0,  0,  0));
-	geometry.vertices.push(new THREE.Vector3(10,  0, 10));
-	geometry.vertices.push(new THREE.Vector3(20,  0,  0));
-	geometry.vertices.push(new THREE.Vector3(25,  0,  5));
-	geometry.vertices.push(new THREE.Vector3(25,  0, -5));
-	geometry.vertices.push(new THREE.Vector3(20,  0,  0));
-	geometry.vertices.push(new THREE.Vector3(10,  0,-10));
-	geometry.vertices.push(new THREE.Vector3( 0,  0,  0));
-	geometry.faces.push(new THREE.Face3(0, 1, 2));
-	geometry.faces.push(new THREE.Face3(2, 3, 4));
-	geometry.faces.push(new THREE.Face3(5, 6, 7));
+	geometry.vertices.push(new THREE.Vector3( 0,  0, 0));
+	geometry.vertices.push(new THREE.Vector3(10, 10, 0));
+	geometry.vertices.push(new THREE.Vector3(20,  0, 0));
+	geometry.vertices.push(new THREE.Vector3(25,  5, 0));
+	geometry.vertices.push(new THREE.Vector3(25, -5, 0));
+	geometry.vertices.push(new THREE.Vector3(20,  0, 0));
+	geometry.vertices.push(new THREE.Vector3(10,-10, 0));
+	geometry.vertices.push(new THREE.Vector3( 0,  0, 0));
+	geometry.faces.push(new THREE.Face3(0, 2, 1));
+	geometry.faces.push(new THREE.Face3(2, 4, 3));
+	geometry.faces.push(new THREE.Face3(5, 7, 6));
 
 	this.line = new THREE.Mesh(geometry, material);
 	this.state = 0;
@@ -27,7 +27,11 @@ Fish.prototype.setSeed = function(s) {
 };
 
 Fish.prototype.setSize = function(s) {
-	this.line.position.set(x, y, z);
+	this.line.geometry.vertices.forEach(function(v) {
+		v.x *= s;
+		v.y *= s;
+		v.z *= s;
+	}.bind(this));
 };
 
 Fish.prototype.get3DObject = function() {
@@ -36,7 +40,7 @@ Fish.prototype.get3DObject = function() {
 
 Fish.prototype.animate = function() {
 	this.line.geometry.vertices.forEach(function(v) {
-		v.y = Math.cos(v.x / 8 - this.state);
+		v.z = Math.cos(v.x / 8 - this.state);
 	}.bind(this));
 	this.line.geometry.verticesNeedUpdate = true;
 	this.state += 0.1;

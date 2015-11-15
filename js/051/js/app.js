@@ -39,7 +39,7 @@ App.prototype.init = function() {
 		this.controls.connect();
 		this.controls.update();
 
-		this.element.addEventListener('click', fullscreen, false);
+		this.element.addEventListener('click', this.fullscreen.bind(this), false);
 
 		window.removeEventListener('deviceorientation', setOrientationControls.bind(this), true);
 	}
@@ -97,6 +97,7 @@ App.prototype.initObject = function(){
 		var y = (Math.random() - 0.5) * volume;
 		var z = (Math.random() - 0.5) * volume;
 		f.setPosition(x, y, z);
+		f.setSize(.4);
 		f.setSeed(Math.random() * Math.PI * 2);
 		this.scene.add(f.get3DObject());
 	}.bind(this));
