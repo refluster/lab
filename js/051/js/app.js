@@ -30,8 +30,7 @@ App.prototype.init = function() {
 	this.controls.noZoom = true;
 	this.controls.noPan = true;
 
-	var fn;
-	function setOrientationControls(e) {
+	var setOrientationControls = function(e) {
 		if (!e.alpha) {
 			return;
 		}
@@ -42,10 +41,9 @@ App.prototype.init = function() {
 
 		this.element.addEventListener('click', this.fullscreen.bind(this), false);
 
-		window.removeEventListener('deviceorientation', fn, true);
-	}
-	fn = setOrientationControls.bind(this);
-	window.addEventListener('deviceorientation', fn, true);
+		window.removeEventListener('deviceorientation', setOrientationControls, true);
+	}.bind(this)
+	window.addEventListener('deviceorientation', setOrientationControls, true);
 
 	var light = new THREE.HemisphereLight(0x777777, 0x000000, 0.6);
 	this.scene.add(light);
