@@ -1,56 +1,53 @@
-var camera, scene, renderer;
-var effect, controls;
-var element, container;
+var App = function() {
+	this.camera, this.scene, this.renderer;
+	this.effect, this.controls;
+	this.element, this.container;
+	this.clock = new THREE.Clock();
+	this.fish;
+};
 
-var clock = new THREE.Clock();
+App.prototype.init = function() {
+	this.renderer = new THREE.WebGLRenderer();
+	this.element = this.renderer.domElement;
+	this.container = document.getElementById('example');
+	this.container.appendChild(this.element);
 
-init();
-animate();
+	this.effect = new THREE.StereoEffect(this.renderer);
 
-var fish;
+	this.scene = new THREE.Scene();
 
-function init() {
-	renderer = new THREE.WebGLRenderer();
-	element = renderer.domElement;
-	container = document.getElementById('example');
-	container.appendChild(element);
+	this.camera = new THREE.PerspectiveCamera(90, 1, 0.001, 700);
+	this.camera.position.set(0, 10, 0);
+	this.scene.add(this.camera);
 
-	effect = new THREE.StereoEffect(renderer);
-
-	scene = new THREE.Scene();
-
-	camera = new THREE.PerspectiveCamera(90, 1, 0.001, 700);
-	camera.position.set(0, 10, 0);
-	scene.add(camera);
-
-	controls = new THREE.OrbitControls(camera, element);
-	controls.rotateUp(Math.PI / 4);
-	controls.target.set(
-		camera.position.x + 0.1,
-		camera.position.y,
-		camera.position.z
+	this.controls = new THREE.OrbitControls(this.camera, this.element);
+	this.controls.rotateUp(Math.PI / 4);
+	this.controls.target.set(
+		this.camera.position.x + 0.1,
+		this.camera.position.y,
+		this.camera.position.z
 	);
-	controls.noZoom = true;
-	controls.noPan = true;
+	this.controls.noZoom = true;
+	this.controls.noPan = true;
 
 	function setOrientationControls(e) {
 		if (!e.alpha) {
 			return;
 		}
 
-		controls = new THREE.DeviceOrientationControls(camera, true);
-		controls.connect();
-		controls.update();
+		this.controls = new THREE.DeviceOrientationControls(this.camera, true);
+		this.controls.connect();
+		this.controls.update();
 
-		element.addEventListener('click', fullscreen, false);
+		this.element.addEventListener('click', fullscreen, false);
 
-		window.removeEventListener('deviceorientation', setOrientationControls, true);
+		window.removeEventListener('deviceorientation', setOrientationControls.bind(this), true);
 	}
-	window.addEventListener('deviceorientation', setOrientationControls, true);
+	window.addEventListener('deviceorientation', setOrientationControls.bind(this), true);
 
 
 	var light = new THREE.HemisphereLight(0x777777, 0x000000, 0.6);
-	scene.add(light);
+	this.scene.add(light);
 
 	var texture = THREE.ImageUtils.loadTexture(
 		'textures/patterns/checker.png'
@@ -58,7 +55,7 @@ function init() {
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
 	texture.repeat = new THREE.Vector2(50, 50);
-	texture.anisotropy = renderer.getMaxAnisotropy();
+	texture.anisotropy = this.renderer.getMaxAnisotropy();
 
 	var material = new THREE.MeshPhongMaterial({
 		color: 0xffffff,
@@ -72,10 +69,10 @@ function init() {
 
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.rotation.x = -Math.PI / 2;
-	scene.add(mesh);
+	this.scene.add(mesh);
 
-	window.addEventListener('resize', resize, false);
-	setTimeout(resize, 1);
+	window.addEventListener('resize', this.resize.bind(this), false);
+	setTimeout(this.resize.bind(this), 1);
 
 //////////////////////////////
 var Fish = function() {
@@ -127,54 +124,59 @@ Fish.prototype.setPosition = function(x, y, z) {
 };
 //////////////////////////////
 
-	fish = new Fish();
-	fish.setPosition(20, 40, 100);
-	fish.setSeed(0);
-	scene.add(fish.get3DObject());
+	this.fish = new Fish();
+	this.fish.setPosition(20, 40, 100);
+	this.fish.setSeed(0);
+	this.scene.add(this.fish.get3DObject());
 }
 
-function resize() {
-	var width = container.offsetWidth;
-	var height = container.offsetHeight;
+App.prototype.resize = function() {
+	var width = this.container.offsetWidth;
+	var height = this.container.offsetHeight;
 
-	camera.aspect = width / height;
-	camera.updateProjectionMatrix();
+	this.camera.aspect = width / height;
+	this.camera.updateProjectionMatrix();
 
-	renderer.setSize(width, height);
-	effect.setSize(width, height);
+	this.renderer.setSize(width, height);
+	this.effect.setSize(width, height);
 }
 
-function update(dt) {
-	resize();
+App.prototype.update = function(dt) {
+	this.resize();
 
-	camera.updateProjectionMatrix();
+	this.camera.updateProjectionMatrix();
 
-	controls.update(dt);
+	this.controls.update(dt);
 }
 
-function render(dt) {
-	effect.render(scene, camera);
+App.prototype.render = function(dt) {
+	this.effect.render(this.scene, this.camera);
 }
 
-function animate(t) {
-	requestAnimationFrame(animate);
+App.prototype.animate = function(t) {
+	requestAnimationFrame(this.animate.bind(this));
 
-	update(clock.getDelta());
-	render(clock.getDelta());
+	this.update(this.clock.getDelta());
+	this.render(this.clock.getDelta());
 
 	//////////////////////////////
-	fish.animate();
+	this.fish.animate();
 }
 
-function fullscreen() {
-	if (container.requestFullscreen) {
-		container.requestFullscreen();
-	} else if (container.msRequestFullscreen) {
-		container.msRequestFullscreen();
-	} else if (container.mozRequestFullScreen) {
-		container.mozRequestFullScreen();
-	} else if (container.webkitRequestFullscreen) {
-		container.webkitRequestFullscreen();
+App.prototype.fullscreen = function() {
+	if (this.container.requestFullscreen) {
+		this.container.requestFullscreen();
+	} else if (this.container.msRequestFullscreen) {
+		this.container.msRequestFullscreen();
+	} else if (this.container.mozRequestFullScreen) {
+		this.container.mozRequestFullScreen();
+	} else if (this.container.webkitRequestFullscreen) {
+		this.container.webkitRequestFullscreen();
 	}
 }
+
+var app = new App();
+	
+app.init();
+app.animate();
 
