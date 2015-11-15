@@ -1,4 +1,4 @@
-const space = {x: [-200, 200], y: [0, 60], z: [-200, 200]};
+const space = {x: [-200, 200], y: [5, 40], z: [-200, 200]};
 const fishNum = 60;
 
 var App = function() {
@@ -89,13 +89,13 @@ App.prototype.initObject = function(){
 	}
 
 	this.fish.forEach(function(f) {
-		const volume = 70;
 		var x = (Math.random()*(space.x[1] - space.x[0]) + space.x[0]);
 		var y = (Math.random()*(space.y[1] - space.y[0]) + space.y[0]);
 		var z = (Math.random()*(space.z[1] - space.z[0]) + space.z[0]);
 		f.setPosition(x, y, z);
 		f.setSize(.4);
 		f.setSeed(Math.random() * Math.PI * 2);
+		f.setSpeed({x: -.5, y: 0, z: 0});
 		this.scene.add(f.get3DObject());
 	}.bind(this));
 };
@@ -131,6 +131,15 @@ App.prototype.animate = function(t) {
 
 	this.fish.forEach(function(f) {
 		f.animate();
+		var p = f.getPosition();
+		if (p.x < space.x[0] || p.x > space.x[1] ||
+			p.y < space.y[0] || p.y > space.y[1] ||
+			p.z < space.z[0] || p.z > space.z[1]) {
+			var x = space.x[1];
+			var y = (Math.random()*(space.y[1] - space.y[0]) + space.y[0]);
+			var z = (Math.random()*(space.z[1] - space.z[0]) + space.z[0]);
+			f.setPosition(x, y, z);
+		}
 	});
 };
 

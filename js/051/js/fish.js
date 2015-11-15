@@ -20,10 +20,17 @@ var Fish = function() {
 
 	this.line = new THREE.Mesh(geometry, material);
 	this.state = 0;
+	this.speed = {x: 0, y: 0, z: 0};
 };
 
 Fish.prototype.setSeed = function(s) {
 	this.state = s;
+};
+
+Fish.prototype.setSpeed = function(s) {
+	this.speed.x = s.x;
+	this.speed.y = s.y;
+	this.speed.z = s.z;
 };
 
 Fish.prototype.setSize = function(s) {
@@ -43,6 +50,9 @@ Fish.prototype.animate = function() {
 		v.z = Math.cos(v.x / 8 - this.state);
 	}.bind(this));
 	this.line.geometry.verticesNeedUpdate = true;
+	this.line.position.x += this.speed.x;
+	this.line.position.y += this.speed.y;
+	this.line.position.z += this.speed.z;
 	this.state += 0.1;
 };
 
@@ -50,3 +60,8 @@ Fish.prototype.setPosition = function(x, y, z) {
 	this.line.position.set(x, y, z);
 };
 
+Fish.prototype.getPosition = function() {
+	return {x: this.line.position.x,
+			y: this.line.position.y,
+			z: this.line.position.z};
+};
