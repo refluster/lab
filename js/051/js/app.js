@@ -74,11 +74,33 @@ App.prototype.init = function() {
 	window.addEventListener('resize', this.resize.bind(this), false);
 	setTimeout(this.resize.bind(this), 1);
 
+/*
 	this.fish = new Fish();
 	this.fish.setPosition(20, 40, 100);
 	this.fish.setSeed(0);
 	this.scene.add(this.fish.get3DObject());
-}
+*/
+	this.initObject();
+};
+
+App.prototype.initObject = function(){
+	const fishNum = 20;
+
+	this.fish = [];
+	for (var i = 0; i < fishNum; i++) {
+		this.fish.push(new Fish());
+	}
+
+	this.fish.forEach(function(f) {
+		const volume = 70;
+		var x = (Math.random() - 0.5) * volume;
+		var y = (Math.random() - 0.5) * volume;
+		var z = (Math.random() - 0.5) * volume;
+		f.setPosition(x, y, z);
+		f.setSeed(Math.random() * Math.PI * 2);
+		this.scene.add(f.get3DObject());
+	}.bind(this));
+};
 
 App.prototype.resize = function() {
 	var width = this.container.offsetWidth;
@@ -89,7 +111,7 @@ App.prototype.resize = function() {
 
 	this.renderer.setSize(width, height);
 	this.effect.setSize(width, height);
-}
+};
 
 App.prototype.update = function(dt) {
 	this.resize();
@@ -97,11 +119,11 @@ App.prototype.update = function(dt) {
 	this.camera.updateProjectionMatrix();
 
 	this.controls.update(dt);
-}
+};
 
 App.prototype.render = function(dt) {
 	this.effect.render(this.scene, this.camera);
-}
+};
 
 App.prototype.animate = function(t) {
 	requestAnimationFrame(this.animate.bind(this));
@@ -109,8 +131,11 @@ App.prototype.animate = function(t) {
 	this.update(this.clock.getDelta());
 	this.render(this.clock.getDelta());
 
-	this.fish.animate();
-}
+	//	this.fish.animate();
+	this.fish.forEach(function(f) {
+		f.animate();
+	});
+};
 
 App.prototype.fullscreen = function() {
 	if (this.container.requestFullscreen) {
@@ -122,7 +147,7 @@ App.prototype.fullscreen = function() {
 	} else if (this.container.webkitRequestFullscreen) {
 		this.container.webkitRequestFullscreen();
 	}
-}
+};
 
 var app = new App();
 	
