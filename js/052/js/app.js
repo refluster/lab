@@ -1,12 +1,3 @@
-function recognize_image(){
-	document.getElementById('transcription').innerHTML = "(Recognizing...)";
-
-	OCRAD(document.getElementById("pic"), {
-		numeric: true
-	}, function(text){
-
-	});
-}
 function load_file () {
 	var canvas = document.getElementById('canvas');
 	console.log(canvas);
