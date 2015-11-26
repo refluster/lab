@@ -12,10 +12,11 @@ function load_file () {
 		var image = new Image();
 		image.onload = function(){
 			var w = 320, h = 240;
+
 			if (w/h > image.width/image.height) {
-				h = w*image.height/image.width;
+				h = parseInt(w*image.height/image.width);
 			} else {
-				w = h*image.width/image.height;
+				w = parseInt(h*image.width/image.height);
 			}
 
 			var smooth = new Uint8ClampedArray(w*h*4);
