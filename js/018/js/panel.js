@@ -4,14 +4,6 @@
 var panelApl = {}; // namespace
 
 (function($) {
-
-	/* global var */
-	// drag state
-	panelApl.drag = {
-		now: false, // true if dragging
-	};
-	panelApl.gamestart = false;  // true if playing
-
 	// timer
 	panelApl.timer = $.timer();
 
@@ -38,8 +30,6 @@ var panelApl = {}; // namespace
 
 		// init canvas
 		panelApl.canv.init();
-
-		panelApl.gamestart = true;
 
 		panelApl.timer.set({
 			action: function() {

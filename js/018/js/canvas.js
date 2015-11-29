@@ -14,7 +14,7 @@ var canvasManager = {}; // namespace
 		this.area = {w:w, h:h};  // the area
 		this.cvpos = {x:0, y:0};  // position of the canvas on the browser
 		this.prevPos = {x:0, y:0}; // previous position of the cursor
-		this.color = 'black'
+		this.color = 'black';
 		this.lineWidth = 1;
 		this.PI2 = Math.PI * 2; // 2*pi
 
@@ -132,4 +132,3 @@ var canvasManager = {}; // namespace
 	}
 
 })(jQuery);
-
