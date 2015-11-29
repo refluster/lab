@@ -28,6 +28,9 @@
 			#transcription.done {
 				color: black;
 			}
+			.done {
+			  background-color: #888;
+			}
     </style>
     <script>
 /*
@@ -38,7 +41,7 @@
       ga('create', 'UA-16703149-7', 'auto');
       ga('send', 'pageview');
 */
-    </script>
+   </script>
   </head>
   <body>
     <div id="header"><h2 class="title">ocrad.js demo</h2></div>
@@ -47,14 +50,23 @@
         <li>ocrad.js, javascript implementation of gnu ocrad</li>
       </ul>
 
-		  <script src="js/ocrad.js"></script>
-		  <script src="js/app.js"></script>
-		
-		  <input type="file" onchange="load_file()" id="picker">
-		  <div id="nose">
-			  <p>No file loaded</p>
-		  </div>
-		  <div id="transcription"></div>
+      <script src="js/ocrad.js"></script>
+      <script src="http://tenso.rs/tesseract.js"></script>
+      <script src="js/app.js"></script>
+
+      <input type="file" onchange="load_file()" id="picker">
+<!--
+      <div style="position: relative; height: 240px">
+        <canvas style="border: 0px solid black; position: absolute; left: 0; top: 0; z-index: 0;"
+                id="bgImage" width="320" height="240"></canvas>
+        <canvas style="border: 0px solid black; position: absolute; left: 0; top: 0; z-index: 1;"
+                id="fgImage" width="320" height="240"></canvas>
+      </div>
+-->
+      <div id="nose">
+        <p>No file loaded</p>
+      </div>
+      <div id="transcription"></div>
       <canvas style="display: none" id="canvas"></canvas>
 
     </div>

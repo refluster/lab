@@ -7,6 +7,8 @@ function load_file () {
 
 	canvas.width = canvas.height = 0;
 
+	document.getElementById('transcription').className = '';
+
 	var reader = new FileReader();
 	reader.onload = function(){
 		var image = new Image();
@@ -22,7 +24,7 @@ function load_file () {
 			var smooth = new Uint8ClampedArray(w*h*4);
 
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			
+
 			canvas.width = w;
 			canvas.height = h;
 			ctx.drawImage(image, 0, 0, w, h);
@@ -30,8 +32,8 @@ function load_file () {
 			document.getElementById('text').innerHTML = "orig: " + image.width + " " + image.height;
 
 			var im = ctx.getImageData(0, 0, w, h);
-			filter(im.data, smooth, w, h);
-			im.data.set(smooth);
+//			filter(im.data, smooth, w, h);
+//			im.data.set(smooth);
 			ctx.putImageData(im, 0, 0);
 
 			var img = document.createElement('img');
@@ -40,9 +42,19 @@ function load_file () {
 			img.onload = function() {
 				document.getElementById('nose').innerHTML = ''
 				document.getElementById('nose').appendChild(img)
+
+/*
 				OCRAD(img, function(text){
 					document.getElementById('transcription').className = "done"
-					document.getElementById('transcription').innerText = "result: " + text;
+					document.getElementById('transcription').innerText = text;
+				});
+*/
+
+				Tesseract.recognize(img, function(err, result) {
+					console.log('--- recognize');
+					console.log(result);
+					document.getElementById('transcription').className = 'done'
+					document.getElementById('transcription').innerText = result.text;
 				});
 			};
 		}
