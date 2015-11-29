@@ -10,18 +10,18 @@ var canvasManager = {}; // namespace
      */
 
     canvasManager.canv = function(ctx, w, h, names) {
-	this.ctx = ctx; // the context
-	this.area = {w:w, h:h};  // the area
-	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
+		this.ctx = ctx; // the context
+		this.area = {w:w, h:h};  // the area
+		this.cvpos = {x:0, y:0};  // position of the canvas on the browser
         this.prevPos = {x:0, y:0}; // previous position of the cursor
         this.color = 'black'
         this.lineWidth = 1;
         this.PI2 = Math.PI * 2; // 2*pi
         
-	// set the position of the canvas on the browser
-	var $cvdiv = $('#cvdiv1');
-	this.cvpos.x = $cvdiv.offset().left;
-	this.cvpos.y = $cvdiv.offset().top;
+		// set the position of the canvas on the browser
+		var $cvdiv = $('#cvdiv1');
+		this.cvpos.x = $cvdiv.offset().left;
+		this.cvpos.y = $cvdiv.offset().top;
 
         this.gravity = 9.8; // m/s^2
         this.drawInterval = 20; // msec, 1000/fps
@@ -34,11 +34,11 @@ var canvasManager = {}; // namespace
         this.radius = 14; // raduis of balls
         this.ball = [];
 
-	this.blank = function() {
-	    //this.ctx.clearRect(0, 0, this.area.w, this.area.h);
+		this.blank = function() {
+			//this.ctx.clearRect(0, 0, this.area.w, this.area.h);
             this.ctx.fillStyle = 'black';
             this.ctx.fillRect(0, 0, this.area.w, this.area.h);
-	};
+		};
         
         this.init = function() {
             this.ball[0] = {
@@ -127,7 +127,7 @@ var canvasManager = {}; // namespace
             }
 
             this.ctx.restore();
-	};
+		};
 
     }
 
