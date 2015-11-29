@@ -14,6 +14,7 @@ var Apl = function() {
 	this.radius = 18; // raduis of balls
 	this.ball = [];
 	this.ball.push({
+		color: 'white',
 		pos:{x:100, y:100},
 		v:{x:2, y:4},
 	});
