@@ -27,13 +27,11 @@ var panelApl = {}; // namespace
             var fps = document.form1.input_fps.value;
             // check if inputs are number
             if (isNaN(gravity) || isNaN(fps)) {
-                panelApl.showmsg("ERROR: incorrect input");
                 return;
             }
             gravity = Number(gravity);
             fps = Number(fps);
             if (gravity < 0 || fps < 0) {
-                panelApl.showmsg("ERROR: values must be zero or positive numbers");
                 return;
             }
             panelApl.canv.setGravity(gravity);
@@ -65,7 +63,6 @@ var panelApl = {}; // namespace
             });
 
             panelApl.timer.play();
-			panelApl.showmsg('moving');
 			$btn.text('stop');
 		} else { // if playing
 			// delete mouse events from the canvas
@@ -81,13 +78,8 @@ var panelApl = {}; // namespace
 
 			panelApl.gamestart = false;
             panelApl.timer.pause();
-			panelApl.showmsg('paused');
 			$btn.text('start');
 		}
-    };
-
-    panelApl.showmsg = function(msg) {
-		$('#msg1').html(msg);
     };
 
     panelApl.cvmsDown = function(evt) {
@@ -109,11 +101,6 @@ var panelApl = {}; // namespace
 			if (cy > panelApl.canv.area.h) cy = panelApl.canv.area.h;
 
 			panelApl.drag.now = false;
-			if (evt.type == 'mouseleave'){
-                ;//panelApl.showmsg('dropped due to out of canvas');
-			} else if (panelApl.gamestart) {
-				;//panelApl.showmsg('movable');
-			}
 		}
     };
 
@@ -146,18 +133,5 @@ var panelApl = {}; // namespace
 		var $btn = $('#stbtn1'); // start button
 		$btn.mousedown(panelApl.start);
 		$btn.text('start');
-
-		// show message
-		panelApl.showmsg('press start button');
-
-		/*
-          panelApl.timer.set({
-          action: function() {
-          panelApl.canv.moveObj();
-          panelApl.canv.draw();
-          },
-          time: 20
-          });
-		*/
     });
 })(jQuery);
