@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="EUC-JP">
-    <title>ocrad.js demo</title>
+    <title>ocr</title>
     <script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -10,26 +10,16 @@
 			#transcription, #nose {
 				background: white;
 				border: 1px solid #ddd;
-				margin: 10px;
+				margin: 10px 0px;
 			}
 			#nose {
 				text-align: center;
 				font-size: 32px;
 				padding: 10px;
 			}
-			#nose img {
-				width: 50%;
-			}
 			#transcription {
 				font-size: 20px;
 				padding: 30px;
-				color: gray;
-			}
-			#transcription.done {
-				color: black;
-			}
-			.done {
-			  background-color: #888;
 			}
     </style>
     <script>
@@ -44,10 +34,10 @@
    </script>
   </head>
   <body>
-    <div id="header"><h2 class="title">ocrad.js demo</h2></div>
+    <div id="header"><h2 class="title">ocr</h2></div>
     <div id="contents">
       <ul class="chapter-toc">
-        <li>ocrad.js, javascript implementation of gnu ocrad</li>
+        <li>tesseract.js : ocr javascript library</li>
       </ul>
 
       <script src="js/ocrad.js"></script>
@@ -55,17 +45,14 @@
       <script src="js/app.js"></script>
 
       <input type="file" onchange="load_file()" id="picker">
-<!--
-      <div style="position: relative; height: 240px">
+
+      <div id="nose" style="position: relative; height: 240px">
         <canvas style="border: 0px solid black; position: absolute; left: 0; top: 0; z-index: 0;"
                 id="bgImage" width="320" height="240"></canvas>
         <canvas style="border: 0px solid black; position: absolute; left: 0; top: 0; z-index: 1;"
                 id="fgImage" width="320" height="240"></canvas>
       </div>
--->
-      <div id="nose">
-        <p>No file loaded</p>
-      </div>
+
       <div id="transcription"></div>
       <canvas style="display: none" id="canvas"></canvas>
 
