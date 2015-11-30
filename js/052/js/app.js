@@ -68,16 +68,13 @@ App.prototype.touchStartHandler = function(e) {
 };
 
 App.prototype.touchEndHandler = function(e) {
-	this.debug('endhandler');
 	if (this.isDragging) {
 		this.isDragging = false;
 	}
 
 	var w = this.dragEnd.x - this.dragStart.x;
 	var h = this.dragEnd.y - this.dragStart.y;
-	this.debug('get image data');
 	var img = this.ctx.getImageData(this.dragStart.x, this.dragStart.y, w, h);
-	this.debug('tesseract');
 	Tesseract.recognize(img, {progress: this.progress.bind(this)}, function(err, result) {
 		console.log(result);
 		document.getElementById('transcription').innerText = result.text;
