@@ -71,18 +71,24 @@ App.prototype.touchEndHandler = function(e) {
 	if (this.isDragging) {
 		this.isDragging = false;
 	}
+	var w = this.dragEnd.x - this.dragStart.x;
+	var h = this.dragEnd.y - this.dragStart.y;
+	var img = this.ctx.getImageData(this.dragStart.x, this.dragStart.y, w, h);
+	Tesseract.recognize(img, function(err, result) {
+		console.log(result);
+		document.getElementById('transcription').innerText = result.text;
+	});
+
 	e.preventDefault();
 };
 
 App.prototype.touchMoveHandler = function(e) {
 	if (this.isDragging) {
-		var p = this.getCanvasPosition(e);
-		var w = p.x - this.dragStart.x;
-		var h = p.y - this.dragStart.y;
+		this.dragEnd = this.getCanvasPosition(e);
+		var w = this.dragEnd.x - this.dragStart.x;
+		var h = this.dragEnd.y - this.dragStart.y;
 		this.fgContext.clearRect(0, 0, this.fgImage.width, this.fgImage.height);
 		this.fgContext.fillRect(this.dragStart.x, this.dragStart.y, w, h);
-		//this.fgContext.fillRect(10, 10, 100, -150);
-		console.log({l: this.dragStart.x, u: this.dragStart.y, w: w, h: h});
 	}
 	e.preventDefault();
 };
