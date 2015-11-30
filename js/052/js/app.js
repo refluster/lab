@@ -99,7 +99,11 @@ App.prototype.debug = function(debug) {
 
 App.prototype.progress = function(progress) {
 	console.log(progress);
-	document.getElementById('progress').innerText = progress.recognized;
+	if (progress.recognized !== undefined) {
+		document.getElementById('progress').innerText = progress.recognized;
+	} else {
+		document.getElementById('progress').innerText = JSON.stringify(progress);
+	}
 };
 
 window.onload = function() {
