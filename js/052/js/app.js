@@ -40,7 +40,7 @@ App.prototype.loadFile = function() {
 			document.getElementById('text').innerHTML = "orig: " + image.width + " " + image.height;
 
 			var img = this.ctx.getImageData(0, 0, w, h);
-			Tesseract.recognize(img, function(err, result) {
+			Tesseract.recognize(img, {progress: this.progress.bind(this)}, function(err, result) {
 				console.log(result);
 				document.getElementById('transcription').innerText = result.text;
 			});
@@ -68,17 +68,20 @@ App.prototype.touchStartHandler = function(e) {
 };
 
 App.prototype.touchEndHandler = function(e) {
+	this.debug('endhandler');
 	if (this.isDragging) {
 		this.isDragging = false;
 	}
+
 	var w = this.dragEnd.x - this.dragStart.x;
 	var h = this.dragEnd.y - this.dragStart.y;
+	this.debug('get image data');
 	var img = this.ctx.getImageData(this.dragStart.x, this.dragStart.y, w, h);
-	Tesseract.recognize(img, function(err, result) {
+	this.debug('tesseract');
+	Tesseract.recognize(img, {progress: this.progress.bind(this)}, function(err, result) {
 		console.log(result);
 		document.getElementById('transcription').innerText = result.text;
 	});
-
 	e.preventDefault();
 };
 
@@ -91,6 +94,15 @@ App.prototype.touchMoveHandler = function(e) {
 		this.fgContext.fillRect(this.dragStart.x, this.dragStart.y, w, h);
 	}
 	e.preventDefault();
+};
+
+App.prototype.debug = function(debug) {
+	document.getElementById('debug').innerText += debug + '\n';
+};
+
+App.prototype.progress = function(progress) {
+	console.log(progress);
+	document.getElementById('progress').innerText = progress.recognized;
 };
 
 window.onload = function() {
