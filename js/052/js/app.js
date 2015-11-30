@@ -39,18 +39,11 @@ App.prototype.loadFile = function() {
 
 			document.getElementById('text').innerHTML = "orig: " + image.width + " " + image.height;
 
-			var im = this.ctx.getImageData(0, 0, w, h);
-			this.ctx.putImageData(im, 0, 0);
-
-			var img = document.createElement('img');
-			img.src = this.canvas.toDataURL();
-
-			img.onload = function() {
-				Tesseract.recognize(img, function(err, result) {
-					console.log(result);
-					document.getElementById('transcription').innerText = result.text;
-				});
-			};
+			var img = this.ctx.getImageData(0, 0, w, h);
+			Tesseract.recognize(img, function(err, result) {
+				console.log(result);
+				document.getElementById('transcription').innerText = result.text;
+			});
 		}.bind(this);
 		image.src = reader.result;
 	}.bind(this);
