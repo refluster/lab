@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style TYPE="text/css">
-			#transcription, #nose {
+			#transcription, #nose ,#debug{
 				background: white;
 				border: 1px solid #ddd;
 				margin: 10px 0px;
@@ -22,6 +22,11 @@
 			#transcription {
 				font-size: 20px;
 				padding: 30px;
+			}
+			#debug {
+				font-size: 10px;
+				padding: 16px;
+        line-height: 14px;
 			}
     </style>
     <script>
@@ -48,7 +53,6 @@
 
       <input type="file" id="picker">
 
-      <pre id="debug"></pre>
       <pre id="progress"></pre>
       <div id="transcription"></div>
 
@@ -58,10 +62,7 @@
         <canvas style="border: 0px solid black; position: absolute; left: 0; top: 0; z-index: 1;"
                 id="fgImage" width="320" height="240"></canvas>
       </div>
-<!--
-      <canvas style="display: none" id="canvas"></canvas>
--->
+      <pre id="debug"></pre>
     </div>
-    <div id="text"></div>
   </body>
 </html>

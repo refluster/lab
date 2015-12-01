@@ -3,7 +3,6 @@ var App = function() {
 	this.ctx = this.canvas.getContext('2d');
 
 	this.canvas.width = this.canvas.height = 0;
-	document.getElementById('picker').onchange = this.loadFile.bind(this);
 
 	this.fgImage = document.getElementById("fgImage");
 	this.fgContext = fgImage.getContext("2d");
@@ -15,7 +14,11 @@ var App = function() {
 	this.fgImage.addEventListener("touchmove", this.touchMoveHandler.bind(this), false);
 	this.fgImage.addEventListener("touchend", this.touchEndHandler.bind(this), false);
 
+	document.getElementById('picker').onchange = this.loadFile.bind(this);
+
 	this.isDragging = false;
+
+	this.debug('-------- debug print --------');
 };
 
 App.prototype.loadFile = function() {
@@ -37,7 +40,7 @@ App.prototype.loadFile = function() {
 			this.canvas.height = h;
 			this.ctx.drawImage(image, 0, 0, w, h);
 
-			document.getElementById('text').innerHTML = "orig: " + image.width + " " + image.height;
+			this.debug("orig: " + image.width + " " + image.height);
 
 			var img = this.ctx.getImageData(0, 0, w, h);
 			Tesseract.recognize(img, {progress: this.progress.bind(this)}, function(err, result) {
@@ -93,8 +96,8 @@ App.prototype.touchMoveHandler = function(e) {
 	e.preventDefault();
 };
 
-App.prototype.debug = function(debug) {
-	document.getElementById('debug').innerText += debug + '\n';
+App.prototype.debug = function(s) {
+	document.getElementById('debug').innerText += s + '\n';
 };
 
 App.prototype.progress = function(progress) {
@@ -103,6 +106,7 @@ App.prototype.progress = function(progress) {
 		document.getElementById('progress').innerText = progress.recognized;
 	} else {
 		document.getElementById('progress').innerText = JSON.stringify(progress);
+		this.debug(JSON.stringify(progress));
 	}
 };
 
