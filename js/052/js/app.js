@@ -23,6 +23,7 @@ var App = function() {
 
 App.prototype.loadFile = function() {
 	var reader = new FileReader();
+	this.fgContext.clearRect(0, 0, this.fgImage.width, this.fgImage.height);
 	reader.onload = function() {
 		var image = new Image();
 		image.onload = function() {
