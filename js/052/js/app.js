@@ -55,13 +55,11 @@ App.prototype.loadFile = function() {
 
 App.prototype.getCanvasPosition = function(e) {
 	if (e.touches.length > 0) {
-		var b = this.fgImage.getBoundingClientRect();
-		return {x: parseInt(e.touches[0].pageX - b.left),
-				y: parseInt(e.touches[0].pageY - b.top)};
-	} else {
-		return {x: parseInt(e.pageX),
-				y: parseInt(e.pageY)};
+		var b = this.fgImage.getClientRects()[0];
+		return {x: parseInt(e.touches[0].clientX - b.left),
+				y: parseInt(e.touches[0].clientY - b.top)};
 	}
+	return undefined;
 };
 
 App.prototype.touchStartHandler = function(e) {
