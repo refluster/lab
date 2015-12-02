@@ -46,8 +46,7 @@
         <ul ng-show="list" class="list-unstyled">
           <li ng-repeat="sheet in list">
             #{{ sheet.id }}
-            {{ sheet.createdAt | date: 'yyyy/MM/dd HH:mm'}}
-            <a ng-href="#/sheet/{{ sheet.id }}">show detail</a>
+            <a ng-href="#/sheet/{{ sheet.id }}">detail</a>
           </li>
         </ul>
         <div ng-hide="list" class="alert alert-info">
@@ -63,7 +62,7 @@
             <thead>
               <tr>
                 <th>model number</th>
-                <th>date purchased</th>
+                <th>date</th>
                 <th></th>
               </tr>
             </thead>
