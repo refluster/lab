@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="EUC-JP">
+    <style TYPE="text/css">
+    <!--
+    body {
+        margin: 32px;
+        font-size: 16px;
+    }
+    #canvas {
+        border: solid 1px #808080;
+    }
+    /* button */
+    .btn {
+        margin-top: 16px;
+        width: 120px;
+        font-weight: bold;
+    }
+    form {
+        margin-bottom: 10px;
+    }
+    -->
+    </style>
+    <title>016: mossy (parameter)</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" charset="EUC-JP"></script>
+    <script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
+    <script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-16703149-7', 'auto');
+    ga('send', 'pageview');
+   </script>
+  </head>
+  <body>
+    <div id="header"><h2 class="title">mossy (parameter)</h2></div>
+    <div id="contents">
+      <ul class="chapter-toc">
+        <li>configurable moss</li>
+        <li>generating animation</li>
+      </ul>
+      <form name="form1" action="">
+	      number: <input name="input_number" type="text" id="txt1" value="1000" /><br>
+	      rmin: <input name="input_rmin" type="text" id="txt1" value="8" /><br>
+	      rmax: <input name="input_rmax" type="text" id="txt1" value="14" /><br>
+	      seconds: <input name="input_seconds" type="text" id="txt1" value="2.0" /><br>
+	      fps: <input name="input_fps" type="text" id="txt1" value="10" /><br>
+	      <input name="btn" type="button" id="btn1" value="update" />
+      </form>
+      <p />
+	    <canvas id="canvas" width="300" height="300"></canvas>
+    </div>
+  </body>
+</html>

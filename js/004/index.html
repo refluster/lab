@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="EUC-JP">
+    <title>004: drawing tool</title>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <style TYPE="text/css">
+      <!--
+      .cv {
+          height: 320px;
+          width: 100%;
+          border: 1px solid #333333;
+      }
+      .toolbar li {
+          width:44px;
+          height:44px;
+          list-style-type: none;
+          border:1px solid #ccc;
+          border-radius:6px;
+          margin:10px;
+          display:block;
+          float:left;
+      }
+      #color-black {
+          background-color:black;
+      }
+      #color-red {
+          background-color:red;
+      }
+      #color-blue {
+          background-color:blue;
+      }
+      #color-yellow {
+          background-color:yellow;
+      }
+      #line-1px,#line-3px,#line-5px {
+          text-align: center;
+      }
+      -->
+    </style>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
+    <script type="text/javascript" src="./js/main.js" charset="EUC-JP"></script>
+<!--
+    <script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
+    <script type="text/javascript" src="./js/canvas.js" charset="EUC-JP"></script>
+-->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-16703149-7', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <div id="header"><h2 class="title">drawing tool</h2></div>
+    <div id="contents">
+      <ul class="chapter-toc">
+        <li>drawing lines on canvas</li>
+      </ul>
+      <ul class="toolbar">
+        <li id="color-black"></li>
+        <li id="color-red"></li>
+        <li id="color-blue"></li>
+        <li id="color-yellow"></li>
+      </ul>
+      <div style="clear: both;"></div>
+      <ul class="toolbar">
+        <li id="line-1px">S</li>
+        <li id="line-3px">M</li>
+        <li id="line-5px">L</li>
+      </ul>
+      <div style="clear: both;"></div>
+      <canvas id="canvas" class="cv" width="300" height="300"></canvas>
+    </div>
+  </body>
+</html>

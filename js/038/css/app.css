@@ -1,0 +1,22 @@
+html {
+    background: #404040;
+}
+
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: 'AvenirNext-Medium';
+}
+
+.double-sided {
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+}
+
+ul {
+	list-style-type: square;
+}
