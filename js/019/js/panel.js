@@ -1,29 +1,42 @@
 /* HTML5 Canvas drag&drop
  * canvas is updated when an object is dragged by 1px
  */
-var panelApl = {}; // namespace
-
-(function($) {
-
+var Apl = function() {
 	/* global var */
 	// drag state
-	panelApl.drag = {
+	this.drag = {
 		now: false, // true if dragging
 	};
-	panelApl.gamestart = false;  // true if playing
+	this.gamestart = false;  // true if playing
 
 	// timer
-	panelApl.timer = $.timer();
+	this.timer = $.timer();
 
-	panelApl.fps = 30;
+	this.fps = 30;
 
-	/* button process
-	 * return: none
-	 */
-	panelApl.start = function() {
+		// get canvas's DOM element and context
+		var canvas = document.getElementById('cv1');
+		if ( ! canvas || ! canvas.getContext ) { return false; }
+		var ctx = canvas.getContext("2d");
+		ctx.lineWidth = 1;
+		ctx.globalCompositeOperation = "source-over";
+
+		// display
+		this.canv = new canvasManager.canv(ctx, canvas.width,
+											   canvas.height, this);
+		this.canv.init();
+		this.canv.draw();
+
+		// set events
+		var $btn = $('#stbtn1'); // start button
+		$btn.mousedown(this.start);
+		$btn.text('start');
+};
+
+Apl.prototype.start = function() {
 		var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 		var $btn = $('#stbtn1'); // start button
-		if (!panelApl.gamestart) { // if not playing
+		if (!this.gamestart) { // if not playing
 			//// set parameters from web form
 			var gravity = document.form1.input_gravity.value;
 			var cor = document.form1.input_cor.value;
@@ -36,104 +49,87 @@ var panelApl = {}; // namespace
 			if (gravity < 0 || cor < 0) {
 				return;
 			}
-			panelApl.canv.setGravity(gravity);
-			panelApl.canv.setCor(cor);
+			this.canv.setGravity(gravity);
+			this.canv.setCor(cor);
 
 			// add mouse events to the canvas
-			$cvdiv.mousedown(panelApl.cvmsDown);
-			$cvdiv.mouseup(panelApl.cvmsUp);
-			$cvdiv.mouseleave(panelApl.cvmsUp);
-			$cvdiv.mousemove(panelApl.cvmsMove);
+			$cvdiv.mousedown(this.cvmsDown.bind(this));
+			$cvdiv.mouseup(this.cvmsUp.bind(this));
+			$cvdiv.mouseleave(this.cvmsUp.bind(this));
+			$cvdiv.mousemove(this.cvmsMove.bind(this));
 			// add touch events to the canvas
-			$cvdiv.bind("touchstart", panelApl.cvmsDown);
-			$cvdiv.bind("touchend", panelApl.cvmsUp);
-			$cvdiv.bind("touchend", panelApl.cvmsUp);
-			$cvdiv.bind("touchmove", panelApl.cvmsMove);
+			$cvdiv.bind("touchstart", this.cvmsDown.bind(this));
+			$cvdiv.bind("touchend", this.cvmsUp.bind(this));
+			$cvdiv.bind("touchend", this.cvmsUp.bind(this));
+			$cvdiv.bind("touchmove", this.cvmsMove.bind(this));
 
 			// init canvas
-			panelApl.canv.init();
+			this.canv.init();
 
-			panelApl.gamestart = true;
-			panelApl.canv.setFps(panelApl.fps);
+			this.gamestart = true;
+			this.canv.setFps(this.fps);
 
-			panelApl.timer.set({
+			this.timer.set({
 				action: function() {
-					panelApl.canv.moveObj();
-					panelApl.canv.draw();
-				},
-				time: 1000/panelApl.fps
+					this.canv.moveObj();
+					this.canv.draw();
+				}.bind(this),
+				time: 1000/this.fps
 			});
 
-			panelApl.timer.play();
+			this.timer.play();
 			$btn.text('stop');
 		} else { // if playing
 			// delete mouse events from the canvas
-			$cvdiv.unbind('mousedown', panelApl.cvmsDown);
-			$cvdiv.unbind('mouseup', panelApl.cvmsUp);
-			$cvdiv.unbind('mouseleave', panelApl.cvmsUp);
-			$cvdiv.unbind('mousemove', panelApl.cvmsMove);
+			$cvdiv.unbind('mousedown', this.cvmsDown.bind(this));
+			$cvdiv.unbind('mouseup', this.cvmsUp.bind(this));
+			$cvdiv.unbind('mouseleave', this.cvmsUp.bind(this));
+			$cvdiv.unbind('mousemove', this.cvmsMove.bind(this));
 			// delete touch events from the canvas
-			$cvdiv.unbind("touchstart", panelApl.cvmsDown);
-			$cvdiv.unbind("touchend", panelApl.cvmsUp);
-			$cvdiv.unbind("touchend", panelApl.cvmsUp);
-			$cvdiv.unbind("touchmove", panelApl.cvmsMove);
+			$cvdiv.unbind("touchstart", this.cvmsDown.bind(this));
+			$cvdiv.unbind("touchend", this.cvmsUp.bind(this));
+			$cvdiv.unbind("touchend", this.cvmsUp.bind(this));
+			$cvdiv.unbind("touchmove", this.cvmsMove.bind(this));
 
-			panelApl.gamestart = false;
-			panelApl.timer.pause();
+			this.gamestart = false;
+			this.timer.pause();
 			$btn.text('start');
 		}
-	};
+};
 
-	panelApl.cvmsDown = function(evt) {
+Apl.prototype.cvmsDown = function(evt) {
 		// convert coordinate from point to canvas
-		var cx = evt.pageX - panelApl.canv.cvpos.x;
-		var cy = evt.pageY - panelApl.canv.cvpos.y;
-		panelApl.drag.now = true;
+		var cx = evt.pageX - this.canv.cvpos.x;
+		var cy = evt.pageY - this.canv.cvpos.y;
+		this.drag.now = true;
 		return false;
-	};
+};
 
-	panelApl.cvmsUp = function(evt) {
-		if (panelApl.drag.now) {
+Apl.prototype.cvmsUp = function(evt) {
+		if (this.drag.now) {
 			// convert coordinate from point to canvas
-			var cx = evt.pageX - panelApl.canv.cvpos.x;
-			var cy = evt.pageY - panelApl.canv.cvpos.y;
+			var cx = evt.pageX - this.canv.cvpos.x;
+			var cy = evt.pageY - this.canv.cvpos.y;
 			if (cx < 0) cx = 0;
-			if (cx > panelApl.canv.area.w) cx = panelApl.canv.area.w;
+			if (cx > this.canv.area.w) cx = this.canv.area.w;
 			if (cy < 0) cy = 0;
-			if (cy > panelApl.canv.area.h) cy = panelApl.canv.area.h;
+			if (cy > this.canv.area.h) cy = this.canv.area.h;
 
-			panelApl.drag.now = false;
+			this.drag.now = false;
 		}
-	};
+};
 
-	panelApl.cvmsMove = function(evt) {
-		if (panelApl.drag.now) {
+Apl.prototype.cvmsMove = function(evt) {
+		if (this.drag.now) {
 			// convert coordinate from point to canvas
-			var cx = evt.pageX - panelApl.canv.cvpos.x;
-			var cy = evt.pageY - panelApl.canv.cvpos.y;
-			//panelApl.canv.draw({x:cx, y:cy});
+			var cx = evt.pageX - this.canv.cvpos.x;
+			var cy = evt.pageY - this.canv.cvpos.y;
+			//this.canv.draw({x:cx, y:cy});
 		}
 		return false;
-	};
+};
 
-	/* body onload process */
-	$(window).load(function() {
-		// get canvas's DOM element and context
-		var canvas = document.getElementById('cv1');
-		if ( ! canvas || ! canvas.getContext ) { return false; }
-		var ctx = canvas.getContext("2d");
-		ctx.lineWidth = 1;
-		ctx.globalCompositeOperation = "source-over";
-
-		// display
-		panelApl.canv = new canvasManager.canv(ctx, canvas.width,
-											   canvas.height, panelApl);
-		panelApl.canv.init();
-		panelApl.canv.draw();
-
-		// set events
-		var $btn = $('#stbtn1'); // start button
-		$btn.mousedown(panelApl.start);
-		$btn.text('start');
-	});
-})(jQuery);
+/* body onload process */
+$(function() {
+    var apl = new Apl();
+});
