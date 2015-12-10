@@ -37,35 +37,35 @@ Apl.prototype.start = function() {
 	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 	var $btn = $('#stbtn1'); // start button
 
-		//// set parameters from web form
-		var gravity = document.form1.input_gravity.value;
-		var cor = document.form1.input_cor.value;
-		// check if inputs are number
-		if (isNaN(gravity) || isNaN(cor)) {
-			return;
-		}
-		gravity = Number(gravity);
-		cor = Number(cor);
-		if (gravity < 0 || cor < 0) {
-			return;
-		}
-		this.setGravity(gravity);
-		this.setCor(cor);
+	//// set parameters from web form
+	var gravity = document.form1.input_gravity.value;
+	var cor = document.form1.input_cor.value;
+	// check if inputs are number
+	if (isNaN(gravity) || isNaN(cor)) {
+		return;
+	}
+	gravity = Number(gravity);
+	cor = Number(cor);
+	if (gravity < 0 || cor < 0) {
+		return;
+	}
+	this.setGravity(gravity);
+	this.setCor(cor);
 
-		// init canvas
-		this.init();
+	// init canvas
+	this.init();
 
-		this.setFps(this.fps);
+	this.setFps(this.fps);
 
-		this.timer.set({
-			action: function() {
-				this.moveObj();
-				this.draw();
-			}.bind(this),
-			time: 1000/this.fps
-		});
+	this.timer.set({
+		action: function() {
+			this.moveObj();
+			this.draw();
+		}.bind(this),
+		time: 1000/this.fps
+	});
 
-		this.timer.play();
+	this.timer.play();
 };
 
 //------------------------------/
