@@ -2,11 +2,6 @@
  * canvas is updated when an object is dragged by 1px
  */
 var Apl = function() {
-	/* global var */
-	// drag state
-	this.drag = {
-		now: false, // true if dragging
-	};
 	this.gamestart = false;  // true if playing
 
 	// timer
@@ -35,13 +30,13 @@ var Apl = function() {
 	// set events
 	var $btn = $('#stbtn1'); // start button
 	$btn.mousedown(this.start.bind(this));
-	$btn.text('start');
+	$btn.text('update');
 };
 
 Apl.prototype.start = function() {
 	var $cvdiv = $('#cvdiv1'); // main Canvas¤Îdiv
 	var $btn = $('#stbtn1'); // start button
-	if (!this.gamestart) { // if not playing
+
 		//// set parameters from web form
 		var gravity = document.form1.input_gravity.value;
 		var cor = document.form1.input_cor.value;
@@ -57,21 +52,9 @@ Apl.prototype.start = function() {
 		this.setGravity(gravity);
 		this.setCor(cor);
 
-		// add mouse events to the canvas
-		$cvdiv.mousedown(this.cvmsDown.bind(this));
-		$cvdiv.mouseup(this.cvmsUp.bind(this));
-		$cvdiv.mouseleave(this.cvmsUp.bind(this));
-		$cvdiv.mousemove(this.cvmsMove.bind(this));
-		// add touch events to the canvas
-		$cvdiv.bind("touchstart", this.cvmsDown.bind(this));
-		$cvdiv.bind("touchend", this.cvmsUp.bind(this));
-		$cvdiv.bind("touchend", this.cvmsUp.bind(this));
-		$cvdiv.bind("touchmove", this.cvmsMove.bind(this));
-
 		// init canvas
 		this.init();
 
-		this.gamestart = true;
 		this.setFps(this.fps);
 
 		this.timer.set({
@@ -83,55 +66,6 @@ Apl.prototype.start = function() {
 		});
 
 		this.timer.play();
-		$btn.text('stop');
-	} else { // if playing
-		// delete mouse events from the canvas
-		$cvdiv.unbind('mousedown', this.cvmsDown.bind(this));
-		$cvdiv.unbind('mouseup', this.cvmsUp.bind(this));
-		$cvdiv.unbind('mouseleave', this.cvmsUp.bind(this));
-		$cvdiv.unbind('mousemove', this.cvmsMove.bind(this));
-		// delete touch events from the canvas
-		$cvdiv.unbind("touchstart", this.cvmsDown.bind(this));
-		$cvdiv.unbind("touchend", this.cvmsUp.bind(this));
-		$cvdiv.unbind("touchend", this.cvmsUp.bind(this));
-		$cvdiv.unbind("touchmove", this.cvmsMove.bind(this));
-
-		this.gamestart = false;
-		this.timer.pause();
-		$btn.text('start');
-	}
-};
-
-Apl.prototype.cvmsDown = function(evt) {
-	// convert coordinate from point to canvas
-	var cx = evt.pageX - this.cvpos.x;
-	var cy = evt.pageY - this.cvpos.y;
-	this.drag.now = true;
-	return false;
-};
-
-Apl.prototype.cvmsUp = function(evt) {
-	if (this.drag.now) {
-		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.cvpos.x;
-		var cy = evt.pageY - this.cvpos.y;
-		if (cx < 0) cx = 0;
-		if (cx > this.canvasWidth) cx = this.canvasWidth;
-		if (cy < 0) cy = 0;
-		if (cy > this.canvasHeight) cy = this.canvasHeight;
-
-		this.drag.now = false;
-	}
-};
-
-Apl.prototype.cvmsMove = function(evt) {
-	if (this.drag.now) {
-		// convert coordinate from point to canvas
-		var cx = evt.pageX - this.cvpos.x;
-		var cy = evt.pageY - this.cvpos.y;
-		//this.canv.draw({x:cx, y:cy});
-	}
-	return false;
 };
 
 //------------------------------/
