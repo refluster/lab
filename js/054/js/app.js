@@ -86,20 +86,45 @@ App.prototype.init = function() {
 App.prototype.initObject = function(){
 	var loader = new THREE.JSONLoader();
 
-	loader.load('js/buildings.json', function(geometry, material) {
+	loader.load('js/build00.json', function(geometry, material) {
 		var mesh;
-
 		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
-		mesh.position.x = 0;
-		mesh.position.z = -50;
-		this.scene.add(mesh);
-
-		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffeeff}));
 		mesh.position.x = 0;
 		mesh.position.z = 0;
 		this.scene.add(mesh);
 	}.bind(this));
 
+	loader.load('js/build01.json', function(geometry, material) {
+		var mesh;
+		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
+		mesh.position.x = 0;
+		mesh.position.z = 40;
+		this.scene.add(mesh);
+	}.bind(this));
+
+	loader.load('js/build02.json', function(geometry, material) {
+		var mesh;
+		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
+		mesh.position.x = 0;
+		mesh.position.z = 80;
+		this.scene.add(mesh);
+	}.bind(this));
+
+	loader.load('js/build10.json', function(geometry, material) {
+		var mesh;
+		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
+		mesh.position.x = 0;
+		mesh.position.z = 120;
+		this.scene.add(mesh);
+	}.bind(this));
+
+	loader.load('js/build11.json', function(geometry, material) {
+		var mesh;
+		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
+		mesh.position.x = 0;
+		mesh.position.z = 160;
+		this.scene.add(mesh);
+	}.bind(this));
 };
 
 App.prototype.resize = function() {
