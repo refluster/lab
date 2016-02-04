@@ -56,6 +56,7 @@ define(function(require, exports, module) {
 		switch (window.location.hash) {
 		case null:
 		case "":
+			window.history.replaceState(null, null, "#/1");
 		case "#/1":
 			var AnimationSlide = require('views/slides/Animation');
 			slide = new AnimationSlide({
