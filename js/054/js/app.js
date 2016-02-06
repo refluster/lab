@@ -86,44 +86,75 @@ App.prototype.init = function() {
 App.prototype.initObject = function(){
 	var loader = new THREE.JSONLoader();
 
-	loader.load('js/build00.json', function(geometry, material) {
-		var mesh;
-		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
-		mesh.position.x = 0;
-		mesh.position.z = 0;
-		this.scene.add(mesh);
-	}.bind(this));
+	var objfile = [
+		'js/build00.json',
+		'js/build01.json',
+		'js/build02.json',
+		'js/build03.json',
+		'js/build04.json',
+		'js/build05.json',
+		'js/build06.json',
+		'js/build07.json',
+		'js/build08.json',
+		'js/build09.json',
+		'js/build10.json',
+		'js/build11.json',
+		'js/build12.json',
+	];
 
-	loader.load('js/build01.json', function(geometry, material) {
-		var mesh;
-		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
-		mesh.position.x = 0;
-		mesh.position.z = 40;
-		this.scene.add(mesh);
-	}.bind(this));
+	var map = [
+		{objId:  0, x:   0, y:   0},
+		{objId:  1, x:   0, y:  40},
+		{objId:  2, x:   0, y:  80},
+		{objId: 10, x:   0, y: 120},
+		{objId: 11, x:   0, y: 160},
+	];
 
-	loader.load('js/build02.json', function(geometry, material) {
-		var mesh;
-		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
-		mesh.position.x = 0;
-		mesh.position.z = 80;
-		this.scene.add(mesh);
-	}.bind(this));
+	var objmap = {};
+	map.forEach(function(m) {
+		if (objmap[m.objId] === undefined) {
+			objmap[m.objId] = {
+				geometry: undefined,
+				objs: [],
+			};
+		}
+		objmap[m.objId].objs.push(m);
+	});
 
-	loader.load('js/build10.json', function(geometry, material) {
-		var mesh;
-		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
-		mesh.position.x = 0;
-		mesh.position.z = 120;
-		this.scene.add(mesh);
-	}.bind(this));
+	function loadObj(objmap, cb) {
+		var objIds = [];
+		for (var k in objmap) {
+			objIds.push(k);
+		}
 
-	loader.load('js/build11.json', function(geometry, material) {
-		var mesh;
-		mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0xffffff}));
-		mesh.position.x = 0;
-		mesh.position.z = 160;
-		this.scene.add(mesh);
+		var ptr = -1;
+		function _cb(geometry, material) {
+			if (geometry !== undefined) {
+				objmap[objIds[ptr]].geometry = geometry;
+			}
+			if (++ptr >= objIds.length) {
+				cb(objmap);
+				return;
+			}
+			console.log(objfile[objIds[ptr]]);
+			loader.load(objfile[objIds[ptr]], _cb);
+		}
+
+		_cb(undefined, undefined);
+	}
+
+	loadObj(objmap, function(geometryes) {
+		for (var k in objmap) {
+			var om = objmap[k];
+			om.objs.forEach(function(o) {
+				var mesh;
+				mesh = new THREE.Mesh(om.geometry,
+									  new THREE.MeshLambertMaterial({color: 0xffffff}));
+				mesh.position.x = o.x;
+				mesh.position.z = o.y;
+				this.scene.add(mesh);
+			}.bind(this));
+		}
 	}.bind(this));
 };
 
