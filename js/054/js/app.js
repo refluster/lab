@@ -20,6 +20,7 @@ App.prototype.init = function() {
 
 	this.camera = new THREE.PerspectiveCamera(90, 1, 0.001, 700);
 	this.camera.position.set(20, 80, 0);
+	this.camera.position.set(0, 10, 0);
 	this.scene.add(this.camera);
 
 	this.controls = new THREE.OrbitControls(this.camera, this.element);
@@ -193,6 +194,10 @@ App.prototype.update = function(dt) {
 	this.camera.updateProjectionMatrix();
 
 	this.controls.update(dt);
+};
+
+App.prototype.render = function(dt) {
+	this.effect.render(this.scene, this.camera);
 
 	var d = this.camera.getWorldDirection();
 
@@ -207,16 +212,11 @@ App.prototype.update = function(dt) {
 	);
 };
 
-App.prototype.render = function(dt) {
-	this.effect.render(this.scene, this.camera);
-};
-
 App.prototype.animate = function(t) {
 	requestAnimationFrame(this.animate.bind(this));
 
 	this.update(this.clock.getDelta());
 	this.render(this.clock.getDelta());
-
 };
 
 App.prototype.fullscreen = function() {
