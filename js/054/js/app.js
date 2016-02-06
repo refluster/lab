@@ -19,7 +19,7 @@ App.prototype.init = function() {
 	this.scene = new THREE.Scene();
 
 	this.camera = new THREE.PerspectiveCamera(90, 1, 0.001, 700);
-	this.camera.position.set(0, 10, 0);
+	this.camera.position.set(20, 80, 0);
 	this.scene.add(this.camera);
 
 	this.controls = new THREE.OrbitControls(this.camera, this.element);
@@ -56,7 +56,7 @@ App.prototype.init = function() {
 
 
 	var texture = THREE.ImageUtils.loadTexture(
-		'textures/patterns/checker.png'
+		'textures/patterns/asp1.jpg'
 	);
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
@@ -103,11 +103,26 @@ App.prototype.initObject = function(){
 	];
 
 	var map = [
-		{objId:  0, x:   0, y:   0},
+		{objId: 10, x:   0, y:   0},
 		{objId:  1, x:   0, y:  40},
 		{objId:  2, x:   0, y:  80},
-		{objId: 10, x:   0, y: 120},
 		{objId: 11, x:   0, y: 160},
+		{objId: 10, x:   0, y: 200},
+		{objId:  5, x:   0, y: 240},
+		{objId:  2, x:  40, y: 280},
+		{objId:  0, x:  40, y: 320},
+		{objId: 10, x:  40, y: 360},
+
+		{objId:  2, x:  40, y:   0},
+		{objId:  0, x:  40, y:  40},
+		{objId:  1, x:  40, y:  80},
+		{objId: 11, x:  40, y: 120},
+		{objId: 10, x:  40, y: 160},
+		{objId:  5, x:  40, y: 200},
+		{objId:  6, x:  40, y: 240},
+		{objId:  6, x:  40, y: 280},
+		{objId: 10, x:  40, y: 320},
+		{objId:  5, x:  40, y: 360},
 	];
 
 	var objmap = {};
@@ -169,23 +184,15 @@ App.prototype.resize = function() {
 	this.effect.setSize(width, height);
 };
 
+var v = 0;
+var t_ = 0;
+
 App.prototype.update = function(dt) {
 	this.resize();
 
 	this.camera.updateProjectionMatrix();
 
 	this.controls.update(dt);
-};
-
-App.prototype.render = function(dt) {
-	this.effect.render(this.scene, this.camera);
-};
-
-App.prototype.animate = function(t) {
-	requestAnimationFrame(this.animate.bind(this));
-
-	this.update(this.clock.getDelta());
-	this.render(this.clock.getDelta());
 
 	var d = this.camera.getWorldDirection();
 
@@ -198,6 +205,18 @@ App.prototype.animate = function(t) {
 		this.camera.position.y + d.y/16,
 		this.camera.position.z + d.z/16
 	);
+};
+
+App.prototype.render = function(dt) {
+	this.effect.render(this.scene, this.camera);
+};
+
+App.prototype.animate = function(t) {
+	requestAnimationFrame(this.animate.bind(this));
+
+	this.update(this.clock.getDelta());
+	this.render(this.clock.getDelta());
+
 };
 
 App.prototype.fullscreen = function() {
