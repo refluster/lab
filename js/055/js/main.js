@@ -8,9 +8,10 @@ $(function() {
 */
 
 
+
 function ImageToBase64(img) {
+	var canvas = document.getElementById('canvas-temp');
     // New Canvas
-    var canvas = document.getElementById('canvas-temp');
     canvas.width  = img.width;
     canvas.height = img.height;
     // Draw Image
@@ -39,6 +40,21 @@ function post(data) {
 	xmlHttpRequest.setRequestHeader( 'Content-Type', 'application/json' );
 	// データをリクエスト ボディに含めて送信する
 	xmlHttpRequest.send(JSON.stringify(data));
+}
+
+function loadFile(files) {
+	var canvas = document.getElementById('canvas-temp');
+	var ctx = canvas.getContext('2d');
+	var file = files.files[0];
+	var reader = new FileReader();
+
+	console.log(files.files);
+
+	reader.onload = function() {
+		var image = document.getElementById('img');
+		image.src = reader.result;
+	}.bind(this);
+	reader.readAsDataURL(file);
 }
 
 function hoge() {
