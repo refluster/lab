@@ -11,18 +11,7 @@ const apikey = 'AIzaSyA_83j8DMAW9rJ38uczalFkfpL5lV6ito4';
 
 function ImageToBase64(img) {
 	var canvas = document.getElementById('canvas-temp');
-    // New Canvas
-    canvas.width  = img.width;
-    canvas.height = img.height;
-
-	console.log(img.width);
-	console.log(img.height);
-
-    // Draw Image
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    // To Base64
-    return canvas.toDataURL('image/jpeg').substr(23);
+	return canvas.toDataURL('image/jpeg').substr(23);
 }
 
 function post(data) {
@@ -36,11 +25,21 @@ function post(data) {
 	}
 	xmlHttpRequest.open('POST',
 						'https://vision.googleapis.com/v1/images:annotate?key=' + apikey);
-	// サーバに対して解析方法を指定する
 	xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-	// データをリクエスト ボディに含めて送信する
 	xmlHttpRequest.send(JSON.stringify(data));
 }
+
+function imageUpdate(src) {
+	var image = document.getElementById('img');
+	image.onload = function() {
+		var canvas = document.getElementById('canvas-temp');
+		var ctx = canvas.getContext('2d');
+		canvas.width  = image.width;
+		canvas.height = image.height;
+		ctx.drawImage(image, 0, 0);
+	};
+	image.src = src;
+}	
 
 function loadFile(files) {
 	var canvas = document.getElementById('canvas-temp');
@@ -49,8 +48,7 @@ function loadFile(files) {
 	var reader = new FileReader();
 
 	reader.onload = function() {
-		var image = document.getElementById('img');
-		image.src = reader.result;
+		imageUpdate(reader.result);
 	}.bind(this);
 	reader.readAsDataURL(file);
 }
@@ -79,4 +77,3 @@ function analyse() {
 
 	post(data);
 }
-
