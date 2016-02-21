@@ -7,13 +7,17 @@ $(function() {
 });
 */
 
-
+const apikey = 'AIzaSyA_83j8DMAW9rJ38uczalFkfpL5lV6ito4';
 
 function ImageToBase64(img) {
 	var canvas = document.getElementById('canvas-temp');
     // New Canvas
     canvas.width  = img.width;
     canvas.height = img.height;
+
+	console.log(img.width);
+	console.log(img.height);
+
     // Draw Image
     var ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
@@ -35,9 +39,10 @@ function post(data) {
 			alert( this.responseText );
 		}
 	}
-	xmlHttpRequest.open( 'POST', 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyA_83j8DMAW9rJ38uczalFkfpL5lV6ito4');
+	xmlHttpRequest.open('POST',
+						'https://vision.googleapis.com/v1/images:annotate?key=' + apikey);
 	// サーバに対して解析方法を指定する
-	xmlHttpRequest.setRequestHeader( 'Content-Type', 'application/json' );
+	xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
 	// データをリクエスト ボディに含めて送信する
 	xmlHttpRequest.send(JSON.stringify(data));
 }
@@ -48,8 +53,6 @@ function loadFile(files) {
 	var file = files.files[0];
 	var reader = new FileReader();
 
-	console.log(files.files);
-
 	reader.onload = function() {
 		var image = document.getElementById('img');
 		image.src = reader.result;
@@ -57,9 +60,8 @@ function loadFile(files) {
 	reader.readAsDataURL(file);
 }
 
-function hoge() {
+function analyse() {
 	var img = document.getElementById('img');
-
 	var base64 = ImageToBase64(img);
 	var data = {
 		"requests":[
