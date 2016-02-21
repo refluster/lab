@@ -82,3 +82,12 @@ function analyse() {
 	
 	post(data);
 }
+
+window.onload = function() {
+	var image = document.getElementById('img');
+	var canvas = document.getElementById('canvas-temp');
+	var ctx = canvas.getContext('2d');
+	canvas.width  = image.width;
+	canvas.height = image.height;
+	ctx.drawImage(image, 0, 0);
+};
