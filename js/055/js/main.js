@@ -28,15 +28,10 @@ function ImageToBase64(img) {
 function post(data) {
 	var xmlHttpRequest = new XMLHttpRequest();
 	xmlHttpRequest.onreadystatechange = function() {
-		var READYSTATE_COMPLETED = 4;
-		var HTTP_STATUS_OK = 200;
-		
-		if( this.readyState == READYSTATE_COMPLETED
-			&& this.status == HTTP_STATUS_OK ) {
-			// レスポンスの表示
-			alert( this.responseText );
-		} else {
-			alert( this.responseText );
+		const READYSTATE_COMPLETED = 4;
+		if (this.readyState == READYSTATE_COMPLETED) {
+			var result = document.getElementById('result');
+			result.innerHTML = this.responseText;
 		}
 	}
 	xmlHttpRequest.open('POST',
@@ -62,23 +57,26 @@ function loadFile(files) {
 
 function analyse() {
 	var img = document.getElementById('img');
+	var detectType = document.getElementById('detect-type').value;
 	var base64 = ImageToBase64(img);
 	var data = {
 		"requests":[
 			{
 				"image":{
-					"content":base64
+					"content": base64
 				},
 				"features":[
 					{
-						"type":"LABEL_DETECTION",
-						"maxResults":1
+						"type": detectType,
+						"maxResults": 1
 					}
 				]
 			}
 		]
 	};
 	
+	console.log(detectType);
+
 	post(data);
 }
 

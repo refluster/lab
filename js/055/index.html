@@ -30,8 +30,16 @@
       <ul class="chapter-toc">
         <li>cloud vision api</li>
       </ul>
+
+      <select id="detect-type">
+        <option value="LABEL_DETECTION">LABEL_DETECTION</option>
+        <option value="TEXT_DETECTION">TEXT_DETECTION</option>
+        <option value="TYPE_UNSPECIFIED">TYPE_UNSPECIFIED</option>
+      </select>
+      <input type="file" id="file-select" onchange="loadFile(this)">
       <button onclick="analyse()">analyse</button>
-      <input type="file" id="file-select" onchange="loadFile(this)">select image</input>
+
+      <div style="background-color: #ddd; font-size: 10px; line-height: 14px"><pre id="result"></pre></div>
       <img id="img" src="faulkner.jpg" style="width: 100%">
       <canvas style="display: none" id="canvas-temp"></canvas>
     </div>
