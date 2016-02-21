@@ -32,26 +32,34 @@
         <li>Google cloud vision api</li>
       </ul>
       <div class="form-group">
-        <label>Type</label>
         <select id="detect-type" class="form-control">
-          <option value="LABEL_DETECTION">LABEL_DETECTION</option>
-          <option value="TEXT_DETECTION">TEXT_DETECTION</option>
-          <option value="FACE_DETECTION">FACE_DETECTION</option>
-          <option value="LANDMARK_DETECTION">LANDMARK_DETECTION</option>
-          <option value="LOGO_DETECTION">LOGO_DETECTION</option>
-          <option value="SAFE_SEARCH_DETECTION">SAFE_SEARCH_DETECTION</option>
-          <option value="IMAGE_PROPERTIES">IMAGE_PROPERTIES</option>
-          <option value="TYPE_UNSPECIFIED">TYPE_UNSPECIFIED</option>
+          <option value="LABEL_DETECTION">label detection</option>
+          <option value="TEXT_DETECTION">text detection</option>
+          <option value="FACE_DETECTION">face detection</option>
+          <option value="LANDMARK_DETECTION">landmark detection</option>
+          <option value="LOGO_DETECTION">logo detection</option>
+          <option value="SAFE_SEARCH_DETECTION">safe search detection</option>
+          <option value="IMAGE_PROPERTIES">image properties</option>
+          <option value="TYPE_UNSPECIFIED">type unspecified</option>
         </select>
       </div>
+
       <div class="form-group">
-        <label>File</label>
-        <input type="file" id="file-select" class="form-control" onchange="loadFile(this)">
+        <div class="input-group">
+          <input type="file" id="file" class="form-control" onchange="loadFile(this)"
+                 style="display: none">
+          <input type="text" class="form-control" id="selected-file" readonly>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="selectFile()">
+              Select file</button>
+          </span>
+        </div>
       </div>
       <button onclick="analyse()" class="btn btn-primary">analyse</button>
       <p></p>
-
-      <div style="background-color: #ddd; font-size: 10px; line-height: 14px"><pre id="result"></pre></div>
+      <div style="border: 1px solid #444; background-color: #ddd; font-size: 10px; line-height: 14px">
+        <pre id="result"></pre></div>
+      <p></p>
       <img style="display: none" id="img" src="faulkner.jpg">
       <canvas id="canvas-temp" style="width: 100%"></canvas>
     </div>

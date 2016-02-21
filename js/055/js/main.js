@@ -16,6 +16,7 @@ function ImageToBase64(img) {
 
 function post(data) {
 	var xmlHttpRequest = new XMLHttpRequest();
+	result.innerHTML = 'analysing ...';
 	xmlHttpRequest.onreadystatechange = function() {
 		const READYSTATE_COMPLETED = 4;
 		if (this.readyState == READYSTATE_COMPLETED) {
@@ -42,15 +43,21 @@ function imageUpdate(src) {
 }	
 
 function loadFile(files) {
+	var selectedFile = document.getElementById('selected-file');
 	var canvas = document.getElementById('canvas-temp');
 	var ctx = canvas.getContext('2d');
 	var file = files.files[0];
 	var reader = new FileReader();
 
+	selectedFile.value = file.name;
 	reader.onload = function() {
 		imageUpdate(reader.result);
 	}.bind(this);
 	reader.readAsDataURL(file);
+}
+
+function selectFile() {
+	document.getElementById('file').click();
 }
 
 function analyse() {
@@ -73,7 +80,5 @@ function analyse() {
 		]
 	};
 	
-	console.log(detectType);
-
 	post(data);
 }
