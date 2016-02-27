@@ -38,8 +38,7 @@ var Apl = function() {
 	this.draw();
 
 	// set events
-	$('#stbtn1').mousedown(this.start.bind(this));
-	$('#stbtn1').text('update');
+	$('#btn-apply').mousedown(this.start.bind(this));
 
 	this.timer = $.timer();
 };
