@@ -1,10 +1,14 @@
 var Apl = function() {
 	// get canvas's DOM element and context
-	var $canvas = $('#cv1');
+	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	this.ctx = $canvas[0].getContext("2d");
 	this.ctx.lineWidth = 1;
 	this.ctx.globalCompositeOperation = "source-over";
+	this.canvasWidth = $canvas.width();
+	this.canvasHeight = $canvas.height();
+	$canvas.attr('width', this.canvasWidth);
+	$canvas.attr('height', this.canvasHeight);
 
 	// display
 	this.area = {w:$canvas.width(), h:$canvas.height()};  // the area
