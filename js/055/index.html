@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="EUC-JP">
+    <title>Google cloud vision API</title>
+<!--
+    <script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
+-->
+    <script type="text/javascript" src="./js/main.js" charset="EUC-JP"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style TYPE="text/css">
+      #canvas {
+      height: 320px;
+      width: 100%;
+      }
+    </style>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-16703149-7', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <div id="header"><h2 class="title">Google cloud vision API</h2></div>
+    <div id="contents">
+      <ul class="chapter-toc">
+        <li>Google cloud vision API</li>
+      </ul>
+
+      <div class="form-group">
+        <div class="input-group">
+          <input type="file" id="file" class="form-control" onchange="loadFile(this)"
+                 style="display: none">
+          <input type="text" class="form-control" id="selected-file" readonly>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="selectFile()">
+              Select file</button>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <select id="detect-type" class="form-control">
+          <option value="LABEL_DETECTION">label detection</option>
+          <option value="TEXT_DETECTION">text detection</option>
+          <option value="FACE_DETECTION">face detection</option>
+          <option value="LANDMARK_DETECTION">landmark detection</option>
+          <option value="LOGO_DETECTION">logo detection</option>
+          <option value="SAFE_SEARCH_DETECTION">safe search detection</option>
+          <option value="IMAGE_PROPERTIES">image properties</option>
+          <option value="TYPE_UNSPECIFIED">type unspecified</option>
+        </select>
+      </div>
+      <button onclick="analyse()" class="btn btn-primary">analyse</button>
+      <p></p>
+      <div style="border: 1px solid #444; background-color: #ddd; font-size: 10px; line-height: 14px">
+        <pre id="result"></pre></div>
+      <p></p>
+      <img style="display: none" id="img" src="faulkner.jpg">
+      <canvas id="canvas-temp" style="width: 100%"></canvas>
+    </div>
+  </body>
+</html>

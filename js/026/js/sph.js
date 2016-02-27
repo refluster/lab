@@ -185,9 +185,7 @@ var Sph = function() {
 						var ix = neighbor_map_idx(v);
 
 						if (p_nbr_map[ix] != undefined) {
-							for (var i = 0; i < p_nbr_map[ix].length; i++) {
-								ptrs.push(p_nbr_map[ix][i]);
-							}
+							Array.prototype.push.apply(ptrs, p_nbr_map[ix]);
 						}
 					}
 				}
