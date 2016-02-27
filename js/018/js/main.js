@@ -31,6 +31,7 @@ var Apl = function() {
 
 	// set events
 	$('#btn-apply').mousedown(this.updateParam.bind(this));
+	this.updateParam();
 };
 
 Apl.prototype.updateParam = function() {
@@ -140,7 +141,6 @@ Apl.prototype.draw = function() {
 
 	// draw ball
 	this.ctx.fillStyle = 'white';
-	//this.ctx.globalAlpha = 0.5;
 	for (var i = 0; i < this.ball.length; i++) {
 		this.ctx.fillStyle = this.ball[i].color;
 		this.ctx.beginPath();
