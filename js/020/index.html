@@ -24,8 +24,7 @@
    </style>
     <title>020: gyro & gravity sensor test</title>
     <script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
-    <script type="text/javascript" src="./js/jquery.timer.js" charset="EUC-JP"></script>
-    <script type="text/javascript" src="./js/panel.js" charset="EUC-JP"></script>
+    <script type="text/javascript" src="./js/main.js" charset="EUC-JP"></script>
     <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -44,6 +43,15 @@
       <ul class="chapter-toc">
         <li>gravity and gyro sensor, "devicemotion"</li>
       </ul>
+      <input type="range" id="acx" min="0" max="1" step="0.01">
+      <input type="range" id="acy" min="0" max="1" step="0.01">
+      <input type="range" id="acz" min="0" max="1" step="0.01">
+      <input type="range" id="acgx" min="0" max="1" step="0.01">
+      <input type="range" id="acgy" min="0" max="1" step="0.01">
+      <input type="range" id="acgz" min="0" max="1" step="0.01">
+      <input type="range" id="rra" min="0" max="1" step="0.01">
+      <input type="range" id="rrb" min="0" max="1" step="0.01">
+      <input type="range" id="rrg" min="0" max="1" step="0.01">
       <div id="msg"></div>
     </div>
   </body>

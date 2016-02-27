@@ -20,6 +20,16 @@
 			temp += "rr_g:" + rr.gamma +"<br>";
 
 			document.getElementById("msg").innerHTML = temp;
+
+			$('#acx').val(ac.x);
+			$('#acy').val(ac.y);
+			$('#acz').val(ac.z);
+			$('#acgx').val(acg.x);
+			$('#acgy').val(acg.y);
+			$('#acgz').val(acg.z);
+			$('#rra').val(rr.alpha);
+			$('#rrb').val(rr.beta);
+			$('#rrg').val(rr.gamma);
 		});
 	});
 })(jQuery);
