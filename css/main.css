@@ -27,7 +27,7 @@ ul.demo-item {
 ul.demo-item li {
 	height: 40px;
 	line-height: 40px;
-	padding: 0px 20px;
+	padding: 0px 10px;
 }
 
 ul.demo-item li + li {
