@@ -50,8 +50,14 @@ App.prototype.init = function() {
 	}.bind(this)
 	window.addEventListener('deviceorientation', setOrientationControls, true);
 
-	var light = new THREE.HemisphereLight(0x777777, 0x000000, 0.6);
-	this.scene.add(light);
+
+	hemiLight = new THREE.HemisphereLight( 0xffffff,
+										   0xffffff, 0.6 );
+	hemiLight.color.setHSL( 0.6, 1, 0.6 );
+	hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+	hemiLight.position.set( 0, 500, 0 );
+	hemiLight.visible = true;
+	this.scene.add( hemiLight );
 
 	var texture = THREE.ImageUtils.loadTexture(
 		'textures/patterns/checker.png'
@@ -156,7 +162,7 @@ App.prototype.fullscreen = function() {
 };
 
 var app = new App();
-	
+
 app.init();
 app.animate();
 
