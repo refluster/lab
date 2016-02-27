@@ -36,8 +36,8 @@ var Apl = function() {
 
 Apl.prototype.updateParam = function() {
 	// set parameters from web form
-	var gravity = document.form1.input_gravity.value;
-	var fps = document.form1.input_fps.value;
+	var gravity = $('#input-gravity').val()
+	var fps = $('#input-fps').val();
 	// check if inputs are number
 	if (isNaN(gravity) || isNaN(fps)) {
 		return;

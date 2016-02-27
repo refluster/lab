@@ -18,6 +18,7 @@
     <script type="text/javascript" src="./js/jquery.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="./js/jquery.timer.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="./js/main.js" charset="EUC-JP"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script>
@@ -37,11 +38,20 @@
       <ul class="chapter-toc">
         <li>several crystals to be simulated</li>
       </ul>
-      <form name="form1" action="">
-        gravity: <input name="input_gravity" type="text" value="9.8" /><br>
-        fps: <input name="input_fps" type="text" value="40" /><br>
+      <form>
+        <div class="form-group">
+          <label for="input-gravity">gravity</label>
+          <input class="form-control" name="input-gravity" id="input-gravity" type="number"
+                 value="9.8" />
+        </div>
+        <div class="form-group">
+          <label for="input-fps">fps</label>
+          <input class="form-control" name="input-fps" id="input-fps" type="number"
+                 value="40" />
+        </div>
       </form>
-      <button id="btn-apply">apply</button>
+      <button id="btn-apply" class="btn btn-primary">apply</button>
+      <p></p>
       <canvas id="canvas"></canvas>
     </div>
   </body>
