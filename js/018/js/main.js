@@ -19,7 +19,6 @@ var Apl = function() {
 	this.px_per_meter = (300/0.06); // 300px per 6cm
 
 	this.center = {x:200, y:200};
-	this.accel = this.gravity*this.px_per_meter*this.sinTheta;
 
 	this.radius = 14; // raduis of balls
 	this.ball = [];
@@ -28,13 +27,13 @@ var Apl = function() {
 	this.ballInit();
 	this.draw();
 
-	// set events
-	$('#btn-apply').mousedown(this.start.bind(this));
-
 	this.timer = $.timer();
+
+	// set events
+	$('#btn-apply').mousedown(this.updateParam.bind(this));
 };
 
-Apl.prototype.start = function() {
+Apl.prototype.updateParam = function() {
 	// set parameters from web form
 	var gravity = document.form1.input_gravity.value;
 	var fps = document.form1.input_fps.value;
@@ -49,8 +48,6 @@ Apl.prototype.start = function() {
 	}
 	this.setGravity(gravity);
 	this.setFps(fps);
-
-	this.ballInit();
 
 	this.timer.set({
 		action: function() {
@@ -87,7 +84,6 @@ Apl.prototype.ballInit = function() {
 };
 
 Apl.prototype.blank = function() {
-	//this.ctx.clearRect(0, 0, this.area.w, this.area.h);
 	this.ctx.fillStyle = 'black';
 	this.ctx.fillRect(0, 0, this.area.w, this.area.h);
 };
@@ -108,7 +104,6 @@ Apl.prototype.setGravity = function(gravity) {
 };
 
 Apl.prototype.moveObj = function() {
-	// (m/s/s)*(interval)*(interval)
 	var intervalAccel = this.accel*
 		this.drawInterval*this.drawInterval/1000000;
 
