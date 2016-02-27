@@ -3,7 +3,6 @@ var Apl = function() {
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) { return false; }
 	this.ctx = $canvas[0].getContext("2d");
-	this.ctx.lineWidth = 1;
 	this.ctx.globalCompositeOperation = "source-over";
 	this.canvasWidth = $canvas.width();
 	this.canvasHeight = $canvas.height();
@@ -12,23 +11,15 @@ var Apl = function() {
 
 	// display
 	this.area = {w:$canvas.width(), h:$canvas.height()};  // the area
-	this.cvpos = {x:0, y:0};  // position of the canvas on the browser
-	this.prevPos = {x:0, y:0}; // previous position of the cursor
-	this.color = 'black';
-	this.lineWidth = 1;
 	this.PI2 = Math.PI * 2; // 2*pi
-
-	// set the position of the canvas on the browser
-	this.cvpos.x = $canvas.offset().left;
-	this.cvpos.y = $canvas.offset().top;
 
 	this.gravity = 9.8; // m/s^2
 	this.drawInterval = 20; // msec, 1000/fps
-	this.theta = Math.PI/30;
+	this.sinTheta = Math.sin(Math.PI/30);
 	this.px_per_meter = (300/0.06); // 300px per 6cm
 
 	this.center = {x:200, y:200};
-	this.accel = this.gravity*this.px_per_meter*Math.sin(this.theta);
+	this.accel = this.gravity*this.px_per_meter*this.sinTheta;
 
 	this.radius = 14; // raduis of balls
 	this.ball = [];
@@ -113,7 +104,7 @@ Apl.prototype.setFps = function(fps) {
 
 Apl.prototype.setGravity = function(gravity) {
 	this.gravity = gravity;
-	this.accel = this.gravity*this.px_per_meter*Math.sin(this.theta);
+	this.accel = this.gravity*this.px_per_meter*this.sinTheta;
 };
 
 Apl.prototype.moveObj = function() {
