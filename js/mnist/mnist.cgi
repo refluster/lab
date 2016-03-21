@@ -5,26 +5,23 @@ import sys
 import os
 import json
 
-class ShowHtml:
-    Command = "sed 's/</\\&lt;/g;s/>/\\&gt;/g' "
-    BufSize = 256
+import pprint
 
+pp = pprint.PrettyPrinter(depth=6)
+
+class ShowHtml:
     def __init__(self):
         1 == 1
         
-    def insert_file(self, fname):
-        p_stdin, p_stdout = os.popen2(self.Command + fname)
-        
-        buf = p_stdout.read(self.BufSize)
-        while buf:
-            sys.stdout.write(buf)
-            buf = p_stdout.read(self.BufSize)
-
     def page(self):
-        data = sys.stdin.read();
-        data = json.loads(data);
+        data = json.load(sys.stdin);
+        
+        for i in range(len(data)):
+            data[i] = data[i]/255.0
+
         sys.stdout.write("Content-type: application/json\n\n");
-        sys.stdout.write(str(data[0]))
+        pp.pprint(data)
+        
         
 if __name__ == "__main__":
     ShowHtml().page()
