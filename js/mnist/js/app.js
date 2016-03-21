@@ -98,7 +98,7 @@ App.prototype.recognize = function() {
 				console.log(d);
 
 				for (var i = 0; i < 10; i++) {
-					document.getElementById('dat' + i).innerHTML = d[i];
+					document.getElementById('convolutional' + i).innerHTML = d[i];
 				}
 			}
 		}
