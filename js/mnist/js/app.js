@@ -85,28 +85,27 @@ App.prototype.recognize = function() {
 		document.createElement('div').appendChild(img);
 		console.log(inputs);
 
-		var xmlHttpRequest = new XMLHttpRequest();
-		xmlHttpRequest.onreadystatechange = function() {
-			var READYSTATE_COMPLETED = 4;
-			var HTTP_STATUS_OK = 200;
-
-			if( this.readyState == READYSTATE_COMPLETED
-				&& this.status == HTTP_STATUS_OK ) {
-				console.log(this.responseText);
-
-				d = JSON.parse(this.responseText);
-				console.log(d);
-
-				for (var i = 0; i < 10; i++) {
-					document.getElementById('convolutional' + i).innerHTML = d[i];
+		function webapi(api, id) {
+			var xmlHttpRequest = new XMLHttpRequest();
+			xmlHttpRequest.onreadystatechange = function() {
+				var READYSTATE_COMPLETED = 4;
+				var HTTP_STATUS_OK = 200;
+				if( this.readyState == READYSTATE_COMPLETED
+					&& this.status == HTTP_STATUS_OK ) {
+					console.log(this.responseText);
+					d = JSON.parse(this.responseText);
+					console.log(d);
+					for (var i = 0; i < 10; i++) {
+						document.getElementById(id + i).innerHTML = d[i];
+					}
 				}
 			}
+			xmlHttpRequest.open('POST', api);
+			xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
+			xmlHttpRequest.send(JSON.stringify([inputs]));
 		}
-
-		//xmlHttpRequest.open('POST', './mnist.cgi');
-		xmlHttpRequest.open('POST', './conv.cgi');
-		xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-		xmlHttpRequest.send(JSON.stringify([inputs]));
+		webapi('./mnist.cgi', 'simple');
+		webapi('./conv.cgi', 'convolutional');
 	};
 
 	img.src = this.canvas.toDataURL();
