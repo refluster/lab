@@ -93,12 +93,19 @@ App.prototype.recognize = function() {
 			if( this.readyState == READYSTATE_COMPLETED
 				&& this.status == HTTP_STATUS_OK ) {
 				console.log(this.responseText);
+
+				d = JSON.parse(this.responseText);
+				console.log(d);
+
+				for (var i = 0; i < 10; i++) {
+					document.getElementById('dat' + i).innerHTML = d[i];
+				}
 			}
 		}
 
 		xmlHttpRequest.open('POST', './mnist.cgi');
 		xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-		xmlHttpRequest.send(JSON.stringify(inputs));
+		xmlHttpRequest.send(JSON.stringify([inputs]));
 	};
 
 	img.src = this.canvas.toDataURL();
