@@ -84,6 +84,9 @@ App.prototype.recognize = function() {
 
 		function webapi(api, id) {
 			var xmlHttpRequest = new XMLHttpRequest();
+			for (var i = 0; i < 10; i++) {
+				document.getElementById(id + i).innerHTML = '';
+			}
 			xmlHttpRequest.onreadystatechange = function() {
 				var READYSTATE_COMPLETED = 4;
 				var HTTP_STATUS_OK = 200;
