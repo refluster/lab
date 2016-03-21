@@ -77,7 +77,7 @@ class ShowHtml:
         init = tf.initialize_all_variables()
         sess.run(init)
 
-        saver.restore(sess, "./conv.ckpt")
+        saver.restore(sess, "./convolutional.ckpt")
         result = sess.run(y_conv, feed_dict={x: data, keep_prob: 1.0})
 
         sys.stdout.write("Content-type: application/json\n\n");

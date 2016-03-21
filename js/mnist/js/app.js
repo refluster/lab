@@ -104,8 +104,8 @@ App.prototype.recognize = function() {
 			xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
 			xmlHttpRequest.send(JSON.stringify([inputs]));
 		}
-		webapi('./mnist.cgi', 'simple');
-		webapi('./conv.cgi', 'convolutional');
+		webapi('./simple.cgi', 'simple');
+		webapi('./convolutional.cgi', 'convolutional');
 	};
 
 	img.src = this.canvas.toDataURL();

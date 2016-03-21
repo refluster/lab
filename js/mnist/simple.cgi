@@ -35,7 +35,7 @@ class ShowHtml:
         init = tf.initialize_all_variables()
         sess.run(init)
 
-        saver.restore(sess, "./model.ckpt")
+        saver.restore(sess, "./simple.ckpt")
         result = sess.run(y, feed_dict={x: data})
 
         sys.stdout.write("Content-type: application/json\n\n");
