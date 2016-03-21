@@ -34,17 +34,10 @@ App.prototype.touchStartHandler = function(e) {
 };
 
 App.prototype.touchEndHandler = function(e) {
-	var img = new Image();
-	img.onload = function() {
-		console.log('onload');
-	};
-
 	if (this.isDragging) {
 		this.isDragging = false;
 	}
-
 	this.recognize();
-
 	e.preventDefault();
 };
 
@@ -79,7 +72,6 @@ App.prototype.recognize = function() {
 		var small = document.createElement('canvas').getContext('2d');
 		small.drawImage(img, 0, 0, img.width, img.height, 0, 0, IMAGE_SIZE_S, IMAGE_SIZE_S);
 		var data = small.getImageData(0, 0, IMAGE_SIZE_S, IMAGE_SIZE_S).data;
-		console.log(data);
 		for (var i = 0; i < IMAGE_SIZE_S; i++) {
 			for (var j = 0; j < IMAGE_SIZE_S; j++) {
 				var n = 4 * (i * IMAGE_SIZE_S + j);
@@ -89,7 +81,6 @@ App.prototype.recognize = function() {
 			}
 		}
 		document.createElement('div').appendChild(img);
-		console.log(inputs);
 
 		function webapi(api, id) {
 			var xmlHttpRequest = new XMLHttpRequest();
@@ -98,7 +89,6 @@ App.prototype.recognize = function() {
 				var HTTP_STATUS_OK = 200;
 				if( this.readyState == READYSTATE_COMPLETED
 					&& this.status == HTTP_STATUS_OK ) {
-					console.log(this.responseText);
 					d = JSON.parse(this.responseText);
 					console.log(d);
 					for (var i = 0; i < 10; i++) {
@@ -117,55 +107,6 @@ App.prototype.recognize = function() {
 	img.src = this.canvas.toDataURL();
 };
 
-App.prototype.debug = function(s) {
-	document.getElementById('debug').innerText += s + '\n';
-};
-
-App.prototype.progress = function(progress) {
-	console.log(progress);
-	if (progress.recognized !== undefined) {
-		document.getElementById('progress').innerText = progress.recognized;
-	} else {
-		document.getElementById('progress').innerText = JSON.stringify(progress);
-		this.debug(JSON.stringify(progress));
-	}
-};
-
 window.onload = function() {
 	var app = new App();
 };
-
-//////////////////////////////
-App.prototype.loadFile = function() {
-	var reader = new FileReader();
-	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	reader.onload = function() {
-		var image = new Image();
-		image.onload = function() {
-			var w = 320, h = 240;
-			if (w/h > image.width/image.height) {
-				h = parseInt(w*image.height/image.width);
-			} else {
-				w = parseInt(h*image.width/image.height);
-			}
-
-			console.log({w: w, h: h});
-
-			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.canvas.width = w;
-			this.canvas.height = h;
-			this.ctx.drawImage(image, 0, 0, w, h);
-
-			this.debug("orig: " + image.width + " " + image.height);
-
-			var img = this.ctx.getImageData(0, 0, w, h);
-			Tesseract.recognize(img, {progress: this.progress.bind(this)}, function(err, result) {
-				console.log(result);
-				document.getElementById('transcription').innerText = result.text;
-			});
-		}.bind(this);
-		image.src = reader.result;
-	}.bind(this);
-	reader.readAsDataURL(document.getElementById('picker').files[0]);
-};
-
