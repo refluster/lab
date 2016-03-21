@@ -28,13 +28,8 @@ App.prototype.touchEndHandler = function(e) {
 		this.isDragging = false;
 	}
 
-	var w = this.dragEnd.x - this.dragStart.x;
-	var h = this.dragEnd.y - this.dragStart.y;
-	var img = this.ctx.getImageData(this.dragStart.x, this.dragStart.y, w, h);
-	Tesseract.recognize(img, {progress: this.progress.bind(this)}, function(err, result) {
-		console.log(result);
-		document.getElementById('transcription').innerText = result.text;
-	});
+	this.recognize();
+
 	e.preventDefault();
 };
 
@@ -55,6 +50,10 @@ App.prototype.touchMoveHandler = function(e) {
 		this.dragStart = end;
 	}
 	e.preventDefault();
+};
+
+App.prototype.recognize = function() {
+	console.log('recognize');
 };
 
 App.prototype.debug = function(s) {
