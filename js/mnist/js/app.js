@@ -1,11 +1,15 @@
 var App = function() {
 	this.canvas = document.getElementById('canvas');
-	this.ctx = this.canvas.getContext('2d');
+	this.input = document.getElementById('input');
 	this.canvas.addEventListener("touchstart", this.touchStartHandler.bind(this), false);
 	this.canvas.addEventListener("touchmove", this.touchMoveHandler.bind(this), false);
 	this.canvas.addEventListener("touchend", this.touchEndHandler.bind(this), false);
 
 	this.isDragging = false;
+
+	this.ctx = this.canvas.getContext('2d');
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillRect(0, 0, canvas.width, canvas.height);
 };
 
 App.prototype.getCanvasPosition = function(e) {
@@ -24,6 +28,11 @@ App.prototype.touchStartHandler = function(e) {
 };
 
 App.prototype.touchEndHandler = function(e) {
+	var img = new Image();
+	img.onload = function() {
+		console.log('onload');
+	};
+
 	if (this.isDragging) {
 		this.isDragging = false;
 	}
@@ -53,7 +62,30 @@ App.prototype.touchMoveHandler = function(e) {
 };
 
 App.prototype.recognize = function() {
-	console.log('recognize');
+	const IMAGE_SIZE_S = 28;
+	const resizeFactor = 4;
+
+	var ctx = this.input.getContext('2d');
+	var img = new Image();
+
+	img.onload = function() {
+		var inputs = [];
+		var small = document.createElement('canvas').getContext('2d');
+		small.drawImage(img, 0, 0, img.width, img.height, 0, 0, IMAGE_SIZE_S, IMAGE_SIZE_S);
+		var data = small.getImageData(0, 0, IMAGE_SIZE_S, IMAGE_SIZE_S).data;
+		console.log(data);
+		for (var i = 0; i < IMAGE_SIZE_S; i++) {
+			for (var j = 0; j < IMAGE_SIZE_S; j++) {
+				var n = 4 * (i * IMAGE_SIZE_S + j);
+				inputs[i * IMAGE_SIZE_S + j] = (data[n + 0] + data[n + 1] + data[n + 2]) / 3;
+				ctx.fillStyle = 'rgb(' + [data[n + 0], data[n + 1], data[n + 2]].join(',') + ')';
+				ctx.fillRect(j * resizeFactor, i * resizeFactor, resizeFactor, resizeFactor);
+			}
+		}
+		document.createElement('div').appendChild(img);
+		console.log(inputs);
+	};
+	img.src = this.canvas.toDataURL();
 };
 
 App.prototype.debug = function(s) {
