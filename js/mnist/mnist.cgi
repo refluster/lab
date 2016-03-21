@@ -3,6 +3,7 @@
 import string
 import sys
 import os
+import json
 
 class ShowHtml:
     Command = "sed 's/</\\&lt;/g;s/>/\\&gt;/g' "
@@ -20,12 +21,10 @@ class ShowHtml:
             buf = p_stdout.read(self.BufSize)
 
     def page(self):
-        sys.stdout.write(
-            "Content-type: text/html\n\n<html><head>" +
-            "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">" +
-            '</head><body><h1>CGI - Python</h1><h2>counter</h2>')
-        sys.stdout.write("<h2>code</h2><pre>")
-        sys.stdout.write("</pre></body></html>")
+        data = sys.stdin.read();
+        data = json.loads(data);
+        sys.stdout.write("Content-type: application/json\n\n");
+        sys.stdout.write(str(data[0]))
         
 if __name__ == "__main__":
     ShowHtml().page()

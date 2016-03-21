@@ -98,7 +98,7 @@ App.prototype.recognize = function() {
 
 		xmlHttpRequest.open('POST', './mnist.cgi');
 		xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-		xmlHttpRequest.send(inputs);
+		xmlHttpRequest.send(JSON.stringify(inputs));
 	};
 
 	img.src = this.canvas.toDataURL();
