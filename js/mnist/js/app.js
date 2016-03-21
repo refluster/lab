@@ -1,13 +1,19 @@
 var App = function() {
 	this.canvas = document.getElementById('canvas');
 	this.input = document.getElementById('input');
+	this.btnClear = document.getElementById('btn-clear');
 	this.canvas.addEventListener("touchstart", this.touchStartHandler.bind(this), false);
 	this.canvas.addEventListener("touchmove", this.touchMoveHandler.bind(this), false);
 	this.canvas.addEventListener("touchend", this.touchEndHandler.bind(this), false);
+	this.btnClear.addEventListener("click", this.clearCanvas.bind(this), false);	
 
 	this.isDragging = false;
 
 	this.ctx = this.canvas.getContext('2d');
+	this.clearCanvas();
+};
+
+App.prototype.clearCanvas = function(e) {
     this.ctx.fillStyle = '#FFFFFF';
     this.ctx.fillRect(0, 0, canvas.width, canvas.height);
 };
