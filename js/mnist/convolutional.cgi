@@ -84,9 +84,9 @@ class ShowHtml:
 
         sys.stdout.write('[');
         for i in range(9):
-            sys.stdout.write("%.03f" % (result[0][i]));
+            sys.stdout.write("%.02f" % (result[0][i]));
             sys.stdout.write(',');
-        sys.stdout.write("%.03f" % (result[0][9]));
+        sys.stdout.write("%.02f" % (result[0][9]));
         sys.stdout.write(']');
 
 #        pp.pprint(result);
