@@ -84,7 +84,23 @@ App.prototype.recognize = function() {
 		}
 		document.createElement('div').appendChild(img);
 		console.log(inputs);
+
+		var xmlHttpRequest = new XMLHttpRequest();
+		xmlHttpRequest.onreadystatechange = function() {
+			var READYSTATE_COMPLETED = 4;
+			var HTTP_STATUS_OK = 200;
+
+			if( this.readyState == READYSTATE_COMPLETED
+				&& this.status == HTTP_STATUS_OK ) {
+				console.log(this.responseText);
+			}
+		}
+
+		xmlHttpRequest.open('POST', './mnist.cgi');
+		xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
+		xmlHttpRequest.send(inputs);
 	};
+
 	img.src = this.canvas.toDataURL();
 };
 
