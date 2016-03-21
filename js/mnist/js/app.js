@@ -103,7 +103,8 @@ App.prototype.recognize = function() {
 			}
 		}
 
-		xmlHttpRequest.open('POST', './mnist.cgi');
+		//xmlHttpRequest.open('POST', './mnist.cgi');
+		xmlHttpRequest.open('POST', './conv.cgi');
 		xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
 		xmlHttpRequest.send(JSON.stringify([inputs]));
 	};
