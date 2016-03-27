@@ -107,14 +107,6 @@ Water.prototype.addDrop = function(x, y, radius, strength) {
 	this.textureB.swapWith(this.textureA);
 };
 
-Water.prototype.moveSphere = function(oldCenter, newCenter, radius) {
-	var this_ = this;
-	this.textureB.drawTo(function() {
-		this_.textureA.bind();
-	});
-	this.textureB.swapWith(this.textureA);
-};
-
 Water.prototype.stepSimulation = function() {
 	var this_ = this;
 	this.textureB.drawTo(function() {
