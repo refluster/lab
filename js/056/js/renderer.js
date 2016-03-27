@@ -129,10 +129,7 @@ uniform samplerCube sky;\
 \
 vec3 getSurfaceRayColor(vec3 origin, vec3 ray, vec3 waterColor) {\
 vec3 color;\
-float q = intersectSphere(origin, ray, sphereCenter, sphereRadius);\
-if (q < 1.0e6) {\
-color = getSphereColor(origin + ray * q);\
-} else if (ray.y < 0.0) {\
+if (ray.y < 0.0) {\
 vec2 t = intersectCube(origin, ray, vec3(-1.0, -poolHeight, -1.0), vec3(1.0, 2.0, 1.0));\
 color = getWallColor(origin + ray * t.y);\
 } else {\
@@ -307,8 +304,6 @@ Renderer.prototype.renderWater = function(water, sky) {
 			sky: 2,
 			causticTex: 3,
 			eye: tracer.eye,
-			sphereCenter: this.sphereCenter,
-			sphereRadius: this.sphereRadius
 		}).draw(this.waterMesh);
 	}
 	gl.disable(gl.CULL_FACE);
