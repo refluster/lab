@@ -319,8 +319,6 @@ Renderer.prototype.renderCube = function() {
 		water: 0,
 		tiles: 1,
 		causticTex: 2,
-		sphereCenter: this.sphereCenter,
-		sphereRadius: this.sphereRadius
 	}).draw(this.cubeMesh);
 	gl.disable(gl.CULL_FACE);
 };
