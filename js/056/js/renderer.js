@@ -324,18 +324,6 @@ Renderer.prototype.renderWater = function(water, sky) {
 	gl.disable(gl.CULL_FACE);
 };
 
-Renderer.prototype.renderSphere = function() {
-	water.textureA.bind(0);
-	this.causticTex.bind(1);
-	this.sphereShader.uniforms({
-		light: this.lightDir,
-		water: 0,
-		causticTex: 1,
-		sphereCenter: this.sphereCenter,
-		sphereRadius: this.sphereRadius
-	}).draw(this.sphereMesh);
-};
-
 Renderer.prototype.renderCube = function() {
 	gl.enable(gl.CULL_FACE);
 	water.textureA.bind(0);

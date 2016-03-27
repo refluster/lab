@@ -268,7 +268,6 @@ window.onload = function() {
 		renderer.sphereRadius = radius;
 		renderer.renderCube();
 		renderer.renderWater(water, cubemap);
-		renderer.renderSphere();
 		gl.disable(gl.DEPTH_TEST);
 	}
 };
