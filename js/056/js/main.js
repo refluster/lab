@@ -98,7 +98,6 @@ window.onload = function() {
 	var planeNormal;
 	var mode = -1;
 	var MODE_ADD_DROPS = 0;
-	var MODE_MOVE_SPHERE = 1;
 	var MODE_ORBIT_CAMERA = 2;
 
 	var oldX, oldY;
@@ -210,9 +209,9 @@ window.onload = function() {
 		gl.rotate(-angleY, 0, 1, 0);
 		gl.translate(0, 0.5, 0);
 
-		gl.enable(gl.DEPTH_TEST);
+//		gl.enable(gl.DEPTH_TEST);
 		renderer.renderCube();
-		renderer.renderWater(water, cubemap);
-		gl.disable(gl.DEPTH_TEST);
+//		renderer.renderWater(water, cubemap);
+//		gl.disable(gl.DEPTH_TEST);
 	}
 };
