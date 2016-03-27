@@ -13,8 +13,6 @@ const vec3 abovewaterColor = vec3(0.25, 1.0, 1.25);\
 const vec3 underwaterColor = vec3(0.4, 0.9, 1.0);\
 const float poolHeight = 1.0;\
 uniform vec3 light;\
-uniform vec3 sphereCenter;\
-uniform float sphereRadius;\
 uniform sampler2D tiles;\
 uniform sampler2D causticTex;\
 uniform sampler2D water;\
@@ -146,23 +144,6 @@ gl_FragColor = vec4(mix(refractedColor, reflectedColor, fresnel), 1.0);\
 }\
 ');
 	}
-	this.sphereMesh = GL.Mesh.sphere({ detail: 10 });
-	this.sphereShader = new GL.Shader(helperFunctions + '\
-varying vec3 position;\
-void main() {\
-position = sphereCenter + gl_Vertex.xyz * sphereRadius;\
-gl_Position = gl_ModelViewProjectionMatrix * vec4(position, 1.0);\
-}\
-', helperFunctions + '\
-varying vec3 position;\
-void main() {\
-gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\
-vec4 info = texture2D(water, position.xz * 0.5 + 0.5);\
-if (position.y < info.r) {\
-gl_FragColor.rgb *= underwaterColor * 1.2;\
-}\
-}\
-');
 	this.cubeMesh = GL.Mesh.cube();
 	this.cubeMesh.triangles.splice(4, 2);
 	this.cubeMesh.compile();
