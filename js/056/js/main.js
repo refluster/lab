@@ -31,13 +31,6 @@ var renderer;
 var angleX = -25;
 var angleY = -200.5;
 
-// Sphere physics info
-var useSpherePhysics = false;
-var center;
-var oldCenter;
-var velocity;
-var gravity;
-var radius;
 var paused = false;
 
 window.onload = function() {
@@ -76,11 +69,6 @@ window.onload = function() {
 		throw new Error('Rendering to floating-point textures is required but not supported');
 	}
 
-	center = oldCenter = new GL.Vector(-0.4, -0.75, 0.2);
-	velocity = new GL.Vector();
-	gravity = new GL.Vector(0, -4, 0);
-	radius = 0.25;
-
 	for (var i = 0; i < 20; i++) {
 		water.addDrop(Math.random() * 2 - 1, Math.random() * 2 - 1, 0.03, (i & 1) ? 0.01 : -0.01);
 	}
@@ -107,7 +95,6 @@ window.onload = function() {
 
 	window.onresize = onresize;
 
-	var prevHit;
 	var planeNormal;
 	var mode = -1;
 	var MODE_ADD_DROPS = 0;
@@ -122,12 +109,7 @@ window.onload = function() {
 		var tracer = new GL.Raytracer();
 		var ray = tracer.getRayForPixel(x * ratio, y * ratio);
 		var pointOnPlane = tracer.eye.add(ray.multiply(-tracer.eye.y / ray.y));
-		var sphereHitTest = GL.Raytracer.hitTestSphere(tracer.eye, ray, center, radius);
-		if (sphereHitTest) {
-			mode = MODE_MOVE_SPHERE;
-			prevHit = sphereHitTest.hit;
-			planeNormal = tracer.getRayForPixel(gl.canvas.width / 2, gl.canvas.height / 2).negative();
-		} else if (Math.abs(pointOnPlane.x) < 1 && Math.abs(pointOnPlane.z) < 1) {
+		if (Math.abs(pointOnPlane.x) < 1 && Math.abs(pointOnPlane.z) < 1) {
 			mode = MODE_ADD_DROPS;
 			duringDrag(x, y);
 		} else {
@@ -146,19 +128,6 @@ window.onload = function() {
 				water.updateNormals();
 				renderer.updateCaustics(water);
 			}
-			break;
-		}
-		case MODE_MOVE_SPHERE: {
-			var tracer = new GL.Raytracer();
-			var ray = tracer.getRayForPixel(x * ratio, y * ratio);
-			var t = -planeNormal.dot(tracer.eye.subtract(prevHit)) / planeNormal.dot(ray);
-			var nextHit = tracer.eye.add(ray.multiply(t));
-			center = center.add(nextHit.subtract(prevHit));
-			center.x = Math.max(radius - 1, Math.min(1 - radius, center.x));
-			center.y = Math.max(radius - 1, Math.min(10, center.y));
-			center.z = Math.max(radius - 1, Math.min(1 - radius, center.z));
-			prevHit = nextHit;
-			if (paused) renderer.updateCaustics(water);
 			break;
 		}
 		case MODE_ORBIT_CAMERA: {
@@ -211,7 +180,6 @@ window.onload = function() {
 
 	document.onkeydown = function(e) {
 		if (e.which == ' '.charCodeAt(0)) paused = !paused;
-		else if (e.which == 'G'.charCodeAt(0)) useSpherePhysics = !useSpherePhysics;
 		else if (e.which == 'L'.charCodeAt(0) && paused) draw();
 	};
 
@@ -220,26 +188,6 @@ window.onload = function() {
 	function update(seconds) {
 		if (seconds > 1) return;
 		frame += seconds * 2;
-
-		if (mode == MODE_MOVE_SPHERE) {
-			// Start from rest when the player releases the mouse after moving the sphere
-			velocity = new GL.Vector();
-		} else if (useSpherePhysics) {
-			// Fall down with viscosity under water
-			var percentUnderWater = Math.max(0, Math.min(1, (radius - center.y) / (2 * radius)));
-			velocity = velocity.add(gravity.multiply(seconds - 1.1 * seconds * percentUnderWater));
-			velocity = velocity.subtract(velocity.unit().multiply(percentUnderWater * seconds * velocity.dot(velocity)));
-			center = center.add(velocity.multiply(seconds));
-
-			// Bounce off the bottom
-			if (center.y < radius - 1) {
-				center.y = radius - 1;
-				velocity.y = Math.abs(velocity.y) * 0.7;
-			}
-		}
-
-		// Displace water around the sphere
-		oldCenter = center;
 
 		// Update the water simulation and graphics
 		water.stepSimulation();
@@ -263,8 +211,6 @@ window.onload = function() {
 		gl.translate(0, 0.5, 0);
 
 		gl.enable(gl.DEPTH_TEST);
-		renderer.sphereCenter = center;
-		renderer.sphereRadius = radius;
 		renderer.renderCube();
 		renderer.renderWater(water, cubemap);
 		gl.disable(gl.DEPTH_TEST);
