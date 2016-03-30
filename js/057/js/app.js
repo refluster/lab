@@ -5,6 +5,9 @@ var App = function() {
 	this.canvas.addEventListener("touchstart", this.touchStartHandler.bind(this), false);
 	this.canvas.addEventListener("touchmove", this.touchMoveHandler.bind(this), false);
 	this.canvas.addEventListener("touchend", this.touchEndHandler.bind(this), false);
+	this.canvas.addEventListener("mousedown", this.touchStartHandler.bind(this), false);
+	this.canvas.addEventListener("mousemove", this.touchMoveHandler.bind(this), false);
+	this.canvas.addEventListener("mouseup", this.touchEndHandler.bind(this), false);
 	this.btnClear.addEventListener("click", this.clearCanvas.bind(this), false);	
 
 	this.isDragging = false;
@@ -19,8 +22,11 @@ App.prototype.clearCanvas = function(e) {
 };
 
 App.prototype.getCanvasPosition = function(e) {
-	if (e.touches.length > 0) {
-		var b = this.canvas.getClientRects()[0];
+	var b = this.canvas.getClientRects()[0];
+	if (e.clientX !== undefined) {
+		return {x: parseInt(e.clientX - b.left),
+				y: parseInt(e.clientY - b.top)};
+	} else if (e.touches.length > 0) {
 		return {x: parseInt(e.touches[0].clientX - b.left),
 				y: parseInt(e.touches[0].clientY - b.top)};
 	}
