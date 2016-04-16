@@ -15,8 +15,8 @@ var Graph = function() {
 		.domain([30.9, 33.6])
 		.range([0, 300]);
 	this.colorScale = d3.scale.linear()
-		.domain([0, 20])
-		.range(["blue","red"]);
+		.domain([0, 8])
+		.range(["yellow","red"]);
 };
 
 Graph.prototype.dataReset = function() {
@@ -94,6 +94,18 @@ Graph.prototype.show = function(idx) {
 
 var Apl = function() {
 	this.db = [];
+
+    $("#slider").slider({
+		value: 0,
+		min: 0,
+		max: 24,
+		step: 1,
+		slide: function( event, ui ) {
+			this.showGraph(ui.value);
+			$("#val").text($("#slider").slider("value"));
+		}.bind(this)
+    });
+	$("#val").text($("#slider").slider("value"));
 };
 
 Apl.prototype.getData = function() {
@@ -131,7 +143,7 @@ Apl.prototype.getData = function() {
 		this.graph.dataSet(this.db);
 //		this.showDB();
 
-		this.graph.show(2);
+		this.graph.show(0);
 	}.bind(this));
 };
 
@@ -155,9 +167,4 @@ Apl.prototype.showGraph = function(idx) {
 $(function() {
 	var apl = new Apl();
 	apl.getData();
-//	apl.showGraph();
-
-	setTimeout(function() {
-		apl.showGraph(16);
-	}, 1000);
 });
