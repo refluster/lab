@@ -1,6 +1,6 @@
 var Apl = function() {
 	this.db = [];
-	this.svg = d3.select("body")
+	this.svg = d3.select("#contents")
 		.append("svg")
 		.attr("width", 500)
 		.attr("height", 100);
