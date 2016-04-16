@@ -51,7 +51,18 @@ Apl.prototype.showDB = function() {
 	$('#data').append(html);
 };
 
-Apl.prototype.graph = function() {
+Apl.prototype.graph = function(dataset) {
+	this.svg.selectAll("circle")
+		.data(dataset)
+		.enter()
+		.append("circle")
+		.attr("cx", function(d) { return d[0]; })
+		.attr("cy", function(d) { return d[1]; })
+		.attr("r", 5)
+		.fill("fill", "green");
+};
+
+$(function() {
 	var dataset = [
         [   5,   20 ],
         [ 480,   90 ],
@@ -65,18 +76,7 @@ Apl.prototype.graph = function() {
         [ 220,   88 ]
     ];
 
-	this.svg.selectAll("circle")
-		.data(dataset)
-		.enter()
-		.append("circle")
-		.attr("cx", function(d) { return d[0]; })
-		.attr("cy", function(d) { return d[1]; })
-		.attr("r", 5)
-		.fill("fill", "green");
-};
-
-$(function() {
 	var apl = new Apl();
 	apl.getData();
-	apl.graph();
+	apl.graph(dataset);
 });
