@@ -80,13 +80,15 @@ Graph.prototype.show = function(idx) {
 
 
 //		.data(log)
+	this.svg.selectAll("circle").remove();
+
 	this.svg.selectAll("circle")
 		.data(this.data[idx].log)
 		.enter()
 		.append("circle")
 		.attr("cx", function(d) { return this.xScale(d.lat); }.bind(this))
 		.attr("cy", function(d) { return this.yScale(d.lng); }.bind(this))
-		.attr("r",  function(d) { return 1; d.level; }.bind(this))
+		.attr("r",  function(d) { return d.level; }.bind(this))
 		.attr("fill",  function(d) { return this.colorScale(d.level); }.bind(this))
 };
 
@@ -146,25 +148,16 @@ Apl.prototype.showDB = function() {
 	$('#data').append(html);
 };
 
-Apl.prototype.showGraph = function() {
-	var dataset = [
-        [   5,   20 ,  3],
-        [ 480,   90 ,  4],
-        [ 250,   50 ,  5],
-        [ 100,   33 , 10],
-        [ 330,   95 , 12],
-        [ 410,   12 ,  5],
-        [ 475,   44 ,  1],
-        [  25,   67 ,  8],
-        [  85,   21 ,  5],
-        [ 220,   88 ,  6]
-    ];
-
-//	this.graph.update(dataset);
+Apl.prototype.showGraph = function(idx) {
+	this.graph.show(idx);
 };
 
 $(function() {
 	var apl = new Apl();
 	apl.getData();
 //	apl.showGraph();
+
+	setTimeout(function() {
+		apl.showGraph(16);
+	}, 1000);
 });
