@@ -1,8 +1,7 @@
 var Graph = function() {
-	this.svg = d3.select("#contents")
-		.append("svg")
-		.attr("width", 500)
-		.attr("height", 300);
+	this.svg = d3.select("#map")
+		.attr("width", $('#map').width())
+		.attr("height", $('#map').height());
 
 	// ru 33.6 132.1
 	// ld 30.9 129.2
