@@ -64,24 +64,10 @@ Graph.prototype.update = function(dataset) {
 };
 
 Graph.prototype.show = function(idx) {
-	console.log(this.data[idx].log);
-
-	$.each(this.data[idx].log, function(i, v) {
-		console.log({x: v.lat, y: v.lng});
-	});
-
-	// ru 33.6 132.1
-	// ld 30.9 129.2
-
-	var log = [
-		{lat: 129.3, lng: 31.0, level: 5},
-		{lat: 132.0, lng: 33.5, level: 5},
-	];
-
-
-//		.data(log)
+	// clear graph
 	this.svg.selectAll("circle").remove();
 
+	// draw graph
 	this.svg.selectAll("circle")
 		.data(this.data[idx].log)
 		.enter()
@@ -121,7 +107,6 @@ Apl.prototype.getData = function() {
 			// skip if lat, lng info is empty
 			if (t[8] == '') return;
 			var match_result = t[0].match(/(\d+)[^\d](\d+)[^\d](\d+)[^\d]/);
-//			console.log(t[0]);
 			var date = {
 				year: 2016,
 				month: 4,
@@ -129,7 +114,6 @@ Apl.prototype.getData = function() {
 				hour: parseInt(match_result[2]),
 				munite: parseInt(match_result[3]),
 			}
-//			console.log(date);
 			var data = {
 				date: new Date(date.year, date.month, date.day,
 							   date.hour, date.munite),
@@ -138,18 +122,15 @@ Apl.prototype.getData = function() {
 				lat: t[9].substring(1),
 			};
 			this.db.push(data);
-//			console.log(data.date);
 		}.bind(this));
 		this.graph.dataSet(this.db);
-//		this.showDB();
 
+		// default graph
 		this.graph.show(0);
 	}.bind(this));
 };
 
 Apl.prototype.showDB = function() {
-	return;
-
 	var html = '<table border="1">';
 	jQuery.each(this.db, function(i, d) {
 		html += '<tr><td>' + d.date + '</td><td>' + d.level + '</td><td>' +
