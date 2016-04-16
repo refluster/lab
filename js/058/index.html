@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-    <title>0XX: quake</title>
+    <title>058: quake log</title>
 
     <script type="text/javascript" src="./js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="./js/d3.min.js"></script>
@@ -13,8 +13,11 @@
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
     <style TYPE="text/css">
     <!--
-    svg{
+    #map {
         border: 1px solid black;
+        width: 638px;
+        height: 499px;
+        background-image: url(img/kyushu_map.png)
     }
     -->
     </style>
@@ -34,7 +37,7 @@
       <ul class="chapter-toc">
         <li>quake log</li>
       </ul>
-      <svg id="map" style="width: 638px; height: 499px; border: 1px solid black; background-image: url(img/kyushu_map.png)"></svg>
+      <svg id="map"></svg>
       <div id="slider"></div>
       <div id="val"></div>
       <div id="data"></div>
