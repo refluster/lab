@@ -3,7 +3,17 @@ var Graph = function() {
 		.append("svg")
 		.attr("width", 500)
 		.attr("height", 300);
+
 	this.dataReset();
+	this.xScale = d3.scale.linear()
+		.domain([0, 500])
+		.range([0, 500]);
+	this.yScale = d3.scale.linear()
+		.domain([0, 100])
+		.range([0, 300]);
+	this.colorScale = d3.scale.linear()
+		.domain([0, 20])
+		.range(["blue","red"]);
 };
 
 Graph.prototype.dataReset = function() {
@@ -19,10 +29,10 @@ Graph.prototype.update = function(dataset) {
 		.data(dataset)
 		.enter()
 		.append("circle")
-		.attr("cx", function(d) { return d[0]; })
-		.attr("cy", function(d) { return d[1]; })
-		.attr("r",  function(d) { return d[2]; })
-		.fill("fill", "green");
+		.attr("cx", function(d) { return this.xScale(d[0]); }.bind(this))
+		.attr("cy", function(d) { return this.yScale(d[1]); }.bind(this))
+		.attr("r",  function(d) { return d[2]; }.bind(this))
+		.attr("fill",  function(d) { return this.colorScale(d[2]); }.bind(this))
 };
 
 var Apl = function() {
