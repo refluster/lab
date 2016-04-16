@@ -3,7 +3,7 @@ var Apl = function() {
 	this.svg = d3.select("#contents")
 		.append("svg")
 		.attr("width", 500)
-		.attr("height", 100);
+		.attr("height", 300);
 };
 
 Apl.prototype.getData = function() {
@@ -58,22 +58,22 @@ Apl.prototype.graph = function(dataset) {
 		.append("circle")
 		.attr("cx", function(d) { return d[0]; })
 		.attr("cy", function(d) { return d[1]; })
-		.attr("r", 5)
+		.attr("r",  function(d) { return d[2]; })
 		.fill("fill", "green");
 };
 
 $(function() {
 	var dataset = [
-        [   5,   20 ],
-        [ 480,   90 ],
-        [ 250,   50 ],
-        [ 100,   33 ],
-        [ 330,   95 ],
-        [ 410,   12 ],
-        [ 475,   44 ],
-        [  25,   67 ],
-        [  85,   21 ],
-        [ 220,   88 ]
+        [   5,   20 ,  3],
+        [ 480,   90 ,  4],
+        [ 250,   50 ,  5],
+        [ 100,   33 , 10],
+        [ 330,   95 , 12],
+        [ 410,   12 ,  5],
+        [ 475,   44 ,  1],
+        [  25,   67 ,  8],
+        [  85,   21 ,  5],
+        [ 220,   88 ,  6]
     ];
 
 	var apl = new Apl();
