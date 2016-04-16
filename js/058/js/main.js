@@ -1,5 +1,9 @@
 var Apl = function() {
 	this.db = [];
+	this.svg = d3.select("body")
+		.append("svg")
+		.attr("width", 500)
+		.attr("height", 100);
 };
 
 Apl.prototype.getData = function() {
@@ -11,7 +15,7 @@ Apl.prototype.getData = function() {
 				return;
 			var t = d[2].split('/');
 			var match_result = t[0].match(/(\d+)[^\d](\d+)[^\d](\d+)[^\d]/);
-			console.log(t[0]);
+//			console.log(t[0]);
 			var date = {
 				year: 2016,
 				month: 4,
@@ -19,7 +23,7 @@ Apl.prototype.getData = function() {
 				hour: parseInt(match_result[2]),
 				munite: parseInt(match_result[3]),
 			}
-			console.log(date);
+//			console.log(date);
 			var data = {
 				date: new Date(date.year, date.month, date.day,
 							   date.hour, date.munite),
@@ -28,14 +32,14 @@ Apl.prototype.getData = function() {
 				lat: t[9].substring(1),
 			};
 			this.db.push(data);
-			console.log(data.date);
+//			console.log(data.date);
 		}.bind(this));
 		this.showDB();
 	}.bind(this));
 };
 
 Apl.prototype.showDB = function() {
-	$('#data').append('あいうえお');
+	return;
 
 	var html = '<table border="1">';
 	jQuery.each(this.db, function(i, d) {
@@ -47,7 +51,32 @@ Apl.prototype.showDB = function() {
 	$('#data').append(html);
 };
 
+Apl.prototype.graph = function() {
+	var dataset = [
+        [   5,   20 ],
+        [ 480,   90 ],
+        [ 250,   50 ],
+        [ 100,   33 ],
+        [ 330,   95 ],
+        [ 410,   12 ],
+        [ 475,   44 ],
+        [  25,   67 ],
+        [  85,   21 ],
+        [ 220,   88 ]
+    ];
+
+	this.svg.selectAll("circle")
+		.data(dataset)
+		.enter()
+		.append("circle")
+		.attr("cx", function(d) { return d[0]; })
+		.attr("cy", function(d) { return d[1]; })
+		.attr("r", 5)
+		.fill("fill", "green");
+};
+
 $(function() {
 	var apl = new Apl();
 	apl.getData();
+	apl.graph();
 });
