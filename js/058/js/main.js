@@ -1,18 +1,17 @@
 var Graph = function() {
+	//N 33.674711390010856、E 132.52676725387573、S 31.358987471317462、W 129.01114225387573
+
 	this.svg = d3.select("#map")
 		.attr("width", $('#map').width())
 		.attr("height", $('#map').height());
 
-	// ru 33.6 132.1
-	// ld 30.9 129.2
-
 	this.dataReset();
 	this.xScale = d3.scale.linear()
-		.domain([129.2, 132.1])
-		.range([0, 500]);
+		.domain([129.01114225387573, 132.52676725387573])
+		.range([0, $('#map').width()]);
 	this.yScale = d3.scale.linear()
-		.domain([30.9, 33.6])
-		.range([0, 300]);
+		.domain([31.358987471317462, 33.674711390010856])
+		.range([$('#map').height(), 0]);
 	this.colorScale = d3.scale.linear()
 		.domain([0, 8])
 		.range(["yellow","red"]);
@@ -73,7 +72,7 @@ Graph.prototype.show = function(idx) {
 		.append("circle")
 		.attr("cx", function(d) { return this.xScale(d.lat); }.bind(this))
 		.attr("cy", function(d) { return this.yScale(d.lng); }.bind(this))
-		.attr("r",  function(d) { return d.level; }.bind(this))
+		.attr("r",  function(d) { return d.level*2; }.bind(this))
 		.attr("fill",  function(d) { return this.colorScale(d.level); }.bind(this))
 };
 
@@ -83,7 +82,7 @@ var Apl = function() {
     $("#slider").slider({
 		value: 0,
 		min: 0,
-		max: 24,
+		max: 23,
 		step: 1,
 		slide: function( event, ui ) {
 			this.showGraph(ui.value);
