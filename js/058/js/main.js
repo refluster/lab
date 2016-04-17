@@ -13,7 +13,7 @@ var Graph = function() {
 		.domain([31.358987471317462, 33.674711390010856])
 		.range([$('#map').height(), 0]);
 	this.colorScale = d3.scale.linear()
-		.domain([0, 8])
+		.domain([1, 8])
 		.range(["yellow","red"]);
 };
 
@@ -86,10 +86,10 @@ var Apl = function() {
 		step: 1,
 		slide: function( event, ui ) {
 			this.showGraph(ui.value);
-			$("#val").text($("#slider").slider("value"));
+			$("#val").val(ui.value);
 		}.bind(this)
     });
-	$("#val").text($("#slider").slider("value"));
+    $("#val").val($("#slider").slider("value"));
 };
 
 Apl.prototype.getData = function() {
