@@ -1,6 +1,8 @@
 var Graph = function() {
 	//N 33.674711390010856、E 132.52676725387573、S 31.358987471317462、W 129.01114225387573
 
+	$('#map').css('height', $('#map').width()*499/638);
+
 	this.svg = d3.select("#map")
 		.attr("width", $('#map').width())
 		.attr("height", $('#map').height());
