@@ -129,17 +129,6 @@ Apl.prototype.getData = function(callback) {
 	}.bind(this));
 };
 
-Apl.prototype.showDB = function() {
-	var html = '<table border="1">';
-	jQuery.each(this.db, function(i, d) {
-		html += '<tr><td>' + d.date + '</td><td>' + d.level + '</td><td>' +
-			d.lng + '</td><td>' + d.lat + '</td></tr>';
-	});
-	html += '</table>';
-
-	$('#data').append(html);
-};
-
 Apl.prototype.showGraph = function(idx) {
 	this.graph.show(idx);
 };
