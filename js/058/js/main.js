@@ -76,6 +76,12 @@ Graph.prototype.show = function(idx) {
 		.attr("fill",  function(d) { return this.colorScale(d.level); }.bind(this))
 };
 
+Graph.prototype.getDateText = function(idx) {
+	var date = this.data[idx].date;
+	return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDay() + ' ' +
+		date.getHours() + ':00';
+};
+
 var Apl = function() {
 	this.db = [];
 
@@ -86,7 +92,7 @@ var Apl = function() {
 		step: 1,
 		slide: function( event, ui ) {
 			this.showGraph(ui.value);
-			$("#val").val(ui.value);
+			$("#val").val(this.graph.getDateText(ui.value));
 		}.bind(this)
     });
     $("#val").val($("#slider").slider("value"));
