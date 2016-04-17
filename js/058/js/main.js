@@ -23,7 +23,7 @@ Graph.prototype.dataReset = function() {
 	this.data = [];
 	for (var year = 2016; year < 2017; year ++) {
 		for (var month = 4; month < 5; month ++) {
-			for (var day = 14; day < 17; day ++) {
+			for (var day = 14; day < 18; day ++) {
 				for (var hour = 0; hour < 24; hour ++) {
 					this.data.push({
 						date: new Date(year, month, day, hour),
