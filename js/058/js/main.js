@@ -70,7 +70,7 @@ Graph.prototype.show = function(idx) {
 		.data(this.data[idx].log)
 		.enter()
 		.append("circle")
-		.attr("cx", function(d) { return this.xScale(d.lat); }.bind(this))
+	.attr("cx", function(d) { return this.xScale(d.lat); }.bind(this))
 		.attr("cy", function(d) { return this.yScale(d.lng); }.bind(this))
 		.attr("r",  function(d) { return d.level*3; }.bind(this))
 		.attr("fill",  function(d) { return this.colorScale(d.level); }.bind(this))
@@ -78,13 +78,12 @@ Graph.prototype.show = function(idx) {
 
 Graph.prototype.getDateText = function(idx) {
 	var date = this.data[idx].date;
-	return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDay() + ' ' +
+	return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate() + ' ' +
 		date.getHours() + ':00';
 };
 
 var Apl = function() {
 	this.db = [];
-
     $("#slider").slider({
 		value: 0,
 		min: 0,
@@ -95,10 +94,10 @@ var Apl = function() {
 			$("#val").val(this.graph.getDateText(ui.value));
 		}.bind(this)
     });
-    $("#val").val($("#slider").slider("value"));
+//    $("#val").val(this.graph.getDateText(ui.value));
 };
 
-Apl.prototype.getData = function() {
+Apl.prototype.getData = function(callback) {
 	this.graph = new Graph();
 
 	$.get('./data.dat', function(data) {
@@ -129,6 +128,9 @@ Apl.prototype.getData = function() {
 		}.bind(this));
 		this.graph.dataSet(this.db);
 
+		// callback at all data imported
+		callback();
+
 		// default graph
 		this.graph.show(0);
 	}.bind(this));
@@ -151,5 +153,5 @@ Apl.prototype.showGraph = function(idx) {
 
 $(function() {
 	var apl = new Apl();
-	apl.getData();
+	apl.getData(function() {});
 });
