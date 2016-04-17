@@ -74,7 +74,7 @@ Graph.prototype.show = function(idx) {
 		.data(this.data[idx].log)
 		.enter()
 		.append("circle")
-	.attr("cx", function(d) { return this.xScale(d.lat); }.bind(this))
+		.attr("cx", function(d) { return this.xScale(d.lat); }.bind(this))
 		.attr("cy", function(d) { return this.yScale(d.lng); }.bind(this))
 		.attr("r",  function(d) { return d.level*3; }.bind(this))
 		.attr("fill",  function(d) { return this.colorScale(d.level); }.bind(this))
