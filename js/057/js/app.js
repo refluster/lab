@@ -68,7 +68,7 @@ App.prototype.touchMoveHandler = function(e) {
 
 App.prototype.recognize = function() {
 	const IMAGE_SIZE_S = 28;
-	const resizeFactor = 4;
+	const RESIZE_FACTOR = 4;
 
 	var ctx = this.input.getContext('2d');
 	var img = new Image();
@@ -83,7 +83,7 @@ App.prototype.recognize = function() {
 				var n = 4 * (i * IMAGE_SIZE_S + j);
 				inputs[i * IMAGE_SIZE_S + j] = (data[n + 0] + data[n + 1] + data[n + 2]) / 3;
 				ctx.fillStyle = 'rgb(' + [data[n + 0], data[n + 1], data[n + 2]].join(',') + ')';
-				ctx.fillRect(j * resizeFactor, i * resizeFactor, resizeFactor, resizeFactor);
+				ctx.fillRect(j * RESIZE_FACTOR, i * RESIZE_FACTOR, RESIZE_FACTOR, RESIZE_FACTOR);
 			}
 		}
 		document.createElement('div').appendChild(img);
