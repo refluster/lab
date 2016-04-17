@@ -100,7 +100,7 @@ var Apl = function() {
 Apl.prototype.getData = function(callback) {
 	this.graph = new Graph();
 
-	$.get('./data.dat', function(data) {
+	$.get('./data/all.cgi', function(data) {
 		var d = data.split('\r\n');
 		jQuery.each(d, function(i, val) {
 			var d = val.split(',');
