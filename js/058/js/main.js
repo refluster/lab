@@ -21,7 +21,7 @@ Graph.prototype.dataReset = function() {
 	this.data = [];
 	for (var year = 2016; year < 2017; year ++) {
 		for (var month = 4; month < 5; month ++) {
-			for (var day = 16; day < 17; day ++) {
+			for (var day = 14; day < 17; day ++) {
 				for (var hour = 0; hour < 24; hour ++) {
 					this.data.push({
 						date: new Date(year, month, day, hour),
@@ -84,17 +84,6 @@ Graph.prototype.getDateText = function(idx) {
 
 var Apl = function() {
 	this.db = [];
-    $("#slider").slider({
-		value: 0,
-		min: 0,
-		max: 23,
-		step: 1,
-		slide: function( event, ui ) {
-			this.showGraph(ui.value);
-			$("#val").val(this.graph.getDateText(ui.value));
-		}.bind(this)
-    });
-//    $("#val").val(this.graph.getDateText(ui.value));
 };
 
 Apl.prototype.getData = function(callback) {
@@ -153,5 +142,17 @@ Apl.prototype.showGraph = function(idx) {
 
 $(function() {
 	var apl = new Apl();
-	apl.getData(function() {});
+	apl.getData(function() {
+		$("#slider").slider({
+			value: 0,
+			min: 0,
+			max: apl.graph.data.length - 1,
+			step: 1,
+			slide: function(event, ui) {
+				this.showGraph(ui.value);
+				$("#val").val(this.graph.getDateText(ui.value));
+			}.bind(this)
+		});
+		$("#val").val(this.graph.getDateText(0));
+	}.bind(apl));
 });
