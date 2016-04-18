@@ -1,5 +1,5 @@
 var Graph = function() {
-	//N 33.674711390010856„ÄÅE 132.52676725387573„ÄÅS 31.358987471317462„ÄÅW 129.01114225387573
+	//N 33.674711390010856ÅAE 132.52676725387573ÅAS 31.358987471317462ÅAW 129.01114225387573
 
 	$('#map').css('height', $('#map').width()*499/638);
 
@@ -17,6 +17,42 @@ var Graph = function() {
 	this.colorScale = d3.scale.linear()
 		.domain([1, 8])
 		.range(["yellow","red"]);
+
+	// label
+	var w = $('#label').width();
+	var h = $('#label').height();
+	var labelData = [
+		[        h/2,  h/2, 1],
+		[w/3   + h/2,  h/2, 4],
+		[w/3*2 + h/2,  h/2, 7],
+	];
+	this.label = d3.select("#label")
+	this.label.selectAll("circle")
+		.data(labelData)
+		.enter()
+		.append("circle")
+		.attr("cx", function(d) { return d[0]; }.bind(this))
+		.attr("cy", function(d) { return d[1]; }.bind(this))
+		.attr("r",  function(d) { return d[2]*3; }.bind(this))
+		.attr("fill",  function(d) { return this.colorScale(d[2]); }.bind(this))
+
+	this.label
+		.append("text")
+		.attr("x",       + h/2 + 5 + 1*3)
+		.attr("y", h/2   + 4)
+		.text("êkìx1")
+
+	this.label
+		.append("text")
+		.attr("x", w/3   + h/2 + 5 + 4*3)
+		.attr("y", h/2   + 4)
+		.text("êkìx4")
+
+	this.label
+		.append("text")
+		.attr("x", w/3*2 + h/2 + 5 + 7*3)
+		.attr("y", h/2   + 4)
+		.text("êkìx7")
 };
 
 Graph.prototype.dataReset = function() {
