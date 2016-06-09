@@ -48,7 +48,7 @@ var Apl = function() {
 	this.color = true;
 	this.posIdx = 0;
 	this.animating = true;
-	this.frame();
+//	this.frame();
 };
 
 Apl.prototype.frame = function() {
@@ -71,7 +71,6 @@ Apl.prototype.drawNext = function() {
 	this.draw();
 	if (this.posIdx + 1 >= this.maps.length) {
 		this.posIdx = 0;
-		//this.ctx.fillStyle = (this.ctx.fillStyle == 'yellow' ? 'black': 'yellow');
 		this.ctx.fillStyle = (this.color ? 'black': 'yellow');
 		this.color = !this.color;
 	} else {
