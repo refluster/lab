@@ -48,7 +48,7 @@ var Apl = function() {
 	this.color = true;
 	this.posIdx = 0;
 	this.animating = true;
-//	this.frame();
+	this.frame();
 };
 
 Apl.prototype.frame = function() {
