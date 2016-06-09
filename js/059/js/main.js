@@ -47,7 +47,15 @@ var Apl = function() {
 	this.ctx.fillStyle = 'yellow';
 	this.color = true;
 	this.posIdx = 0;
-	this.setInterval();
+	this.animating = true;
+	this.frame();
+};
+
+Apl.prototype.frame = function() {
+	this.drawNext();
+	if (this.animating) {
+		requestAnimationFrame(this.frame.bind(this));
+	}
 };
 
 Apl.prototype._blank = function() {
