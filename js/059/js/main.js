@@ -1,4 +1,7 @@
 var Apl = function() {
+	const COLUMNS = 5;
+	const ROWS = 12;
+
 	// get canvas DOM element and context
 	var $canvas = $('#canvas');
 	if ( ! $canvas[0] || ! $canvas[0].getContext ) {
@@ -15,12 +18,13 @@ var Apl = function() {
 	this.canvasHeight = $canvas.attr('height')
 
 	// context settnigs
-	this.ctx.strokeStyle = "#888";
+	this.bgColor = 'yellow';
+	this.fgColor = 'black';
+	this.ctx.font = String(parseInt(this.canvasHeight / ROWS / 2)) + 'pt Calibri';
+	this.ctx.textAlign = 'center';
+	this.ctx.textBaseline = 'middle';
 	this.ctx.lineWidth = 1;
 	this.ctx.globalCompositeOperation = "source-over";
-
-	const COLUMNS = 5;
-	const ROWS = 12;
 
 	this.maps = [];
 
@@ -44,8 +48,6 @@ var Apl = function() {
 		}
 	}
 
-	this.ctx.fillStyle = 'yellow';
-	this.color = true;
 	this.posIdx = 0;
 	this.animating = true;
 	this.frame();
@@ -64,15 +66,20 @@ Apl.prototype._blank = function() {
 
 Apl.prototype.draw = function() {
 	var m = this.maps[this.posIdx];
+	this.ctx.fillStyle = this.bgColor;
 	this.ctx.fillRect(m.x, m.y, m.w, m.h);
+	this.ctx.fillStyle = this.fgColor;
+	this.ctx.fillText(String(this.posIdx), m.x + m.w/2, m.y + m.h/2);
 };
 
 Apl.prototype.drawNext = function() {
 	this.draw();
 	if (this.posIdx + 1 >= this.maps.length) {
+		// swap color
+		var tmp = this.fgColor;
+		this.fgColor = this.bgColor;
+		this.bgColor = tmp;
 		this.posIdx = 0;
-		this.ctx.fillStyle = (this.color ? 'black': 'yellow');
-		this.color = !this.color;
 	} else {
 		this.posIdx ++;
 	}
