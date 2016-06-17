@@ -126,7 +126,8 @@ App.prototype.update = function(dt) {
 };
 
 App.prototype.render = function(dt) {
-	this.effect.render(this.scene, this.camera);
+	this.renderer.render(this.scene, this.camera);
+//	this.effect.render(this.scene, this.camera);
 };
 
 App.prototype.animate = function(t) {
