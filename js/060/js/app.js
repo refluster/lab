@@ -28,9 +28,10 @@ App.prototype.init = function() {
 	this.controls = new THREE.OrbitControls(this.camera, this.element);
 	this.controls.rotateUp(Math.PI / 4);
 	this.controls.target.set(
-		this.camera.position.x + 0.1,
-		this.camera.position.y,
-		this.camera.position.z
+		100, 0, 0
+//		this.camera.position.x + 0.1,
+//		this.camera.position.y,
+//		this.camera.position.z
 	);
 	this.controls.noZoom = true;
 	this.controls.noPan = true;
@@ -53,11 +54,29 @@ App.prototype.init = function() {
 
 	hemiLight = new THREE.HemisphereLight( 0xffffff,
 										   0xffffff, 0.6 );
-	hemiLight.color.setHSL( 0.6, 1, 0.6 );
-	hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+//	hemiLight.color.setHSL( 0.6, 1, 0.6 );
+//	hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
 	hemiLight.position.set( 0, 500, 0 );
 	hemiLight.visible = true;
 	this.scene.add( hemiLight );
+
+	//////////////////////////////
+	{
+		var shadermaterial = new THREE.ShaderMaterial({
+			vertexShader: document.getElementById('vshader').textContent,
+			fragmentShader: document.getElementById('fshader').textContent,
+			color: 0xffffff,
+			specular: 0xffffff,
+			shininess: 20,
+			shading: THREE.FlatShading,
+			map: texture,
+		});
+		var gSphere =  new THREE.SphereGeometry(30, 32, 16);
+		var s = new THREE.Mesh(gSphere, shadermaterial);
+		s.position.x = 100;
+		this.scene.add(s);
+	}
+	//////////////////////////////
 
 	var texture = THREE.ImageUtils.loadTexture(
 		'textures/patterns/checker.png'
@@ -72,7 +91,7 @@ App.prototype.init = function() {
 		specular: 0xffffff,
 		shininess: 20,
 		shading: THREE.FlatShading,
-		map: texture
+		map: texture,
 	});
 
 	var geometry = new THREE.PlaneGeometry(1000, 1000);
@@ -136,6 +155,7 @@ App.prototype.animate = function(t) {
 	this.update(this.clock.getDelta());
 	this.render(this.clock.getDelta());
 
+/*
 	this.fish.forEach(function(f) {
 		f.animate();
 		var p = f.getPosition();
@@ -148,6 +168,7 @@ App.prototype.animate = function(t) {
 			f.setPosition(x, y, z);
 		}
 	});
+*/
 };
 
 App.prototype.fullscreen = function() {

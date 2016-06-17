@@ -25,15 +25,31 @@
       ga('create', 'UA-16703149-7', 'auto');
       ga('send', 'pageview');
     </script>
+
+    <script type="x-shader/x-vertex" id="vshader">
+    // vertex shader
+    void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+    </script>
+
+    <script type="x-shader/x-vertex" id="fshader">
+    // fragment shader
+    void main() {
+        vec4 color = vec4(1,217,221,200);
+        gl_FragColor = color/255.0;
+    }
+    </script>
+
   </head>
   <body>
     <div id="example"></div>
 
-  <script src="js/third-party/threejs/three.js"></script>
-  <script src="js/third-party/threejs/StereoEffect.js"></script>
-  <script src="js/third-party/threejs/DeviceOrientationControls.js"></script>
-  <script src="js/third-party/threejs/OrbitControls.js"></script>
-  <script src="js/fish.js"></script>
-  <script src="js/app.js"></script>
+    <script src="js/third-party/threejs/three.js"></script>
+    <script src="js/third-party/threejs/StereoEffect.js"></script>
+    <script src="js/third-party/threejs/DeviceOrientationControls.js"></script>
+    <script src="js/third-party/threejs/OrbitControls.js"></script>
+    <script src="js/fish.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
