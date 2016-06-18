@@ -62,19 +62,18 @@ App.prototype.init = function() {
 
 	//////////////////////////////
 	{
+		// objects for shader test
 		var shadermaterial = new THREE.ShaderMaterial({
 			vertexShader: document.getElementById('vshader').textContent,
 			fragmentShader: document.getElementById('fshader').textContent,
-			color: 0xffffff,
-			specular: 0xffffff,
-			shininess: 20,
-			shading: THREE.FlatShading,
-			map: texture,
+			uniforms: {
+				color: {type: 'f', value: 0.0}
+			}
 		});
 		var gSphere =  new THREE.SphereGeometry(30, 32, 16);
-		var s = new THREE.Mesh(gSphere, shadermaterial);
-		s.position.x = 100;
-		this.scene.add(s);
+		this.testObj = new THREE.Mesh(gSphere, shadermaterial);
+		this.testObj.position.x = 100;
+		this.scene.add(this.testObj);
 	}
 	//////////////////////////////
 
@@ -137,6 +136,9 @@ App.prototype.resize = function() {
 };
 
 App.prototype.update = function(dt) {
+	var c = 0.5+0.5*Math.cos(new Date().getTime()/1000.0 * Math.PI);
+	this.testObj.material.uniforms.color.value = c;
+
 	this.resize();
 
 	this.camera.updateProjectionMatrix();

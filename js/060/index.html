@@ -27,18 +27,17 @@
     </script>
 
     <script type="x-shader/x-vertex" id="vshader">
-    // vertex shader
-    void main() {
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
+// vertex shader
+void main() {
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
     </script>
-
     <script type="x-shader/x-vertex" id="fshader">
-    // fragment shader
-    void main() {
-        vec4 color = vec4(1,217,221,200);
-        gl_FragColor = color/255.0;
-    }
+// fragment shader
+uniform   float color;
+void main() {
+    gl_FragColor = vec4(vec3(color), 1.0);
+}
     </script>
 
   </head>
