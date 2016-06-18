@@ -52,6 +52,7 @@ App.prototype.init = function() {
 	window.addEventListener('deviceorientation', setOrientationControls, true);
 
 
+/*
 	hemiLight = new THREE.HemisphereLight( 0xffffff,
 										   0xffffff, 0.6 );
 //	hemiLight.color.setHSL( 0.6, 1, 0.6 );
@@ -59,6 +60,12 @@ App.prototype.init = function() {
 	hemiLight.position.set( 0, 500, 0 );
 	hemiLight.visible = true;
 	this.scene.add( hemiLight );
+*/
+
+	var light = new THREE.PointLight(0xffffff, 1.0);
+	// We want it to be very close to our character
+	light.position.set(100, 100, 100);
+	this.scene.add(light);
 
 	//////////////////////////////
 	{
@@ -66,9 +73,13 @@ App.prototype.init = function() {
 		var shadermaterial = new THREE.ShaderMaterial({
 			vertexShader: document.getElementById('vshader').textContent,
 			fragmentShader: document.getElementById('fshader').textContent,
-			uniforms: {
-				color: {type: 'f', value: 0.0}
-			}
+			uniforms: THREE.UniformsUtils.merge([
+				THREE.UniformsLib['lights'],
+				{
+					color: {type: 'f', value: 0.0},
+				}
+			]),
+			lights: true,
 		});
 		var gSphere =  new THREE.SphereGeometry(30, 32, 16);
 		this.testObj = new THREE.Mesh(gSphere, shadermaterial);
@@ -136,8 +147,8 @@ App.prototype.resize = function() {
 };
 
 App.prototype.update = function(dt) {
-	var c = 0.5+0.5*Math.cos(new Date().getTime()/1000.0 * Math.PI);
-	this.testObj.material.uniforms.color.value = c;
+//	var c = 0.5+0.5*Math.cos(new Date().getTime()/1000.0 * Math.PI);
+//	this.testObj.material.uniforms.color.value = c;
 
 	this.resize();
 
