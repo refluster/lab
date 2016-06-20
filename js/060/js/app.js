@@ -69,10 +69,10 @@ App.prototype.init = function() {
 
 	//////////////////////////////
 	{
-		// objects for shader test
+		// objects for shader test 000
 		var shadermaterial = new THREE.ShaderMaterial({
-			vertexShader: document.getElementById('vshader').textContent,
-			fragmentShader: document.getElementById('fshader').textContent,
+			vertexShader: document.getElementById('vshader000').textContent,
+			fragmentShader: document.getElementById('fshader000').textContent,
 			uniforms: THREE.UniformsUtils.merge([
 				THREE.UniformsLib['lights'],
 				{
@@ -84,6 +84,28 @@ App.prototype.init = function() {
 		var gSphere =  new THREE.SphereGeometry(30, 32, 16);
 		this.testObj = new THREE.Mesh(gSphere, shadermaterial);
 		this.testObj.position.x = 100;
+		this.testObj.position.z = 10;
+		this.scene.add(this.testObj);
+	}
+	//////////////////////////////
+
+	//////////////////////////////
+	{
+		// objects for shader test 001
+		var shadermaterial = new THREE.ShaderMaterial({
+			vertexShader: document.getElementById('vshader001').textContent,
+			fragmentShader: document.getElementById('fshader001').textContent,
+			uniforms: THREE.UniformsUtils.merge([
+				THREE.UniformsLib['lights'],
+				{
+					color: {type: 'f', value: 0.0},
+				}
+			]),
+			lights: true,
+		});
+		var gSphere =  new THREE.SphereGeometry(20, 32, 16);
+		this.testObj = new THREE.Mesh(gSphere, shadermaterial);
+		this.testObj.position.x = 60;
 		this.scene.add(this.testObj);
 	}
 	//////////////////////////////
