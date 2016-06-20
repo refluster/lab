@@ -48,27 +48,20 @@ varying vec2 vUv;
 varying vec4 vColor;
 varying vec3 vecPos;
 varying vec3 vecNormal;
-uniform   float color;
+uniform float color;
 
 uniform vec3 pointLightColor[MAX_POINT_LIGHTS];
 uniform vec3 pointLightPosition[MAX_POINT_LIGHTS];
 uniform float pointLightDistance[MAX_POINT_LIGHTS];
 
 void main() {
-//    gl_FragColor = vec4(vec3(.2, .1, .7), 1.0);
     vec4 addedLights = vec4(0.0, 0.0, 0.0, 1.0);
     for(int l = 0; l < MAX_POINT_LIGHTS; l++) {
-        vec3 lightDirection = normalize(vecPos
-                              -pointLightPosition[l]);
-        addedLights.rgb += clamp(dot(-lightDirection,
-                                 vecNormal), 0.0, 1.0)
-                           * pointLightColor[l];
+        vec3 lightDirection = normalize(vecPos - pointLightPosition[l]);
+        addedLights.rgb += clamp(dot(-lightDirection, vecNormal), 0.0, 1.0) * pointLightColor[l];
         
     }
-//    gl_FragColor = texture2D(evilCreature, vUv)
-//                       * addedLights;
-    //    gl_FragColor = addedLights;
-        gl_FragColor = addedLights * vColor;
+    gl_FragColor = addedLights * vColor;
 }
     </script>
 
@@ -94,26 +87,19 @@ varying vec2 vUv;
 varying vec4 vColor;
 varying vec3 vecPos;
 varying vec3 vecNormal;
-uniform   float color;
+uniform float color;
 
 uniform vec3 pointLightColor[MAX_POINT_LIGHTS];
 uniform vec3 pointLightPosition[MAX_POINT_LIGHTS];
 uniform float pointLightDistance[MAX_POINT_LIGHTS];
 
 void main() {
-//    gl_FragColor = vec4(vec3(.2, .1, .7), 1.0);
     vec4 addedLights = vec4(0.0, 0.0, 0.0, 1.0);
     for(int l = 0; l < MAX_POINT_LIGHTS; l++) {
-        vec3 lightDirection = normalize(vecPos
-                              -pointLightPosition[l]);
-        addedLights.rgb += clamp(dot(-lightDirection,
-                                 vecNormal), 0.0, 1.0)
-                           * pointLightColor[l];
+        vec3 lightDirection = normalize(vecPos - pointLightPosition[l]);
+        addedLights.rgb += clamp(dot(-lightDirection, vecNormal), 0.0, 1.0) * pointLightColor[l];
     }
-//    gl_FragColor = texture2D(evilCreature, vUv)
-//                       * addedLights;
-    //    gl_FragColor = addedLights;
-        gl_FragColor = addedLights * vColor;
+    gl_FragColor = addedLights * vColor;
 }
     </script>
 
