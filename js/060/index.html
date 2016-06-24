@@ -77,7 +77,7 @@ void main() {
     vecNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
     float ratio;
     ratio = clamp(vecPos.y, 0.0, 20.0)/20.0;
-    vColor = mix(vec4(.9, .6, .8, 1.0), vec4(.2, .3, .5, 1.0), ratio);
+    vColor = mix(vec4(1.0, .6, 1.0, 1.0), vec4(.5, 1.0, .2, 1.0), ratio);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
     </script>
@@ -97,7 +97,12 @@ void main() {
     vec4 addedLights = vec4(0.0, 0.0, 0.0, 1.0);
     for(int l = 0; l < MAX_POINT_LIGHTS; l++) {
         vec3 lightDirection = normalize(vecPos - pointLightPosition[l]);
-        addedLights.rgb += clamp(dot(-lightDirection, vecNormal), 0.0, 1.0) * pointLightColor[l];
+        vec3 eyeDirection = normalize(vecPos - cameraPosition);
+        vec3 halfLE = normalize(lightDirection + eyeDirection);
+        float diffuse = clamp(dot(-lightDirection, vecNormal), 0.0, 1.0);
+        float specular = pow(clamp(dot(vecNormal, halfLE), 0.0, 1.0), 50.0);
+        addedLights.rgb += pointLightColor[l] * diffuse +
+            vec3(specular);
     }
     gl_FragColor = addedLights * vColor;
 }
