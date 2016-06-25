@@ -51,7 +51,7 @@ App.prototype.init = function() {
 
 		window.removeEventListener('deviceorientation', setOrientationControls, true);
 	}.bind(this)
-	window.addEventListener('deviceorientation', setOrientationControls, true);
+//	window.addEventListener('deviceorientation', setOrientationControls, true);
 
 
 /*
