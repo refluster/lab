@@ -213,6 +213,7 @@ App.prototype.initObject = function(){
 		}
 
 		geometry.computeFaceNormals();
+		geometry.computeVertexNormals();
 
 		var material = new THREE.MeshNormalMaterial();
 
