@@ -18,41 +18,36 @@ Fishes.prototype.getObject = function() {
 };
 
 var Fish_ = function(geometry) {
-	// x = 0
-	geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
-	geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
-	geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
-	geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
+	this.defp = [
+		[0.0,  0.0,  0.0],
+		[0.0,  0.0,  0.0],
+		[0.0,  0.0,  0.0],
+		[0.0,  0.0,  0.0],
+		[0.5,  0.4,  0.0],
+		[0.5,  0.0, -0.2],
+		[0.5, -0.4,  0.0],
+		[0.5,  0.0,  0.2],
+		[2.0,  0.8,  0.0],
+		[2.0,  0.0, -0.6],
+		[2.0, -0.8,  0.0],
+		[2.0,  0.0,  0.6],
+		[3.0,  1.0,  0.0],
+		[3.0,  0.0, -0.5],
+		[3.0, -0.7,  0.0],
+		[3.0,  0.0,  0.5],
+		[7.0,  0.2,  0.0],
+		[7.0,  0.0, -0.1],
+		[7.0, -0.2,  0.0],
+		[7.0,  0.0,  0.1],
+		[8.0,  0.4,  0.0],
+		[8.0,  0.0,  0.0],
+		[8.0, -0.4,  0.0],
+		[8.0,  0.0,  0.0],
+	];
 
-	// x = 0.5
-	geometry.vertices.push(new THREE.Vector3(0.5,  0.4,  0.0));
-	geometry.vertices.push(new THREE.Vector3(0.5,  0.0, -0.2));
-	geometry.vertices.push(new THREE.Vector3(0.5, -0.4,  0.0));
-	geometry.vertices.push(new THREE.Vector3(0.5,  0.0,  0.2));
-
-	// x  = 2.0
-	geometry.vertices.push(new THREE.Vector3(2.0,  0.8,  0.0));
-	geometry.vertices.push(new THREE.Vector3(2.0,  0.0, -0.6));
-	geometry.vertices.push(new THREE.Vector3(2.0, -0.8,  0.0));
-	geometry.vertices.push(new THREE.Vector3(2.0,  0.0,  0.6));
-
-	// x  = 3.0
-	geometry.vertices.push(new THREE.Vector3(3.0,  1.0,  0.0));
-	geometry.vertices.push(new THREE.Vector3(3.0,  0.0, -0.5));
-	geometry.vertices.push(new THREE.Vector3(3.0, -0.7,  0.0));
-	geometry.vertices.push(new THREE.Vector3(3.0,  0.0,  0.5));
-
-	// x  = 6.0
-	geometry.vertices.push(new THREE.Vector3(7.0,  0.2,  0.0));
-	geometry.vertices.push(new THREE.Vector3(7.0,  0.0, -0.1));
-	geometry.vertices.push(new THREE.Vector3(7.0, -0.2,  0.0));
-	geometry.vertices.push(new THREE.Vector3(7.0,  0.0,  0.1));
-
-	// x  = 7.0
-	geometry.vertices.push(new THREE.Vector3(8.0,  0.4,  0.0));
-	geometry.vertices.push(new THREE.Vector3(8.0,  0.0,  0.0));
-	geometry.vertices.push(new THREE.Vector3(8.0, -0.4,  0.0));
-	geometry.vertices.push(new THREE.Vector3(8.0,  0.0,  0.0));
+	this.defp.forEach(function(p) {
+		geometry.vertices.push(new THREE.Vector3(p[0], p[1], p[2]));
+	});
 
 	// create faces
 	for (var i = 0; i < 5; i++) {
