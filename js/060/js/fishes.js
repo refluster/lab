@@ -1,7 +1,7 @@
 var Fishes = function() {
 
 	this.geometry = new THREE.Geometry();
-	new Fish_(this.geometry);
+	this.fish = new Fish_(this.geometry);
 
 	this.geometry.computeFaceNormals();
 	this.geometry.computeVertexNormals();
@@ -17,7 +17,13 @@ Fishes.prototype.getObject = function() {
 	return this.mesh;
 };
 
+Fishes.prototype.animation = function() {
+	this.fish.animation();
+};
+
 var Fish_ = function(geometry) {
+	this.baseIdx = geometry.length;
+
 	this.defp = [
 		[0.0,  0.0,  0.0],
 		[0.0,  0.0,  0.0],
@@ -62,12 +68,26 @@ var Fish_ = function(geometry) {
 			geometry.faces.push(new THREE.Face3(idx[1], idx[2], idx[3]));
 		}
 	}
+
+	this.geometry = geometry;
+	this.state = 0;
 };
 
-/*
-	this.mesh.geometry.vertices[0].y += 0.1;
-	this.mesh.geometry.vertices[1].y += 0.1;
-	this.mesh.geometry.vertices[2].y += 0.1;
-	this.mesh.geometry.vertices[3].y += 0.1;
-	this.mesh.geometry.verticesNeedUpdate = true;
-*/
+Fish_.prototype.move = function(x, y, z) {
+	
+};
+
+Fish_.prototype.animation = function() {
+	for (var i = 0; i < this.defp.length; i++) {
+		switch (this.defp[i][0]) {
+		case 7.0:
+			this.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state)/4;
+			break;
+		case 8.0:
+			this.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state - 1)/2;
+			break;
+		}
+	}
+	this.geometry.verticesNeedUpdate = true;
+	this.state += 0.1;
+};

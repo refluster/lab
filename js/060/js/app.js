@@ -158,9 +158,8 @@ App.prototype.initObject = function(){
 		this.scene.add(f.get3DObject());
 	}.bind(this));
 
-	var fishes = new Fishes();
-	this.mesh = fishes.getObject();
-	this.scene.add(this.mesh);
+	this.fishes = new Fishes();
+	this.scene.add(this.fishes.getObject());
 };
 
 App.prototype.resize = function() {
@@ -190,6 +189,8 @@ App.prototype.render = function(dt) {
 App.prototype.animate = function(t) {
 	requestAnimationFrame(this.animate.bind(this));
 
+	this.fishes.animation();
+
 	this.update(this.clock.getDelta());
 	this.render(this.clock.getDelta());
 };
@@ -210,4 +211,3 @@ var app = new App();
 
 app.init();
 app.animate();
-
