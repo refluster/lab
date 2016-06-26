@@ -158,6 +158,11 @@ App.prototype.initObject = function(){
 		this.scene.add(f.get3DObject());
 	}.bind(this));
 
+	var fishes = new Fishes();
+	this.mesh = fishes.getObject();
+	this.scene.add(this.mesh);
+	return;
+
 	// 3d fish
 	{
 		var geometry = new THREE.Geometry();
@@ -221,7 +226,7 @@ App.prototype.initObject = function(){
 		mesh.scale.set(30, 30, 30);
 		mesh.position.set(0, 200, 0);
 		this.scene.add(mesh);
-
+		this.mesh = mesh;
 	}
 };
 
@@ -237,9 +242,6 @@ App.prototype.resize = function() {
 };
 
 App.prototype.update = function(dt) {
-//	var c = 0.5+0.5*Math.cos(new Date().getTime()/1000.0 * Math.PI);
-//	this.testObj.material.uniforms.color.value = c;
-
 	this.resize();
 
 	this.camera.updateProjectionMatrix();
