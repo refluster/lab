@@ -1,7 +1,7 @@
 var Fishes = function() {
 
 	this.geometry = new THREE.Geometry();
-	this.createFish();
+	new Fish_(this.geometry);
 
 	this.geometry.computeFaceNormals();
 	this.geometry.computeVertexNormals();
@@ -13,42 +13,46 @@ var Fishes = function() {
 	this.mesh.position.set(0, 200, 0);
 };
 
-Fishes.prototype.createFish = function() {
+Fishes.prototype.getObject = function() {
+	return this.mesh;
+};
+
+var Fish_ = function(geometry) {
 	// x = 0
-	this.geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
+	geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
+	geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
+	geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
+	geometry.vertices.push(new THREE.Vector3(0.0,  0.0,  0.0));
 
 	// x = 0.5
-	this.geometry.vertices.push(new THREE.Vector3(0.5,  0.4,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(0.5,  0.0, -0.2));
-	this.geometry.vertices.push(new THREE.Vector3(0.5, -0.4,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(0.5,  0.0,  0.2));
+	geometry.vertices.push(new THREE.Vector3(0.5,  0.4,  0.0));
+	geometry.vertices.push(new THREE.Vector3(0.5,  0.0, -0.2));
+	geometry.vertices.push(new THREE.Vector3(0.5, -0.4,  0.0));
+	geometry.vertices.push(new THREE.Vector3(0.5,  0.0,  0.2));
 
 	// x  = 2.0
-	this.geometry.vertices.push(new THREE.Vector3(2.0,  0.8,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(2.0,  0.0, -0.6));
-	this.geometry.vertices.push(new THREE.Vector3(2.0, -0.8,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(2.0,  0.0,  0.6));
+	geometry.vertices.push(new THREE.Vector3(2.0,  0.8,  0.0));
+	geometry.vertices.push(new THREE.Vector3(2.0,  0.0, -0.6));
+	geometry.vertices.push(new THREE.Vector3(2.0, -0.8,  0.0));
+	geometry.vertices.push(new THREE.Vector3(2.0,  0.0,  0.6));
 
 	// x  = 3.0
-	this.geometry.vertices.push(new THREE.Vector3(3.0,  1.0,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(3.0,  0.0, -0.5));
-	this.geometry.vertices.push(new THREE.Vector3(3.0, -0.7,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(3.0,  0.0,  0.5));
+	geometry.vertices.push(new THREE.Vector3(3.0,  1.0,  0.0));
+	geometry.vertices.push(new THREE.Vector3(3.0,  0.0, -0.5));
+	geometry.vertices.push(new THREE.Vector3(3.0, -0.7,  0.0));
+	geometry.vertices.push(new THREE.Vector3(3.0,  0.0,  0.5));
 
 	// x  = 6.0
-	this.geometry.vertices.push(new THREE.Vector3(7.0,  0.2,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(7.0,  0.0, -0.1));
-	this.geometry.vertices.push(new THREE.Vector3(7.0, -0.2,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(7.0,  0.0,  0.1));
+	geometry.vertices.push(new THREE.Vector3(7.0,  0.2,  0.0));
+	geometry.vertices.push(new THREE.Vector3(7.0,  0.0, -0.1));
+	geometry.vertices.push(new THREE.Vector3(7.0, -0.2,  0.0));
+	geometry.vertices.push(new THREE.Vector3(7.0,  0.0,  0.1));
 
 	// x  = 7.0
-	this.geometry.vertices.push(new THREE.Vector3(8.0,  0.4,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(8.0,  0.0,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(8.0, -0.4,  0.0));
-	this.geometry.vertices.push(new THREE.Vector3(8.0,  0.0,  0.0));
+	geometry.vertices.push(new THREE.Vector3(8.0,  0.4,  0.0));
+	geometry.vertices.push(new THREE.Vector3(8.0,  0.0,  0.0));
+	geometry.vertices.push(new THREE.Vector3(8.0, -0.4,  0.0));
+	geometry.vertices.push(new THREE.Vector3(8.0,  0.0,  0.0));
 
 	// create faces
 	for (var i = 0; i < 5; i++) {
@@ -59,14 +63,10 @@ Fishes.prototype.createFish = function() {
 				b + 1 - (j + 1 < 4 ? 0: 4),
 				b + 4,
 				b + 5 - (j + 1 < 4 ? 0: 4)];
-			this.geometry.faces.push(new THREE.Face3(idx[0], idx[2], idx[1]));
-			this.geometry.faces.push(new THREE.Face3(idx[1], idx[2], idx[3]));
+			geometry.faces.push(new THREE.Face3(idx[0], idx[2], idx[1]));
+			geometry.faces.push(new THREE.Face3(idx[1], idx[2], idx[3]));
 		}
 	}
-};
-
-Fishes.prototype.getObject = function() {
-	return this.mesh;
 };
 
 /*
