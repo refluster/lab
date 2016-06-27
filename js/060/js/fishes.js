@@ -1,20 +1,9 @@
 var Fishes = function() {
-
-	this.geometry = new THREE.Geometry();
 	this.fish = new Fish_(this.geometry);
-
-	this.geometry.computeFaceNormals();
-	this.geometry.computeVertexNormals();
-
-	this.material = new THREE.MeshNormalMaterial();
-
-	this.mesh = new THREE.Mesh(this.geometry, this.material);
-	this.mesh.scale.set(30, 30, 30);
-	this.mesh.position.set(0, 200, 0);
 };
 
 Fishes.prototype.getObject = function() {
-	return this.mesh;
+	return this.fish.getObject();
 };
 
 Fishes.prototype.animation = function() {
@@ -22,8 +11,6 @@ Fishes.prototype.animation = function() {
 };
 
 var Fish_ = function(geometry) {
-	this.baseIdx = geometry.length;
-
 	this.defp = [
 		[0.0,  0.0,  0.0],
 		[0.0,  0.0,  0.0],
@@ -51,9 +38,11 @@ var Fish_ = function(geometry) {
 		[8.0,  0.0,  0.0],
 	];
 
+	this.geometry = new THREE.Geometry();
+
 	this.defp.forEach(function(p) {
-		geometry.vertices.push(new THREE.Vector3(p[0], p[1], p[2]));
-	});
+		this.geometry.vertices.push(new THREE.Vector3(p[0], p[1], p[2]));
+	}.bind(this));
 
 	// create faces
 	for (var i = 0; i < 5; i++) {
@@ -64,13 +53,25 @@ var Fish_ = function(geometry) {
 				b + 1 - (j + 1 < 4 ? 0: 4),
 				b + 4,
 				b + 5 - (j + 1 < 4 ? 0: 4)];
-			geometry.faces.push(new THREE.Face3(idx[0], idx[2], idx[1]));
-			geometry.faces.push(new THREE.Face3(idx[1], idx[2], idx[3]));
+			this.geometry.faces.push(new THREE.Face3(idx[0], idx[2], idx[1]));
+			this.geometry.faces.push(new THREE.Face3(idx[1], idx[2], idx[3]));
 		}
 	}
 
-	this.geometry = geometry;
+	this.geometry.computeFaceNormals();
+	this.geometry.computeVertexNormals();
+
+	this.material = new THREE.MeshNormalMaterial();
+
+	this.mesh = new THREE.Mesh(this.geometry, this.material);
+	this.mesh.scale.set(30, 30, 30);
+	this.mesh.position.set(0, 200, 0);
+
 	this.state = 0;
+};
+
+Fish_.prototype.getObject = function() {
+	return this.mesh;
 };
 
 Fish_.prototype.move = function(x, y, z) {
