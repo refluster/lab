@@ -78,7 +78,7 @@ void main() {
     vecNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
     float ratio;
     ratio = clamp(vecPos.y, 0.0, 20.0)/20.0;
-    vColor = mix(vec4(.9, .6, .8, 1.0), vec4(.2, .3, .5, 1.0), ratio);
+    vColor = mix(vec4(1.0, .6, 1.0, 1.0), vec4(.5, 1.0, .2, 1.0), ratio);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
     </script>
