@@ -7,7 +7,7 @@ Fishes.prototype.getObject = function() {
 };
 
 Fishes.prototype.animation = function() {
-	this.fish.animation();
+//	this.fish.animation();
 };
 
 var Fish_ = function(geometry) {
@@ -63,7 +63,20 @@ var Fish_ = function(geometry) {
 
 	this.material = new THREE.MeshNormalMaterial();
 
-	this.mesh = new THREE.Mesh(this.geometry, this.material);
+	// objects for shader test 001
+	var material = new THREE.ShaderMaterial({
+		vertexShader: document.getElementById('vshader002').textContent,
+		fragmentShader: document.getElementById('fshader002').textContent,
+		uniforms: THREE.UniformsUtils.merge([
+			THREE.UniformsLib['lights'],
+			{
+				color: {type: 'f', value: 0.0},
+			}
+		]),
+		lights: true,
+	});
+
+	this.mesh = new THREE.Mesh(this.geometry, material);
 	this.mesh.scale.set(30, 30, 30);
 	this.mesh.position.set(0, 200, 0);
 
