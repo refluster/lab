@@ -69,6 +69,53 @@ App.prototype.init = function() {
 	}
 	//////////////////////////////
 
+	////////////////////////////// original obj
+	{
+		var defp = [
+			[ 0.0,  0.0,  0.0],
+			[ 0.0,  0.0, 10.0],
+			[ 0.0, 10.0,  0.0],
+			[ 0.0, 10.0, 10.0],
+			[10.0,  0.0,  0.0],
+			[10.0,  0.0, 10.0],
+			[10.0, 10.0,  0.0],
+			[10.0, 10.0, 10.0],
+		];
+
+		var geometry = new THREE.Geometry();
+		defp.forEach(function(p) {
+			geometry.vertices.push(new THREE.Vector3(p[0], p[1], p[2]));
+		}.bind(this));
+
+		// create faces
+		geometry.faces.push(new THREE.Face3(0, 1, 3));
+		geometry.faces.push(new THREE.Face3(0, 3, 2));
+
+		geometry.faces.push(new THREE.Face3(0, 2, 6));
+		geometry.faces.push(new THREE.Face3(0, 6, 5));
+
+		geometry.computeFaceNormals();
+		geometry.computeVertexNormals();
+
+		var material2 = new THREE.MeshNormalMaterial();
+
+		// objects for shader test 001
+		var material = new THREE.ShaderMaterial({
+			vertexShader: document.getElementById('vshader').textContent,
+			fragmentShader: document.getElementById('fshader').textContent,
+			uniforms: THREE.UniformsUtils.merge([
+				THREE.UniformsLib['lights'],
+			]),
+			lights: true,
+		});
+
+		mesh = new THREE.Mesh(geometry, material2);
+		mesh.scale.set(10, 10, 10);
+		//mesh.position.set(0, 200, 0);
+
+		this.scene.add(mesh);
+	}
+
 	////////////////////////////// floor
 	{
 		var texture = THREE.ImageUtils.loadTexture(
