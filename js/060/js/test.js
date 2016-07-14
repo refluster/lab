@@ -35,7 +35,7 @@ App.prototype.init = function() {
 	//////////////////////////////
 	{
 		// objects for shader test 000
-		var shadermaterial = new THREE.ShaderMaterial({
+		var material = new THREE.ShaderMaterial({
 			vertexShader: document.getElementById('vshader').textContent,
 			fragmentShader: document.getElementById('fshader').textContent,
 			uniforms: THREE.UniformsUtils.merge([
@@ -43,18 +43,18 @@ App.prototype.init = function() {
 			]),
 			lights: true,
 		});
-		var gSphere =  new THREE.SphereGeometry(30, 32, 16);
-		this.testObj = new THREE.Mesh(gSphere, shadermaterial);
-		this.testObj.position.x = 100;
-		this.testObj.position.z = 10;
-		this.scene.add(this.testObj);
+		var geometry =  new THREE.SphereGeometry(30, 32, 16);
+		this.sphere = new THREE.Mesh(geometry, material);
+		this.sphere.position.x = 100;
+		this.sphere.position.z = 10;
+		this.scene.add(this.sphere);
 	}
 	//////////////////////////////
 
 	//////////////////////////////
 	{
 		// objects for shader test 001
-		var shadermaterial = new THREE.ShaderMaterial({
+		var material = new THREE.ShaderMaterial({
 			vertexShader: document.getElementById('vshader').textContent,
 			fragmentShader: document.getElementById('fshader').textContent,
 			uniforms: THREE.UniformsUtils.merge([
@@ -63,9 +63,9 @@ App.prototype.init = function() {
 			lights: true,
 		});
 		var geometry = new THREE.CubeGeometry(50, 50, 50);
-		this.testObj = new THREE.Mesh(geometry, shadermaterial);
-		this.testObj.position.x = -100;
-		this.scene.add(this.testObj);
+		this.cube = new THREE.Mesh(geometry, material);
+		this.cube.position.x = -100;
+		this.scene.add(this.cube);
 	}
 	//////////////////////////////
 
