@@ -23,18 +23,11 @@ App.prototype.init = function() {
 
 	this.camera = new THREE.PerspectiveCamera(90, 1, 0.001, 700);
 	this.camera.position.set(0, 10, 0);
-//	this.camera.position.set(0, 200, 0);
 	this.scene.add(this.camera);
 
 	this.controls = new THREE.OrbitControls(this.camera, this.element);
 	this.controls.rotateUp(Math.PI / 4);
-	this.controls.target.set(
-		100, 100, 0
-//		100, 0, 0
-//		this.camera.position.x + 0.1,
-//		this.camera.position.y,
-//		this.camera.position.z
-	);
+	this.controls.target.set(100, 100, 0);
 	this.controls.noZoom = true;
 	this.controls.noPan = true;
 
@@ -53,7 +46,6 @@ App.prototype.init = function() {
 	}.bind(this)
 //	window.addEventListener('deviceorientation', setOrientationControls, true);
 
-
 /*
 	hemiLight = new THREE.HemisphereLight( 0xffffff,
 										   0xffffff, 0.6 );
@@ -71,7 +63,7 @@ App.prototype.init = function() {
 
 	//////////////////////////////
 	{
-		// objects for shader test 000
+		// objects for shader test
 		var shadermaterial = new THREE.ShaderMaterial({
 			vertexShader: document.getElementById('vshader').textContent,
 			fragmentShader: document.getElementById('fshader').textContent,
@@ -83,30 +75,8 @@ App.prototype.init = function() {
 			]),
 			lights: true,
 		});
-		var gSphere =  new THREE.SphereGeometry(30, 32, 16);
-		this.testObj = new THREE.Mesh(gSphere, shadermaterial);
-		this.testObj.position.x = 100;
-		this.testObj.position.z = 10;
-		this.scene.add(this.testObj);
-	}
-	//////////////////////////////
-
-	//////////////////////////////
-	{
-		// objects for shader test 001
-		var shadermaterial = new THREE.ShaderMaterial({
-			vertexShader: document.getElementById('vshader').textContent,
-			fragmentShader: document.getElementById('fshader').textContent,
-			uniforms: THREE.UniformsUtils.merge([
-				THREE.UniformsLib['lights'],
-				{
-					color: {type: 'f', value: 0.0},
-				}
-			]),
-			lights: true,
-		});
-		var gSphere =  new THREE.SphereGeometry(20, 32, 16);
-		this.testObj = new THREE.Mesh(gSphere, shadermaterial);
+		var geometry =  new THREE.SphereGeometry(20, 32, 16);
+		this.testObj = new THREE.Mesh(geometry, shadermaterial);
 		this.testObj.position.x = 60;
 		this.scene.add(this.testObj);
 	}
@@ -123,7 +93,7 @@ App.prototype.init = function() {
 	var material = new THREE.MeshPhongMaterial({
 		color: 0xffffff,
 		specular: 0xffffff,
-		shininess: 20,
+		shininess: 0,
 		shading: THREE.FlatShading,
 		map: texture,
 	});
