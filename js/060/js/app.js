@@ -29,7 +29,7 @@ App.prototype.init = function() {
 	this.controls = new THREE.OrbitControls(this.camera, this.element);
 	this.controls.rotateUp(Math.PI / 4);
 	this.controls.target.set(
-		100, 200, 0
+		100, 100, 0
 //		100, 0, 0
 //		this.camera.position.x + 0.1,
 //		this.camera.position.y,
