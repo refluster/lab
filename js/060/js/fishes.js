@@ -40,8 +40,9 @@ var Fish_ = function(geometry) {
 
 	this.geometry = new THREE.Geometry();
 
+	var scale = 30;
 	this.defp.forEach(function(p) {
-		this.geometry.vertices.push(new THREE.Vector3(p[0], p[1], p[2]));
+		this.geometry.vertices.push(new THREE.Vector3(p[0]*scale, p[1]*scale, p[2]*scale));
 	}.bind(this));
 
 	// create faces
@@ -77,7 +78,6 @@ var Fish_ = function(geometry) {
 	});
 
 	this.mesh = new THREE.Mesh(this.geometry, material);
-	this.mesh.scale.set(30, 30, 30);
 	this.mesh.position.set(0, 200, 0);
 
 	this.state = 0;
@@ -95,10 +95,10 @@ Fish_.prototype.animation = function() {
 	for (var i = 0; i < this.defp.length; i++) {
 		switch (this.defp[i][0]) {
 		case 7.0:
-			this.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state)/4;
+			this.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state)*10;
 			break;
 		case 8.0:
-			this.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state - 1)/2;
+			this.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state - 1)*10;
 			break;
 		}
 	}
