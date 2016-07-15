@@ -38,11 +38,12 @@ var Fish_ = function(geometry) {
 		[8.0,  0.0,  0.0],
 	];
 
-	this.geometry = new THREE.Geometry();
+	geometry = new THREE.Geometry();
 
-	var scale = 30;
+	this.scale = 30;
 	this.defp.forEach(function(p) {
-		this.geometry.vertices.push(new THREE.Vector3(p[0]*scale, p[1]*scale, p[2]*scale));
+		geometry.vertices.push(
+			new THREE.Vector3(p[0]*this.scale, p[1]*this.scale, p[2]*this.scale));
 	}.bind(this));
 
 	// create faces
@@ -54,32 +55,27 @@ var Fish_ = function(geometry) {
 				b + 1 - (j + 1 < 4 ? 0: 4),
 				b + 4,
 				b + 5 - (j + 1 < 4 ? 0: 4)];
-			this.geometry.faces.push(new THREE.Face3(idx[0], idx[2], idx[1]));
-			this.geometry.faces.push(new THREE.Face3(idx[1], idx[2], idx[3]));
+			geometry.faces.push(new THREE.Face3(idx[0], idx[2], idx[1]));
+			geometry.faces.push(new THREE.Face3(idx[1], idx[2], idx[3]));
 		}
 	}
 
-	this.geometry.computeFaceNormals();
-	this.geometry.computeVertexNormals();
+	geometry.computeFaceNormals();
+	geometry.computeVertexNormals();
 
-	this.material = new THREE.MeshNormalMaterial();
-
-	// objects for shader test 001
-	var material = new THREE.ShaderMaterial({
+	this.material = new THREE.ShaderMaterial({
 		vertexShader: document.getElementById('vshader').textContent,
 		fragmentShader: document.getElementById('fshader').textContent,
 		uniforms: THREE.UniformsUtils.merge([
 			THREE.UniformsLib['lights'],
-			{
-				color: {type: 'f', value: 0.0},
-			}
 		]),
 		lights: true,
 	});
 
-	this.mesh = new THREE.Mesh(this.geometry, material);
+	this.mesh = new THREE.Mesh(geometry, this.material);
 	this.mesh.position.set(0, 100, 0);
 
+	console.log(this.mesh);
 	this.state = 0;
 };
 
@@ -95,13 +91,13 @@ Fish_.prototype.animation = function() {
 	for (var i = 0; i < this.defp.length; i++) {
 		switch (this.defp[i][0]) {
 		case 7.0:
-			this.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state)*10;
+			this.mesh.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state)/4*this.scale;
 			break;
 		case 8.0:
-			this.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state - 1)*10;
+			this.mesh.geometry.vertices[i].z = this.defp[i][2] + Math.cos(this.state - 1)/2*this.scale;
 			break;
 		}
 	}
-	this.geometry.verticesNeedUpdate = true;
+	this.mesh.geometry.verticesNeedUpdate = true;
 	this.state += 0.1;
 };
