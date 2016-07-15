@@ -73,8 +73,8 @@ App.prototype.init = function() {
 	{
 		// objects for shader test 000
 		var shadermaterial = new THREE.ShaderMaterial({
-			vertexShader: document.getElementById('vshader000').textContent,
-			fragmentShader: document.getElementById('fshader000').textContent,
+			vertexShader: document.getElementById('vshader').textContent,
+			fragmentShader: document.getElementById('fshader').textContent,
 			uniforms: THREE.UniformsUtils.merge([
 				THREE.UniformsLib['lights'],
 				{
@@ -95,8 +95,8 @@ App.prototype.init = function() {
 	{
 		// objects for shader test 001
 		var shadermaterial = new THREE.ShaderMaterial({
-			vertexShader: document.getElementById('vshader001').textContent,
-			fragmentShader: document.getElementById('fshader001').textContent,
+			vertexShader: document.getElementById('vshader').textContent,
+			fragmentShader: document.getElementById('fshader').textContent,
 			uniforms: THREE.UniformsUtils.merge([
 				THREE.UniformsLib['lights'],
 				{

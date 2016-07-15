@@ -65,8 +65,8 @@ var Fish_ = function(geometry) {
 
 	// objects for shader test 001
 	var material = new THREE.ShaderMaterial({
-		vertexShader: document.getElementById('vshader002').textContent,
-		fragmentShader: document.getElementById('fshader002').textContent,
+		vertexShader: document.getElementById('vshader').textContent,
+		fragmentShader: document.getElementById('fshader').textContent,
 		uniforms: THREE.UniformsUtils.merge([
 			THREE.UniformsLib['lights'],
 			{
