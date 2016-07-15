@@ -55,6 +55,7 @@ App.prototype.init = function() {
 		var geometry =  new THREE.SphereGeometry(20, 32, 16);
 		this.testObj = new THREE.Mesh(geometry, shadermaterial);
 		this.testObj.position.x = 60;
+		this.testObj.position.y = 40;
 		this.scene.add(this.testObj);
 	}
 };

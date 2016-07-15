@@ -75,7 +75,6 @@ var Fish_ = function(geometry) {
 	this.mesh = new THREE.Mesh(geometry, this.material);
 	this.mesh.position.set(0, 100, 0);
 
-	console.log(this.mesh);
 	this.state = 0;
 };
 
