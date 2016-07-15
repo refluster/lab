@@ -2,11 +2,8 @@ const space = {x: [-200, 200], y: [5, 40], z: [-200, 200]};
 const fishNum = 60;
 
 var App = function() {
-	this.camera, this.scene, this.renderer;
-	this.effect, this.controls;
-	this.element, this.container;
-	this.clock;
-	this.fish;
+	this.useDeviceOrientationControl = false;
+	this.useStereoEffect = false;
 };
 
 App.prototype.init = function() {
@@ -21,43 +18,22 @@ App.prototype.init = function() {
 
 	this.scene = new THREE.Scene();
 
-	this.camera = new THREE.PerspectiveCamera(90, 1, 0.001, 700);
+	this.camera = new THREE.PerspectiveCamera(90, 1, 0.001, 2000);
 	this.camera.position.set(0, 10, 0);
 	this.scene.add(this.camera);
 
-	this.controls = new THREE.OrbitControls(this.camera, this.element);
-	this.controls.rotateUp(Math.PI / 4);
-	this.controls.target.set(100, 100, 0);
-	this.controls.noZoom = true;
-	this.controls.noPan = true;
-
-	var setOrientationControls = function(e) {
-		if (!e.alpha) {
-			return;
-		}
-
+	if (this.useDeviceOrientationControl) {
 		this.controls = new THREE.DeviceOrientationControls(this.camera, true);
 		this.controls.connect();
-		this.controls.update();
-
-		this.element.addEventListener('click', this.fullscreen.bind(this), false);
-
-		window.removeEventListener('deviceorientation', setOrientationControls, true);
-	}.bind(this)
-//	window.addEventListener('deviceorientation', setOrientationControls, true);
-
-/*
-	hemiLight = new THREE.HemisphereLight( 0xffffff,
-										   0xffffff, 0.6 );
-//	hemiLight.color.setHSL( 0.6, 1, 0.6 );
-//	hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
-	hemiLight.position.set( 0, 500, 0 );
-	hemiLight.visible = true;
-	this.scene.add( hemiLight );
-*/
+	} else {
+		this.controls = new THREE.OrbitControls(this.camera, this.element);
+		this.controls.rotateUp(Math.PI / 4);
+		this.controls.target.set(100, 100, 0);
+//		this.controls.noZoom = true;
+		this.controls.noPan = true;
+	}
 
 	var light = new THREE.PointLight(0xffffff, 1.0);
-	// We want it to be very close to our character
 	light.position.set(100, 100, 100);
 	this.scene.add(light);
 
@@ -143,26 +119,19 @@ App.prototype.resize = function() {
 	this.effect.setSize(width, height);
 };
 
-App.prototype.update = function(dt) {
-	this.resize();
-
-	this.camera.updateProjectionMatrix();
-
-	this.controls.update(dt);
-};
-
-App.prototype.render = function(dt) {
-	this.renderer.render(this.scene, this.camera);
-//	this.effect.render(this.scene, this.camera);
-};
-
-App.prototype.animate = function(t) {
-	requestAnimationFrame(this.animate.bind(this));
+App.prototype.update = function(t) {
+	requestAnimationFrame(this.update.bind(this));
 
 	this.fishes.animation();
 
-	this.update(this.clock.getDelta());
-	this.render(this.clock.getDelta());
+	var dt = this.clock.getDelta()
+	this.controls.update(dt);
+
+	if (this.useStereoEffect) {
+		this.effect.render(this.scene, this.camera);
+	} else {
+		this.renderer.render(this.scene, this.camera);
+	}
 };
 
 App.prototype.fullscreen = function() {
@@ -180,4 +149,4 @@ App.prototype.fullscreen = function() {
 var app = new App();
 
 app.init();
-app.animate();
+app.update();
