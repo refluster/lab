@@ -44,6 +44,7 @@ App.prototype.init = function() {
 			lights: true,
 		});
 		var geometry =  new THREE.SphereGeometry(30, 32, 16);
+
 		this.sphere = new THREE.Mesh(geometry, material);
 		this.sphere.position.x = 100;
 		this.sphere.position.z = 10;
@@ -73,13 +74,13 @@ App.prototype.init = function() {
 	{
 		var defp = [
 			[ 0.0,  0.0,  0.0],
-			[ 0.0,  0.0, 10.0],
-			[ 0.0, 10.0,  0.0],
-			[ 0.0, 10.0, 10.0],
-			[10.0,  0.0,  0.0],
-			[10.0,  0.0, 10.0],
-			[10.0, 10.0,  0.0],
-			[10.0, 10.0, 10.0],
+			[ 0.0,  0.0, 80.0],
+			[ 0.0, 80.0,  0.0],
+			[ 0.0, 80.0, 80.0],
+			[80.0,  0.0,  0.0],
+			[80.0,  0.0, 80.0],
+			[80.0, 80.0,  0.0],
+			[80.0, 80.0, 80.0],
 		];
 
 		var geometry = new THREE.Geometry();
@@ -88,11 +89,8 @@ App.prototype.init = function() {
 		}.bind(this));
 
 		// create faces
-		geometry.faces.push(new THREE.Face3(0, 1, 3));
-		geometry.faces.push(new THREE.Face3(0, 3, 2));
-
-		geometry.faces.push(new THREE.Face3(0, 2, 6));
-		geometry.faces.push(new THREE.Face3(0, 6, 5));
+		geometry.faces.push(new THREE.Face3(7, 5, 6));
+		geometry.faces.push(new THREE.Face3(7, 6, 3));
 
 		geometry.computeFaceNormals();
 		geometry.computeVertexNormals();
@@ -109,9 +107,9 @@ App.prototype.init = function() {
 			lights: true,
 		});
 
-		mesh = new THREE.Mesh(geometry, material2);
-		mesh.scale.set(10, 10, 10);
-		//mesh.position.set(0, 200, 0);
+		mesh = new THREE.Mesh(geometry, material);
+//		mesh.scale.set(10, 10, 10);
+//		mesh.position.set(0, 200, 0);
 
 		this.scene.add(mesh);
 	}
