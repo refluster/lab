@@ -8,18 +8,15 @@ var App = function() {
 
 App.prototype.init = function() {
 	this.renderer = new THREE.WebGLRenderer();
+	this.effect = new THREE.StereoEffect(this.renderer);
 	this.renderer.setClearColor(new THREE.Color(0x000000));
 	this.element = this.renderer.domElement;
 	this.container = document.getElementById('example');
 	this.container.appendChild(this.element);
 	this.clock = new THREE.Clock();
-
-	this.effect = new THREE.StereoEffect(this.renderer);
-
-	this.scene = new THREE.Scene();
-
 	this.camera = new THREE.PerspectiveCamera(90, 1, 0.001, 2000);
 	this.camera.position.set(0, 10, 0);
+	this.scene = new THREE.Scene();
 	this.scene.add(this.camera);
 
 	if (this.useDeviceOrientationControl) {
@@ -36,7 +33,12 @@ App.prototype.init = function() {
 	light.position.set(100, 100, 100);
 	this.scene.add(light);
 
-	//////////////////////////////
+	window.addEventListener('resize', this.resize.bind(this), false);
+	setTimeout(this.resize.bind(this), 1);
+
+	this.initFloor();
+	this.initObject();
+
 	{
 		// objects for shader test
 		var shadermaterial = new THREE.ShaderMaterial({
@@ -55,34 +57,6 @@ App.prototype.init = function() {
 		this.testObj.position.x = 60;
 		this.scene.add(this.testObj);
 	}
-	//////////////////////////////
-
-	var texture = THREE.ImageUtils.loadTexture(
-		'textures/patterns/checker.png'
-	);
-	texture.wrapS = THREE.RepeatWrapping;
-	texture.wrapT = THREE.RepeatWrapping;
-	texture.repeat = new THREE.Vector2(50, 50);
-	texture.anisotropy = this.renderer.getMaxAnisotropy();
-
-	var material = new THREE.MeshPhongMaterial({
-		color: 0xffffff,
-		specular: 0xffffff,
-		shininess: 0,
-		shading: THREE.FlatShading,
-		map: texture,
-	});
-
-	var geometry = new THREE.PlaneGeometry(1000, 1000);
-
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.rotation.x = -Math.PI / 2;
-	this.scene.add(mesh);
-
-	window.addEventListener('resize', this.resize.bind(this), false);
-	setTimeout(this.resize.bind(this), 1);
-
-	this.initObject();
 };
 
 App.prototype.initObject = function(){
@@ -105,6 +79,27 @@ App.prototype.initObject = function(){
 
 	this.fishes = new Fishes();
 	this.scene.add(this.fishes.getObject());
+};
+
+App.prototype.initFloor = function() {
+	var texture = THREE.ImageUtils.loadTexture('textures/patterns/checker.png');
+	texture.wrapS = THREE.RepeatWrapping;
+	texture.wrapT = THREE.RepeatWrapping;
+	texture.repeat = new THREE.Vector2(20, 20);
+	texture.anisotropy = this.renderer.getMaxAnisotropy();
+
+	var material = new THREE.MeshPhongMaterial({
+		color: 0xffffff,
+		specular: 0xffffff,
+		shininess: 0,
+		shading: THREE.FlatShading,
+		map: texture,
+	});
+
+	var geometry = new THREE.PlaneGeometry(1000, 1000);
+	var mesh = new THREE.Mesh(geometry, material);
+	mesh.rotation.x = -Math.PI / 2;
+	this.scene.add(mesh);
 };
 
 App.prototype.resize = function() {
