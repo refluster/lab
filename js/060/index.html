@@ -35,7 +35,7 @@ varying vec3 vecNormal;
 void main() {
     vecPos = (modelMatrix * vec4(position, 1.0 )).xyz;
     vecNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
-    vColor = vec4(.9, .6, .8, 1.0);
+    vColor = vec4(.4, .6, .827, 1.0);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
     </script>
