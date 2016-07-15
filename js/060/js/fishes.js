@@ -64,8 +64,8 @@ var Fish_ = function(geometry) {
 	geometry.computeVertexNormals();
 
 	this.material = new THREE.ShaderMaterial({
-		vertexShader: document.getElementById('vshader').textContent,
-		fragmentShader: document.getElementById('fshader').textContent,
+		vertexShader: document.getElementById('vshader-gouraud').textContent,
+		fragmentShader: document.getElementById('fshader-gouraud').textContent,
 		uniforms: THREE.UniformsUtils.merge([
 			THREE.UniformsLib['lights'],
 		]),

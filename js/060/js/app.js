@@ -42,8 +42,8 @@ App.prototype.init = function() {
 	{
 		// objects for shader test
 		var shadermaterial = new THREE.ShaderMaterial({
-			vertexShader: document.getElementById('vshader').textContent,
-			fragmentShader: document.getElementById('fshader').textContent,
+			vertexShader: document.getElementById('vshader-gouraud').textContent,
+			fragmentShader: document.getElementById('fshader-gouraud').textContent,
 			uniforms: THREE.UniformsUtils.merge([
 				THREE.UniformsLib['lights'],
 				{
@@ -53,6 +53,7 @@ App.prototype.init = function() {
 			lights: true,
 		});
 		var geometry =  new THREE.SphereGeometry(20, 32, 16);
+
 		this.testObj = new THREE.Mesh(geometry, shadermaterial);
 		this.testObj.position.x = 60;
 		this.testObj.position.y = 40;

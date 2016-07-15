@@ -27,7 +27,43 @@
       ga('send', 'pageview');
     </script>
 
-    <script type="x-shader/x-vertex" id="vshader">
+    <script type="x-shader/x-vertex" id="vshader-gouraud">
+// vertex shader
+varying vec4 vColor;
+uniform vec3 pointLightColor[MAX_POINT_LIGHTS];
+uniform vec3 pointLightPosition[MAX_POINT_LIGHTS];
+uniform float pointLightDistance[MAX_POINT_LIGHTS];
+
+void main() {
+    vec4 color = vec4(.4, .6, .827, 1.0);
+    vec3 vecPos = (modelMatrix * vec4(position, 1.0 )).xyz;
+    vec3 vecNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
+    vec4 addedLights = vec4(0.0, 0.0, 0.0, 1.0);
+    vec4 speculars = vec4(0.0, 0.0, 0.0, 1.0);
+
+    for(int l = 0; l < MAX_POINT_LIGHTS; l++) {
+        vec3 lightDirection = normalize(vecPos - pointLightPosition[l]);
+        vec3 cameraDirection = normalize(vecPos - cameraPosition);
+        vec3 halfLE = normalize(lightDirection + cameraDirection);
+        float diffuse = clamp(dot(-lightDirection, vecNormal), 0.0, 1.0);
+        float specular = pow(clamp(dot(-cameraDirection, vecNormal), 0.0, 1.0), 10.0);
+        addedLights.rgb += diffuse * pointLightColor[l];
+        speculars += specular;
+    }
+    vColor = addedLights*color + speculars;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+    </script>
+    <script type="x-shader/x-vertex" id="fshader-gouraud">
+// fragment shader
+varying vec4 vColor;
+void main() {
+    gl_FragColor = vColor;
+}
+    </script>
+
+    <script type="x-shader/x-vertex" id="vshader-phong">
+
 // vertex shader
 varying vec4 vColor;
 varying vec3 vecPos;
@@ -39,7 +75,7 @@ void main() {
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
     </script>
-    <script type="x-shader/x-vertex" id="fshader">
+    <script type="x-shader/x-vertex" id="fshader-phong">
 // fragment shader
 varying vec4 vColor;
 varying vec3 vecPos;
@@ -66,7 +102,6 @@ void main() {
     gl_FragColor = addedLights * vColor + speculars;
 }
     </script>
-
 
   </head>
   <body>
