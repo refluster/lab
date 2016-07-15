@@ -29,7 +29,6 @@ App.prototype.init = function() {
 		this.controls = new THREE.OrbitControls(this.camera, this.element);
 		this.controls.rotateUp(Math.PI / 4);
 		this.controls.target.set(100, 100, 0);
-//		this.controls.noZoom = true;
 		this.controls.noPan = true;
 	}
 
