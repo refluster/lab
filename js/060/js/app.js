@@ -65,7 +65,7 @@ App.prototype.initObject = function(){
 	this.fish = [];
 
 	for (var i = 0; i < fishNum; i++) {
-		this.fish.push(new Fish());
+		this.fish.push(new Fish3d());
 	}
 
 	this.fish.forEach(function(f) {

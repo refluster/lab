@@ -28,7 +28,7 @@ var Fish3d = function(geometry) {
 
 	geometry = new THREE.Geometry();
 
-	this.scale = 30;
+	this.scale = 8;
 	this.defp.forEach(function(p) {
 		geometry.vertices.push(
 			new THREE.Vector3(p[0]*this.scale, p[1]*this.scale, p[2]*this.scale));
@@ -96,4 +96,8 @@ Fish3d.prototype.setSeed = function(s) {
 };
 
 Fish3d.prototype.setSpeed = function(vx, vy, vz) {
+};
+
+Fish3d.prototype.get3DObject = function() {
+	return this.mesh;
 };
