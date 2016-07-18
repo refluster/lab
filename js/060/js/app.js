@@ -84,43 +84,22 @@ App.prototype.initObject = function(){
 };
 
 App.prototype.initFloor = function() {
-	var texture = THREE.ImageUtils.loadTexture('textures/patterns/checker.png');
-	texture.wrapS = THREE.RepeatWrapping;
-	texture.wrapT = THREE.RepeatWrapping;
-	texture.repeat = new THREE.Vector2(20, 20);
-	texture.anisotropy = this.renderer.getMaxAnisotropy();
-
-	var material = new THREE.MeshPhongMaterial({
-		color: 0xffffff,
-		specular: 0xffffff,
-		shininess: 0,
-		shading: THREE.FlatShading,
-		map: texture,
+	// max depth from the camera
+	var shadermaterial = new THREE.ShaderMaterial({
+		vertexShader: document.getElementById('vshader-water').textContent,
+		fragmentShader: document.getElementById('fshader-water').textContent,
+		side: THREE.BackSide,
+		uniforms: THREE.UniformsUtils.merge([
+			THREE.UniformsLib['lights'],
+		]),
+		lights: true,
 	});
-
-	var geometry = new THREE.PlaneGeometry(2000, 2000);
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.rotation.x = -Math.PI / 2;
-//	this.scene.add(mesh);
-
-	{
-		// max depth from the camera
-		var shadermaterial = new THREE.ShaderMaterial({
-			vertexShader: document.getElementById('vshader-water').textContent,
-			fragmentShader: document.getElementById('fshader-water').textContent,
-			side: THREE.BackSide,
-			uniforms: THREE.UniformsUtils.merge([
-				THREE.UniformsLib['lights'],
-			]),
-			lights: true,
-		});
-		var geometry =  new THREE.SphereGeometry(700, 16, 16);
-
-		this.testObj = new THREE.Mesh(geometry, shadermaterial);
-		this.testObj.position.x = 120;
-		this.testObj.position.y = 80;
-		this.scene.add(this.testObj);
-	}
+	var geometry =  new THREE.SphereGeometry(700, 16, 16);
+	
+	this.testObj = new THREE.Mesh(geometry, shadermaterial);
+	this.testObj.position.x = 120;
+	this.testObj.position.y = 80;
+	this.scene.add(this.testObj);
 };
 
 App.prototype.resize = function() {
