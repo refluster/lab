@@ -52,6 +52,10 @@ void main() {
     }
     vec4 objColor = addedLights*color + speculars;
     vColor = objColor;
+
+    float ratio = clamp(length(vecPos - cameraPosition)/500.0, 0.0, 1.0);
+    vColor = mix(objColor, vec4(90.0/255.0, 220.0/255.0, 255.0/255.0, 1.0), ratio);
+
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
     </script>
