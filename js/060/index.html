@@ -114,9 +114,9 @@ varying vec3 vecPos;
 void main() {
     // calc fog color
     vecPos = (modelMatrix * vec4(position, 1.0 )).xyz;
-    float ratio = (clamp(vecPos.y, -500.0, 500.0) + 500.0)/1000.0;
+    float depth = (clamp(vecPos.y, -500.0, 500.0) + 500.0)/1000.0;
     vec4 fogColor = mix(vec4(7.0/255.0, 25.0/255.0, 40.0/255.0, 1.0),
-                        vec4(90.0/255.0, 220.0/255.0, 255.0/255.0, 1.0), ratio);
+                        vec4(90.0/255.0, 220.0/255.0, 255.0/255.0, 1.0), depth);
     vColor = fogColor;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
