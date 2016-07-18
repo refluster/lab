@@ -70,10 +70,6 @@ Fish3d.prototype.getObject = function() {
 	return this.mesh;
 };
 
-Fish3d.prototype.move = function(x, y, z) {
-	
-};
-
 Fish3d.prototype.animation = function() {
 	for (var i = 0; i < this.defp.length; i++) {
 		switch (this.defp[i][0]) {
@@ -87,4 +83,17 @@ Fish3d.prototype.animation = function() {
 	}
 	this.mesh.geometry.verticesNeedUpdate = true;
 	this.state += 0.1;
+};
+
+Fish3d.prototype.setPosition = function(x, y, z) {
+	this.mesh.position.set(x, y, z);
+};
+
+Fish3d.prototype.setSize = function(s) {
+};
+
+Fish3d.prototype.setSeed = function(s) {
+};
+
+Fish3d.prototype.setSpeed = function(vx, vy, vz) {
 };
