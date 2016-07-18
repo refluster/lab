@@ -50,7 +50,8 @@ void main() {
         addedLights.rgb += diffuse * pointLightColor[l];
         speculars += specular;
     }
-    vColor = addedLights*color + speculars;
+    vec4 objColor = addedLights*color + speculars;
+    vColor = objColor;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
     </script>
