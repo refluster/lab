@@ -41,6 +41,7 @@ void main() {
     vec4 addedLights = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 speculars = vec4(0.0, 0.0, 0.0, 1.0);
 
+    // calc obj color
     for(int l = 0; l < MAX_POINT_LIGHTS; l++) {
         vec3 lightDirection = normalize(vecPos - pointLightPosition[l]);
         vec3 cameraDirection = normalize(vecPos - cameraPosition);
@@ -51,10 +52,15 @@ void main() {
         speculars += specular;
     }
     vec4 objColor = addedLights*color + speculars;
+
+    // calc fog color
+    float depth = (clamp(vecPos.y, -500.0, 500.0) + 500.0)/1000.0;
+    vec4 fogColor = mix(vec4(7.0/255.0, 25.0/255.0, 40.0/255.0, 1.0),
+                        vec4(90.0/255.0, 220.0/255.0, 255.0/255.0, 1.0), depth);
     vColor = objColor;
 
-    float ratio = clamp(length(vecPos - cameraPosition)/500.0, 0.0, 1.0);
-    vColor = mix(objColor, vec4(90.0/255.0, 220.0/255.0, 255.0/255.0, 1.0), ratio);
+    float distance = clamp(length(vecPos - cameraPosition)/500.0, 0.0, 1.0);
+    vColor = mix(objColor, fogColor, distance);
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
