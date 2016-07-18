@@ -79,7 +79,7 @@ App.prototype.initObject = function(){
 		this.scene.add(f.get3DObject());
 	}.bind(this));
 
-	this.fishes = new Fishes();
+	this.fishes = new Fish3d();
 	this.scene.add(this.fishes.getObject());
 };
 

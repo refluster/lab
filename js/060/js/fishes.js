@@ -1,16 +1,4 @@
-var Fishes = function() {
-	this.fish = new Fish_(this.geometry);
-};
-
-Fishes.prototype.getObject = function() {
-	return this.fish.getObject();
-};
-
-Fishes.prototype.animation = function() {
-//	this.fish.animation();
-};
-
-var Fish_ = function(geometry) {
+var Fish3d = function(geometry) {
 	this.defp = [
 		[0.0,  0.0,  0.0],
 		[0.0,  0.0,  0.0],
@@ -78,15 +66,15 @@ var Fish_ = function(geometry) {
 	this.state = 0;
 };
 
-Fish_.prototype.getObject = function() {
+Fish3d.prototype.getObject = function() {
 	return this.mesh;
 };
 
-Fish_.prototype.move = function(x, y, z) {
+Fish3d.prototype.move = function(x, y, z) {
 	
 };
 
-Fish_.prototype.animation = function() {
+Fish3d.prototype.animation = function() {
 	for (var i = 0; i < this.defp.length; i++) {
 		switch (this.defp[i][0]) {
 		case 7.0:
