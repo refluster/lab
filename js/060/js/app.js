@@ -1,4 +1,4 @@
-const space = {x: [-200, 200], y: [5, 40], z: [-200, 200]};
+const space = {x: [-500, 500], y: [5, 120], z: [-500, 500]};
 const fishNum = 60;
 
 var App = function() {
