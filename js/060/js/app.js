@@ -119,6 +119,8 @@ App.prototype.initWaterSurface = function() {
 	this.waterNormals = new THREE.ImageUtils.loadTexture( 'textures/waternormals.jpg' );
 	this.waterNormals.wrapS = this.waterNormals.wrapT = THREE.RepeatWrapping;
 
+	this.eye = new THREE.Vector3(0, 0, 0);
+
 	// max depth from the camera
 	var shadermaterial = new THREE.ShaderMaterial({
 		vertexShader: document.getElementById('vshader-water-surface').textContent,
@@ -129,7 +131,7 @@ App.prototype.initWaterSurface = function() {
 			{
 				time: { type: 'f', value: this.timeStamp},
 				normalSampler: { type: 't', value: null},
-				eye: { type: "v3", value: new THREE.Vector3(0, 0, 0)},
+				eye: { type: "v3", value: this.eye},
 				sunColor: { type: "c", value: new THREE.Color(0xffffff)},
 				sunDirection: { type: "v3", value: new THREE.Vector3( 0.70707, 0.70707, 0.0 )},
 			},
@@ -139,15 +141,10 @@ App.prototype.initWaterSurface = function() {
 
 	shadermaterial.uniforms.normalSampler.value = this.waterNormals;
 
-	var worldCoordinates = new THREE.Vector3();
-	worldCoordinates.setFromMatrixPosition( this.camera.matrixWorld );
-	eye = worldCoordinates;
-	shadermaterial.uniforms.eye.value = eye;
-
 	var geometry = new THREE.PlaneGeometry( 1400, 1400, 16, 16);
 	var mesh = new THREE.Mesh(geometry, shadermaterial);
-	mesh.position.x = 120;
-	mesh.position.y = this.timeStamp;
+//	mesh.position.x = 120;
+//	mesh.position.y = this.timeStamp;
 	mesh.rotateX(Math.PI/2);
 	this.scene.add(mesh);
 	this.waterSurface = mesh;
@@ -155,6 +152,11 @@ App.prototype.initWaterSurface = function() {
 
 App.prototype.waterSurfaceAnimation = function() {
 	var base = this.waterSurface.position.y;
+
+	var worldCoordinates = new THREE.Vector3();
+	worldCoordinates.setFromMatrixPosition(this.camera.matrixWorld);
+	this.eye = worldCoordinates;
+	this.material.uniforms.eye.value = this.eye;
 
 	this.waterSurface.geometry.vertices.forEach(function(v) {
 		v.z = base +
