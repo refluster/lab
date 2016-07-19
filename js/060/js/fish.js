@@ -1,5 +1,5 @@
 var CloudFish = function(scene) {
-	const space = {x: [-300, 300], y: [5, 120], z: [-30, 30]};
+	const space = {x: [-200, 200], y: [5, 120], z: [-30, 30]};
 	const fishNum = 60;
 
 	this.scene = scene

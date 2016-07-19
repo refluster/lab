@@ -28,7 +28,7 @@ var Fish3d = function(geometry) {
 
 	geometry = new THREE.Geometry();
 
-	this.scale = 8;
+	this.scale = 4;
 	this.defp.forEach(function(p) {
 		geometry.vertices.push(
 			new THREE.Vector3(p[0]*this.scale, p[1]*this.scale, p[2]*this.scale));
