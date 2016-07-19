@@ -64,7 +64,18 @@ var Fish3d = function(geometry) {
 	this.mesh.position.set(0, 100, 0);
 
 	this.state = Math.random()*1000;
-	this.speed = {x: 2, y: 0, z: 0};
+	this.setSpeed(1, 2, 0);
+};
+
+Fish3d.prototype.setSpeed = function(x, y, z) {
+	v1 = new THREE.Vector3(x, y, z);
+	v1.normalize();
+	v2 = new THREE.Vector3(1, 0, 0);
+	v2.cross(v1);
+	this.mesh.rotation.x = v2.x;
+	this.mesh.rotation.y = v2.y;
+	this.mesh.rotation.z = v2.z;
+	this.speed = {x: x, y: y, z: z};
 };
 
 Fish3d.prototype.getObject = function() {
@@ -121,9 +132,6 @@ Fish3d.prototype.setSize = function(s) {
 };
 
 Fish3d.prototype.setSeed = function(s) {
-};
-
-Fish3d.prototype.setSpeed = function(vx, vy, vz) {
 };
 
 Fish3d.prototype.get3DObject = function() {
