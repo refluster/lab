@@ -1,67 +1,26 @@
-var Fish = function() {
-	this.color = Math.random()*0xffffff;
+var CloudFish = function(scene) {
+	const space = {x: [-300, 300], y: [5, 120], z: [-30, 30]};
+	const fishNum = 60;
 
-	var material = new THREE.MeshBasicMaterial({
-        color: this.color,
-        side: THREE.DoubleSide
-    });
-    var geometry = new THREE.Geometry();
-	geometry.vertices.push(new THREE.Vector3( 0,  0, 0));
-	geometry.vertices.push(new THREE.Vector3(10, 10, 0));
-	geometry.vertices.push(new THREE.Vector3(20,  0, 0));
-	geometry.vertices.push(new THREE.Vector3(25,  5, 0));
-	geometry.vertices.push(new THREE.Vector3(25, -5, 0));
-	geometry.vertices.push(new THREE.Vector3(20,  0, 0));
-	geometry.vertices.push(new THREE.Vector3(10,-10, 0));
-	geometry.vertices.push(new THREE.Vector3( 0,  0, 0));
-	geometry.faces.push(new THREE.Face3(0, 2, 1));
-	geometry.faces.push(new THREE.Face3(2, 4, 3));
-	geometry.faces.push(new THREE.Face3(5, 7, 6));
+	this.scene = scene
+	this.fishes = [];
 
-	this.line = new THREE.Mesh(geometry, material);
-	this.state = 0;
-	this.speed = {x: 0, y: 0, z: 0};
+	for (var i = 0; i < fishNum; i++) {
+		var f = new Fish3d();
+		var x = (Math.random()*(space.x[1] - space.x[0]) + space.x[0]);
+		var y = (Math.random()*(space.y[1] - space.y[0]) + space.y[0]);
+		var z = (Math.random()*(space.z[1] - space.z[0]) + space.z[0]);
+		f.setPosition(x, y, z);
+//		f.setSize(.4);
+//		f.setSeed(Math.random() * Math.PI * 2);
+//		f.setSpeed({x: -.5, y: 0, z: 0});
+		this.fishes.push(f);
+		this.scene.add(f.get3DObject());
+	}
 };
 
-Fish.prototype.setSeed = function(s) {
-	this.state = s;
-};
-
-Fish.prototype.setSpeed = function(s) {
-	this.speed.x = s.x;
-	this.speed.y = s.y;
-	this.speed.z = s.z;
-};
-
-Fish.prototype.setSize = function(s) {
-	this.line.geometry.vertices.forEach(function(v) {
-		v.x *= s;
-		v.y *= s;
-		v.z *= s;
+CloudFish.prototype.animate = function() {
+	this.fishes.forEach(function(f) {
+		f.animate();
 	}.bind(this));
-};
-
-Fish.prototype.get3DObject = function() {
-	return this.line;
-};
-
-Fish.prototype.animate = function() {
-	this.line.geometry.vertices.forEach(function(v) {
-		v.z = Math.cos(v.x / 8 - this.state);
-	}.bind(this));
-	this.line.geometry.verticesNeedUpdate = true;
-	this.line.position.x += this.speed.x;
-	this.line.position.y += this.speed.y;
-	this.line.position.z += this.speed.z;
-	this.state += 0.1;
-};
-
-Fish.prototype.setPosition = function(x, y, z) {
-	this.line.position.set(x, y, z);
-};
-
-Fish.prototype.getPosition = function() {
-	return {x: this.line.position.x,
-			y: this.line.position.y,
-			z: this.line.position.z};
 };

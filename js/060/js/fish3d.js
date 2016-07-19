@@ -63,14 +63,15 @@ var Fish3d = function(geometry) {
 	this.mesh = new THREE.Mesh(geometry, this.material);
 	this.mesh.position.set(0, 100, 0);
 
-	this.state = 0;
+	this.state = Math.random()*1000;
+	this.speed = {x: 2, y: 0, z: 0};
 };
 
 Fish3d.prototype.getObject = function() {
 	return this.mesh;
 };
 
-Fish3d.prototype.animation = function() {
+Fish3d.prototype.animate = function() {
 	for (var i = 0; i < this.defp.length; i++) {
 		switch (this.defp[i][0]) {
 		case 7.0:
@@ -83,6 +84,27 @@ Fish3d.prototype.animation = function() {
 	}
 	this.mesh.geometry.verticesNeedUpdate = true;
 	this.state += 0.1;
+
+	this.mesh.position.x += this.speed.x;
+	this.mesh.position.y += this.speed.y;
+	this.mesh.position.z += this.speed.z;
+
+	const range = 400;
+	if (this.mesh.position.x > range) {
+		this.mesh.position.x -= range*2;
+	} else if (this.mesh.position.x < -range) {
+		this.mesh.position.x += range*2;
+	}
+	if (this.mesh.position.y > range) {
+		this.mesh.position.y -= range*2;
+	} else if (this.mesh.position.y < -range) {
+		this.mesh.position.y += range*2;
+	}
+	if (this.mesh.position.z > range) {
+		this.mesh.position.z -= range*2;
+	} else if (this.mesh.position.z < -range) {
+		this.mesh.position.z += range*2;
+	}
 };
 
 Fish3d.prototype.setPosition = function(x, y, z) {

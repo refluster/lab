@@ -1,6 +1,3 @@
-const space = {x: [-500, 500], y: [5, 120], z: [-500, 500]};
-const fishNum = 60;
-
 var App = function() {
 	this.useDeviceOrientationControl = false;
 	this.useStereoEffect = false;
@@ -37,7 +34,7 @@ App.prototype.init = function() {
 	setTimeout(this.resize.bind(this), 1);
 
 	this.initFloor();
-	this.initWaterSurface();
+//	this.initWaterSurface();
 	this.initObject();
 
 	{
@@ -63,25 +60,7 @@ App.prototype.init = function() {
 };
 
 App.prototype.initObject = function(){
-	this.fish = [];
-
-	for (var i = 0; i < fishNum; i++) {
-		this.fish.push(new Fish3d());
-	}
-
-	this.fish.forEach(function(f) {
-		var x = (Math.random()*(space.x[1] - space.x[0]) + space.x[0]);
-		var y = (Math.random()*(space.y[1] - space.y[0]) + space.y[0]);
-		var z = (Math.random()*(space.z[1] - space.z[0]) + space.z[0]);
-		f.setPosition(x, y, z);
-		f.setSize(.4);
-		f.setSeed(Math.random() * Math.PI * 2);
-		f.setSpeed({x: -.5, y: 0, z: 0});
-		this.scene.add(f.get3DObject());
-	}.bind(this));
-
-	this.fishes = new Fish3d();
-	this.scene.add(this.fishes.getObject());
+	this.cloudFish = new CloudFish(this.scene);
 };
 
 App.prototype.initWaterSurface = function() {
@@ -154,11 +133,11 @@ App.prototype.resize = function() {
 App.prototype.update = function(t) {
 	this.timeStamp += 1.0;
 
-	this.waterSurfaceAnimation();
+//	this.waterSurfaceAnimation();
 
 	requestAnimationFrame(this.update.bind(this));
 
-	this.fishes.animation();
+	this.cloudFish.animate();
 
 	var dt = this.clock.getDelta()
 	this.controls.update(dt);
