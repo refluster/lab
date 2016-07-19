@@ -61,14 +61,15 @@ App.prototype.init = function() {
 };
 
 App.prototype.initObject = function(){
-	this.cloudFish = new CloudFish(this.scene);
-	this.cloudFish.move(0, 20, 100);
+	this.cloudFish = [];
 
-	this.cloudFish2 = new CloudFish(this.scene);
-	this.cloudFish2.move(-30, -40, -60);
-
-	this.cloudFish3 = new CloudFish(this.scene);
-	this.cloudFish3.move(30, 40, -60);
+	for (var i = 0; i < 6; i++) {
+		var cf = new CloudFish(this.scene);
+		cf.move((Math.random() - 0.5)*500,
+				(Math.random() - 0.5)*500,
+				(Math.random() - 0.5)*500);
+		this.cloudFish.push(cf);
+	}
 };
 
 App.prototype.initSkyBox = function() {
@@ -192,9 +193,9 @@ App.prototype.update = function(t) {
 
 	requestAnimationFrame(this.update.bind(this));
 
-	this.cloudFish.animate();
-	this.cloudFish2.animate();
-	this.cloudFish3.animate();
+	this.cloudFish.forEach(function(cf) {
+		cf.animate();
+	});
 
 	var dt = this.clock.getDelta()
 	this.controls.update(dt);
