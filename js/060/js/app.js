@@ -116,24 +116,26 @@ App.prototype.initSkyBox = function() {
 App.prototype.initWaterSurface = function() {
 	this.timeStamp = 0.0;
 
-	var waterNormals = new THREE.ImageUtils.loadTexture( 'textures/waternormals.jpg' );
-	waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+	this.waterNormals = new THREE.ImageUtils.loadTexture( 'textures/waternormals.jpg' );
+	this.waterNormals.wrapS = this.waterNormals.wrapT = THREE.RepeatWrapping;
 
 	// max depth from the camera
 	var shadermaterial = new THREE.ShaderMaterial({
 		vertexShader: document.getElementById('vshader-water-surface').textContent,
 		fragmentShader: document.getElementById('fshader-water-surface').textContent,
-        wireframe: true,
+//        wireframe: true,
 		uniforms: THREE.UniformsUtils.merge([
 			THREE.UniformsLib['lights'],
 			{
 				time: { type: 'f', value: this.timeStamp},
-				normalSampler: { type: 't', value: waterNormals},
+				normalSampler: { type: 't', value: null},
 			},
 		]),
 		lights: true,
 	});
-	var geometry = new THREE.PlaneGeometry( 1400, 1400, 64, 64);
+	shadermaterial.uniforms.normalSampler.value = this.waterNormals;
+
+	var geometry = new THREE.PlaneGeometry( 1400, 1400, 16, 16);
 	var mesh = new THREE.Mesh(geometry, shadermaterial);
 	mesh.position.x = 120;
 	mesh.position.y = this.timeStamp;

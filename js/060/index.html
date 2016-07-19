@@ -168,7 +168,10 @@ vec4 getNoise(vec2 uv) {
 }
 
 void main() {
-    gl_FragColor = vertexColor;
+		vec4 noise = getNoise( worldPosition.xz );
+    vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) );
+
+    gl_FragColor = vertexColor * vec4(surfaceNormal, 1.0);
 }
     </script>
 
