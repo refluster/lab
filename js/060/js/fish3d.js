@@ -31,7 +31,7 @@ var Fish3d = function(geometry) {
 	this.scale = 4;
 	this.defp.forEach(function(p) {
 		geometry.vertices.push(
-			new THREE.Vector3(p[0]*this.scale, p[1]*this.scale, p[2]*this.scale));
+			new THREE.Vector3(p[0]*-this.scale, p[1]*this.scale, p[2]*this.scale));
 	}.bind(this));
 
 	// create faces
