@@ -35,7 +35,7 @@ uniform vec3 pointLightPosition[MAX_POINT_LIGHTS];
 uniform float pointLightDistance[MAX_POINT_LIGHTS];
 
 void main() {
-    vec4 color = vec4(90.0/255.0, 220.0/255.0, 255.0/255.0, 1.0);
+    vec4 color = vec4(124.0/255.0, 161.0/255.0, 222.0/255.0, 1.0);
     vec3 vecPos = (modelMatrix * vec4(position, 1.0 )).xyz;
     vec3 vecNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
     vec4 addedLights = vec4(0.0, 0.0, 0.0, 1.0);
@@ -59,7 +59,7 @@ void main() {
                         vec4(90.0/255.0, 220.0/255.0, 255.0/255.0, 1.0), depth);
     vColor = objColor;
 
-    float distance = clamp(length(vecPos - cameraPosition)/700.0, 0.4, 1.0);
+    float distance = clamp(length(vecPos - cameraPosition)/400.0, 0.4, 1.0);
     vColor = mix(objColor, fogColor, distance);
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);

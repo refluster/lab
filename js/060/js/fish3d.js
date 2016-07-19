@@ -89,7 +89,7 @@ Fish3d.prototype.animate = function() {
 		}
 	}
 	this.mesh.geometry.verticesNeedUpdate = true;
-	this.state += 0.1;
+	this.state += 0.3;
 
 	this.mesh.position.x += this.speed.x;
 	this.mesh.position.y += this.speed.y;
