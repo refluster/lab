@@ -37,6 +37,7 @@ App.prototype.init = function() {
 	setTimeout(this.resize.bind(this), 1);
 
 	this.initFloor();
+	this.initWaterSurface();
 	this.initObject();
 
 	{
@@ -81,6 +82,28 @@ App.prototype.initObject = function(){
 
 	this.fishes = new Fish3d();
 	this.scene.add(this.fishes.getObject());
+};
+
+App.prototype.initWaterSurface = function() {
+	// max depth from the camera
+	var shadermaterial = new THREE.ShaderMaterial({
+		vertexShader: document.getElementById('vshader-water-surface').textContent,
+		fragmentShader: document.getElementById('fshader-water-surface').textContent,
+		uniforms: THREE.UniformsUtils.merge([
+			THREE.UniformsLib['lights'],
+		]),
+		lights: true,
+	});
+	var geometry = new THREE.PlaneGeometry( 1400, 1400, 20, 20);
+	var mesh = new THREE.Mesh(geometry, shadermaterial);
+	mesh.position.x = 120;
+	mesh.position.y = 80;
+	mesh.rotateX(Math.PI/2);
+	this.scene.add(mesh);
+
+	var wfh = new THREE.WireframeHelper( mesh, 0x000000 );
+	wfh.material.linewidth = 2; // looks much better if your PC will support it
+	this.scene.add( wfh );
 };
 
 App.prototype.initFloor = function() {
