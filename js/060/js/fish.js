@@ -11,9 +11,6 @@ var CloudFish = function(scene) {
 		var y = (Math.random()*(space.y[1] - space.y[0]) + space.y[0]);
 		var z = (Math.random()*(space.z[1] - space.z[0]) + space.z[0]);
 		f.setPosition(x, y, z);
-//		f.setSize(.4);
-//		f.setSeed(Math.random() * Math.PI * 2);
-//		f.setSpeed({x: -.5, y: 0, z: 0});
 		this.fishes.push(f);
 		this.scene.add(f.get3DObject());
 	}
@@ -29,7 +26,7 @@ CloudFish.prototype.move = function(x, y, z) {
 
 CloudFish.prototype.animate = function() {
 	const speed = 3;
-	const r = 0.5;
+	const r = .8;
 	this.speed.x += (Math.random() - 0.5)*r;
 	this.speed.y += (Math.random() - 0.5)*r;
 	this.speed.z += (Math.random() - 0.5)*r;
