@@ -85,25 +85,40 @@ App.prototype.initObject = function(){
 };
 
 App.prototype.initWaterSurface = function() {
+	this.timeStamp = 0.0;
+
 	// max depth from the camera
 	var shadermaterial = new THREE.ShaderMaterial({
 		vertexShader: document.getElementById('vshader-water-surface').textContent,
 		fragmentShader: document.getElementById('fshader-water-surface').textContent,
+        wireframe: true,
 		uniforms: THREE.UniformsUtils.merge([
 			THREE.UniformsLib['lights'],
+			{
+				time: { type: 'f', value: this.timeStamp}
+			},
 		]),
 		lights: true,
 	});
-	var geometry = new THREE.PlaneGeometry( 1400, 1400, 20, 20);
+	var geometry = new THREE.PlaneGeometry( 1400, 1400, 64, 64);
 	var mesh = new THREE.Mesh(geometry, shadermaterial);
 	mesh.position.x = 120;
-	mesh.position.y = 80;
+	mesh.position.y = this.timeStamp;
 	mesh.rotateX(Math.PI/2);
 	this.scene.add(mesh);
+	this.waterSurface = mesh;
+};
 
-	var wfh = new THREE.WireframeHelper( mesh, 0x000000 );
-	wfh.material.linewidth = 2; // looks much better if your PC will support it
-	this.scene.add( wfh );
+App.prototype.waterSurfaceAnimation = function() {
+	var base = this.waterSurface.position.y;
+
+	this.waterSurface.geometry.vertices.forEach(function(v) {
+		v.z = base +
+			Math.cos(this.timeStamp/32 + v.x/32) * 6 +
+			Math.cos(this.timeStamp/32 + v.y/64) * 8 +
+			Math.cos(this.timeStamp/32 + v.x/32 + v.y/32 + 1) * 8;
+	}.bind(this));
+	this.waterSurface.geometry.verticesNeedUpdate = true;
 };
 
 App.prototype.initFloor = function() {
@@ -137,6 +152,10 @@ App.prototype.resize = function() {
 };
 
 App.prototype.update = function(t) {
+	this.timeStamp += 1.0;
+
+	this.waterSurfaceAnimation();
+
 	requestAnimationFrame(this.update.bind(this));
 
 	this.fishes.animation();
