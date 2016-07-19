@@ -118,11 +118,12 @@ App.prototype.initFloor = function() {
 		]),
 		lights: true,
 	});
-	var geometry =  new THREE.SphereGeometry(700, 16, 16);
+	var geometry =  new THREE.SphereGeometry(1000, 8, 8, 0, Math.PI);
 	
 	this.testObj = new THREE.Mesh(geometry, shadermaterial);
 	this.testObj.position.x = 120;
-	this.testObj.position.y = 80;
+	this.testObj.position.y = 200;
+	this.testObj.rotation.set(Math.PI/2, 0, 0);
 	this.scene.add(this.testObj);
 };
 
