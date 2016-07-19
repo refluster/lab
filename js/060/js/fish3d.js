@@ -105,7 +105,7 @@ Fish3d.prototype.animate = function() {
 	v2.cross(v1);
 	this.mesh.rotation.set(v2.x, v2.y, v2.z);
 
-	const range = 400;
+	const range = 600;
 	if (this.mesh.position.x > range) {
 		this.mesh.position.x -= range*2;
 	} else if (this.mesh.position.x < -range) {
