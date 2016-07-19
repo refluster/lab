@@ -1,6 +1,6 @@
 var App = function() {
-	this.useDeviceOrientationControl = false;
-	this.useStereoEffect = false;
+	this.useDeviceOrientationControl = true;
+	this.useStereoEffect = true;
 };
 
 App.prototype.init = function() {
