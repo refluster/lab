@@ -138,9 +138,9 @@ App.prototype.initWaterSurface = function() {
 
 	shadermaterial.uniforms.normalSampler.value = this.waterNormals;
 
-	var geometry = new THREE.PlaneGeometry( 1400, 1400, 1, 1);
+	var geometry = new THREE.PlaneGeometry( 2100, 2100, 1, 1);
 	var mesh = new THREE.Mesh(geometry, shadermaterial);
-	mesh.position.y = 200;
+	mesh.position.y = 150;
 	mesh.rotateX(Math.PI/2);
 	this.scene.add(mesh);
 	this.waterSurface = mesh;
@@ -164,7 +164,6 @@ App.prototype.initFloor = function() {
 	var geometry =  new THREE.SphereGeometry(1000, 8, 8, 0, Math.PI);
 	
 	this.testObj = new THREE.Mesh(geometry, shadermaterial);
-	this.testObj.position.x = 120;
 	this.testObj.position.y = 200;
 	this.testObj.rotation.set(Math.PI/2, 0, 0);
 	this.scene.add(this.testObj);
