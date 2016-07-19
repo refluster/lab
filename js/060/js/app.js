@@ -60,14 +60,14 @@ App.prototype.init = function() {
 };
 
 App.prototype.initObject = function(){
-	this.cloudFish = new CloudFish(this.scene);
-	this.cloudFish.move(0, 20, 100);
-
-	this.cloudFish2 = new CloudFish(this.scene);
-	this.cloudFish2.move(-30, -40, -60);
-
-	this.cloudFish3 = new CloudFish(this.scene);
-	this.cloudFish3.move(30, 40, -60);
+//	this.cloudFish = new CloudFish(this.scene);
+//	this.cloudFish.move(0, 20, 100);
+//
+//	this.cloudFish2 = new CloudFish(this.scene);
+//	this.cloudFish2.move(-30, -40, -60);
+//
+//	this.cloudFish3 = new CloudFish(this.scene);
+//	this.cloudFish3.move(30, 40, -60);
 };
 
 App.prototype.initWaterSurface = function() {
@@ -145,9 +145,9 @@ App.prototype.update = function(t) {
 
 	requestAnimationFrame(this.update.bind(this));
 
-	this.cloudFish.animate();
-	this.cloudFish2.animate();
-	this.cloudFish3.animate();
+//	this.cloudFish.animate();
+//	this.cloudFish2.animate();
+//	this.cloudFish3.animate();
 
 	var dt = this.clock.getDelta()
 	this.controls.update(dt);
