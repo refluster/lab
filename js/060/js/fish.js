@@ -19,6 +19,12 @@ var CloudFish = function(scene) {
 	}
 };
 
+CloudFish.prototype.move = function(x, y, z) {
+	this.fishes.forEach(function(f) {
+		f.move(x, y, z);
+	});
+};
+
 CloudFish.prototype.animate = function() {
 	this.fishes.forEach(function(f) {
 		f.animate();

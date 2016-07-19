@@ -71,6 +71,12 @@ Fish3d.prototype.getObject = function() {
 	return this.mesh;
 };
 
+Fish3d.prototype.move = function(x, y, z) {
+	this.mesh.position.x += x;
+	this.mesh.position.y += y;
+	this.mesh.position.z += z;
+};
+
 Fish3d.prototype.animate = function() {
 	for (var i = 0; i < this.defp.length; i++) {
 		switch (this.defp[i][0]) {

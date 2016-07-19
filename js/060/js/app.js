@@ -61,6 +61,7 @@ App.prototype.init = function() {
 
 App.prototype.initObject = function(){
 	this.cloudFish = new CloudFish(this.scene);
+	this.cloudFish.move(0, 20, 100);
 };
 
 App.prototype.initWaterSurface = function() {
