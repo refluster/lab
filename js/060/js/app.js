@@ -119,8 +119,6 @@ App.prototype.initWaterSurface = function() {
 	this.waterNormals = new THREE.ImageUtils.loadTexture( 'textures/waternormals.jpg' );
 	this.waterNormals.wrapS = this.waterNormals.wrapT = THREE.RepeatWrapping;
 
-	this.eye = new THREE.Vector3(0, 0, 0);
-
 	// max depth from the camera
 	var shadermaterial = new THREE.ShaderMaterial({
 		vertexShader: document.getElementById('vshader-water-surface').textContent,
@@ -131,7 +129,6 @@ App.prototype.initWaterSurface = function() {
 			{
 				time: { type: 'f', value: this.timeStamp},
 				normalSampler: { type: 't', value: null},
-				eye: { type: "v3", value: this.eye},
 				sunColor: { type: "c", value: new THREE.Color(0xffffff)},
 				sunDirection: { type: "v3", value: new THREE.Vector3( 0.70707, 0.70707, 0.0 )},
 				waterColor: { type: "c", value: new THREE.Color(0x5adcff)},
@@ -145,19 +142,17 @@ App.prototype.initWaterSurface = function() {
 	var geometry = new THREE.PlaneGeometry( 1400, 1400, 16, 16);
 	var mesh = new THREE.Mesh(geometry, shadermaterial);
 //	mesh.position.x = 120;
-//	mesh.position.y = this.timeStamp;
+	mesh.position.y = 200;
 	mesh.rotateX(Math.PI/2);
 	this.scene.add(mesh);
 	this.waterSurface = mesh;
 };
 
 App.prototype.waterSurfaceAnimation = function() {
-	var base = this.waterSurface.position.y;
+	this.waterSurface.material.uniforms.time.value = this.timeStamp;
 
-	var worldCoordinates = new THREE.Vector3();
-	worldCoordinates.setFromMatrixPosition(this.camera.matrixWorld);
-	this.eye = worldCoordinates;
-	this.material.uniforms.eye.value = this.eye;
+/*
+	var base = this.waterSurface.position.y;
 
 	this.waterSurface.geometry.vertices.forEach(function(v) {
 		v.z = base +
@@ -166,6 +161,7 @@ App.prototype.waterSurfaceAnimation = function() {
 			Math.cos(this.timeStamp*2 + v.x/32 + v.y/32 + 1) * 8;
 	}.bind(this));
 	this.waterSurface.geometry.verticesNeedUpdate = true;
+*/
 };
 
 App.prototype.initFloor = function() {
@@ -202,7 +198,7 @@ App.prototype.resize = function() {
 App.prototype.update = function(t) {
 	this.timeStamp += 1.0/60.0;
 
-//	this.waterSurfaceAnimation();
+	this.waterSurfaceAnimation();
 
 	requestAnimationFrame(this.update.bind(this));
 

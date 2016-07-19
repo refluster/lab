@@ -138,13 +138,17 @@ void main() {
     <script type="x-shader/x-vertex" id="vshader-water-surface">
 // vertex shader
 uniform float time;
-varying vec4 vertexColor;
 varying vec3 worldPosition;
+varying vec4 fogColor;
+
 void main() {
     // calc fog color
-    vec4 color = vec4(124.0/255.0, 161.0/255.0, 222.0/255.0, 1.0);
-    vertexColor = color;
     worldPosition = (modelMatrix * vec4(position, 1.0 )).xyz;
+    float depth = (clamp(worldPosition.y, -500.0, 500.0) + 500.0)/1000.0;
+    fogColor = mix(vec4(7.0/255.0, 25.0/255.0, 40.0/255.0, 1.0),
+                   vec4(90.0/255.0, 220.0/255.0, 255.0/255.0, 1.0), depth);
+
+    vec4 color = vec4(124.0/255.0, 161.0/255.0, 222.0/255.0, 1.0);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
     </script>
@@ -152,12 +156,11 @@ void main() {
 // fragment shader
 uniform float time;
 varying vec3 worldPosition;
-varying vec4 vertexColor;
 uniform sampler2D normalSampler;
-uniform vec3 eye;
 uniform vec3 sunColor;
 uniform vec3 sunDirection;
 uniform vec3 waterColor;
+varying vec4 fogColor;
 
 vec4 getNoise(vec2 uv) {
 	  vec2 uv0 = ( uv / 103.0 ) + vec2(time / 17.0, time / 29.0);
@@ -203,7 +206,10 @@ void main() {
     //vec3 albedo = sunColor * diffuseLight;
     vec3 albedo = mix( sunColor * diffuseLight * 0.3 + scatter, ( vec3( 0.1 ) + waterColor * 0.9 + waterColor * specularLight ), reflectance );
 
-    gl_FragColor = vec4(albedo, 1.0);
+    float distance = clamp(length(worldPosition - cameraPosition)/400.0, 0.4, 1.0);
+    vec4 mixedColor = mix(vec4(albedo, 1.0), fogColor, distance);
+
+    gl_FragColor = mixedColor;
 }
     </script>
 
