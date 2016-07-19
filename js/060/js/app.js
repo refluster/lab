@@ -129,11 +129,20 @@ App.prototype.initWaterSurface = function() {
 			{
 				time: { type: 'f', value: this.timeStamp},
 				normalSampler: { type: 't', value: null},
+				eye: { type: "v3", value: new THREE.Vector3(0, 0, 0)},
+				sunColor: { type: "c", value: new THREE.Color(0xffffff)},
+				sunDirection: { type: "v3", value: new THREE.Vector3( 0.70707, 0.70707, 0.0 )},
 			},
 		]),
 		lights: true,
 	});
+
 	shadermaterial.uniforms.normalSampler.value = this.waterNormals;
+
+	var worldCoordinates = new THREE.Vector3();
+	worldCoordinates.setFromMatrixPosition( this.camera.matrixWorld );
+	eye = worldCoordinates;
+	shadermaterial.uniforms.eye.value = eye;
 
 	var geometry = new THREE.PlaneGeometry( 1400, 1400, 16, 16);
 	var mesh = new THREE.Mesh(geometry, shadermaterial);
