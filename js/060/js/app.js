@@ -34,7 +34,7 @@ App.prototype.init = function() {
 	setTimeout(this.resize.bind(this), 1);
 
 	this.initFloor();
-//	this.initWaterSurface();
+	this.initWaterSurface();
 	this.initObject();
 
 	{
