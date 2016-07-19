@@ -134,6 +134,7 @@ App.prototype.initWaterSurface = function() {
 				eye: { type: "v3", value: this.eye},
 				sunColor: { type: "c", value: new THREE.Color(0xffffff)},
 				sunDirection: { type: "v3", value: new THREE.Vector3( 0.70707, 0.70707, 0.0 )},
+				waterColor: { type: "c", value: new THREE.Color(0x555555)},
 			},
 		]),
 		lights: true,
