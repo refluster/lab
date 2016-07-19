@@ -119,6 +119,11 @@ App.prototype.initWaterSurface = function() {
 	this.waterNormals = new THREE.ImageUtils.loadTexture( 'textures/waternormals.jpg' );
 	this.waterNormals.wrapS = this.waterNormals.wrapT = THREE.RepeatWrapping;
 
+	var r = 0.6;
+	var color = {r: (7*r + 90*(1-r))/255,
+				 g: (25*r + 220*(1-r))/255,
+				 b: (40*r + 255*(1-r))/255};
+
 	// max depth from the camera
 	var shadermaterial = new THREE.ShaderMaterial({
 		vertexShader: document.getElementById('vshader-water-surface').textContent,
@@ -130,7 +135,7 @@ App.prototype.initWaterSurface = function() {
 				normalSampler: { type: 't', value: null},
 				sunColor: { type: "c", value: new THREE.Color(0xffffff)},
 				sunDirection: { type: "v3", value: new THREE.Vector3( 0.70707, 0.70707, 0.0 )},
-				waterColor: { type: "c", value: new THREE.Color(0x5adcff)},
+				waterColor: { type: "c", value: new THREE.Color(color.r, color.g, color.b)},
 			},
 		]),
 		lights: true,
