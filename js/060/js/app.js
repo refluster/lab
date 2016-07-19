@@ -77,7 +77,6 @@ App.prototype.initSkyBox = function() {
 
 	var loader = new THREE.ImageLoader();
 	loader.load('textures/skyboxsun25degtest.png', function(image) {
-
 		var getSide = function(x, y) {
 			var size = 1024;
 			var canvas = document.createElement('canvas');
@@ -86,7 +85,6 @@ App.prototype.initSkyBox = function() {
 			var context = canvas.getContext('2d');
 			context.drawImage(image, - x * size, - y * size);
 			return canvas;
-
 		};
 		cubeMap.images[0] = getSide(2, 1); // px
 		cubeMap.images[1] = getSide(0, 1); // nx
@@ -118,6 +116,9 @@ App.prototype.initSkyBox = function() {
 App.prototype.initWaterSurface = function() {
 	this.timeStamp = 0.0;
 
+	var waterNormals = new THREE.ImageUtils.loadTexture( 'textures/waternormals.jpg' );
+	waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+
 	// max depth from the camera
 	var shadermaterial = new THREE.ShaderMaterial({
 		vertexShader: document.getElementById('vshader-water-surface').textContent,
@@ -126,7 +127,8 @@ App.prototype.initWaterSurface = function() {
 		uniforms: THREE.UniformsUtils.merge([
 			THREE.UniformsLib['lights'],
 			{
-				time: { type: 'f', value: this.timeStamp}
+				time: { type: 'f', value: this.timeStamp},
+				normalSampler: { type: 't', value: waterNormals},
 			},
 		]),
 		lights: true,
@@ -145,9 +147,9 @@ App.prototype.waterSurfaceAnimation = function() {
 
 	this.waterSurface.geometry.vertices.forEach(function(v) {
 		v.z = base +
-			Math.cos(this.timeStamp/32 + v.x/32) * 6 +
-			Math.cos(this.timeStamp/32 + v.y/64) * 8 +
-			Math.cos(this.timeStamp/32 + v.x/32 + v.y/32 + 1) * 8;
+			Math.cos(this.timeStamp*2 + v.x/32) * 6 +
+			Math.cos(this.timeStamp*2 + v.y/64) * 8 +
+			Math.cos(this.timeStamp*2 + v.x/32 + v.y/32 + 1) * 8;
 	}.bind(this));
 	this.waterSurface.geometry.verticesNeedUpdate = true;
 };
@@ -184,7 +186,7 @@ App.prototype.resize = function() {
 };
 
 App.prototype.update = function(t) {
-	this.timeStamp += 1.0;
+	this.timeStamp += 1.0/60.0;
 
 //	this.waterSurfaceAnimation();
 
