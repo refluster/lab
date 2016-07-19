@@ -146,7 +146,7 @@ App.prototype.initWaterSurface = function() {
 
 	var geometry = new THREE.PlaneGeometry( 2100, 2100, 1, 1);
 	var mesh = new THREE.Mesh(geometry, shadermaterial);
-	mesh.position.y = 150;
+	mesh.position.y = 100;
 	mesh.rotateX(Math.PI/2);
 	this.scene.add(mesh);
 	this.waterSurface = mesh;
