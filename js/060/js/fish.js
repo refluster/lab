@@ -17,6 +17,8 @@ var CloudFish = function(scene) {
 		this.fishes.push(f);
 		this.scene.add(f.get3DObject());
 	}
+
+	this.speed = new THREE.Vector3(0, 0, 0);
 };
 
 CloudFish.prototype.move = function(x, y, z) {
@@ -26,7 +28,17 @@ CloudFish.prototype.move = function(x, y, z) {
 };
 
 CloudFish.prototype.animate = function() {
+	const speed = 3;
+	const r = 0.5;
+	this.speed.x += (Math.random() - 0.5)*r;
+	this.speed.y += (Math.random() - 0.5)*r;
+	this.speed.z += (Math.random() - 0.5)*r;
+
+	this.speed.normalize();
+	this.speed.multiplyScalar(speed);
+
 	this.fishes.forEach(function(f) {
 		f.animate();
+		f.setSpeed(this.speed.x, this.speed.y, this.speed.z);
 	}.bind(this));
 };

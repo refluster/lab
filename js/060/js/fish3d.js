@@ -68,13 +68,6 @@ var Fish3d = function(geometry) {
 };
 
 Fish3d.prototype.setSpeed = function(x, y, z) {
-	v1 = new THREE.Vector3(x, y, z);
-	v1.normalize();
-	v2 = new THREE.Vector3(1, 0, 0);
-	v2.cross(v1);
-	this.mesh.rotation.x = v2.x;
-	this.mesh.rotation.y = v2.y;
-	this.mesh.rotation.z = v2.z;
 	this.speed = {x: x, y: y, z: z};
 };
 
@@ -105,6 +98,12 @@ Fish3d.prototype.animate = function() {
 	this.mesh.position.x += this.speed.x;
 	this.mesh.position.y += this.speed.y;
 	this.mesh.position.z += this.speed.z;
+
+	v1 = new THREE.Vector3(this.speed.x, this.speed.y, this.speed.z);
+	v1.normalize();
+	v2 = new THREE.Vector3(1, 0, 0);
+	v2.cross(v1);
+	this.mesh.rotation.set(v2.x, v2.y, v2.z);
 
 	const range = 400;
 	if (this.mesh.position.x > range) {
