@@ -47,7 +47,7 @@ void main() {
         vec3 cameraDirection = normalize(vecPos - cameraPosition);
         vec3 halfLE = normalize(lightDirection + cameraDirection);
         float diffuse = clamp(dot(-lightDirection, vecNormal), 0.0, 1.0);
-        float specular = pow(clamp(dot(-cameraDirection, vecNormal), 0.0, 1.0), 10.0);
+        float specular = pow(clamp(dot(-cameraDirection, vecNormal), 0.0, 1.0), 5.0);
         addedLights.rgb += diffuse * pointLightColor[l];
         speculars += specular;
     }

@@ -30,7 +30,7 @@ App.prototype.init = function() {
 	}
 
 	var light = new THREE.PointLight(0xffffff, 1.0);
-	light.position.set(100, 100, 100);
+	light.position.set(10000, 10000, 10000);
 	this.scene.add(light);
 
 	window.addEventListener('resize', this.resize.bind(this), false);
