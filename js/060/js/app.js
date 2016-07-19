@@ -123,7 +123,6 @@ App.prototype.initWaterSurface = function() {
 	var shadermaterial = new THREE.ShaderMaterial({
 		vertexShader: document.getElementById('vshader-water-surface').textContent,
 		fragmentShader: document.getElementById('fshader-water-surface').textContent,
-//        wireframe: true,
 		uniforms: THREE.UniformsUtils.merge([
 			THREE.UniformsLib['lights'],
 			{
@@ -139,9 +138,8 @@ App.prototype.initWaterSurface = function() {
 
 	shadermaterial.uniforms.normalSampler.value = this.waterNormals;
 
-	var geometry = new THREE.PlaneGeometry( 1400, 1400, 16, 16);
+	var geometry = new THREE.PlaneGeometry( 1400, 1400, 1, 1);
 	var mesh = new THREE.Mesh(geometry, shadermaterial);
-//	mesh.position.x = 120;
 	mesh.position.y = 200;
 	mesh.rotateX(Math.PI/2);
 	this.scene.add(mesh);
@@ -150,18 +148,6 @@ App.prototype.initWaterSurface = function() {
 
 App.prototype.waterSurfaceAnimation = function() {
 	this.waterSurface.material.uniforms.time.value = this.timeStamp;
-
-/*
-	var base = this.waterSurface.position.y;
-
-	this.waterSurface.geometry.vertices.forEach(function(v) {
-		v.z = base +
-			Math.cos(this.timeStamp*2 + v.x/32) * 6 +
-			Math.cos(this.timeStamp*2 + v.y/64) * 8 +
-			Math.cos(this.timeStamp*2 + v.x/32 + v.y/32 + 1) * 8;
-	}.bind(this));
-	this.waterSurface.geometry.verticesNeedUpdate = true;
-*/
 };
 
 App.prototype.initFloor = function() {
