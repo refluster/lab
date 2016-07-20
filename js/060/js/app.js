@@ -63,7 +63,7 @@ App.prototype.init = function() {
 App.prototype.initObject = function(){
 	this.cloudFish = [];
 
-	for (var i = 0; i < 6; i++) {
+	for (var i = 0; i < 12; i++) {
 		var cf = new CloudFish(this.scene);
 		cf.move((Math.random() - 0.5)*500,
 				(Math.random() - 0.5)*500,
