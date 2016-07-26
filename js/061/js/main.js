@@ -1,5 +1,7 @@
 Apl = function() {
 	this.saving = false;
+	this.ePointers = {};
+	this.sampleInterval = 200; // msec
 
 	$('#save').click(function() {
 		this.startStopSaving();
@@ -13,14 +15,26 @@ Apl.prototype.startStopSaving = function(evt) {
 			e.accelerationIncludingGravity.x;
 			$('#text').text(e.accelerationIncludingGravity.x);
 		});
+		this.logHeader();
+		this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
 		$('#save').text('stop');
 		this.saving = true;
 	} else {
 		$(window).unbind('devicemotion');
+		clearInterval(this.timer);
 		$('#save').text('start');
 		this.saving = false;
 		this.logUpload();
 	}
+};
+
+Apl.prototype.logHeader = function(evt) {
+	this.log = [['test00', 'test01', 'test02']];
+}
+
+Apl.prototype.logDataPush = function(evt) {
+	this.log.push([3, 3, 3]);
+	console.log(this.log);
 };
 
 Apl.prototype.logUpload = function(evt) {
@@ -31,7 +45,6 @@ Apl.prototype.logUpload = function(evt) {
 	})
 		.done(function(d) {
 			console.log('done');
-			console.log(d);
 		})
 		.fail(function() {
 			console.log('fail');
