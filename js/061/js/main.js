@@ -26,11 +26,11 @@ Apl = function() {
 			 '<td>' + (window.DeviceLightEvent? 'ok': '-') + '</td></tr>');
 	d.append('<tr><td>proximity</td>' +
 			 '<td>' + (window.DeviceProximityEvent? 'ok': '-') + '</td></tr>');
+	$('#text').text('stop');
 };
 
 Apl.prototype.startSaving = function(e) {
 	$(window).on('devicemotion', function(e) {
-		$('#text').text(e.originalEvent.accelerationIncludingGravity.x);
 		this.ePointers.devicemotion = e.originalEvent;
 	}.bind(this));
 	$(window).on('deviceorientation', function(e) {
@@ -45,6 +45,7 @@ Apl.prototype.startSaving = function(e) {
 	this.logHeader();
 	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
 	console.log(this.timer);
+	$('#text').text('sensing');
 	$('#save').text('stop');
 	$('#save').off('click');
 	$('#save').on('click', this.stopSaving.bind(this));
@@ -55,6 +56,7 @@ Apl.prototype.stopSaving = function(e) {
 	console.log(this.timer);
 	clearInterval(this.timer);
 	this.logUpload();
+	$('#text').text('stop');
 	$('#save').text('start');
 	$('#save').off('click');
 	$('#save').on('click', this.startSaving.bind(this));
