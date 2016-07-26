@@ -39,10 +39,7 @@ Apl.prototype.logDataPush = function(evt) {
 };
 
 Apl.prototype.logUpload = function(evt) {
-	var data = '';
-	$.each(this.log, function(i, d) {
-		data += d.join(',') + "\n";
-	});
+	var data = $.map(this.log, function(n, i) {return n.join(',')}).join("\n");
 
 	$.post('upload.cgi', {data: data}, function() {
 		console.log('success');
