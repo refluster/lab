@@ -61,7 +61,13 @@ Apl.prototype.stopSaving = function(evt) {
 };
 
 Apl.prototype.logHeader = function(evt) {
-	this.log = [['test00', 'test01', 'test02']];
+	this.log = [['acg.x', 'acg.y', 'acg.z',
+				 'acc.x', 'acc.y', 'acc.z',
+				 'rot.a', 'rot.b', 'rot.g',
+				 'gyro.abs', 'gyro.a', 'gyrrot.b', 'gyrrot.g',
+				 'light',
+				 'prox.max', 'prox.min', 'prox.val',
+				]];
 }
 
 Apl.prototype.logDataPush = function(evt) {
