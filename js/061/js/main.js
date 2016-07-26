@@ -1,14 +1,46 @@
 Apl = function() {
-	this.ePointers = {};
 	this.sampleInterval = 200; // msec
 
+	this.ePointers = {
+		devicemotion: {
+			accelerationIncludingGravity: {x: '-', y: '-', z: '-'},
+			acceleration: {x: '-', y: '-', z: '-'},
+			rotationRate: {alpha: '-', beta: '-', gamma: '-'}},
+		deviceorientation: {absolute: '-', alpha: '-', beta: '-', gamma: '-'},
+		devicelight: {value: '-'},
+		deviceproximity: {max: '-', min: '-', value: '-'},
+	};
+
 	$('#save').bind('click', this.startSaving.bind(this));
+
+	var d = $('#sense tbody');
+	d.append('<tr><td>acceleration including gravity</td>' +
+			 '<td>' + (window.DeviceMotionEvent? 'ok': '-') + '</td></tr>');
+	d.append('<tr><td>acceleration</td>' +
+			 '<td>' + (window.DeviceMotionEvent? 'ok': '-') + '</td></tr>');
+	d.append('<tr><td>rotation rate</td>' +
+			 '<td>' + (window.DeviceMotionEvent? 'ok': '-') + '</td></tr>');
+	d.append('<tr><td>gyroscope</td>' +
+			 '<td>' + (window.DeviceOrientationEvent? 'ok': '-') + '</td></tr>');
+	d.append('<tr><td>ambient light</td>' +
+			 '<td>' + (window.DeviceLightEvent? 'ok': '-') + '</td></tr>');
+	d.append('<tr><td>proximity</td>' +
+			 '<td>' + (window.DeviceProximityEvent? 'ok': '-') + '</td></tr>');
 };
 
 Apl.prototype.startSaving = function(evt) {
-	$(window).bind('devicemotion', function(e) {
+	$(window).on('devicemotion', function(e) {
 		$('#text').text(e.originalEvent.accelerationIncludingGravity.x);
 		this.ePointers.devicemotion = e.originalEvent;
+	}.bind(this));
+	$(window).on('deviceorientation', function(e) {
+		this.ePointers.deviceorientation = e.originalEvent;
+	}.bind(this));
+	$(window).on('devicelight', function(e) {
+		this.ePointers.devicelight = e.originalEvent;
+	}.bind(this));
+	$(window).on('deviceproximity', function(e) {
+		this.ePointers.deviceproximity = e.originalEvent;
 	}.bind(this));
 	this.logHeader();
 	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
@@ -43,6 +75,14 @@ Apl.prototype.logDataPush = function(evt) {
 		this.ePointers.devicemotion.rotationRate.alpha,
 		this.ePointers.devicemotion.rotationRate.beta,
 		this.ePointers.devicemotion.rotationRate.gamma,
+		this.ePointers.deviceorientation.absolute,
+		this.ePointers.deviceorientation.alpha,
+		this.ePointers.deviceorientation.beta,
+		this.ePointers.deviceorientation.gamma,
+		this.ePointers.devicelight.value,
+		this.ePointers.deviceproximity.max,
+		this.ePointers.deviceproximity.min,
+		this.ePointers.deviceproximity.value,
 	]);
 };
 
