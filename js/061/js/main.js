@@ -10,7 +10,8 @@ Apl.prototype.startSaving = function(evt) {
 		var e = _e.originalEvent;
 		e.accelerationIncludingGravity.x;
 		$('#text').text(e.accelerationIncludingGravity.x);
-	});
+		this.ePointers.devicemotion = e;
+	}.bind(this));
 	this.logHeader();
 	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
 	console.log(this.timer);
@@ -34,8 +35,17 @@ Apl.prototype.logHeader = function(evt) {
 }
 
 Apl.prototype.logDataPush = function(evt) {
-	this.log.push([3, 3, 3]);
-	console.log(this.log);
+	this.log.push([
+		this.ePointers.devicemotion.accelerationIncludingGravity.x,
+		this.ePointers.devicemotion.accelerationIncludingGravity.y,
+		this.ePointers.devicemotion.accelerationIncludingGravity.z,
+		this.ePointers.devicemotion.acceleration.x,
+		this.ePointers.devicemotion.acceleration.y,
+		this.ePointers.devicemotion.acceleration.z,
+		this.ePointers.devicemotion.rotationRate.alpha,
+		this.ePointers.devicemotion.rotationRate.beta,
+		this.ePointers.devicemotion.rotationRate.gamma,
+	]);
 };
 
 Apl.prototype.logUpload = function(evt) {
