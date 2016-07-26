@@ -6,11 +6,9 @@ Apl = function() {
 };
 
 Apl.prototype.startSaving = function(evt) {
-	$(window).bind('devicemotion', function(_e) {
-		var e = _e.originalEvent;
-		e.accelerationIncludingGravity.x;
-		$('#text').text(e.accelerationIncludingGravity.x);
-		this.ePointers.devicemotion = e;
+	$(window).bind('devicemotion', function(e) {
+		$('#text').text(e.originalEvent.accelerationIncludingGravity.x);
+		this.ePointers.devicemotion = e.originalEvent;
 	}.bind(this));
 	this.logHeader();
 	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
