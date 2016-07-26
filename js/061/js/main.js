@@ -3,9 +3,7 @@ Apl = function() {
 	this.ePointers = {};
 	this.sampleInterval = 200; // msec
 
-	$('#save').click(function() {
-		this.startStopSaving();
-	}.bind(this));
+	$('#save').click(this.startStopSaving.bind(this));
 };
 
 Apl.prototype.startStopSaving = function(evt) {
