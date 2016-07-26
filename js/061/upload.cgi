@@ -4,19 +4,7 @@ require 'cgi'
 
 def getFileName(baseFname)
   dir = "upload/"
-  fname = dir + baseFname
-
-  if File.exist?(fname)
-    ext = File.extname(fname)
-    name = fname[0, fname.length - ext.length]
-    
-    for n in 0..1000 do
-      fname = "#{name} (#{n})#{ext}"
-      break if ! File.exist?(fname)
-    end
-  end
-
-  return fname
+  return dir + baseFname
 end
 
 def main()
