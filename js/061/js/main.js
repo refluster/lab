@@ -1,29 +1,32 @@
 Apl = function() {
-	this.saving = false;
 	this.ePointers = {};
 	this.sampleInterval = 200; // msec
 
-	$('#save').click(this.startStopSaving.bind(this));
+	$('#save').bind('click', this.startSaving.bind(this));
 };
 
-Apl.prototype.startStopSaving = function(evt) {
-	if (this.saving == false) {
-		$(window).bind('devicemotion', function(_e) {
-			var e = _e.originalEvent;
-			e.accelerationIncludingGravity.x;
-			$('#text').text(e.accelerationIncludingGravity.x);
-		});
-		this.logHeader();
-		this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
-		$('#save').text('stop');
-		this.saving = true;
-	} else {
-		$(window).unbind('devicemotion');
-		clearInterval(this.timer);
-		$('#save').text('start');
-		this.saving = false;
-		this.logUpload();
-	}
+Apl.prototype.startSaving = function(evt) {
+	$(window).bind('devicemotion', function(_e) {
+		var e = _e.originalEvent;
+		e.accelerationIncludingGravity.x;
+		$('#text').text(e.accelerationIncludingGravity.x);
+	});
+	this.logHeader();
+	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
+	console.log(this.timer);
+	$('#save').text('stop');
+	$('#save').off('click');
+	$('#save').on('click', this.stopSaving.bind(this));
+};
+
+Apl.prototype.stopSaving = function(evt) {
+	$(window).unbind('devicemotion');
+	console.log(this.timer);
+	clearInterval(this.timer);
+	this.logUpload();
+	$('#save').text('start');
+	$('#save').off('click');
+	$('#save').on('click', this.startSaving.bind(this));
 };
 
 Apl.prototype.logHeader = function(evt) {
