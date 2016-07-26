@@ -65,7 +65,7 @@ Apl.prototype.logHeader = function() {
 				 'acg.x', 'acg.y', 'acg.z',
 				 'acc.x', 'acc.y', 'acc.z',
 				 'rot.a', 'rot.b', 'rot.g',
-				 'gyro.abs', 'gyro.a', 'gyrrot.b', 'gyrrot.g',
+				 'orient.abs', 'orient.a', 'orient.b', 'orient.g',
 				 'light',
 				 'prox.max', 'prox.min', 'prox.val',
 				]];
