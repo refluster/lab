@@ -28,7 +28,7 @@ Apl = function() {
 			 '<td>' + (window.DeviceProximityEvent? 'ok': '-') + '</td></tr>');
 };
 
-Apl.prototype.startSaving = function(evt) {
+Apl.prototype.startSaving = function(e) {
 	$(window).on('devicemotion', function(e) {
 		$('#text').text(e.originalEvent.accelerationIncludingGravity.x);
 		this.ePointers.devicemotion = e.originalEvent;
@@ -50,7 +50,7 @@ Apl.prototype.startSaving = function(evt) {
 	$('#save').on('click', this.stopSaving.bind(this));
 };
 
-Apl.prototype.stopSaving = function(evt) {
+Apl.prototype.stopSaving = function(e) {
 	$(window).unbind('devicemotion');
 	console.log(this.timer);
 	clearInterval(this.timer);
@@ -60,8 +60,9 @@ Apl.prototype.stopSaving = function(evt) {
 	$('#save').on('click', this.startSaving.bind(this));
 };
 
-Apl.prototype.logHeader = function(evt) {
-	this.log = [['acg.x', 'acg.y', 'acg.z',
+Apl.prototype.logHeader = function() {
+	this.log = [['date',
+				 'acg.x', 'acg.y', 'acg.z',
 				 'acc.x', 'acc.y', 'acc.z',
 				 'rot.a', 'rot.b', 'rot.g',
 				 'gyro.abs', 'gyro.a', 'gyrrot.b', 'gyrrot.g',
@@ -70,8 +71,18 @@ Apl.prototype.logHeader = function(evt) {
 				]];
 }
 
-Apl.prototype.logDataPush = function(evt) {
+Apl.prototype.logDataPush = function() {
+	var date = new Date();
+	var dateStr = date.getFullYear() + '/' +
+		('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+		('0' + date.getDate()).slice(-2) + ' ' +
+		('0' + date.getHours()).slice(-2)  + ':' +
+		('0' + date.getMinutes()).slice(-2)  + ':' +
+		('0' + date.getSeconds()).slice(-2)  + '.' +
+		('0' + date.getMilliseconds()).slice(-3);
+
 	this.log.push([
+		dateStr,
 		this.ePointers.devicemotion.accelerationIncludingGravity.x,
 		this.ePointers.devicemotion.accelerationIncludingGravity.y,
 		this.ePointers.devicemotion.accelerationIncludingGravity.z,
@@ -92,7 +103,7 @@ Apl.prototype.logDataPush = function(evt) {
 	]);
 };
 
-Apl.prototype.logUpload = function(evt) {
+Apl.prototype.logUpload = function() {
 	var data = $.map(this.log, function(n, i) {return n.join(',')}).join("\n");
 
 	$.post('upload.cgi', {data: data}, function() {
