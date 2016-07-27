@@ -63,11 +63,14 @@ Apl.prototype.stopSaving = function(e) {
 	$(window).unbind('devicemotion');
 	console.log(this.timer);
 	clearInterval(this.timer);
-	this.logUpload();
 	$('#text').text('stop');
 	$('#save').text('start');
 	$('#save').off('click');
-	$('#save').on('click', this.startSaving.bind(this));
+	$('#save').addClass('disabled');
+	this.logUpload(function() {
+		$('#save').on('click', this.startSaving.bind(this));
+		$('#save').removeClass('disabled');
+	}.bind(this));
 };
 
 Apl.prototype.logHeader = function() {
@@ -113,7 +116,7 @@ Apl.prototype.logDataPush = function() {
 	]);
 };
 
-Apl.prototype.logUpload = function() {
+Apl.prototype.logUpload = function(callback) {
 	var data = $.map(this.log, function(n, i) {return n.join(',')}).join("\n");
 
 	$.post('upload.cgi', {data: data}, function() {
@@ -129,6 +132,7 @@ Apl.prototype.logUpload = function() {
 			console.log('always');
 			$('#dbg').text(d);
 			console.log(d);
+			callback();
 		});
 };
 
