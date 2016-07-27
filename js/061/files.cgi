@@ -25,12 +25,9 @@ class FilesList
 
   def remove
     now = DateTime.now
-#    puts "#{now.year}/#{now.month}/#{now.day}"
-#    p @files
 
     @files.select! {|d|
       mtime = File.mtime(d)
-      #puts "#{mtime.year}/#{mtime.month}/#{mtime.day}"
       if mtime.year == now.year && mtime.month == now.month && mtime.day == now.day
         true
       else
@@ -38,12 +35,9 @@ class FilesList
         false
       end
     }
-    #p '------------'
-    #p @files
   end
 end
 
 fl = FilesList.new
 fl.remove
 fl.list
-#FilesList.new.remove
