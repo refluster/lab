@@ -64,7 +64,6 @@ Apl.prototype.startSaving = function(e) {
 	this.logHeader();
 	var sampleInterval = (parseInt($("#sampling-intervaol").val()) || 200);
 	this.timer = setInterval(this.logDataPush.bind(this), sampleInterval);
-	console.log(this.timer);
 	$('#save').text('stop');
 	$('#save').off('click');
 	$('#save').on('click', this.stopSaving.bind(this));
@@ -84,7 +83,6 @@ Apl.prototype.stopSaving = function(e) {
 	if (window.DeviceProximityEvent) {
 		$(window).off('deviceproximity');
 	}
-	console.log(this.timer);
 	clearInterval(this.timer);
 	$('#save').text('start');
 	$('#save').off('click');
