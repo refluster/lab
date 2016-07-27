@@ -14,8 +14,8 @@ def main()
 
   d = DateTime.now
   file = getFileName(d.strftime("%Y%m%d%H%M%S") + '.csv')
-  p file
   File.write(file, cgi.params['data'][0])
+  puts "'#{File.mtime(file)}'"
 end
 
 main
