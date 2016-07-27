@@ -26,7 +26,6 @@ Apl = function() {
 			 '<td>' + (window.DeviceLightEvent? 'ok': '-') + '</td></tr>');
 	d.append('<tr><td>proximity</td>' +
 			 '<td>' + (window.DeviceProximityEvent? 'ok': '-') + '</td></tr>');
-	$('#text').text('stop');
 
 	$.get('files.cgi', function(d) {
 		var tag = $.map(d.trim().split('\n'), function(d, i) {
@@ -35,6 +34,7 @@ Apl = function() {
 		});
 		$('#files').html(tag);
 	});
+	$('#status').text('ready');
 };
 
 Apl.prototype.startSaving = function(e) {
@@ -53,23 +53,24 @@ Apl.prototype.startSaving = function(e) {
 	this.logHeader();
 	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
 	console.log(this.timer);
-	$('#text').text('sensing');
 	$('#save').text('stop');
 	$('#save').off('click');
 	$('#save').on('click', this.stopSaving.bind(this));
+	$('#status').text('sampling');
 };
 
 Apl.prototype.stopSaving = function(e) {
 	$(window).unbind('devicemotion');
 	console.log(this.timer);
 	clearInterval(this.timer);
-	$('#text').text('stop');
 	$('#save').text('start');
 	$('#save').off('click');
 	$('#save').addClass('disabled');
-	this.logUpload(function() {
+	$('#status').text('uploading data');
+	this.logUpload(function(file) {
 		$('#save').on('click', this.startSaving.bind(this));
 		$('#save').removeClass('disabled');
+		$('#status').text('saved ' + file + ', ready');
 	}.bind(this));
 };
 
@@ -132,7 +133,7 @@ Apl.prototype.logUpload = function(callback) {
 			console.log('always');
 			$('#dbg').text(d);
 			console.log(d);
-			callback();
+			callback(d);
 		});
 };
 
