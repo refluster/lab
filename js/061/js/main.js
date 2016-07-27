@@ -127,17 +127,12 @@ Apl.prototype.logUpload = function(callback) {
 	var data = $.map(this.log, function(n, i) {return n.join(',')}).join("\n");
 
 	$.post('upload.cgi', {data: data}, function() {
-		console.log('success');
 	})
 		.done(function(d) {
-			console.log('done');
 		})
 		.fail(function() {
-			console.log('fail');
 		})
 		.always(function(d) {
-			console.log('always');
-			$('#dbg').text(d);
 			console.log(d);
 			callback(d);
 		});
