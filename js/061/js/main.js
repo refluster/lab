@@ -125,8 +125,10 @@ Apl.prototype.logUpload = function() {
 		.fail(function() {
 			console.log('fail');
 		})
-		.always(function() {
+		.always(function(d) {
 			console.log('always');
+			$('#dbg').text(d);
+			console.log(d);
 		});
 };
 
