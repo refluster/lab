@@ -1,6 +1,4 @@
 Apl = function() {
-	this.sampleInterval = 200; // msec
-
 	this.ePointers = {
 		devicemotion: {
 			accelerationIncludingGravity: {x: '-', y: '-', z: '-'},
@@ -11,7 +9,7 @@ Apl = function() {
 		deviceproximity: {max: '-', min: '-', value: '-'},
 	};
 
-	$('#save').bind('click', this.startSaving.bind(this));
+	$('#save').on('click', this.startSaving.bind(this));
 
 	var d = $('#sense tbody');
 	d.append('<tr><td>acceleration including gravity</td>' +
@@ -43,20 +41,29 @@ Apl.prototype.updateFiles = function(e) {
 };
 
 Apl.prototype.startSaving = function(e) {
-	$(window).on('devicemotion', function(e) {
-		this.ePointers.devicemotion = e.originalEvent;
-	}.bind(this));
-	$(window).on('deviceorientation', function(e) {
-		this.ePointers.deviceorientation = e.originalEvent;
-	}.bind(this));
-	$(window).on('devicelight', function(e) {
-		this.ePointers.devicelight = e.originalEvent;
-	}.bind(this));
-	$(window).on('deviceproximity', function(e) {
-		this.ePointers.deviceproximity = e.originalEvent;
-	}.bind(this));
+	if (window.DeviceMotionEvent) {
+		$(window).on('devicemotion', function(e) {
+			this.ePointers.devicemotion = e.originalEvent;
+		}.bind(this));
+	}
+	if (window.DeviceOrientationEvent) {
+		$(window).on('deviceorientation', function(e) {
+			this.ePointers.deviceorientation = e.originalEvent;
+		}.bind(this));
+	}
+	if (window.DeviceLightEvent) {
+		$(window).on('devicelight', function(e) {
+			this.ePointers.devicelight = e.originalEvent;
+		}.bind(this));
+	}
+	if (window.DeviceProximityEvent) {
+		$(window).on('deviceproximity', function(e) {
+			this.ePointers.deviceproximity = e.originalEvent;
+		}.bind(this));
+	}
 	this.logHeader();
-	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
+	var sampleInterval = (parseInt($("#sampling-intervaol").val()) || 200);
+	this.timer = setInterval(this.logDataPush.bind(this), sampleInterval);
 	console.log(this.timer);
 	$('#save').text('stop');
 	$('#save').off('click');
@@ -65,7 +72,18 @@ Apl.prototype.startSaving = function(e) {
 };
 
 Apl.prototype.stopSaving = function(e) {
-	$(window).unbind('devicemotion');
+	if (window.DeviceMotionEvent) {
+		$(window).off('devicemotion');
+	}
+	if (window.DeviceOrientationEvent) {
+		$(window).off('deviceorientation');
+	}
+	if (window.DeviceLightEvent) {
+		$(window).off('devicelight');
+	}
+	if (window.DeviceProximityEvent) {
+		$(window).off('deviceproximity');
+	}
 	console.log(this.timer);
 	clearInterval(this.timer);
 	$('#save').text('start');
