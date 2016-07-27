@@ -27,14 +27,19 @@ Apl = function() {
 	d.append('<tr><td>proximity</td>' +
 			 '<td>' + (window.DeviceProximityEvent? 'ok': '-') + '</td></tr>');
 
-	$.get('files.cgi', function(d) {
-		var tag = $.map(d.trim().split('\n'), function(d, i) {
-			return '<li class="list-group-item"><a href="' + d + '">' + d.split('/').reverse()[0] +
-				'</a></li>';
-		});
-		$('#files').html(tag);
-	});
+	this.updateFiles();
 	$('#status').text('ready');
+};
+
+Apl.prototype.updateFiles = function(e) {
+	$.get('files.cgi', function(_d) {
+		d = JSON.parse(_d)
+		var list = $.map(d, function(d, i) {
+			return '<li class="list-group-item"><a href="' + d.file + '">'
+				+ d.time + '</a></li>';
+		});
+		$('#files').html(list);
+	});
 };
 
 Apl.prototype.startSaving = function(e) {
