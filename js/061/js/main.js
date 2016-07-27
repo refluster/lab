@@ -76,6 +76,7 @@ Apl.prototype.stopSaving = function(e) {
 		$('#save').on('click', this.startSaving.bind(this));
 		$('#save').removeClass('disabled');
 		$('#status').text('saved ' + file + ', ready');
+		this.updateFiles();
 	}.bind(this));
 };
 
