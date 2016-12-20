@@ -31,7 +31,8 @@ class FilesList
       if mtime.year == now.year && mtime.month == now.month && mtime.day == now.day
         true
       else
-        File.rm_f d
+		p d
+        File.delete d
         false
       end
     }
