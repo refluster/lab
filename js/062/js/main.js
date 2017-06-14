@@ -115,6 +115,12 @@ var Item = function(x, y, type) {
 	this.rad = 10; // defauls size
 }
 
+var Ball = function(x, y, dir) {
+	this.p = new Vec(x, y);
+	this.op = this.p;
+	this.dir = dir;
+};
+
 // Wall is made up of two points
 var Wall = function(p1, p2) {
 	this.p1 = p1;
@@ -131,8 +137,9 @@ var util_add_box = function(lst, x, y, w, h) {
 
 var World = function() {
     this.clock = 0;
-	this.agent = null;
-	this.walls = []; 
+    this.agent = null;
+	this.walls = [];
+	this.balls = [];
 };
 World.prototype = {
     // helper function to get closest colliding walls/items
@@ -184,6 +191,10 @@ World.prototype = {
         // apply outputs of agents on evironment
 		this.agent.op = this.agent.p; // back up old position
 
+		// move ball
+		this.ball.op = this.ball.p;
+		this.ball.p.x += 3;
+
 		// move agent
 		// yet implemented
 
@@ -220,7 +231,7 @@ function draw() {
     ctx.fillStyle = "rgb(150, 150, 150)";
     ctx.strokeStyle = "rgb(0,0,0)";
     ctx.beginPath();
-    ctx.arc(150, 150, 40, 0, Math.PI*2);
+    ctx.arc(w.ball.p.x, w.ball.p.y, 10, 0, Math.PI*2);
     ctx.fill();
     ctx.stroke();
 
@@ -254,10 +265,10 @@ var skipdraw = false;
 function start() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
-	draw();
 
     w = new World();
     w.agent = new Agent();
+	w.ball = new Ball(50, 30, 0);
 
     gonormal();
 }
