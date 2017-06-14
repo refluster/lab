@@ -227,15 +227,39 @@ function draw() {
     //w.agents[0].brain.visSelf(document.getElementById('brain_info_div'));
 }
 
+function tick() {
+    w.tick();
+    if(!skipdraw || w.clock % 50 === 0) {
+        draw();
+    }
+}
+
+function gofast() {
+    window.clearInterval(current_interval_id);
+    current_interval_id = setInterval(tick, 0);
+    skipdraw = false;
+    simspeed = 2;
+}
+
+function gonormal() {
+    window.clearInterval(current_interval_id);
+    current_interval_id = setInterval(tick, 30);
+    skipdraw = false;
+    simspeed = 1;
+}
+
+var w; // global world object
+var current_interval_id;
+var skipdraw = false;
 function start() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
 	draw();
 
-    //w = new World();
-    //w.agents = [new Agent()];
+    w = new World();
+    w.agent = new Agent();
 
-    //gofast();
+    gonormal();
 }
 
 window.onload = function() {
