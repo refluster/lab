@@ -88,7 +88,7 @@ var line_intersect = function(p1,p2,p3,p4) {
     return false;
 }
 
-// line intersection helper function: does line segment (p1,p2) intersect segment (p3,p4) ?
+// line intersection helper function: does line segment (p1,p2) intersect point p0 with rad ?
 var line_point_intersect = function(p1,p2,p0,rad) {
     var v = new Vec(p2.y-p1.y,-(p2.x-p1.x)); // perpendicular vector
     var d = Math.abs((p2.x-p1.x)*(p1.y-p0.y)-(p1.x-p0.x)*(p2.y-p1.y));
@@ -109,15 +109,98 @@ var line_point_intersect = function(p1,p2,p0,rad) {
     return false;
 }
 
+// item is box thing on the floor that agent can interact with (see or eat, etc)
+var Item = function(x, y, type) {
+    this.p = new Vec(x, y); // position
+	this.rad = 10; // defauls size
+}
+
+// Wall is made up of two points
 var Wall = function(p1, p2) {
 	this.p1 = p1;
 	this.p2 = p2;
 };
 
+// World object contains many agents and walls and food and stuff
+var util_add_box = function(lst, x, y, w, h) {
+    lst.push(new Wall(new Vec(x,y), new Vec(x+w,y)));
+    lst.push(new Wall(new Vec(x+w,y), new Vec(x+w,y+h)));
+    lst.push(new Wall(new Vec(x+w,y+h), new Vec(x,y+h)));
+    lst.push(new Wall(new Vec(x,y+h), new Vec(x,y)));
+}
+
+var World = function() {
+    this.clock = 0;
+	this.agent = null;
+	this.walls = []; 
+};
 World.prototype = {
+    // helper function to get closest colliding walls/items
+    stuff_collide_: function(p1, p2, check_walls, check_items) {
+        var minres = false;
+
+        // collide with walls
+        if(check_walls) {
+			for(var i=0,n=this.walls.length;i<n;i++) {
+				var wall = this.walls[i];
+				var res = line_intersect(p1, p2, wall.p1, wall.p2);
+				if(res) {
+					res.type = 0; // 0 is wall
+					if(!minres) { minres=res; }
+					else {
+						// check if its closer
+						if(res.ua < minres.ua) {
+							// if yes replace it
+							minres = res;
+						}
+					}
+				}
+			}
+        }
+
+        // collide with items
+        if(check_items) {
+			for(var i=0,n=this.items.length;i<n;i++) {
+				var it = this.items[i];
+				var res = line_point_intersect(p1, p2, it.p, it.rad);
+				if(res) {
+					res.type = it.type; // store type of item
+					if(!minres) { minres=res; }
+					else { if(res.ua < minres.ua) { minres = res; }
+						 }
+				}
+			}
+        }
+        
+        return minres;
+    },
+    tick: function() {
+        // tick the environment
+        this.clock++;
+        
+        // let the agent behave in the world based on their input
+		this.agent.forward();
+        
+        // apply outputs of agents on evironment
+		this.agent.op = this.agent.p; // back up old position
+
+		// move agent
+		// yet implemented
+
+        // agent are given the opportunity to learn based on feedback of their action on environment
+		this.agent.backward();
+    }
 };
 
+var Agent = function() {
+    this.p = new Vec(50, 50);
+    this.op = this.p; // old position
+};
 Agent.prototype = {
+	forward: function() {
+	},
+	backward: function() {
+	}
 };
 
 function draw() {
