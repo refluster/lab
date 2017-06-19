@@ -273,7 +273,7 @@ function start() {
 
     w = new World();
     w.agent = new Agent();
-	w.ball = new Ball(50, 30, 3, 2);
+	w.ball = new Ball(100, 120, 3, 2);
 
     gonormal();
 }
