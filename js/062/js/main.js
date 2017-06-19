@@ -141,7 +141,7 @@ var World = function() {
 	this.walls = [];
 	this.ball;
 
-    util_add_box(this.walls, 100, 100, 200, 300); // inner walls
+    util_add_box(this.walls, 50, 50, 200, 200); // inner walls
 };
 World.prototype = {
     // helper function to get closest colliding walls/items
@@ -224,10 +224,12 @@ function draw() {
     // draw walls in environment
     ctx.strokeStyle = "rgb(0,0,0)";
     ctx.beginPath();
-	ctx.moveTo(100, 100);
-	ctx.lineTo(200, 100);
-	ctx.moveTo(100, 200);
-	ctx.lineTo(200, 200);
+    for(var i=0, n=w.walls.length; i<n; i++) {
+        var q = w.walls[i];
+        ctx.moveTo(q.p1.x, q.p1.y);
+        ctx.lineTo(q.p2.x, q.p2.y);
+		console.log({p1: q.p1, p2: q.p2})
+    }
     ctx.stroke();
 
     // draw agents
