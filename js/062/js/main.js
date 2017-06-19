@@ -115,10 +115,10 @@ var Item = function(x, y, type) {
 	this.rad = 10; // defauls size
 }
 
-var Ball = function(x, y, dir) {
+var Ball = function(x, y, vx, vy) {
 	this.p = new Vec(x, y);
+	this.v = new Vec(vx, vy);
 	this.op = this.p;
-	this.dir = dir;
 };
 
 // Wall is made up of two points
@@ -139,7 +139,9 @@ var World = function() {
     this.clock = 0;
     this.agent = null;
 	this.walls = [];
-	this.balls = [];
+	this.ball;
+
+    util_add_box(this.walls, 100, 100, 200, 300); // inner walls
 };
 World.prototype = {
     // helper function to get closest colliding walls/items
@@ -193,7 +195,8 @@ World.prototype = {
 
 		// move ball
 		this.ball.op = this.ball.p;
-		this.ball.p.x += 3;
+		this.ball.p.x += this.ball.v.x;
+		this.ball.p.y += this.ball.v.y;
 
 		// move agent
 		// yet implemented
@@ -268,7 +271,7 @@ function start() {
 
     w = new World();
     w.agent = new Agent();
-	w.ball = new Ball(50, 30, 0);
+	w.ball = new Ball(50, 30, 3, 2);
 
     gonormal();
 }
