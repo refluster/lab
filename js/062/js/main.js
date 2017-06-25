@@ -6,6 +6,7 @@ function preload() {
 }
 
 var obj, plate, platform;
+var obj2;
 
 function create() {
 	var createPlatform = function() {
@@ -18,7 +19,7 @@ function create() {
 		platforms = game.add.group();
 		platforms.enableBody = true;
 
-		g = platforms.create(cx - w/2, cy - h/2 - b/2, 'colormap', 35);
+		var g = platforms.create(cx - w/2, cy - h/2 - b/2, 'colormap', 35);
 		g.width = w;
 		g.height = b;
 		g.body.immovable = true;
@@ -42,46 +43,53 @@ function create() {
 	};
 
 	var spawnObj = function() {
-		g = game.add.graphics(50, 50);
-		g.beginFill(0xa9a904);
-		g.lineStyle(4, 0xfd02eb, 1);
-		g.moveTo(0, 0);
-		g.lineTo(55, 0);
-		g.lineTo(55, 100);
-		g.lineTo(32, 25);
-		g.lineTo(0, 100);
-		g.lineTo(0, 0);
-		g.endFill();
+		var g = game.add.sprite(game.world.width/2, -80 + game.world.height/2, 'colormap', 4);
+		g.width = 100;
+		g.height = 10;
+
 		game.physics.arcade.enable(g);
 		g.body.velocity.x = 100;
-		g.body.velocity.y = 70;
-		g.body.position.y = 270;
+		g.body.velocity.y = 80;
+		g.body.position.y = 30;
 		g.body.bounce.set(1);
 		g.body.collideWorldBounds = true;
 		return g;
 	};
 
 	var createPlate = function() {
-		g = game.add.sprite(game.world.width/2, game.world.height/2, 'colormap', 4);
+		var g = game.add.sprite(game.world.width/2, game.world.height/2 + 30, 'colormap', 8);
 		g.width = 100;
-		g.height = 10;
+		g.height = 20;
 		game.physics.arcade.enable(g);
-		g.body.immovable = true;
+		g.body.velocity.x = 100;
+		g.body.bounce.set(1);
+		//g.body.immovable = true;
+		g.body.collideWorldBounds = true;
 		return g;
 	};
 
 	platform = createPlatform();
-	obj = spawnObj();
 	plate = createPlate();
+	obj = spawnObj();
+
+	cursors = game.input.keyboard.createCursorKeys();
 
 	console.log(obj);
 	console.log(plate);
 }
 
 function update() {
-    game.physics.arcade.collide(obj, platform);
-    game.physics.arcade.collide(obj, plate);
-    game.physics.arcade.collide(platform, plate);
+	//plate.body.velocity.x = 0;
+	/*
+	if (cursors.left.isDown) {
+		plate.body.velocity.x = -50;
+	} else if (cursors.right.isDown) {
+		plate.body.velocity.x = 50;
+	}
+*/
+
+	game.physics.arcade.collide([plate, obj], platform);
+	game.physics.arcade.collide([obj], plate);
 }
 
 function render() {
