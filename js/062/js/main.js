@@ -52,36 +52,25 @@ function create() {
 		graphics.lineTo(0, 100);
 		graphics.lineTo(0, 0);
 		graphics.endFill();
+		game.physics.arcade.enable(graphics);
+		graphics.body.velocity.x = 100;
+		graphics.body.velocity.y = 70;
+		graphics.body.position.y = 270;
+		graphics.body.bounce.set(1);
+		graphics.body.collideWorldBounds = true;
 		return graphics;
 	};
 
-	var spawnPlate = function() {
-		graphics = game.add.graphics(200, 150);
-		graphics.beginFill(0xa03090);
-		graphics.lineStyle(4, 0xfd02eb, 1);
-		graphics.moveTo(0, 0);
-		graphics.lineTo(125, 0);
-		graphics.lineTo(125, 10);
-		graphics.lineTo(0, 10);
-		graphics.lineTo(0, 0);
-		graphics.endFill();
-		return graphics;
+	var createPlate = function() {
+		g = game.add.sprite(game.world.width/2, game.world.height/2, 'colormap', 4);
+		game.physics.arcade.enable(g);
+		g.body.bounce.set(1);
+		return g;
 	};
 
 	platform = createPlatform();
 	obj = spawnObj();
-	plate = spawnPlate();
-	game.physics.arcade.enable([platform, obj, plate]);
-
-	obj.body.velocity.x = 100;
-	obj.body.velocity.y = 70;
-	obj.body.position.y = 270;
-	obj.body.bounce.set(1);
-	obj.body.collideWorldBounds = true;
-
-	plate.body.bounce.set(1);
-	plate.body.collideWorldBounds = true;
-	plate.body.immovable = true;
+	plate = createPlate();
 
 	console.log(obj);
 	console.log(plate);
