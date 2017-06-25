@@ -16,21 +16,27 @@ function create() {
 		cy = game.world.height/2;
 		
 		platforms = game.add.group();
+		platforms.enableBody = true;
+
 		g = platforms.create(cx - w/2, cy - h/2 - b/2, 'colormap', 35);
 		g.width = w;
 		g.height = b;
+		g.body.immovable = true;
 
 		g = platforms.create(cx - w/2, cy + h/2 - b/2, 'colormap', 10);
 		g.width = w
 		g.height = b;
+		g.body.immovable = true;
 
 		g = platforms.create(cx - w/2 - b/2, cy - h/2, 'colormap', 1);
 		g.width = b;
 		g.height = h;
+		g.body.immovable = true;
 
 		g = platforms.create(cx + w/2 - b/2, cy - h/2, 'colormap', 2);
 		g.width = b;
 		g.height = h;
+		g.body.immovable = true;
 
 		return platforms
 	};
@@ -82,7 +88,7 @@ function create() {
 }
 
 function update() {
-    //game.physics.arcade.collide(obj, platform);
+    game.physics.arcade.collide(obj, platform);
     //game.physics.arcade.collide(obj, plate);
 }
 
