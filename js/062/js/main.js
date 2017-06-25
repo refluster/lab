@@ -66,7 +66,6 @@ function create() {
 		g.width = 100;
 		g.height = 10;
 		game.physics.arcade.enable(g);
-		g.body.bounce.set(1);
 		g.body.immovable = true;
 		return g;
 	};
