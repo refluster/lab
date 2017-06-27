@@ -36,24 +36,31 @@ function create() {
 	paddle.height = 4;
 	game.physics.arcade.enable(paddle);
 	paddle.body.velocity.x = 100;
-	paddle.body.bounce.set(1);
 	paddle.body.immovable = true;
+	paddle.body.bounce.set(1);
+	paddle.anchor.setTo(0.5, 0.5);
 
 	ball = game.add.sprite(game.world.centerX, game.world.centerY + 30, 'colormap', 4);
 	ball.width = 4;
 	ball.height = 4;
 	game.physics.arcade.enable(ball);
-	ball.body.velocity.x = 100;
-	ball.body.velocity.y = 80;
 	ball.body.position.y = 30;
 	ball.body.bounce.set(1);
 	ball.body.collideWorldBounds = true;
+	ball.body.bounce.set(1);
+	ball.anchor.set(0.5);
+	ball.checkWorldBounds = true;
+	ball.events.onOutOfBounds.add(ballLost, this);
 
+	ball.body.velocity.x = 100;
+	ball.body.velocity.y = -80;
 
 	cursors = game.input.keyboard.createCursorKeys();
+}
 
-	console.log(ball);
-	console.log(paddle);
+function ballLost() {
+	console.log('ball lost');
+	ball.body.velocity.y = -30;
 }
 
 function update() {
