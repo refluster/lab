@@ -35,8 +35,8 @@ function create() {
 	paddle.width = 40;
 	paddle.height = 4;
 	game.physics.arcade.enable(paddle);
-	paddle.body.velocity.x = 100;
 	paddle.body.immovable = true;
+    paddle.body.collideWorldBounds = true;
 	paddle.body.bounce.set(1);
 	paddle.anchor.setTo(0.5, 0.5);
 
@@ -64,16 +64,22 @@ function ballLost() {
 }
 
 function update() {
-	//plate.body.velocity.x = 0;
-	/*
 	if (cursors.left.isDown) {
-		plate.body.velocity.x = -50;
+		paddle.body.position.x -= 5;
 	} else if (cursors.right.isDown) {
-		plate.body.velocity.x = 50;
+		paddle.body.position.x += 5;
 	}
-*/
 
-	game.physics.arcade.collide([ball, paddle]);
+    game.physics.arcade.collide(ball, paddle, ballHitPaddle, null, this);
+    game.physics.arcade.collide(ball, bricks, ballHitBrick, null, this);
+
+	//game.physics.arcade.collide([ball, paddle]);
+}
+
+function ballHitBrick (_ball, _brick) {
+}
+
+function ballHitPaddle (_ball, _paddle) {
 }
 
 function render() {
