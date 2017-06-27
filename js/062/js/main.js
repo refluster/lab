@@ -5,33 +5,11 @@ function preload() {
 	game.load.spritesheet('colormap', 'asset/1x1.png', 1, 1);
 }
 
-var obj, plate, platform;
+var paddle;
 var bricks;
 
 function create() {
 	var spawnObj = function() {
-		var g = game.add.sprite(game.world.width/2, -80 + game.world.height/2, 'colormap', 4);
-		g.width = 100;
-		g.height = 10;
-
-		game.physics.arcade.enable(g);
-		g.body.velocity.x = 100;
-		g.body.velocity.y = 80;
-		g.body.position.y = 30;
-		g.body.bounce.set(1);
-		g.body.collideWorldBounds = true;
-		return g;
-	};
-
-	var createPlate = function() {
-		var g = game.add.sprite(game.world.width/2, game.world.height/2 + 30, 'colormap', 8);
-		g.width = 100;
-		g.height = 20;
-		game.physics.arcade.enable(g);
-		g.body.velocity.x = 100;
-		g.body.bounce.set(1);
-		//g.body.immovable = true;
-		g.body.collideWorldBounds = true;
 		return g;
 	};
 
@@ -53,13 +31,29 @@ function create() {
 		}
 	}
 
-	plate = createPlate();
-	obj = spawnObj();
+	paddle = game.add.sprite(game.world.centerX, game.world.centerY + 30, 'colormap', 10);
+	paddle.width = 40;
+	paddle.height = 4;
+	game.physics.arcade.enable(paddle);
+	paddle.body.velocity.x = 100;
+	paddle.body.bounce.set(1);
+	paddle.body.immovable = true;
+
+	ball = game.add.sprite(game.world.centerX, game.world.centerY + 30, 'colormap', 4);
+	ball.width = 4;
+	ball.height = 4;
+	game.physics.arcade.enable(ball);
+	ball.body.velocity.x = 100;
+	ball.body.velocity.y = 80;
+	ball.body.position.y = 30;
+	ball.body.bounce.set(1);
+	ball.body.collideWorldBounds = true;
+
 
 	cursors = game.input.keyboard.createCursorKeys();
 
-	console.log(obj);
-	console.log(plate);
+	console.log(ball);
+	console.log(paddle);
 }
 
 function update() {
@@ -72,8 +66,7 @@ function update() {
 	}
 */
 
-	game.physics.arcade.collide([plate, obj], platform);
-	game.physics.arcade.collide([obj], plate);
+	game.physics.arcade.collide([ball, paddle]);
 }
 
 function render() {
