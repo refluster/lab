@@ -6,42 +6,9 @@ function preload() {
 }
 
 var obj, plate, platform;
-var obj2;
+var bricks;
 
 function create() {
-	var createPlatform = function() {
-		w = 380
-		h = 280
-		b = 10
-		cx = game.world.width/2;
-		cy = game.world.height/2;
-		
-		platforms = game.add.group();
-		platforms.enableBody = true;
-
-		var g = platforms.create(cx - w/2, cy - h/2 - b/2, 'colormap', 35);
-		g.width = w;
-		g.height = b;
-		g.body.immovable = true;
-
-		g = platforms.create(cx - w/2, cy + h/2 - b/2, 'colormap', 10);
-		g.width = w
-		g.height = b;
-		g.body.immovable = true;
-
-		g = platforms.create(cx - w/2 - b/2, cy - h/2, 'colormap', 1);
-		g.width = b;
-		g.height = h;
-		g.body.immovable = true;
-
-		g = platforms.create(cx + w/2 - b/2, cy - h/2, 'colormap', 2);
-		g.width = b;
-		g.height = h;
-		g.body.immovable = true;
-
-		return platforms
-	};
-
 	var spawnObj = function() {
 		var g = game.add.sprite(game.world.width/2, -80 + game.world.height/2, 'colormap', 4);
 		g.width = 100;
@@ -68,7 +35,24 @@ function create() {
 		return g;
 	};
 
-	platform = createPlatform();
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	game.physics.arcade.checkCollision.down = false;
+
+	bricks = game.add.group();
+	bricks.enableBody = true;
+	bricks.phisicsBodyType = Phaser.Physics.ARCADE;
+
+	for (var y = 0; y < 4; y++) {
+		for (var x = 0; x < 4; x++) {
+			brick = bricks.create(20 + x*20, 100 + y*20, 'colormap', 8);
+			brick.width = 16;
+			brick.height = 4;
+			brick.body.bounce.set(1);
+			brick.body.immovable = true;
+			brick.body.collideWorldBounds = true;
+		}
+	}
+
 	plate = createPlate();
 	obj = spawnObj();
 
