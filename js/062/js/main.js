@@ -60,7 +60,7 @@ function create() {
 
 function ballLost() {
 	console.log('ball lost');
-	ball.body.velocity.y = -30;
+	ball.body.velocity.y = -80;
 }
 
 function update() {
@@ -77,9 +77,11 @@ function update() {
 }
 
 function ballHitBrick (_ball, _brick) {
+	console.log('hit to brick');
 }
 
 function ballHitPaddle (_ball, _paddle) {
+	console.log('hit to paddle');
 }
 
 function render() {
