@@ -142,6 +142,11 @@ function update() {
     game.physics.arcade.collide(ball, paddle, ballHitPaddle, null, this);
     game.physics.arcade.collide(ball, bricks, ballHitBrick, null, this);
 
+    // agents are given the opportunity to learn based on feedback of their action on environment
+	reward = score;
+
+	brain.backward(reward);
+
 	msg.innerHTML = 'score: ' + score + '<br>' +
 		input_array[0] + '<br>' +
 		input_array[1] + '<br>' +
