@@ -1,6 +1,7 @@
+var brain;
 function deepqlearn_init() {
-	var num_inputs = 27; // 9 eyes, each sees 3 numbers (wall, green, red thing proximity)
-	var num_actions = 5; // 5 possible angles agent can turn
+	var num_inputs = 4; // ball and paddle xy positions
+	var num_actions = 3; // 3 possible actions, left, stay, right
 	var temporal_window = 1; // amount of temporal memory. 0 = agent lives in-the-moment :)
 	var network_size = num_inputs*temporal_window + num_actions*temporal_window + num_inputs;
 
@@ -30,7 +31,7 @@ function deepqlearn_init() {
 	opt.layer_defs = layer_defs;
 	opt.tdtrainer_options = tdtrainer_options;
 
-	var brain = new deepqlearn.Brain(num_inputs, num_actions, opt); // woohoo
+	brain = new deepqlearn.Brain(num_inputs, num_actions, opt); // woohoo
 }
 
 var game;
