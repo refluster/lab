@@ -7,6 +7,9 @@ function preload() {
 
 var paddle;
 var bricks;
+var score;
+
+score = 0;
 
 function create() {
 	var spawnObj = function() {
@@ -78,6 +81,30 @@ function update() {
 
 function ballHitBrick (_ball, _brick) {
 	console.log('hit to brick');
+    _brick.kill();
+
+    score += 10;
+
+    //scoreText.text = 'score: ' + score;
+
+    //  Are they any bricks left?
+    if (bricks.countLiving() == 0) {
+        //  New level starts
+        score += 1000;
+        //scoreText.text = 'score: ' + score;
+        //introText.text = '- Next Level -';
+
+        //  Let's move the ball back to the paddle
+        //ballOnPaddle = true;
+        //ball.body.velocity.set(0);
+        //ball.x = paddle.x + 16;
+        //ball.y = paddle.y - 16;
+        //ball.animations.stop();
+
+        //  And bring the bricks back from the dead :)
+        bricks.callAll('revive');
+    }
+
 }
 
 function ballHitPaddle (_ball, _paddle) {
