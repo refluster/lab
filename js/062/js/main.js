@@ -85,30 +85,30 @@ function ballHitBrick (_ball, _brick) {
 
     score += 10;
 
-    //scoreText.text = 'score: ' + score;
+	//scoreText.text = 'score: ' + score;
 
-    //  Are they any bricks left?
-    if (bricks.countLiving() == 0) {
-        //  New level starts
-        score += 1000;
-        //scoreText.text = 'score: ' + score;
-        //introText.text = '- Next Level -';
+	//  Are they any bricks left?
+	if (bricks.countLiving() == 0) {
+		//  New level starts
+		score += 1000;
+		//scoreText.text = 'score: ' + score;
+		//introText.text = '- Next Level -';
 
-        //  Let's move the ball back to the paddle
-        //ballOnPaddle = true;
-        //ball.body.velocity.set(0);
-        //ball.x = paddle.x + 16;
-        //ball.y = paddle.y - 16;
-        //ball.animations.stop();
+		//  Let's move the ball back to the paddle
+		//ballOnPaddle = true;
+		//ball.body.velocity.set(0);
+		//ball.x = paddle.x + 16;
+		//ball.y = paddle.y - 16;
+		//ball.animations.stop();
 
-        //  And bring the bricks back from the dead :)
-        bricks.callAll('revive');
-    }
-
+		//  And bring the bricks back from the dead :)
+		bricks.callAll('revive');
+	}
 }
 
 function ballHitPaddle (_ball, _paddle) {
 	console.log('hit to paddle');
+	_ball.body.velocity.x = 10*(_ball.x - _paddle.x);
 }
 
 function render() {
