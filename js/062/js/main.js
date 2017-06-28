@@ -32,6 +32,7 @@ function deepqlearn_init() {
 	opt.tdtrainer_options = tdtrainer_options;
 
 	brain = new deepqlearn.Brain(num_inputs, num_actions, opt); // woohoo
+    brain.learning = true;
 }
 
 var game;
@@ -40,6 +41,7 @@ window.onload = function() {
 
 	game = new Phaser.Game(400, 300, Phaser.AUTO, 'game',
 							   { preload: preload, create: create, update: update, render: render });
+	deepqlearn_init();
 }
 
 function preload() {
@@ -113,18 +115,38 @@ function ballLost() {
 }
 
 function update() {
-	msg.innerHTML = 'score: ' + score;
 
+	/*
 	if (cursors.left.isDown) {
 		paddle.body.position.x -= 5;
 	} else if (cursors.right.isDown) {
+		paddle.body.position.x += 5;
+	}
+	*/
+
+	// forward the brain
+	var input_array = new Array(4);
+	input_array[0] = ball.body.position.x / game.world.width;
+	input_array[1] = ball.body.position.y / game.world.height;
+	input_array[2] = paddle.body.position.x / game.world.width;
+	input_array[3] = paddle.body.position.y / game.world.width;
+	actionix = brain.forward(input_array);
+
+	// apply outputs of agents on environment
+	if (actionix == 0) {
+		paddle.body.position.x -= 5;		
+	} else if (actionix == 1) {
 		paddle.body.position.x += 5;
 	}
 
     game.physics.arcade.collide(ball, paddle, ballHitPaddle, null, this);
     game.physics.arcade.collide(ball, bricks, ballHitBrick, null, this);
 
-	//game.physics.arcade.collide([ball, paddle]);
+	msg.innerHTML = 'score: ' + score + '<br>' +
+		input_array[0] + '<br>' +
+		input_array[1] + '<br>' +
+		input_array[2] + '<br>' +
+		input_array[3] + '<br>';
 }
 
 function ballHitBrick (_ball, _brick) {
