@@ -11,6 +11,8 @@ var score;
 
 score = 0;
 
+var msg;
+
 function create() {
 	var spawnObj = function() {
 		return g;
@@ -59,14 +61,19 @@ function create() {
 	ball.body.velocity.y = -80;
 
 	cursors = game.input.keyboard.createCursorKeys();
+
+	msg = document.getElementById('msg');
 }
 
 function ballLost() {
 	console.log('ball lost');
 	ball.body.velocity.y = -80;
+	score -= 1000;
 }
 
 function update() {
+	msg.innerHTML = 'score: ' + score;
+
 	if (cursors.left.isDown) {
 		paddle.body.position.x -= 5;
 	} else if (cursors.right.isDown) {
@@ -84,8 +91,6 @@ function ballHitBrick (_ball, _brick) {
     _brick.kill();
 
     score += 10;
-
-	//scoreText.text = 'score: ' + score;
 
 	//  Are they any bricks left?
 	if (bricks.countLiving() == 0) {
