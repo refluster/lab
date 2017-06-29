@@ -148,10 +148,10 @@ function update() {
 	brain.backward(reward);
 
 	msg.innerHTML = 'score: ' + score + '<br>' +
-		input_array[0] + '<br>' +
-		input_array[1] + '<br>' +
-		input_array[2] + '<br>' +
-		input_array[3] + '<br>';
+		'ball.x ' + input_array[0].toFixed(3) + '<br>' +
+		'ball.y ' + input_array[1].toFixed(3) + '<br>' +
+		'paddle.x ' + input_array[2].toFixed(3) + '<br>' +
+		'paddle.y ' + input_array[3].toFixed(3) + '<br>';
 }
 
 function ballHitBrick (_ball, _brick) {
