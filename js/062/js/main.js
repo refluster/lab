@@ -79,7 +79,7 @@ function create() {
 		}
 	}
 
-	paddle = game.add.sprite(game.world.centerX, game.world.centerY + 30, 'colormap', 10);
+	paddle = game.add.sprite(game.world.centerX, game.world.height*.95, 'colormap', 10);
 	paddle.width = 40;
 	paddle.height = 4;
 	game.physics.arcade.enable(paddle);
