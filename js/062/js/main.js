@@ -115,6 +115,9 @@ function ballLost() {
 }
 
 var tick = 0;
+var fBallHitBrick = false;
+var fBallHitPaddle = false;
+var fBallLost = false;
 function update() {
 	++tick;
 
@@ -145,7 +148,11 @@ function update() {
     game.physics.arcade.collide(ball, bricks, ballHitBrick, null, this);
 
     // agents are given the opportunity to learn based on feedback of their action on environment
-	reward = score;
+	var forward_reward = 0.0;
+	var ball_hit_brick_reward = (fBallHitBrick == true? 0.1: 0.0);
+	var ball_hit_paddle_reward = (fBallHitPaddle == true? 1: 0.0);
+	var ball_lost_reward = 0.0; //(fBallLost == true? -1: 0.0);
+    var reward = forward_reward + ball_hit_brick_reward + ball_hit_paddle_reward + ball_lost_reward;
 
 	brain.backward(reward);
 
@@ -159,6 +166,8 @@ function update() {
 	if (tick % 2 == 0) {
 		draw_stats();
 	}
+
+	fBallHitBrick = fBallHitPaddle = fBallLost = false;
 }
 
 var reward_graph = new cnnvis.Graph();
