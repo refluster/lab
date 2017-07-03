@@ -114,7 +114,10 @@ function ballLost() {
 	score -= 1000;
 }
 
+var tick = 0;
+
 function update() {
+	++tick;
 
 	/*
 	if (cursors.left.isDown) {
@@ -147,7 +150,8 @@ function update() {
 
 	brain.backward(reward);
 
-	msg.innerHTML = 'score: ' + score + '<br>' +
+	msg.innerHTML = 'iteration: ' + tick + '<br>' +
+		'score: ' + score + '<br>' +
 		'ball.x ' + input_array[0].toFixed(3) + '<br>' +
 		'ball.y ' + input_array[1].toFixed(3) + '<br>' +
 		'paddle.x ' + input_array[2].toFixed(3) + '<br>' +
