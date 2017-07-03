@@ -188,6 +188,22 @@ function ballHitPaddle (_ball, _paddle) {
 	_ball.body.velocity.x = 10*(_ball.x - _paddle.x);
 }
 
+function savenet() {
+	console.log('save net');
+	var j = brain.value_net.toJSON();
+	var t = JSON.stringify(j);
+	document.getElementById('tt').value = t;
+}
+
+function loadnet() {
+	console.log('load net');
+	var t = document.getElementById('tt').value;
+	var j = JSON.parse(t);
+	brain.value_net.fromJSON(j);
+	stoplearn(); // also stop learning
+	gonormal();
+}
+
 function render() {
 	/*
 	if (graphics.body.position.x > 100) {
