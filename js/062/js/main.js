@@ -101,7 +101,7 @@ function create() {
 	ball.events.onOutOfBounds.add(ballLost, this);
 
 	ball.body.velocity.x = 100;
-	ball.body.velocity.y = -80;
+	ball.body.velocity.y = -120;
 
 	cursors = game.input.keyboard.createCursorKeys();
 
@@ -110,7 +110,7 @@ function create() {
 
 function ballLost() {
 	console.log('ball lost');
-	ball.body.velocity.y = -80;
+	ball.body.velocity.y = -ball.body.velocity.y;
 	score -= 1000;
 }
 
