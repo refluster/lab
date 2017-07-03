@@ -111,11 +111,10 @@ function create() {
 function ballLost() {
 	console.log('ball lost');
 	ball.body.velocity.y = -ball.body.velocity.y;
-	score -= 1000;
+	fBallLost = true;
 }
 
 var tick = 0;
-
 function update() {
 	++tick;
 
@@ -156,6 +155,36 @@ function update() {
 		'ball.y ' + input_array[1].toFixed(3) + '<br>' +
 		'paddle.x ' + input_array[2].toFixed(3) + '<br>' +
 		'paddle.y ' + input_array[3].toFixed(3) + '<br>';
+
+	if (tick % 2 == 0) {
+		draw_stats();
+	}
+}
+
+var reward_graph = new cnnvis.Graph();
+function draw_stats() {
+	var canvas = document.getElementById("vis_canvas");
+	var ctx = canvas.getContext("2d");
+	var W = canvas.width;
+	var H = canvas.height;
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	//var a = w.agents[0];
+	var b = brain;
+	var netin = b.last_input_array;
+	ctx.strokeStyle = "rgb(0,0,0)";
+	ctx.lineWidth = 10;
+	ctx.beginPath();
+	for(var k=0,n=netin.length;k<n;k++) {
+		ctx.moveTo(10+k*12, 120);
+		ctx.lineTo(10+k*12, 120 - netin[k] * 100);
+	}
+	ctx.stroke();
+
+	if (tick % 200 === 0) {
+		reward_graph.add(tick/200, b.average_reward_window.get_average());
+		var gcanvas = document.getElementById("graph_canvas");
+		reward_graph.drawSelf(gcanvas);
+	}
 }
 
 function ballHitBrick (_ball, _brick) {
@@ -181,11 +210,13 @@ function ballHitBrick (_ball, _brick) {
 		//  And bring the bricks back from the dead :)
 		bricks.callAll('revive');
 	}
+	fBallHitBrick = true;
 }
 
 function ballHitPaddle (_ball, _paddle) {
 	console.log('hit to paddle');
 	_ball.body.velocity.x = 10*(_ball.x - _paddle.x);
+	fBallHitPaddle = true;
 }
 
 function savenet() {
