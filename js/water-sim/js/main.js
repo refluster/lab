@@ -33,8 +33,6 @@ var Apl = function() {
 	var mesh = new THREE.Mesh( geometry, material);
 	scene.add(mesh);
 
-	this.p_hold_idx = undefined;
-
 	this.p_threejs = [];
 	for (var i = 0; i < this.sph.get_particle().length; i++) {
 		// triangle
@@ -53,7 +51,8 @@ var Apl = function() {
 
 	this.mouse = {};
 	this.mouse_hold = {};
-	this.hold_pos = {};
+	this.p_hold_idx = undefined;
+	this.p_hold = {};
 
 	//$('#canvas').on('touchstart mousedown', function(e) {
 	$('#canvas').on('touchstart', function(e) {
@@ -67,9 +66,9 @@ var Apl = function() {
 			//intersects[i].object.material.color.set( 0x000000 );
 		}
 		if (intersects.length > 0) {
-			this.p_hold_idx = intersects[0].object.idx;
-			this.hold_pos.x = this.sph.get_particle()[this.p_hold_idx].pos.x;
-			this.hold_pos.y = this.sph.get_particle()[this.p_hold_idx].pos.y;
+			this.p_hold.idx = intersects[0].object.idx;
+			this.p_hold.x = this.sph.get_particle()[this.p_hold.idx].pos.x;
+			this.p_hold.y = this.sph.get_particle()[this.p_hold.idx].pos.y;
 		}
 		console.log(intersects);
 	}.bind(this));
@@ -84,7 +83,7 @@ var Apl = function() {
 	}.bind(this));
 
 	$('#canvas').on('touchend mouseup', function(e) {
-		this.p_hold_idx = undefined;
+		this.p_hold.idx = undefined;
 	}.bind(this));
 
 	function animate() {
@@ -111,13 +110,13 @@ Apl.prototype.start = function() {
 };
 
 Apl.prototype.moveObj = function() {
-	if (this.p_hold_idx) {
+	if (this.p_hold.idx) {
 		console.log(this);
 		var moveX = this.mouse.x - this.mouse_hold.x;
 		var moveY = this.mouse.y - this.mouse_hold.y;
 		var p = this.sph.get_particle();
-		p[this.p_hold_idx].pos.x = this.hold_pos.x + moveX/16;
-		p[this.p_hold_idx].pos.y = this.hold_pos.y + moveY/16;
+		p[this.p_hold.idx].pos.x = this.p_hold.x + moveX/16;
+		p[this.p_hold.idx].pos.y = this.p_hold.y + moveY/16;
 		console.log(moveX, moveY);
 	}
 	this.sph.step();
