@@ -107,7 +107,7 @@ var Sph = function() {
 	const SPH_PDIST       = Math.pow(SPH_PMASS/SPH_RESTDENSITY, 1.0/3.0);
 
 	const MIN             = new Vec3(  0.0,  0.0,   0.0);
-	const MAX             = new Vec3( 30.0, 30.0,  15.0);
+	const MAX             = new Vec3( 30.0, 30.0,  30.0);
 	const INIT_MIN        = new Vec3(  0.0,  0.0,   0.0);
 	const INIT_MAX        = new Vec3( 10.0,  4.0,   4.0);
 

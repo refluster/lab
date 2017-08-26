@@ -111,13 +111,15 @@ Apl.prototype.start = function() {
 };
 
 Apl.prototype.moveObj = function() {
+	const r = 16;
+
 	if (this.p_hold.idx) {
 		console.log(this);
 		var moveX = this.mouse.x - this.mouse_hold.x;
 		var moveY = this.mouse.y - this.mouse_hold.y;
 		var p = this.sph.get_particle();
-		p[this.p_hold.idx].pos.x = this.p_hold.x + moveX/16;
-		p[this.p_hold.idx].pos.y = this.p_hold.y - moveY/16;
+		p[this.p_hold.idx].pos.x = this.p_hold.x + moveX/r;
+		p[this.p_hold.idx].pos.y = this.p_hold.y - moveY/r;
 		console.log(moveX, moveY);
 	}
 	this.sph.step();
@@ -125,8 +127,8 @@ Apl.prototype.moveObj = function() {
 	// three.js
 	var p = this.sph.get_particle();
 	for (var i = 0; i < p.length; i++) {
-        this.p_threejs[i].position.x = p[i].pos.x*16;
-		this.p_threejs[i].position.y = p[i].pos.y*16;
+        this.p_threejs[i].position.x = p[i].pos.x*r;
+		this.p_threejs[i].position.y = p[i].pos.y*r;
 	}
 };
 
