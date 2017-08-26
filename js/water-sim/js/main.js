@@ -4,8 +4,6 @@ var Apl = function() {
 	// environment parameter
 	this.radius = 5; // raduis of balls
 	this.particles = [];
-	this.sph;
-
 	this.sph = new Sph();
 	this.sph.init();
 
@@ -15,7 +13,7 @@ var Apl = function() {
 	$btn.text('start');
 
 	// three.js
-	const renderer = new THREE.WebGLRenderer( { 'canvas' : $('#canvas2')[0] } );
+	const renderer = new THREE.WebGLRenderer( { 'canvas' : $('#canvas')[0] } );
 	renderer.setSize(800, 600);
 	document.body.appendChild(renderer.domElement);
 
@@ -27,22 +25,8 @@ var Apl = function() {
     scene = new THREE.Scene();
     scene.add( camera );
 
-	/*
-	// triangle
-    var material = new THREE.MeshBasicMaterial( { color: 0xeeee00 } );
-    var shape = new THREE.Shape();
-    shape.moveTo(  0, 100 );
-    shape.lineTo(  100, -50 );
-    shape.lineTo( -100, -50 );
-    shape.lineTo(  0, 100 );
-    var geometry = new THREE.ShapeGeometry( shape );
-    scene.add( new THREE.Mesh( geometry, material ) );
-	*/
-
-	var p = this.sph.get_particle();
 	this.p_threejs = [];
-
-	for (var i = 0; i < p.length; i++) {
+	for (var i = 0; i < this.sph.get_particle().length; i++) {
 		// triangle
 		var material = new THREE.MeshBasicMaterial( { color: 0xeeee00 } );
 		var shape = new THREE.Shape();
@@ -62,7 +46,6 @@ var Apl = function() {
 		renderer.clear();
 		renderer.render(scene, camera);
 	}
-
 	animate.call(this);
 };
 
