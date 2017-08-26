@@ -100,21 +100,14 @@ var Sph = function() {
 	const DT              = 0.004;
 	const SPH_VISC        = 0.2;
 	const SPH_LIMIT       = 200.0;
-	const SPH_RADIUS      = 0.004;
+	const SPH_RADIUS      = 0.004/2;
 	const SPH_EPSILON     = 0.00001;
 	const SPH_EXTSTIFF    = 10000.0;
 	const SPH_EXTDAMP     = 256.0/4;
-	const SPH_PDIST       = Math.pow(SPH_PMASS/SPH_RESTDENSITY,
-									 1.0/3.0);
-	/*
-	  const MIN             = new Vec3(  0.0,  0.0, -5.0);
-	  const MAX             = new Vec3( 10.0, 25.0,  0.0);
-	  const INIT_MIN        = new Vec3(  0.0,  0.0,  10.0);
-	  const INIT_MAX        = new Vec3(  5.0, 10.0,  10.0);
-	*/
+	const SPH_PDIST       = Math.pow(SPH_PMASS/SPH_RESTDENSITY, 1.0/3.0);
 
 	const MIN             = new Vec3(  0.0,  0.0,   0.0);
-	const MAX             = new Vec3( 50.0, 50.0,  15.0);
+	const MAX             = new Vec3( 30.0, 30.0,  15.0);
 	const INIT_MIN        = new Vec3(  0.0,  0.0,   0.0);
 	const INIT_MAX        = new Vec3( 10.0,  4.0,   4.0);
 

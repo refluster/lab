@@ -18,9 +18,9 @@ var Apl = function() {
 	document.body.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera();
-    camera.position.x = 200;
-    camera.position.y = 200;
-    camera.position.z = 500;
+    camera.position.x = 250;
+    camera.position.y = 250;
+    camera.position.z = 600;
 
     scene = new THREE.Scene();
     scene.add( camera );
@@ -71,8 +71,8 @@ Apl.prototype.moveObj = function() {
 	// three.js
 	var p = this.sph.get_particle();
 	for (var i = 0; i < p.length; i++) {
-        this.p_threejs[i].position.x = p[i].pos.x*8;
-		this.p_threejs[i].position.y = p[i].pos.y*8;
+        this.p_threejs[i].position.x = p[i].pos.x*16;
+		this.p_threejs[i].position.y = p[i].pos.y*16;
 	}
 };
 
