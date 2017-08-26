@@ -93,14 +93,14 @@ var Sph = function() {
 	const SPH_RESTDENSITY = 600.0;
 	//    const SPH_RESTDENSITY = 300.0;
 	const SPH_INTSTIFF    = 3.0*1.2;
-	const SPH_PMASS       = 0.00020543*1.2;
+	const SPH_PMASS       = 0.00020543*1.6;
 	const SPH_SIMSCALE    = 0.004;
 	const H               = 0.012;
 	const PI              = 3.141592653589793;
 	const DT              = 0.004;
 	const SPH_VISC        = 0.2;
 	const SPH_LIMIT       = 200.0;
-	const SPH_RADIUS      = 0.004/2;
+	const SPH_RADIUS      = 0.004;
 	const SPH_EPSILON     = 0.00001;
 	const SPH_EXTSTIFF    = 10000.0;
 	const SPH_EXTDAMP     = 256.0/4;
@@ -361,3 +361,4 @@ var Sph = function() {
 		return particles;
 	};
 };
+
