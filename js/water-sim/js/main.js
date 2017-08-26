@@ -75,11 +75,9 @@ Apl.prototype.start = function() {
 		// init canvas
 		this.init();
 		this.simulating = true;
-		this.timer.play();
 		$btn.text('stop');
 	} else { // if playing
 		this.simulating = false;
-		this.timer.pause();
 		$btn.text('start');
 	}
 };
