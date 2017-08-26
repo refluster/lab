@@ -51,7 +51,7 @@ var Apl = function() {
 
 
 	// three.js
-	const renderer = new THREE.WebGLRenderer();
+	const renderer = new THREE.WebGLRenderer( { 'canvas' : $('#canvas2')[0] } );
 	renderer.setSize(800, 600);
 	document.body.appendChild(renderer.domElement);
 
