@@ -52,28 +52,35 @@ var Apl = function() {
 	}
 
 	this.mouse = {};
+	this.mouse_hold = {};
+	this.prev_mouse = {};
+	this.hold_pos = {};
 
-	$('#canvas').on('touchstart mousedown', function(e) {
-		mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-		mouse.y = -( e.clientY / window.innerHeight ) * 2 + 1;
-		this.mouse.X = e.clientX;
-		this.mouse.y = e.clientY;
+	//$('#canvas').on('touchstart mousedown', function(e) {
+	$('#canvas').on('touchstart', function(e) {
+		mouse.x = ( e.touches[0].clientX / window.innerWidth ) * 2 - 1;
+		mouse.y = -( e.touches[0].clientY / window.innerHeight ) * 2 + 1;
+		this.mouse_hold.x = this.prev_mouse.x = this.mouse.x = e.touches[0].clientX;
+		this.mouse_hold.y = this.prev_mouse.y = this.mouse.y = e.touches[0].clientY;
 		raycaster.setFromCamera( mouse, camera );
 		intersects = raycaster.intersectObjects( scene.children );
 		for ( var i = 0; i < intersects.length; i++ ) {
-			intersects[i].object.material.color.set( 0x000000 );
+			//intersects[i].object.material.color.set( 0x000000 );
 		}
 		if (intersects.length > 0) {
 			this.p_hold_idx = intersects[0].object.idx;
+			this.hold_pos.x = this.sph.get_particle()[this.p_hold_idx].pos.x;
+			this.hold_pos.y = this.sph.get_particle()[this.p_hold_idx].pos.y;
 		}
 		console.log(intersects);
 	}.bind(this));
 
 	$('#canvas').on('touchmove mousemove', function(e) {
 		if (e.touches) {
-			this.mouse.X = e.touches[0].clientX;
+			this.mouse.x = e.touches[0].clientX;
 			this.mouse.y = e.touches[0].clientY;
 			console.log(this.mouse);
+			//console.log(this.p_threejs);
 		}
 	}.bind(this));
 
@@ -105,6 +112,17 @@ Apl.prototype.start = function() {
 };
 
 Apl.prototype.moveObj = function() {
+	if (this.p_hold_idx) {
+		console.log(this);
+		var moveX = this.mouse.x - this.mouse_hold.x;
+		var moveY = this.mouse.y - this.mouse_hold.y;
+		var p = this.sph.get_particle();
+		p[this.p_hold_idx].pos.x = this.hold_pos.x + moveX/16;
+		p[this.p_hold_idx].pos.y = this.hold_pos.y + moveY/16;
+		this.prev_mouse.x = this.mouse.x;
+		this.prev_mouse.y = this.mouse.y;
+		console.log(moveX, moveY);
+	}
 	this.sph.step();
 
 	// three.js
