@@ -47,9 +47,7 @@ var Apl = function() {
 	});
 
 
-
-	console.log('hoge');
-
+	// three.js
 	const renderer = new THREE.WebGLRenderer();
 	renderer.setSize(800, 600);
 	document.body.appendChild(renderer.domElement);
@@ -120,6 +118,8 @@ Apl.prototype.draw = function() {
 						  this.canvasHeight - p[i].pos.y*8,
 						  this.radius*2, this.radius*2);
 	}
+
+	// three.js
 };
 
 $(function() {
