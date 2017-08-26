@@ -53,15 +53,14 @@ var Apl = function() {
 
 	this.mouse = {};
 	this.mouse_hold = {};
-	this.prev_mouse = {};
 	this.hold_pos = {};
 
 	//$('#canvas').on('touchstart mousedown', function(e) {
 	$('#canvas').on('touchstart', function(e) {
 		mouse.x = ( e.touches[0].clientX / window.innerWidth ) * 2 - 1;
 		mouse.y = -( e.touches[0].clientY / window.innerHeight ) * 2 + 1;
-		this.mouse_hold.x = this.prev_mouse.x = this.mouse.x = e.touches[0].clientX;
-		this.mouse_hold.y = this.prev_mouse.y = this.mouse.y = e.touches[0].clientY;
+		this.mouse_hold.x = this.mouse.x = e.touches[0].clientX;
+		this.mouse_hold.y = this.mouse.y = e.touches[0].clientY;
 		raycaster.setFromCamera( mouse, camera );
 		intersects = raycaster.intersectObjects( scene.children );
 		for ( var i = 0; i < intersects.length; i++ ) {
@@ -119,8 +118,6 @@ Apl.prototype.moveObj = function() {
 		var p = this.sph.get_particle();
 		p[this.p_hold_idx].pos.x = this.hold_pos.x + moveX/16;
 		p[this.p_hold_idx].pos.y = this.hold_pos.y + moveY/16;
-		this.prev_mouse.x = this.mouse.x;
-		this.prev_mouse.y = this.mouse.y;
 		console.log(moveX, moveY);
 	}
 	this.sph.step();
