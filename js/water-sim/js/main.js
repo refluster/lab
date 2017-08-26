@@ -74,6 +74,7 @@ var Apl = function() {
 	}.bind(this));
 
 	$('#canvas').on('touchmove mousemove', function(e) {
+		e.preventDefault();
 		if (e.touches) {
 			this.mouse.x = e.touches[0].clientX;
 			this.mouse.y = e.touches[0].clientY;
