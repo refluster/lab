@@ -45,6 +45,38 @@ var Apl = function() {
 		}.bind(this),
 		time: 1000/this.fps
 	});
+
+
+
+	console.log('hoge');
+
+	const renderer = new THREE.WebGLRenderer();
+	renderer.setSize(800, 600);
+	document.body.appendChild(renderer.domElement);
+
+    camera = new THREE.PerspectiveCamera();
+    camera.position.z = 500;
+
+    scene = new THREE.Scene();
+    scene.add( camera );
+
+	// triangle
+    var material = new THREE.MeshBasicMaterial( { color: 0xeeee00 } );
+    var shape = new THREE.Shape();
+    shape.moveTo(  0, 100 );
+    shape.lineTo(  100, -50 );
+    shape.lineTo( -100, -50 );
+    shape.lineTo(  0, 100 );
+    var geometry = new THREE.ShapeGeometry( shape );
+    scene.add( new THREE.Mesh( geometry, material ) );
+
+	renderer.render( scene, camera );
+
+	function animate() {
+		requestAnimationFrame(animate);
+		renderer.clear();
+		renderer.render(scene, camera);
+	}
 };
 
 Apl.prototype.start = function() {
