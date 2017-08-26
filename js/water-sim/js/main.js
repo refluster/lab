@@ -116,7 +116,7 @@ Apl.prototype.moveObj = function() {
 		var moveY = this.mouse.y - this.mouse_hold.y;
 		var p = this.sph.get_particle();
 		p[this.p_hold.idx].pos.x = this.p_hold.x + moveX/16;
-		p[this.p_hold.idx].pos.y = this.p_hold.y + moveY/16;
+		p[this.p_hold.idx].pos.y = this.p_hold.y - moveY/16;
 		console.log(moveX, moveY);
 	}
 	this.sph.step();
