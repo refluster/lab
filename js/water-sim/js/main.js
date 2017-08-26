@@ -51,9 +51,13 @@ var Apl = function() {
 		mesh.idx = i;
 	}
 
+	this.mouse = {};
+
 	$('#canvas').on('touchstart mousedown', function(e) {
 		mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
 		mouse.y = -( e.clientY / window.innerHeight ) * 2 + 1;
+		this.mouse.X = e.clientX;
+		this.mouse.y = e.clientY;
 		raycaster.setFromCamera( mouse, camera );
 		intersects = raycaster.intersectObjects( scene.children );
 		for ( var i = 0; i < intersects.length; i++ ) {
@@ -63,6 +67,14 @@ var Apl = function() {
 			this.p_hold_idx = intersects[0].object.idx;
 		}
 		console.log(intersects);
+	}.bind(this));
+
+	$('#canvas').on('touchmove mousemove', function(e) {
+		if (e.touches) {
+			this.mouse.X = e.touches[0].clientX;
+			this.mouse.y = e.touches[0].clientY;
+			console.log(this.mouse);
+		}
 	}.bind(this));
 
 	$('#canvas').on('touchend mouseup', function(e) {
