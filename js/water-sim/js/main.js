@@ -67,10 +67,10 @@ var Apl = function() {
 		}
 		if (intersects.length > 0) {
 			this.p_hold.idx = intersects[0].object.idx;
+			console.log(this.p_hold.idx);
 			this.p_hold.x = this.sph.get_particle()[this.p_hold.idx].pos.x;
 			this.p_hold.y = this.sph.get_particle()[this.p_hold.idx].pos.y;
 		}
-		console.log(intersects);
 	}.bind(this));
 
 	$('#canvas').on('touchmove mousemove', function(e) {
@@ -78,8 +78,6 @@ var Apl = function() {
 		if (e.touches) {
 			this.mouse.x = e.touches[0].clientX;
 			this.mouse.y = e.touches[0].clientY;
-			console.log(this.mouse);
-			//console.log(this.p_threejs);
 		}
 	}.bind(this));
 
@@ -114,13 +112,11 @@ Apl.prototype.moveObj = function() {
 	const r = 16;
 
 	if (this.p_hold.idx) {
-		console.log(this);
 		var moveX = this.mouse.x - this.mouse_hold.x;
 		var moveY = this.mouse.y - this.mouse_hold.y;
 		var p = this.sph.get_particle();
 		p[this.p_hold.idx].pos.x = this.p_hold.x + moveX/r;
 		p[this.p_hold.idx].pos.y = this.p_hold.y - moveY/r;
-		console.log(moveX, moveY);
 	}
 	this.sph.step();
 
