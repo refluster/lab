@@ -94,7 +94,7 @@ var Apl = function() {
 	}
 
 	function animate() {
-		//requestAnimationFrame(animate.bind(this));
+		requestAnimationFrame(animate.bind(this));
 		this.moveObj();
 		this.draw();
 		renderer.clear();
@@ -131,7 +131,6 @@ Apl.prototype.moveObj = function() {
 	for (var i = 0; i < p.length; i++) {
         this.p_threejs[i].position.x = p[i].pos.x*8;
 		this.p_threejs[i].position.y = p[i].pos.y*8;
-		console.log(this.p_threejs[i].position.x, this.p_threejs[i].position.y);
 	}
 };
 
