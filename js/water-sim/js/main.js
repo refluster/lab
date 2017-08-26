@@ -33,6 +33,8 @@ var Apl = function() {
 	var mesh = new THREE.Mesh( geometry, material);
 	scene.add(mesh);
 
+	this.p_hold_idx = undefined;
+
 	this.p_threejs = [];
 	for (var i = 0; i < this.sph.get_particle().length; i++) {
 		// triangle
@@ -46,9 +48,10 @@ var Apl = function() {
 		var mesh = new THREE.Mesh( geometry, material);
 		this.p_threejs.push(mesh);
 		scene.add(mesh);
+		mesh.idx = i;
 	}
 
-	$('#canvas').on('touchend click', function(e) {
+	$('#canvas').on('touchstart mousedown', function(e) {
 		mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
 		mouse.y = -( e.clientY / window.innerHeight ) * 2 + 1;
 		raycaster.setFromCamera( mouse, camera );
@@ -56,7 +59,14 @@ var Apl = function() {
 		for ( var i = 0; i < intersects.length; i++ ) {
 			intersects[i].object.material.color.set( 0x000000 );
 		}
+		if (intersects.length > 0) {
+			this.p_hold_idx = intersects[0].object.idx;
+		}
 		console.log(intersects);
+	}.bind(this));
+
+	$('#canvas').on('touchend mouseup', function(e) {
+		this.p_hold_idx = undefined;
 	}.bind(this));
 
 	function animate() {
