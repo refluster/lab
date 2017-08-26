@@ -114,9 +114,9 @@ var Sph = function() {
 	*/
 
 	const MIN             = new Vec3(  0.0,  0.0,   0.0);
-	const MAX             = new Vec3( 30.0, 30.0,  15.0);
+	const MAX             = new Vec3( 50.0, 50.0,  15.0);
 	const INIT_MIN        = new Vec3(  0.0,  0.0,   0.0);
-	const INIT_MAX        = new Vec3(  3.0,  4.0,   4.0);
+	const INIT_MAX        = new Vec3( 10.0,  4.0,   4.0);
 
 	const Poly6Kern       = 315.0/(64.0*PI*Math.pow(H, 9));
 	const SpikyKern       = -45.0/(PI*Math.pow(H, 6));
