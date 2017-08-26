@@ -73,10 +73,15 @@ var Apl = function() {
 	renderer.render( scene, camera );
 
 	function animate() {
-		requestAnimationFrame(animate);
+		//requestAnimationFrame(animate.bind(this));
 		renderer.clear();
 		renderer.render(scene, camera);
+
+		this.moveObj();
+		this.draw();
 	}
+
+	animate.call(this);
 };
 
 Apl.prototype.start = function() {
