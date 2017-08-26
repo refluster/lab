@@ -19,7 +19,7 @@ var Apl = function() {
 	this.canvasTop = $cvdiv.offset().top;
 
 	// environment parameter
-	this.radius = 1; // raduis of balls
+	this.radius = 5; // raduis of balls
 	this.particles = [];
 	this.sph;
 
@@ -56,6 +56,8 @@ var Apl = function() {
 	document.body.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera();
+    camera.position.x = 200;
+    camera.position.y = 200;
     camera.position.z = 500;
 
     scene = new THREE.Scene();
@@ -82,25 +84,21 @@ var Apl = function() {
 		var material = new THREE.MeshBasicMaterial( { color: 0xeeee00 } );
 		var shape = new THREE.Shape();
 		shape.moveTo(  0, 0 );
-		shape.lineTo(  -this.radius/2, this.radius );
-		shape.lineTo(   this.radius/2, this.radius );
+		shape.lineTo(  -this.radius, this.radius*2 );
+		shape.lineTo(   this.radius, this.radius*2 );
 		shape.lineTo(  0, 0 );
 		var geometry = new THREE.ShapeGeometry( shape );
 		var mesh = new THREE.Mesh( geometry, material);
-		scene.add(mesh);
-
 		this.p_threejs.push(mesh);
+		scene.add(mesh);
 	}
-
-	renderer.render( scene, camera );
 
 	function animate() {
 		//requestAnimationFrame(animate.bind(this));
-		renderer.clear();
-		renderer.render(scene, camera);
-
 		this.moveObj();
 		this.draw();
+		renderer.clear();
+		renderer.render(scene, camera);
 	}
 
 	animate.call(this);
@@ -127,6 +125,14 @@ Apl.prototype.init = function() {
 
 Apl.prototype.moveObj = function() {
 	this.sph.step();
+
+	// three.js
+	var p = this.sph.get_particle();
+	for (var i = 0; i < p.length; i++) {
+        this.p_threejs[i].position.x = p[i].pos.x*8;
+		this.p_threejs[i].position.y = p[i].pos.y*8;
+		console.log(this.p_threejs[i].position.x, this.p_threejs[i].position.y);
+	}
 };
 
 Apl.prototype.draw = function() {
