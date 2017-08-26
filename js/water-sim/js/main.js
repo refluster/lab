@@ -23,6 +23,9 @@ var Apl = function() {
 	this.particles = [];
 	this.sph;
 
+	this.sph = new Sph();
+	this.sph.init();
+
 	this.init();
 	this.draw();
 
@@ -58,6 +61,7 @@ var Apl = function() {
     scene = new THREE.Scene();
     scene.add( camera );
 
+	/*
 	// triangle
     var material = new THREE.MeshBasicMaterial( { color: 0xeeee00 } );
     var shape = new THREE.Shape();
@@ -67,6 +71,26 @@ var Apl = function() {
     shape.lineTo(  0, 100 );
     var geometry = new THREE.ShapeGeometry( shape );
     scene.add( new THREE.Mesh( geometry, material ) );
+	*/
+
+	var p = this.sph.get_particle();
+	this.p_threejs = [];
+
+	for (var i = 0; i < p.length; i++) {
+
+		// triangle
+		var material = new THREE.MeshBasicMaterial( { color: 0xeeee00 } );
+		var shape = new THREE.Shape();
+		shape.moveTo(  0, 0 );
+		shape.lineTo(  -this.radius/2, this.radius );
+		shape.lineTo(   this.radius/2, this.radius );
+		shape.lineTo(  0, 0 );
+		var geometry = new THREE.ShapeGeometry( shape );
+		var mesh = new THREE.Mesh( geometry, material);
+		scene.add(mesh);
+
+		this.p_threejs.push(mesh);
+	}
 
 	renderer.render( scene, camera );
 
@@ -99,8 +123,6 @@ Apl.prototype.start = function() {
 };
 
 Apl.prototype.init = function() {
-	this.sph = new Sph();
-	this.sph.init();
 };
 
 Apl.prototype.moveObj = function() {
@@ -118,8 +140,6 @@ Apl.prototype.draw = function() {
 						  this.canvasHeight - p[i].pos.y*8,
 						  this.radius*2, this.radius*2);
 	}
-
-	// three.js
 };
 
 $(function() {
