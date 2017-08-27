@@ -281,49 +281,47 @@ Dew.prototype.step = function() {
 			}
 		}
 
-	    /*
-		Arrays.fill(photons.source, 0.0D);
-		i = 0;
-		for(int y = 0; y < ysize; y++)
-		{
-			for(int x = 0; x < xsize;)
-			{
-				double z = depth[i];
-				double nx = thickness[x - 1 & xsize - 1 | y << xbit] - thickness[x + 1 & xsize - 1 | y << xbit];
-				double ny = thickness[x | (y - 1 & ysize - 1) << xbit] - thickness[x | (y + 1 & ysize - 1) << xbit];
-				double nz = 2D;
-				double _n = 1.0D / Math.sqrt(nx * nx + ny * ny + nz * nz);
+		photons.source.fill(0);
+		var i = 0;
+		for (var y = 0; y < ysize; y++) {
+			for (var x = 0; x < xsize;) {
+				var z = depth[i];
+				var nx = thickness[x - 1 & xsize - 1 | y << this.xbit] - thickness[x + 1 & xsize - 1 | y << this.xbit];
+				var ny = thickness[x | (y - 1 & ysize - 1) << this.xbit] - thickness[x | (y + 1 & ysize - 1) << this.xbit];
+				var nz = 2;
+				var _n = 1 / Math.sqrt(nx * nx + ny * ny + nz * nz);
 				nx *= _n;
 				ny *= _n;
 				nz *= _n;
-				double lx = -0.35999999999999999D;
-				double ly = -0.47999999999999998D;
-				double lz = 0.80000000000000004D;
-				double ln = lx * nx + ly * ny + lz * nz;
+				var lx = -0.35999999999999999;
+				var ly = -0.47999999999999998;
+				var lz = 0.80000000000000004;
+				var ln = lx * nx + ly * ny + lz * nz;
 				reflection[i] = ln;
-				double e = 1.3300000000000001D;
-				ln += Math.sqrt((e * e - 1.0D) + ln * ln);
+				var e = 1.3300000000000001;
+				ln += Math.sqrt((e * e - 1) + ln * ln);
 				lx += ln * nx;
 				ly += ln * ny;
 				lz += ln * nz;
-				int _x = x - (int)((z / lz) * lx);
-				int _y = y - (int)((z / lz) * ly);
-				_x = ~(_x >> 31) & (_x | -(_x >> xbit) >> 31) & xsize - 1;
-				_y = ~(_y >> 31) & (_y | -(_y >> ybit) >> 31) & ysize - 1;
-				photons.source[_x | _y << xbit] += ln;
-				ln = nz + Math.sqrt((e * e - 1.0D) + nz * nz);
+				var _x = x - parseInt((z / lz) * lx);
+				var _y = y - parseInt((z / lz) * ly);
+				_x = ~(_x >> 31) & (_x | -(_x >> this.xbit) >> 31) & xsize - 1;
+				_y = ~(_y >> 31) & (_y | -(_y >> this.ybit) >> 31) & ysize - 1;
+				photons.source[_x | _y << this.xbit] += ln;
+				ln = nz + Math.sqrt((e * e - 1) + nz * nz);
 				lx = ln * nx;
 				ly = ln * ny;
-				lz = ln * nz + 1.0D;
-				_x = x - (int)((z / lz) * lx) & xsize - 1;
-				_y = y - (int)((z / lz) * ly) & ysize - 1;
-				refraction[i] = _x | _y << xbit;
+				lz = ln * nz + 1;
+				_x = x - parseInt((z / lz) * lx) & xsize - 1;
+				_y = y - parseInt((z / lz) * ly) & ysize - 1;
+				refraction[i] = _x | _y << this.xbit;
 				x++;
 				i++;
 			}
 
 		}
 
+	    /*
 		for(int x = 0; x < xsize; x++)
 			photons.source[x] = 150D;
 
