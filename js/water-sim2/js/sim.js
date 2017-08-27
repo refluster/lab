@@ -41,19 +41,19 @@ var Dew = function(img) {
 	this.T = 50;
 	this.H = 1;
 
-	particles = [];
-	neighbors = [];
+	this.particles = [];
+	this.neighbors = [];
 
 	for (var i = 0; i < this.N; i++) {
 		r = (Math.sqrt((i + 1) / Math.PI) * this.R * 3) / 4;
 		t = 2 * Math.sqrt(Math.PI * (i + 1));
 		x = (img.width / 2) + r * Math.cos(t);
 		y = (img.height / 2) + r * Math.sin(t);
-		particles[i] = new Particle(x, y);
+		this.particles[i] = new Particle(x, y);
 	}
 
 	for (var i = 0; i < (this.N * this.N) / 2; i++) {
-		neighbors[i] = new Neighbor();
+		this.neighbors[i] = new Neighbor();
 	}
 };
 Dew.prototype.step = function() {
@@ -118,7 +118,7 @@ Dew.prototype.step = function() {
 			if (t >= this.T)
 				break;
 			for (var i = 0; i < this.N; i++) {
-				p = particles[i];
+				p = this.particles[i];
 				var dx = p.x >= xmin ? p.x >= xmax ? p.x - xmax : 0.0 : p.x - xmin;
 				var dy = p.y >= ymin ? p.y >= ymax ? p.y - ymax : 0.0 : p.y - ymin;
 				var d2 = dx * dx + dy * dy;
@@ -136,29 +136,29 @@ Dew.prototype.step = function() {
 			}
 
 			this.M = 0;
-			this.sort(particles, 0, this.N - 1);
+			this.sort(this.particles, 0, this.N - 1);
 			var i = 0;
 			var j = 0;
 			label0:
 			for(; i < this.N; i++) {
-				p = particles[i];
+				p = this.particles[i];
 				var k = i + 1;
 				do {
 					if (k >= this.N) {
 						break;
 					}
-					q = particles[k];
+					q = this.particles[k];
 					if (p.tag + 1 < q.tag) {
 						break;
 					}
-					this.match(neighbors, p, q);
+					this.match(this.neighbors, p, q);
 					k++;
 				} while(true);
 				do {
 					if (j >= this.N) {
 						break;
 					}
-					q = particles[j];
+					q = this.particles[j];
 					if ((p.tag + 0x10000) - 1 <= q.tag) {
 						break;
 					}
@@ -169,17 +169,17 @@ Dew.prototype.step = function() {
 					if (q >= this.N) {
 						continue label0;
 					}
-					q = particles[q];
+					q = this.particles[q];
 					if (p.tag + 0x10000 + 1 < q.tag) {
 						continue label0;
 					}
-					this.match(neighbors, p, q);
+					this.match(this.neighbors, p, q);
 					q++;
 				} while(true);
 			}
 
 			for (var i = 0; i < this.M; i++) {
-				var n = neighbors[i];
+				var n = this.neighbors[i];
 				var a = n.a;
 				var b = n.b;
 				var w = n.w;
@@ -194,7 +194,7 @@ Dew.prototype.step = function() {
 			}
 
 			for (var i = 0; i < this.N; i++) {
-				var p = particles[i];
+				var p = this.particles[i];
 				p.h = this.P * (p.w - 1);
 				p.sx = this.S * this.R * p.nx;
 				p.sy = this.S * this.R * p.ny;
@@ -203,7 +203,7 @@ Dew.prototype.step = function() {
 			}
 
 			for (var i = 0; i < this.M; i++) {
-				var n = neighbors[i];
+				var n = this.neighbors[i];
 				var a = n.a;
 				var b = n.b;
 				var r = n.r;
@@ -229,7 +229,7 @@ Dew.prototype.step = function() {
 			}
 
 			for (var i = 0; i < this.N; i++) {
-				p = particles[i];
+				p = this.particles[i];
 				p.vx += p.fx;
 				p.vy += p.fy;
 			}
@@ -238,7 +238,7 @@ Dew.prototype.step = function() {
 
 		density.source.fill(0);
 		for(var i = 0; i < this.N; i++) {
-			p = particles[i];
+			p = this.particles[i];
 			var x = Math.max(1, Math.min((xscale * p.x), xsize - 1));
 			var y = Math.max(1, Math.min((yscale * p.y), ysize - 1));
 			var j = x | y << xbit;
