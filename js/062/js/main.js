@@ -6,6 +6,23 @@ var Apl = function() {
 	this.ctx = canvas.getContext("2d");
 	this.img = this.ctx.getImageData(0, 0, this.width, this.height)
 	this.dew = new Dew(this.ctx, this.img);
+
+	var alphaCanvas = document.createElement("canvas");
+	var r = 25;
+	document.getElementById('contents').appendChild(alphaCanvas);
+	alphaCanvas.height = r*2;
+	alphaCanvas.width = r*2;
+	var alphaCtx = alphaCanvas.getContext('2d');
+	var grad = alphaCtx.createRadialGradient(r, r, 0, r, r, r);
+	grad.addColorStop(0,   'rgba(100,255,200,1');
+	grad.addColorStop(0.7, 'rgba(100,255,200,0.2)');
+	grad.addColorStop(0.9, 'rgba(100,255,200,0.05)');
+	grad.addColorStop(1,   'rgba(100,255,200,0)');
+	alphaCtx.fillStyle = grad;
+	alphaCtx.beginPath();
+	alphaCtx.arc(r, r, r, 0, Math.PI*2, true);
+	alphaCtx.fill();
+	this.alphaImage = alphaCtx.getImageData(0, 0, r*2, r*2);
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
@@ -22,27 +39,7 @@ Apl.prototype.draw = function() {
 		}
 	}
 
-	//////////////////////////////
-	//var canvas = $('#canvas2')[0]; 
-	var canvas = document.createElement("canvas");
-	var r = 25;
-	document.getElementById('contents').appendChild(canvas);
-	canvas.height = r*2;
-	canvas.width = r*2;
-
-	var ctx = canvas.getContext('2d');
-	var grad = ctx.createRadialGradient(r, r, 0, r, r, r);
-	grad.addColorStop( 0,   'rgba(100,255,200,1');
-	grad.addColorStop( 0.7, 'rgba(100,255,200,0.2)' );
-	grad.addColorStop( 0.9, 'rgba(100,255,200,0.05)' );
-	grad.addColorStop( 1,   'rgba(100,255,200,0)' );
-	ctx.fillStyle = grad;
-	ctx.beginPath();
-	ctx.arc(r, r, r, 0, Math.PI*2, true);
-	ctx.fill();
-
-	var image = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	this.ctx.putImageData(image, 100, 100);
+	this.ctx.putImageData(this.alphaImage, 100, 100);
 
 	//requestAnimationFrame(this.draw.bind(this));
 };
