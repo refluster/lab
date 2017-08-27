@@ -114,14 +114,11 @@ Dew.prototype.step = function() {
 		var xmax = this.img.width- 4 * this.R;
 		var ymax = this.img.height - 4 * this.R;
 		var t = 0;
-		/*
-		do
-		{
-			if(t >= T)
+		do {
+			if (t >= this.T)
 				break;
-			synchronized(this)
 			{
-				cursor.run();
+				/*
 				int i;
 				for(i = 0; i < N; i++)
 				{
@@ -242,10 +239,12 @@ Dew.prototype.step = function() {
 					p.vx += p.fx;
 					p.vy += p.fy;
 				}
-
+			*/
 			}
 			t++;
+		    break; // zantei
 		} while(true);
+	    /*
 		Arrays.fill(density.source, 0.0D);
 		synchronized(this)
 		{
