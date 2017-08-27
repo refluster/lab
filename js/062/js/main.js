@@ -8,26 +8,25 @@ var Apl = function() {
 	this.dew = new Dew(this.ctx, this.img);
 
 	this.alphaGfx = document.createElement("canvas");
-	var r = 16;
-	this.dropletSize = r;
+	this.dropletSize = 16;
 	document.getElementById('contents').appendChild(this.alphaGfx);
-	this.alphaGfx.height = r*2;
-	this.alphaGfx.width = r*2;
+	this.alphaGfx.height = this.dropletSize*2;
+	this.alphaGfx.width = this.dropletSize*2;
 	var alphaCtx = this.alphaGfx.getContext('2d');
-	var grad = alphaCtx.createRadialGradient(r, r, 0, r, r, r);
+	var grad = alphaCtx.createRadialGradient(this.dropletSize, this.dropletSize, 0, this.dropletSize, this.dropletSize, this.dropletSize);
 	grad.addColorStop(0,   'rgba(128,128,224,.5');
 	grad.addColorStop(0.7, 'rgba(128,128,224,0.15)');
 	grad.addColorStop(0.9, 'rgba(128,128,224,0.025)');
 	grad.addColorStop(1,   'rgba(128,128,224,0)');
 	alphaCtx.fillStyle = grad;
 	alphaCtx.beginPath();
-	alphaCtx.arc(r, r, r, 0, Math.PI*2, true);
+	alphaCtx.arc(this.dropletSize, this.dropletSize, this.dropletSize, 0, Math.PI*2, true);
 	alphaCtx.fill();
 
     alphaCtx.globalCompositeOperation="source-in";
 	alphaCtx.fillStyle = "rgb(96, 96, 224)";
-	alphaCtx.fillRect(0, 0, r*2, r*2);
-	this.alphaImage = alphaCtx.getImageData(0, 0, r*2, r*2);
+	alphaCtx.fillRect(0, 0, this.dropletSize*2, this.dropletSize*2);
+	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
