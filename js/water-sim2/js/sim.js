@@ -140,44 +140,46 @@ Dew.prototype.step = function() {
 				this.sort(particles, 0, this.N - 1);
 				var i = 0;
 				var j = 0;
-				/*
 				label0:
-				for(; i < N; i++)
-				{
-					Particle p = particles[i];
-					int k = i + 1;
-					do
-					{
-						if(k >= N)
+				for(; i < this.N; i++) {
+					p = particles[i];
+					var k = i + 1;
+					do {
+						if (k >= this.N) {
 							break;
-						Particle q = particles[k];
-						if(p.tag + 1 < q.tag)
+						}
+						q = particles[k];
+						if (p.tag + 1 < q.tag) {
 							break;
-						match(p, q);
+						}
+						this.match(neighbors, p, q);
 						k++;
 					} while(true);
-					do
-					{
-						if(j >= N)
+					do {
+						if (j >= this.N) {
 							break;
-						Particle q = particles[j];
-						if((p.tag + 0x10000) - 1 <= q.tag)
+						}
+						q = particles[j];
+						if ((p.tag + 0x10000) - 1 <= q.tag) {
 							break;
+						}
 						j++;
 					} while(true);
 					q = j;
-					do
-					{
-						if(q >= N)
+					do {
+						if (q >= this.N) {
 							continue label0;
-						Particle q = particles[q];
-						if(p.tag + 0x10000 + 1 < q.tag)
+						}
+						q = particles[q];
+						if (p.tag + 0x10000 + 1 < q.tag) {
 							continue label0;
-						match(p, q);
+						}
+						this.match(neighbors, p, q);
 						q++;
 					} while(true);
 				}
 
+				/*
 				for(i = 0; i < M; i++)
 				{
 					Neighbor n = neighbors[i];
@@ -421,5 +423,15 @@ Dew.prototype.sort = function(particles, first, last) {
 	}
 	if (b + 1 < last) {
 		this.sort(particles, b + 1, last);
+	}
+}
+Dew.prototype.match = function(neigbors, a, b) {
+	var dx = b.x - a.x;
+	var dy = b.y - a.y;
+	var d2 = dx * dx + dy * dy;
+	if (d2 > 0 && d2 < this.R * this.R) {
+		var r = Math.sqrt(d2);
+		var w = 1 - r / this.R;
+		neighbors[this.M++].set(a, b, r, w, dx / r, dy / r);
 	}
 }
