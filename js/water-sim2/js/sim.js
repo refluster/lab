@@ -84,4 +84,20 @@ Dew.prototype.step = function() {
 	var thickness = new Array(isize);
 	var depth = new Array(isize);
 	var reflection = new Array(isize);
+
+	var photons = new Grid(this.xbit, this.ybit);
+	photons.mass.fill(this.C);
+	for (var x = 0; x < xsize; x++) {
+		photons.mass[x] = 4;
+	}
+	for (var x = 0; x < xsize; x++) {
+		photons.mass[x | ysize - 1 << this.xbit] = 4;
+	}
+	for (var y = 0; y < ysize; y++) {
+		photons.mass[y << this.xbit] = 4;
+	}
+	for (var y = 0; y < ysize; y++) {
+		photons.mass[xsize - 1 | y << this.xbit] = 4;
+	}
+	photons.compile();
 };
