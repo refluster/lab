@@ -119,6 +119,26 @@ Dew.prototype.step = function() {
 		do {
 			if (t >= this.T)
 				break;
+			if (this.input.pressed == true) {
+				this.input.step();
+				for (var i = 0; i < this.N; i++) {
+					p = this.particles[i];
+					var dx = this.input.x - p.x;
+					var dy = this.input.y - p.y;
+					var alpha = Math.min((this.R * this.R) / (dx * dx + dy * dy) - 0.20000000000000001, 1);
+					if (alpha > 0) {
+/*
+						console.log('= ' + i + ' =======');
+						console.log(alpha);
+						console.log(this.input.vx, this.input.vy);
+						console.log(p.vx, p.vy);
+*/
+						p.vx = (1 - alpha) * p.vx + alpha * this.input.vx;
+						p.vy = (1 - alpha) * p.vy + alpha * this.input.vy;
+					}
+				}
+			}
+
 			for (var i = 0; i < this.N; i++) {
 				p = this.particles[i];
 				var dx = p.x >= xmin ? p.x >= xmax ? p.x - xmax : 0.0 : p.x - xmin;

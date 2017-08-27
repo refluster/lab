@@ -1,5 +1,5 @@
 var Input = function(T) {
-	this.T
+	this.T = T
 	this.pressed = false;
 
 	$('#canvas').on('touchstart', function(e) {
@@ -16,7 +16,6 @@ var Input = function(T) {
 		var p = getCursor(e);
 		this.x0 = p.x;
 		this.y0 = p.y;
-		console.log(this.x0);
 		e.preventDefault();
 	}.bind(this));
 
