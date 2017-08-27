@@ -251,22 +251,19 @@ Dew.prototype.step = function() {
 
 		}
 		density.solve(1, 2);
-	    /*
-		int i;
-		for(i = 0; i < isize; i++)
-		{
-			double p = density.value[i];
-			if(p < 4D)
-			{
-				inflation.mass[i] = 4D - p;
+
+		for (var i = 0; i < isize; i++){
+			p = density.value[i];
+			if (p < 4) {
+				inflation.mass[i] = 4 - p;
 				inflation.source[i] = p;
-			} else
-			{
-				inflation.mass[i] = 0.0D;
-				inflation.source[i] = 4D;
+			} else {
+				inflation.mass[i] = 0;
+				inflation.source[i] = 4;
 			}
 		}
 
+	    /*
 		inflation.compile();
 		inflation.solve(1, 3);
 		i = 0;
