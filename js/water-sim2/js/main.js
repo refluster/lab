@@ -12,19 +12,19 @@ Apl.prototype.blank = function() {
 };
 Apl.prototype.draw = function() {
 	this.blank();
-    for (var i = 30; i < 60; i++) {
-        for (var j = 50; j < 80; j++) {
-            this.img.data[(i * this.img.width + j) * 4 + 0] = 255;
-            this.img.data[(i * this.img.width + j) * 4 + 1] = 0;
-            this.img.data[(i * this.img.width + j) * 4 + 2] = 0;
-            this.img.data[(i * this.img.width + j) * 4 + 3] = 255;
-        }
-    }
-
 	this.dew.step();
-	this.ctx.putImageData(this.img, 0, 0);
 
-	//requestAnimationFrame(this.draw.bind(this));
+	//this.ctx.putImageData(this.img, 0, 0); //zanei
+
+	{// zantei
+		this.ctx.fillStyle = "rgb(128, 128, 224)";
+		var p = this.dew.particles;
+		for (var i = 0; i < p.length; i++) {
+			this.ctx.fillRect(p[i].x, p[i].y, 10, 10);
+		}
+	}
+
+	requestAnimationFrame(this.draw.bind(this));
 };
 
 $(function() {

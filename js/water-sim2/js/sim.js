@@ -236,6 +236,12 @@ Dew.prototype.step = function() {
 			t++;
 		} while(true);
 
+		// zantei
+		{
+			this.particles[0].x += 1;
+			break;// zantei
+		}
+
 		density.source.fill(0);
 		for(var i = 0; i < this.N; i++) {
 			p = this.particles[i];
