@@ -17,6 +17,25 @@
     <title>particle simulation</title>
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script id="vert-shader" type="x-shader/x-vertex">
+// gets the current position
+attribute vec4 a_position;
+
+void main() {
+    // returns the position
+    gl_Position = a_position;
+}
+    </script>
+    <script id="frag-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+void main() {
+    // current coordinates
+    vec4 coord = gl_FragCoord;
+    // sets the color
+    gl_FragColor = vec4(coord.x/300.0,coord.y/400.0, 0.0, 1.0);
+}
+    </script>
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/main.js" charset="EUC-JP"></script>
     <script>
