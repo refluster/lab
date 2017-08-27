@@ -318,23 +318,22 @@ Dew.prototype.step = function() {
 				x++;
 				i++;
 			}
-
 		}
 
-	    /*
-		for(int x = 0; x < xsize; x++)
-			photons.source[x] = 150D;
-
-		for(int x = 0; x < xsize; x++)
-			photons.source[x | ysize - 1 << xbit] = 150D;
-
-		for(int y = 0; y < ysize; y++)
-			photons.source[y << xbit] = 150D;
-
-		for(int y = 0; y < ysize; y++)
-			photons.source[xsize - 1 | y << xbit] = 150D;
-
+		for (var x = 0; x < xsize; x++) {
+			photons.source[x] = 150;
+		}
+		for (var x = 0; x < xsize; x++) {
+			photons.source[x | ysize - 1 << this.xbit] = 150;
+		}
+		for (var y = 0; y < ysize; y++) {
+			photons.source[y << this.xbit] = 150;
+		}
+		for (var y = 0; y < ysize; y++) {
+			photons.source[xsize - 1 | y << this.xbit] = 150;
+		}
 		photons.solve(1, 2);
+	    /*
 		synchronized(this)
 		{
 			if(background != null)
