@@ -63,4 +63,19 @@ Dew.prototype.step = function() {
 	var ysize = 1 << this.ybit;
 	var isize = xsize * ysize;
 	var background = [];
+
+	var density = new Grid(xbit, ybit);
+	density.mass.fill((H * H) / (R * R));
+	for (var x = 0; x < xsize; x++) {
+		density.mass[x] = 1.0;
+	}
+	for (var x = 0; x < xsize; x++) {
+		density.mass[x | ysize - 1 << this.xbit] = 1.0;
+	}
+	for (var y = 0; y < ysize; y++) {
+		density.mass[y << xbit] = 1.0;
+	}
+	for (var y = 0; y < ysize; y++) {
+		density.mass[xsize - 1 | y << this.xbit] = 1.0;
+	}
 };
