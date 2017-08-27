@@ -46,6 +46,15 @@ Apl.prototype.draw = function() {
 		}
 	}
 
+	// filter by alpha threshold, shold be processed by pixel shader
+	d = this.ctx.getImageData(0, 0, this.width, this.height);
+	for (var i = 0; i < d.data.length; i += 4) {
+		if (d.data[i + 3] < 128) {
+			d.data[i + 3] = 0;
+		}
+	}
+	this.ctx.putImageData(d, 0, 0);
+
 	//this.ctx.putImageData(this.alphaImage, 100, 100);
 
 	requestAnimationFrame(this.draw.bind(this));
