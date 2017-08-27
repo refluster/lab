@@ -203,33 +203,33 @@ Dew.prototype.step = function() {
 					p.fy = 0;
 				}
 
-				/*
-				for(i = 0; i < M; i++)
-				{
-					Neighbor n = neighbors[i];
-					Particle a = n.a;
-					Particle b = n.b;
-					double r = n.r;
-					double w = n.w;
-					double nx = n.nx;
-					double ny = n.ny;
-					double fn = (a.h + b.h) * w;
-					double vx = b.vx - a.vx;
-					double vy = b.vy - a.vy;
-					double vn = vx * nx + vy * ny;
-					if(vn < 0.0D)
-						fn -= D * vn;
-					double sx = b.sx - a.sx;
-					double sy = b.sy - a.sy;
-					double sn = sx * nx + sy * ny;
-					double fx = fn * nx + (sn * nx + (w * sx) / 2D) / r;
-					double fy = fn * ny + (sn * ny + (w * sy) / 2D) / r;
+				for (var i = 0; i < this.M; i++) {
+					var n = neighbors[i];
+					var a = n.a;
+					var b = n.b;
+					var r = n.r;
+					var w = n.w;
+					var nx = n.nx;
+					var ny = n.ny;
+					var fn = (a.h + b.h) * w;
+					var vx = b.vx - a.vx;
+					var vy = b.vy - a.vy;
+					var vn = vx * nx + vy * ny;
+					if (vn < 0) {
+						fn -= this.D * vn;
+					}
+					var sx = b.sx - a.sx;
+					var sy = b.sy - a.sy;
+					var sn = sx * nx + sy * ny;
+					var fx = fn * nx + (sn * nx + (w * sx) / 2) / r;
+					var fy = fn * ny + (sn * ny + (w * sy) / 2) / r;
 					a.fx -= fx;
 					a.fy -= fy;
 					b.fx += fx;
 					b.fy += fy;
 				}
 
+				/*
 				for(i = 0; i < N; i++)
 				{
 					Particle p = particles[i];
