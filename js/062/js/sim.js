@@ -260,7 +260,7 @@ Dew.prototype.step = function() {
 
 		// zantei
 		{
-			this.particles[0].x += 1;
+			//this.particles[0].x += 1;
 			break;// zantei
 		}
 
