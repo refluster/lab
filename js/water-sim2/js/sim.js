@@ -79,4 +79,9 @@ Dew.prototype.step = function() {
 		density.mass[xsize - 1 | y << this.xbit] = 1.0;
 	}
 	density.compile();
+
+	var inflation = new Grid(this.xbit, this.ybit);
+	var thickness = new Array(isize);
+	var depth = new Array(isize);
+	var reflection = new Array(isize);
 };
