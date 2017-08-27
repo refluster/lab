@@ -333,11 +333,10 @@ Dew.prototype.step = function() {
 			photons.source[xsize - 1 | y << this.xbit] = 150;
 		}
 		photons.solve(1, 2);
-	    /*
-		synchronized(this)
+
 		{
-			if(background != null)
-			{
+			/*
+			if (background != null) {
 				for(int i = 0; i < isize; i++)
 				{
 					int j = refraction[i];
@@ -356,32 +355,26 @@ Dew.prototype.step = function() {
 				}
 
 			} else
+			*/
 			{
-				for(int i = 0; i < isize; i++)
-				{
-					int j = refraction[i];
-					double specular = reflection[i];
+				for (var i = 0; i < isize; i++) {
+					var j = refraction[i];
+					var specular = reflection[i];
 					specular *= specular;
 					specular *= specular;
 					specular *= specular;
 					specular *= specular;
-					int white = (int)(256D * specular);
-					white += (int)(A + B * C * photons.value[j]);
+					var white = parseInt(256 * specular);
+					white += parseInt(this.A + this.B * this.C * photons.value[j]);
 					white = (white | -(white >> 8) >> 31) & 0xff;
-					pixels[i] = 0xff000000 | white << 16 | white << 8 | white;
+					//pixels[i] = 0xff000000 | white << 16 | white << 8 | white;
+					this.img.data[i*4 + 0] = white;
+					this.img.data[i*4 + 1] = white;
+					this.img.data[i*4 + 2] = white;
+					this.img.data[i*4 + 3] = 255;
 				}
-
 			}
-			mis.newPixels();
-			repaint();
 		}
-		try
-		{
-			Thread.sleep(10L);
-			continue;
-		}
-		catch(InterruptedException e) { }
-		*/
 		break;
 	} while(true);
 
