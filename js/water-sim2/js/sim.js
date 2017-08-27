@@ -55,6 +55,8 @@ var Dew = function(img) {
 	for (var i = 0; i < (this.N * this.N) / 2; i++) {
 		this.neighbors[i] = new Neighbor();
 	}
+
+	this.input = new Input();
 };
 Dew.prototype.step = function() {
 	var xbit = parseInt(Math.round(Math.log(this.img.width / this.H) / Math.log(2)));
