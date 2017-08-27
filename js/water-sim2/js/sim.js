@@ -238,21 +238,20 @@ Dew.prototype.step = function() {
 			t++;
 		    break; // zantei
 		} while(true);
-	    /*
-		Arrays.fill(density.source, 0.0D);
-		synchronized(this)
+
+		density.source.fill(0);
 		{
-			for(int i = 0; i < N; i++)
-			{
-				Particle p = particles[i];
-				int x = Math.max(1, Math.min((int)(xscale * p.x), xsize - 1));
-				int y = Math.max(1, Math.min((int)(yscale * p.y), ysize - 1));
-				int j = x | y << xbit;
-				density.source[j] += 8D;
+			for(var i = 0; i < this.N; i++) {
+				p = particles[i];
+				var x = Math.max(1, Math.min((xscale * p.x), xsize - 1));
+				var y = Math.max(1, Math.min((yscale * p.y), ysize - 1));
+				var j = x | y << this.xbit;
+				density.source[j] += 8;
 			}
 
 		}
 		density.solve(1, 2);
+	    /*
 		int i;
 		for(i = 0; i < isize; i++)
 		{
