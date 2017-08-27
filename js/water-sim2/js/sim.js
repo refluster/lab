@@ -107,16 +107,14 @@ Dew.prototype.step = function() {
 	//////////////////////////////
 
 	do {
+		var xscale = xsize / this.img.width;
+		var yscale = ysize / this.img.height;
+		var xmin = 4 * this.R;
+		var ymin = 4 * this.R;
+		var xmax = this.img.width- 4 * this.R;
+		var ymax = this.img.height - 4 * this.R;
+		var t = 0;
 		/*
-		if(Thread.interrupted())
-			break;
-		double xscale = (double)xsize / (double)getWidth();
-		double yscale = (double)ysize / (double)getHeight();
-		double xmin = 4D * R;
-		double ymin = 4D * R;
-		double xmax = (double)getWidth() - 4D * R;
-		double ymax = (double)getHeight() - 4D * R;
-		int t = 0;
 		do
 		{
 			if(t >= T)
