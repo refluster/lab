@@ -263,28 +263,25 @@ Dew.prototype.step = function() {
 			}
 		}
 
-	    /*
 		inflation.compile();
 		inflation.solve(1, 3);
-		i = 0;
-		for(int y = 0; y < ysize; y++)
-		{
-			for(int x = 0; x < xsize;)
-			{
-				double p = inflation.value[i];
-				double z = p <= 0.0D ? 0.0D : Math.sqrt(p);
+		var i = 0;
+		for (var y = 0; y < ysize; y++) {
+			for (var x = 0; x < xsize;) {
+				var p = inflation.value[i];
+				var z = p <= 0 ? 0 : Math.sqrt(p);
 				thickness[i] = z;
-				double px = inflation.value[x + 1 & xsize - 1 | y << xbit] - inflation.value[x - 1 & xsize - 1 | y << xbit];
-				double py = inflation.value[x | (y + 1 & ysize - 1) << xbit] - inflation.value[x | (y - 1 & ysize - 1) << xbit];
-				p += (px * px + py * py) / 16D;
-				z += p <= 0.0D ? 0.0D : Z * Math.sqrt(p);
+				var px = inflation.value[x + 1 & xsize - 1 | y << this.xbit] - inflation.value[x - 1 & xsize - 1 | y << this.xbit];
+				var py = inflation.value[x | (y + 1 & ysize - 1) << this.xbit] - inflation.value[x | (y - 1 & ysize - 1) << this.xbit];
+				p += (px * px + py * py) / 16;
+				z += p <= 0 ? 0 : this.Z * Math.sqrt(p);
 				depth[i] = z;
 				x++;
 				i++;
 			}
-
 		}
 
+	    /*
 		Arrays.fill(photons.source, 0.0D);
 		i = 0;
 		for(int y = 0; y < ysize; y++)
