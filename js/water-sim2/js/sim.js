@@ -136,11 +136,11 @@ Dew.prototype.step = function() {
 					p.ny = 0;
 				}
 
+				this.M = 0;
+				this.sort(particles, 0, this.N - 1);
+				var i = 0;
+				var j = 0;
 				/*
-				M = 0;
-				sort(0, N - 1);
-				i = 0;
-				int j = 0;
 				label0:
 				for(; i < N; i++)
 				{
@@ -399,3 +399,27 @@ Dew.prototype.step = function() {
 	} while(true);
 
 };
+Dew.prototype.sort = function(particles, first, last) {
+	var a = first;
+	var b = last;
+	do {
+		var mid;
+		for (mid = particles[parseInt((first + last) / 2)].tag;
+			 particles[a].tag < mid;
+			 a++);
+		for (; mid < particles[b].tag; b--);
+		if (a >= b)
+			break;
+		c = particles[a];
+		particles[a] = particles[b];
+		particles[b] = c;
+		a++;
+		b--;
+	} while(true);
+	if (first < a - 1) {
+		this.sort(particles, first, a - 1);
+	}
+	if (b + 1 < last) {
+		this.sort(particles, b + 1, last);
+	}
+}
