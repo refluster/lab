@@ -20,7 +20,7 @@ Apl.prototype.draw = function() {
 		this.ctx.fillStyle = "rgb(128, 128, 224)";
 		var p = this.dew.particles;
 		for (var i = 0; i < p.length; i++) {
-			this.ctx.fillRect(p[i].x, p[i].y, 10, 10);
+			this.ctx.fillRect(p[i].x, p[i].y, 4, 4);
 		}
 	}
 
