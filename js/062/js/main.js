@@ -25,20 +25,21 @@ Apl.prototype.draw = function() {
 	//////////////////////////////
 	//var canvas = $('#canvas2')[0]; 
 	var canvas = document.createElement("canvas");
+	var r = 25;
 	document.getElementById('contents').appendChild(canvas);
 	canvas.id = "gamecanvas";
-	canvas.height = 50;
-	canvas.width = 50;
+	canvas.height = r*2;
+	canvas.width = r*2;
 
 	var ctx = canvas.getContext('2d');
-	var grad = ctx.createRadialGradient(25, 25, 0, 25, 25, 25);
-	grad.addColorStop( 0, 'rgba(100,255,200,1');
+	var grad = ctx.createRadialGradient(r, r, 0, r, r, r);
+	grad.addColorStop( 0,   'rgba(100,255,200,1');
 	grad.addColorStop( 0.7, 'rgba(100,255,200,0.2)' );
 	grad.addColorStop( 0.9, 'rgba(100,255,200,0.05)' );
-	grad.addColorStop( 1, 'rgba(100,255,200,0)' );
+	grad.addColorStop( 1,   'rgba(100,255,200,0)' );
 	ctx.fillStyle = grad;
 	ctx.beginPath();
-	ctx.arc(25, 25, 25, 0, Math.PI*2, true);
+	ctx.arc(r, r, r, 0, Math.PI*2, true);
 	ctx.fill();
 
 	var image = ctx.getImageData(0, 0, canvas.width, canvas.height);
