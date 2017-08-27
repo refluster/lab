@@ -27,7 +27,6 @@ Apl.prototype.draw = function() {
 	var canvas = document.createElement("canvas");
 	var r = 25;
 	document.getElementById('contents').appendChild(canvas);
-	canvas.id = "gamecanvas";
 	canvas.height = r*2;
 	canvas.width = r*2;
 
