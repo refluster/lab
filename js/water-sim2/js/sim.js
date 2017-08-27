@@ -229,14 +229,11 @@ Dew.prototype.step = function() {
 					b.fy += fy;
 				}
 
-				/*
-				for(i = 0; i < N; i++)
-				{
-					Particle p = particles[i];
+				for (var i = 0; i < this.N; i++) {
+					p = particles[i];
 					p.vx += p.fx;
 					p.vy += p.fy;
 				}
-			*/
 			}
 			t++;
 		    break; // zantei
