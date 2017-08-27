@@ -52,7 +52,7 @@ var Dew = function(img) {
 		particles[i] = new Particle(x, y);
 	}
 
-	for (var i = 0; i < (N * N) / 2; i++) {
+	for (var i = 0; i < (this.N * this.N) / 2; i++) {
 		neighbors[i] = new Neighbor();
 	}
 };
@@ -65,7 +65,7 @@ Dew.prototype.step = function() {
 	var background = [];
 
 	var density = new Grid(xbit, ybit);
-	density.mass.fill((H * H) / (R * R));
+	density.mass.fill((this.H * this.H) / (this.R * this.R));
 	for (var x = 0; x < xsize; x++) {
 		density.mass[x] = 1.0;
 	}
@@ -78,4 +78,5 @@ Dew.prototype.step = function() {
 	for (var y = 0; y < ysize; y++) {
 		density.mass[xsize - 1 | y << this.xbit] = 1.0;
 	}
+	density.compile();
 };
