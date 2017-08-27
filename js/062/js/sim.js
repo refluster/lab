@@ -25,7 +25,7 @@ var Particle = function(x, y) {
 	this.sy;
 };
 
-var Dew = function(img) {
+var Dew = function(ctx, img) {
 	this.img = img;
 
 	this.R = 8;
@@ -36,7 +36,7 @@ var Dew = function(img) {
 	this.A = 80;
 	this.B = 80;
 	this.C = 0.050000000000000003;
-	this.N = 100;
+	this.N = 10; //zantei 100;
 	this.M = 0;
 	this.T = 50;
 	this.H = 1;
@@ -57,6 +57,7 @@ var Dew = function(img) {
 	}
 
 	this.input = new Input(this.T);
+
 };
 Dew.prototype.step = function() {
 	var xbit = parseInt(Math.round(Math.log(this.img.width / this.H) / Math.log(2)));
