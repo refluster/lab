@@ -8,13 +8,12 @@ var Apl = function() {
 	this.dew = new Dew(this.ctx, this.img);
 
 	this.alphaGfx = document.createElement("canvas");
-	alphaCanvas = this.alphaGfx;
 	var r = 16;
 	this.dropletSize = r;
-	document.getElementById('contents').appendChild(alphaCanvas);
-	alphaCanvas.height = r*2;
-	alphaCanvas.width = r*2;
-	var alphaCtx = alphaCanvas.getContext('2d');
+	document.getElementById('contents').appendChild(this.alphaGfx);
+	this.alphaGfx.height = r*2;
+	this.alphaGfx.width = r*2;
+	var alphaCtx = this.alphaGfx.getContext('2d');
 	var grad = alphaCtx.createRadialGradient(r, r, 0, r, r, r);
 	grad.addColorStop(0,   'rgba(128,128,224,.5');
 	grad.addColorStop(0.7, 'rgba(128,128,224,0.15)');
