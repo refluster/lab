@@ -118,28 +118,25 @@ Dew.prototype.step = function() {
 			if (t >= this.T)
 				break;
 			{
-				/*
-				int i;
-				for(i = 0; i < N; i++)
-				{
-					Particle p = particles[i];
-					double dx = p.x >= xmin ? p.x >= xmax ? p.x - xmax : 0.0D : p.x - xmin;
-					double dy = p.y >= ymin ? p.y >= ymax ? p.y - ymax : 0.0D : p.y - ymin;
-					double d2 = dx * dx + dy * dy;
-					if(d2 > 1.0D)
-					{
-						double d = Math.sqrt(d2);
-						p.vx -= ((d - 1.0D) * dx) / d;
-						p.vy -= ((d - 1.0D) * dy) / d;
+				for (var i = 0; i < this.N; i++) {
+					p = particles[i];
+					var dx = p.x >= xmin ? p.x >= xmax ? p.x - xmax : 0.0 : p.x - xmin;
+					var dy = p.y >= ymin ? p.y >= ymax ? p.y - ymax : 0.0 : p.y - ymin;
+					var d2 = dx * dx + dy * dy;
+					if (d2 > 1.0) {
+						var d = Math.sqrt(d2);
+						p.vx -= ((d - 1) * dx) / d;
+						p.vy -= ((d - 1) * dy) / d;
 					}
 					p.x += p.vx;
 					p.y += p.vy;
-					p.tag = (int)(p.y / R) << 16 | (int)(p.x / R);
-					p.w = 0.0D;
-					p.nx = 0.0D;
-					p.ny = 0.0D;
+					p.tag = (p.y / this.R) << 16 | (p.x / this.R);
+					p.w = 0;
+					p.nx = 0;
+					p.ny = 0;
 				}
 
+				/*
 				M = 0;
 				sort(0, N - 1);
 				i = 0;
