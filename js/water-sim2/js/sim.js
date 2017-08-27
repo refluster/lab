@@ -59,8 +59,8 @@ var Dew = function(img) {
 Dew.prototype.step = function() {
 	var xbit = parseInt(Math.round(Math.log(this.img.width / this.H) / Math.log(2)));
 	var ybit = parseInt(Math.round(Math.log(this.img.height / this.H) / Math.log(2)));
-	var xsize = 1 << this.xbit;
-	var ysize = 1 << this.ybit;
+	var xsize = 1 << xbit;
+	var ysize = 1 << ybit;
 	var isize = xsize * ysize;
 	var background = [];
 
@@ -70,34 +70,34 @@ Dew.prototype.step = function() {
 		density.mass[x] = 1.0;
 	}
 	for (var x = 0; x < xsize; x++) {
-		density.mass[x | ysize - 1 << this.xbit] = 1.0;
+		density.mass[x | ysize - 1 << xbit] = 1.0;
 	}
 	for (var y = 0; y < ysize; y++) {
 		density.mass[y << xbit] = 1.0;
 	}
 	for (var y = 0; y < ysize; y++) {
-		density.mass[xsize - 1 | y << this.xbit] = 1.0;
+		density.mass[xsize - 1 | y << xbit] = 1.0;
 	}
 	density.compile();
 
-	var inflation = new Grid(this.xbit, this.ybit);
+	var inflation = new Grid(xbit, ybit);
 	var thickness = new Array(isize);
 	var depth = new Array(isize);
 	var reflection = new Array(isize);
 
-	var photons = new Grid(this.xbit, this.ybit);
+	var photons = new Grid(xbit, ybit);
 	photons.mass.fill(this.C);
 	for (var x = 0; x < xsize; x++) {
 		photons.mass[x] = 4;
 	}
 	for (var x = 0; x < xsize; x++) {
-		photons.mass[x | ysize - 1 << this.xbit] = 4;
+		photons.mass[x | ysize - 1 << xbit] = 4;
 	}
 	for (var y = 0; y < ysize; y++) {
-		photons.mass[y << this.xbit] = 4;
+		photons.mass[y << xbit] = 4;
 	}
 	for (var y = 0; y < ysize; y++) {
-		photons.mass[xsize - 1 | y << this.xbit] = 4;
+		photons.mass[xsize - 1 | y << xbit] = 4;
 	}
 	photons.compile();
 
@@ -236,7 +236,7 @@ Dew.prototype.step = function() {
 				}
 			}
 			t++;
-		    break; // zantei
+		    //break; // zantei
 		} while(true);
 
 		density.source.fill(0);
@@ -245,7 +245,7 @@ Dew.prototype.step = function() {
 				p = particles[i];
 				var x = Math.max(1, Math.min((xscale * p.x), xsize - 1));
 				var y = Math.max(1, Math.min((yscale * p.y), ysize - 1));
-				var j = x | y << this.xbit;
+				var j = x | y << xbit;
 				density.source[j] += 8;
 			}
 
@@ -271,8 +271,8 @@ Dew.prototype.step = function() {
 				var p = inflation.value[i];
 				var z = p <= 0 ? 0 : Math.sqrt(p);
 				thickness[i] = z;
-				var px = inflation.value[x + 1 & xsize - 1 | y << this.xbit] - inflation.value[x - 1 & xsize - 1 | y << this.xbit];
-				var py = inflation.value[x | (y + 1 & ysize - 1) << this.xbit] - inflation.value[x | (y - 1 & ysize - 1) << this.xbit];
+				var px = inflation.value[x + 1 & xsize - 1 | y << xbit] - inflation.value[x - 1 & xsize - 1 | y << xbit];
+				var py = inflation.value[x | (y + 1 & ysize - 1) << xbit] - inflation.value[x | (y - 1 & ysize - 1) << xbit];
 				p += (px * px + py * py) / 16;
 				z += p <= 0 ? 0 : this.Z * Math.sqrt(p);
 				depth[i] = z;
@@ -286,8 +286,8 @@ Dew.prototype.step = function() {
 		for (var y = 0; y < ysize; y++) {
 			for (var x = 0; x < xsize;) {
 				var z = depth[i];
-				var nx = thickness[x - 1 & xsize - 1 | y << this.xbit] - thickness[x + 1 & xsize - 1 | y << this.xbit];
-				var ny = thickness[x | (y - 1 & ysize - 1) << this.xbit] - thickness[x | (y + 1 & ysize - 1) << this.xbit];
+				var nx = thickness[x - 1 & xsize - 1 | y << xbit] - thickness[x + 1 & xsize - 1 | y << xbit];
+				var ny = thickness[x | (y - 1 & ysize - 1) << xbit] - thickness[x | (y + 1 & ysize - 1) << xbit];
 				var nz = 2;
 				var _n = 1 / Math.sqrt(nx * nx + ny * ny + nz * nz);
 				nx *= _n;
@@ -305,16 +305,16 @@ Dew.prototype.step = function() {
 				lz += ln * nz;
 				var _x = x - parseInt((z / lz) * lx);
 				var _y = y - parseInt((z / lz) * ly);
-				_x = ~(_x >> 31) & (_x | -(_x >> this.xbit) >> 31) & xsize - 1;
-				_y = ~(_y >> 31) & (_y | -(_y >> this.ybit) >> 31) & ysize - 1;
-				photons.source[_x | _y << this.xbit] += ln;
+				_x = ~(_x >> 31) & (_x | -(_x >> xbit) >> 31) & xsize - 1;
+				_y = ~(_y >> 31) & (_y | -(_y >> ybit) >> 31) & ysize - 1;
+				photons.source[_x | _y << xbit] += ln;
 				ln = nz + Math.sqrt((e * e - 1) + nz * nz);
 				lx = ln * nx;
 				ly = ln * ny;
 				lz = ln * nz + 1;
 				_x = x - parseInt((z / lz) * lx) & xsize - 1;
 				_y = y - parseInt((z / lz) * ly) & ysize - 1;
-				refraction[i] = _x | _y << this.xbit;
+				refraction[i] = _x | _y << xbit;
 				x++;
 				i++;
 			}
@@ -324,13 +324,13 @@ Dew.prototype.step = function() {
 			photons.source[x] = 150;
 		}
 		for (var x = 0; x < xsize; x++) {
-			photons.source[x | ysize - 1 << this.xbit] = 150;
+			photons.source[x | ysize - 1 << xbit] = 150;
 		}
 		for (var y = 0; y < ysize; y++) {
-			photons.source[y << this.xbit] = 150;
+			photons.source[y << xbit] = 150;
 		}
 		for (var y = 0; y < ysize; y++) {
-			photons.source[xsize - 1 | y << this.xbit] = 150;
+			photons.source[xsize - 1 | y << xbit] = 150;
 		}
 		photons.solve(1, 2);
 

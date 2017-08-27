@@ -23,6 +23,8 @@ Apl.prototype.draw = function() {
 
 	this.dew.step();
 	this.ctx.putImageData(this.img, 0, 0);
+
+	//requestAnimationFrame(this.draw.bind(this));
 };
 
 $(function() {
