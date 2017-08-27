@@ -1,6 +1,6 @@
 var Neighbor = function() {
 };
-Neighbor.prototype.set = function(pa, pb, r, w, nx, ny) {
+Neighbor.prototype.set = function(a, b, r, w, nx, ny) {
 	this.a = a;
 	this.b = b;
 	this.r = r;
@@ -12,9 +12,9 @@ Neighbor.prototype.set = function(pa, pb, r, w, nx, ny) {
 var Particle = function(x, y) {
 	this.x = x;
 	this.y = y;
-	this.tag;
-	this.vx;
-	this.vy;
+	this.tag = 0;
+	this.vx = 0;
+	this.vy = 0;
 	this.fx;
 	this.fy;
 	this.w;
@@ -164,17 +164,17 @@ Dew.prototype.step = function() {
 					}
 					j++;
 				} while(true);
-				q = j;
+				var iq = j;
 				do {
-					if (q >= this.N) {
+					if (iq >= this.N) {
 						continue label0;
 					}
-					q = this.particles[q];
+					q = this.particles[iq];
 					if (p.tag + 0x10000 + 1 < q.tag) {
 						continue label0;
 					}
 					this.match(this.neighbors, p, q);
-					q++;
+					iq++;
 				} while(true);
 			}
 
@@ -395,7 +395,7 @@ Dew.prototype.sort = function(particles, first, last) {
 		this.sort(particles, b + 1, last);
 	}
 }
-Dew.prototype.match = function(neigbors, a, b) {
+Dew.prototype.match = function(neighbors, a, b) {
 	var dx = b.x - a.x;
 	var dy = b.y - a.y;
 	var d2 = dx * dx + dy * dy;
