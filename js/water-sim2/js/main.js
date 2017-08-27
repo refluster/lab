@@ -5,6 +5,7 @@ var Apl = function() {
 	this.height = canvas.height;
 	this.ctx = canvas.getContext("2d");
 	this.img = this.ctx.getImageData(0, 0, this.width, this.height)
+	this.dew = new Dew(this.img);
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
