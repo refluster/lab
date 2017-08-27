@@ -179,15 +179,13 @@ Dew.prototype.step = function() {
 					} while(true);
 				}
 
-				/*
-				for(i = 0; i < M; i++)
-				{
-					Neighbor n = neighbors[i];
-					Particle a = n.a;
-					Particle b = n.b;
-					double w = n.w;
-					double nx = n.nx;
-					double ny = n.ny;
+				for (var i = 0; i < this.M; i++) {
+					var n = neighbors[i];
+					var a = n.a;
+					var b = n.b;
+					var w = n.w;
+					var nx = n.nx;
+					var ny = n.ny;
 					a.w += w;
 					b.w += w;
 					a.nx -= w * nx;
@@ -196,6 +194,7 @@ Dew.prototype.step = function() {
 					b.ny += w * ny;
 				}
 
+				/*
 				for(i = 0; i < N; i++)
 				{
 					Particle p = particles[i];
