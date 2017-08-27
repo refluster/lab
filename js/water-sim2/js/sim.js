@@ -194,17 +194,16 @@ Dew.prototype.step = function() {
 					b.ny += w * ny;
 				}
 
-				/*
-				for(i = 0; i < N; i++)
-				{
-					Particle p = particles[i];
-					p.h = P * (p.w - 1.0D);
-					p.sx = S * R * p.nx;
-					p.sy = S * R * p.ny;
-					p.fx = 0.0D;
-					p.fy = 0.0D;
+				for (var i = 0; i < this.N; i++) {
+					var p = particles[i];
+					p.h = this.P * (p.w - 1);
+					p.sx = this.S * this.R * p.nx;
+					p.sy = this.S * this.R * p.ny;
+					p.fx = 0;
+					p.fy = 0;
 				}
 
+				/*
 				for(i = 0; i < M; i++)
 				{
 					Neighbor n = neighbors[i];
