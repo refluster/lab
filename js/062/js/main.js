@@ -14,10 +14,10 @@ var Apl = function() {
 	this.alphaGfx.width = this.dropletSize*2;
 	var alphaCtx = this.alphaGfx.getContext('2d');
 	var grad = alphaCtx.createRadialGradient(this.dropletSize, this.dropletSize, 0, this.dropletSize, this.dropletSize, this.dropletSize);
-	grad.addColorStop(0,   'rgba(128,128,224,.5');
-	grad.addColorStop(0.7, 'rgba(128,128,224,0.15)');
-	grad.addColorStop(0.9, 'rgba(128,128,224,0.025)');
-	grad.addColorStop(1,   'rgba(128,128,224,0)');
+	grad.addColorStop(0,   'rgba(0,0,0,.4');
+	grad.addColorStop(0.7, 'rgba(0,0,0,0.12)');
+	grad.addColorStop(0.9, 'rgba(0,0,0,0.02)');
+	grad.addColorStop(1,   'rgba(0,0,0,0)');
 	alphaCtx.fillStyle = grad;
 	alphaCtx.beginPath();
 	alphaCtx.arc(this.dropletSize, this.dropletSize, this.dropletSize, 0, Math.PI*2, true);
@@ -49,7 +49,7 @@ Apl.prototype.draw = function() {
 	// filter by alpha threshold, shold be processed by pixel shader
 	d = this.ctx.getImageData(0, 0, this.width, this.height);
 	for (var i = 0; i < d.data.length; i += 4) {
-		if (d.data[i + 3] < 128) {
+		if (d.data[i + 3] < 64) {
 			d.data[i + 3] = 0;
 		}
 	}
