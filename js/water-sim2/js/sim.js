@@ -52,7 +52,7 @@ var Dew = function(img) {
 		particles[i] = new Particle(x, y);
 	}
 
-	for (var i = 0; i < neighbors.length; i++) {
+	for (var i = 0; i < (N * N) / 2; i++) {
 		neighbors[i] = new Neighbor();
 	}
 };
