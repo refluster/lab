@@ -4,6 +4,7 @@ angular.module('App', [])
 		var where = $filter('filter');
 
 		$scope.$watch(function () {
+			console.log(list);
 			return list;
 		}, function (value) {
 			$scope.$broadcast('change:list', value);
