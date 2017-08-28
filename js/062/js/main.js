@@ -7,28 +7,26 @@ var Apl = function() {
 	this.img = this.ctx.getImageData(0, 0, this.width, this.height)
 	this.dew = new Dew(this.ctx, this.img);
 
+	// create alpha gfx canvas
 	this.alphaGfx = document.createElement("canvas");
 	this.dropletSize = 24;
 	document.getElementById('contents').appendChild(this.alphaGfx);
 	this.alphaGfx.height = this.dropletSize*2;
 	this.alphaGfx.width = this.dropletSize*2;
 	var alphaCtx = this.alphaGfx.getContext('2d');
-	var grad = alphaCtx.createRadialGradient(this.dropletSize, this.dropletSize, 0, this.dropletSize, this.dropletSize, this.dropletSize);
-	grad.addColorStop(0,  'rgba(0,0,0,.8');
-	grad.addColorStop(.3, 'rgba(0,0,0,.6');
-	grad.addColorStop(.7, 'rgba(0,0,0,0.3)');
-	grad.addColorStop(.9, 'rgba(0,0,0,0.2)');
-	grad.addColorStop(1,  'rgba(0,0,0,0)');
-	alphaCtx.fillStyle = grad;
-	alphaCtx.beginPath();
-	alphaCtx.arc(this.dropletSize, this.dropletSize, this.dropletSize, 0, Math.PI*2, true);
-	alphaCtx.fill();
-	this.alphaThreshold = 224;
 
+	// load and draw alpha image
+	var dropAlpha = $('#drop-alpha')[0];
+	alphaCtx.globalCompositeOperation="source-over";
+	alphaCtx.drawImage(dropAlpha, 0, 0, this.dropletSize*2, this.dropletSize*2);
+
+	// load and source in draw color channel image
 	var dropColor = $('#drop-color')[0];
 	alphaCtx.globalCompositeOperation="source-in";
 	alphaCtx.drawImage(dropColor, 0, 0, this.dropletSize*2, this.dropletSize*2);
 	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
+
+	this.alphaThreshold = 224;
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
