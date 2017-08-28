@@ -37,17 +37,25 @@ Apl.prototype.draw = function() {
 	this.blank();
 	this.dew.step();
 
-	{// zantei
-		//this.ctx.fillStyle = "rgb(128, 128, 224)";
-		this.ctx.globalAlpha=1;
-		this.ctx.globalCompositeOperation = 'source-over';
-		var p = this.dew.particles;
-		for (var i = 0; i < p.length; i++) {
-			//this.ctx.fillRect(p[i].x, p[i].y, 4, 4);
-			this.ctx.drawImage(this.alphaGfx, p[i].x - this.dropletSize/2, p[i].y - this.dropletSize/2);
-		}
+	//this.drawParticles();
+	this.drawSimpleColor();
+	requestAnimationFrame(this.draw.bind(this));
+};
+Apl.prototype.drawParticles = function() {
+	this.ctx.globalCompositeOperation = 'source-over';
+	this.ctx.fillStyle = "rgb(128, 128, 224)";
+	var p = this.dew.particles;
+	for (var i = 0; i < p.length; i++) {
+		this.ctx.fillRect(p[i].x, p[i].y, 4, 4);
 	}
-
+};
+Apl.prototype.drawSimpleColor = function() {
+	this.ctx.globalAlpha=1;
+	this.ctx.globalCompositeOperation = 'source-over';
+	var p = this.dew.particles;
+	for (var i = 0; i < p.length; i++) {
+		this.ctx.drawImage(this.alphaGfx, p[i].x - this.dropletSize/2, p[i].y - this.dropletSize/2);
+	}
 	// filter by alpha threshold, shold be processed by pixel shader
 	d = this.ctx.getImageData(0, 0, this.width, this.height);
 	for (var i = 0; i < d.data.length; i += 4) {
@@ -56,9 +64,7 @@ Apl.prototype.draw = function() {
 		}
 	}
 	this.ctx.putImageData(d, 0, 0);
-	//this.ctx.putImageData(this.alphaImage, 100, 100);
-	requestAnimationFrame(this.draw.bind(this));
-};
+}
 
 $(function() {
 	apl = new Apl();
