@@ -56,9 +56,7 @@ Apl.prototype.draw = function() {
 		}
 	}
 	this.ctx.putImageData(d, 0, 0);
-
 	//this.ctx.putImageData(this.alphaImage, 100, 100);
-
 	requestAnimationFrame(this.draw.bind(this));
 };
 
