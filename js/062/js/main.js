@@ -1,3 +1,12 @@
+function createShader(gl,source,type){
+	var shader = gl.createShader(type);
+	source = document.getElementById(source).text;
+	gl.shaderSource(shader, source);
+	gl.compileShader(shader);
+
+	return shader;
+}
+
 var Apl = function() {
 	var canvas = $('#canvas-watermap')[0];
 	if ( ! canvas || ! canvas.getContext ) { return false; }
@@ -6,6 +15,45 @@ var Apl = function() {
 	this.ctx = canvas.getContext("2d");
 	this.img = this.ctx.getImageData(0, 0, this.width, this.height)
 	this.dew = new Dew(this.ctx, this.img);
+
+	// webgl
+	var c = $('#canvas-main')[0];
+	this.gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+	console.log(this.gl);
+	var gl = this.gl;
+	//////////////////////////////
+	var vertexShader = createShader(gl, 'vert-shader', gl.VERTEX_SHADER);
+	var fragShader = createShader(gl, 'frag-shader', gl.FRAGMENT_SHADER);
+
+	var program = gl.createProgram();
+	gl.attachShader(program, vertexShader);
+	gl.attachShader(program, fragShader);
+
+	gl.linkProgram(program);
+	gl.useProgram(program);
+
+	//////////////////////////////
+	// create rectangle
+	var buffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+	gl.bufferData(
+		gl.ARRAY_BUFFER,
+		new Float32Array([
+			-1.0, -1.0,
+			1.0, -1.0,
+			-1.0,  1.0,
+			-1.0,  1.0,
+			1.0, -1.0,
+			1.0,  1.0]),
+		gl.STATIC_DRAW);
+
+	// vertex data
+	var positionLocation = gl.getAttribLocation(program, "a_position");
+	gl.enableVertexAttribArray(positionLocation);
+	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
+	//////////////////////////////
 
 	// create alpha gfx canvas
 	this.alphaGfx = document.createElement("canvas");
