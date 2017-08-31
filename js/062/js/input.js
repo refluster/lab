@@ -2,7 +2,7 @@ var Input = function(T) {
 	this.T = T
 	this.pressed = false;
 
-	$('#canvas').on('touchstart', function(e) {
+	$('#canvas').on('touchstart mousedown', function(e) {
 		this.pressed = true;
 		var p = getCursor(e);
 		this.x = this.x0 = p.x;
@@ -12,14 +12,16 @@ var Input = function(T) {
 		e.preventDefault();
 	}.bind(this));
 
-	$('#canvas').on('touchmove', function(e) {
-		var p = getCursor(e);
-		this.x0 = p.x;
-		this.y0 = p.y;
+	$('#canvas').on('touchmove mousemove', function(e) {
+		if (this.pressed == true) {
+			var p = getCursor(e);
+			this.x0 = p.x;
+			this.y0 = p.y;
+		}
 		e.preventDefault();
 	}.bind(this));
 
-	$('#canvas').on('touchend', function(e) {
+	$('#canvas').on('touchend mouseup', function(e) {
 		this.pressed = false;
 	}.bind(this));
 };
@@ -31,7 +33,12 @@ Input.prototype.step = function() {
 };
 
 function getCursor(e) {
-	x = e.touches[0].pageX - e.target.offsetLeft;
-	y = e.touches[0].pageY - e.target.offsetTop;
+	if (e.touches) {
+		x = e.touches[0].pageX - e.target.offsetLeft;
+		y = e.touches[0].pageY - e.target.offsetTop;
+	} else {
+		x = e.offsetX;
+		y = e.offsetY;
+	}
 	return {x: x, y: y};
 }
