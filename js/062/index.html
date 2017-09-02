@@ -22,25 +22,25 @@
     <script type="text/javascript" src="js/grid.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/sim.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/main.js" charset="EUC-JP"></script>
-<script id="vert-shader" type="x-shader/x-vertex">
-  // gets the current position
-  attribute vec4 a_position;
+    <script id="vert-shader" type="x-shader/x-vertex">
+// gets the current position
+attribute vec4 a_position;
 
-  void main() {
-   // returns the position
-   gl_Position = a_position;
-  }
-</script>
-<script id="frag-shader" type="x-shader/x-fragment">
-  precision mediump float;
+void main() {
+    // returns the position
+    gl_Position = a_position;
+}
+    </script>
+    <script id="frag-shader" type="x-shader/x-fragment">
+precision mediump float;
 
-  void main() {
-     // current coordinates
-     vec4 coord = gl_FragCoord;
-     // sets the color
-     gl_FragColor = vec4(coord.x/300.0,coord.y/400.0, 0.0, 1.0);
-  }
-</script>
+void main() {
+	  // current coordinates
+	  vec4 coord = gl_FragCoord;
+	  // sets the color
+	  gl_FragColor = vec4(coord.x/300.0,coord.y/400.0, 0.0, 1.0);
+}
+    </script>
     <script>
      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
