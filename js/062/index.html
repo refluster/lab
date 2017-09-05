@@ -33,12 +33,16 @@ void main() {
     </script>
     <script id="frag-shader" type="x-shader/x-fragment">
 precision mediump float;
+uniform sampler2D texture0;
 
 void main() {
 	  // current coordinates
 	  vec4 coord = gl_FragCoord;
+
 	  // sets the color
-	  gl_FragColor = vec4(coord.x/300.0,coord.y/400.0, 0.0, 1.0);
+	  //gl_FragColor = vec4(coord.x/300.0,coord.y/400.0, 0.0, 1.0);
+    gl_FragColor.rgb = texture2D(texture0, vec2(coord.x, coord.y)).rgb;
+    gl_FragColor.a = 1.;
 }
     </script>
     <script>
