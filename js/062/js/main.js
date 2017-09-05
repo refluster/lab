@@ -1,8 +1,37 @@
-function createShader(gl,source,type){
-	var shader = gl.createShader(type);
-	source = document.getElementById(source).text;
+function initShaderProgram(gl, vsSource, fsSource) {
+	const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+	const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+
+	// Create the shader program
+	const shaderProgram = gl.createProgram();
+	gl.attachShader(shaderProgram, vertexShader);
+	gl.attachShader(shaderProgram, fragmentShader);
+	gl.linkProgram(shaderProgram);
+
+	// If creating the shader program failed, alert
+	if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+		alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
+		return null;
+	}
+
+	return shaderProgram;
+}
+
+function loadShader(gl, type, source) {
+	const shader = gl.createShader(type);
+
+	// Send the source to the shader object
 	gl.shaderSource(shader, source);
+
+	// Compile the shader program
 	gl.compileShader(shader);
+
+	// See if it compiled successfully
+	if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+		alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
+		gl.deleteShader(shader);
+		return null;
+	}
 
 	return shader;
 }
@@ -22,15 +51,9 @@ var Apl = function() {
 	console.log(this.gl);
 	var gl = this.gl;
 	//////////////////////////////
-	var vertexShader = createShader(gl, 'vert-shader', gl.VERTEX_SHADER);
-	var fragShader = createShader(gl, 'frag-shader', gl.FRAGMENT_SHADER);
-
-	var program = gl.createProgram();
-	gl.attachShader(program, vertexShader);
-	gl.attachShader(program, fragShader);
-
-	gl.linkProgram(program);
-	gl.useProgram(program);
+	const shaderProgram = initShaderProgram(gl,
+											document.getElementById('vert-shader').text,
+											document.getElementById('frag-shader').text);
 
 	//////////////////////////////
 	// create rectangle
@@ -48,7 +71,7 @@ var Apl = function() {
 		gl.STATIC_DRAW);
 
 	// vertex data
-	var positionLocation = gl.getAttribLocation(program, "a_position");
+	var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
