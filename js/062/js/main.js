@@ -86,6 +86,42 @@ function isPowerOf2(value) {
   return (value & (value - 1)) == 0;
 }
 
+function drawScene(gl, programInfo, buffers, texture, deltaTime) {
+	gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+	gl.clearDepth(1.0);                 // Clear everything
+	gl.enable(gl.DEPTH_TEST);           // Enable depth testing
+	gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+
+	// Clear the canvas before we start drawing on it.
+
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+	// Tell WebGL which indices to use to index the vertices
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+
+	// Tell WebGL to use our program when drawing
+	gl.useProgram(programInfo.program);
+
+
+
+	// Tell WebGL we want to affect texture unit 0
+	gl.activeTexture(gl.TEXTURE0);
+
+	// Bind the texture to texture unit 0
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+
+	// Tell the shader we bound the texture to texture unit 0
+	gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+
+	{
+		const vertexCount = 6;
+		const type = gl.UNSIGNED_SHORT;
+		const offset = 0;
+		//gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+		gl.drawArrays(gl.TRIANGLES, 0, 6);
+	}
+}
+
 var Apl = function() {
 	var canvas = $('#canvas-watermap')[0];
 	if ( ! canvas || ! canvas.getContext ) { return false; }
@@ -104,6 +140,19 @@ var Apl = function() {
 	const shaderProgram = initShaderProgram(gl,
 											document.getElementById('vert-shader').text,
 											document.getElementById('frag-shader').text);
+
+	const programInfo = {
+		program: shaderProgram,
+		//attribLocations: {
+		//	vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+		//	textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
+		//},
+		uniformLocations: {
+			//projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+			//modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+			uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
+		},
+	};
 
 	//////////////////////////////
 	// create rectangle
@@ -128,8 +177,8 @@ var Apl = function() {
 	const texture = loadTexture(gl, 'cubetexture.png');
 
 	function draw() {
-		gl.drawArrays(gl.TRIANGLES, 0, 6);
-		//drawScene(gl, programInfo, buffers, texture, deltaTime);
+		//gl.drawArrays(gl.TRIANGLES, 0, 6);
+		drawScene(gl, programInfo, buffer, texture);
 	}
 
 	requestAnimationFrame(draw);
