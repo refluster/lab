@@ -125,11 +125,14 @@ var Apl = function() {
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-	gl.drawArrays(gl.TRIANGLES, 0, 6);
-
 	const texture = loadTexture(gl, 'cubetexture.png');
 
+	function draw() {
+		gl.drawArrays(gl.TRIANGLES, 0, 6);
+		//drawScene(gl, programInfo, buffers, texture, deltaTime);
+	}
 
+	requestAnimationFrame(draw);
 
 	//////////////////////////////
 
