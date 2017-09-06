@@ -144,18 +144,15 @@ var Apl = function() {
 	alphaCtx.globalCompositeOperation="source-in";
 	alphaCtx.drawImage(dropColor, 0, 0, this.dropletSize*2, this.dropletSize*2);
 	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
-
 	this.alphaThreshold = 224;
 
-	// webgl
+	// webgl setup
 	var c = $('#canvas-main')[0];
 	this.gl = c.getContext('webgl') || c.getContext('experimental-webgl');
-	console.log(this.gl);
 	var gl = this.gl;
 	const shaderProgram = initShaderProgram(gl,
 											document.getElementById('vert-shader').text,
 											document.getElementById('frag-shader').text);
-
 	this.programInfo = {
 		program: shaderProgram,
 		//attribLocations: {
@@ -169,8 +166,7 @@ var Apl = function() {
 		},
 	};
 
-	//////////////////////////////
-	// create rectangle
+	// gl create rectangle
 	this.buffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
 	gl.bufferData(
@@ -184,7 +180,7 @@ var Apl = function() {
 			1.0,  1.0]),
 		gl.STATIC_DRAW);
 
-	// vertex data
+	// gl vertex data
 	var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
@@ -219,7 +215,7 @@ Apl.prototype.drawSimpleColor = function() {
 		this.ctx.drawImage(this.alphaGfx, p[i].x - this.dropletSize/2, p[i].y - this.dropletSize/2);
 	}
 	// filter by alpha threshold, shold be processed by pixel shader
-	d = this.ctx.getImageData(0, 0, this.width, this.height);
+	var d = this.ctx.getImageData(0, 0, this.width, this.height);
 	for (var i = 0; i < d.data.length; i += 4) {
 		if (d.data[i + 3] < this.alphaThreshold) {
 			d.data[i + 3] = 0;
