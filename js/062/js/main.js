@@ -113,10 +113,8 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 
 	{
 		const vertexCount = 6;
-		const type = gl.UNSIGNED_SHORT;
-		const offset = 0;
-		//gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
-		gl.drawArrays(gl.TRIANGLES, 0, 6);
+		const first = 0;
+		gl.drawArrays(gl.TRIANGLES, first, vertexCount);
 	}
 }
 
@@ -230,15 +228,6 @@ Apl.prototype.drawSimpleColor = function() {
 		}
 	}
 	this.ctx.putImageData(d, 0, 0);
-
-	var d = this.ctx.getImageData(0, 0, this.width, this.height);
-	var count = 0;
-	for (var i = 0; i < d.data.length; i++) {
-		if (d.data[i] != 0) {
-			count ++;
-		}
-	}
-	console.log('count = ', count);
 }
 
 $(function() {
