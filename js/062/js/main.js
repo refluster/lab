@@ -122,6 +122,7 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 
 var Apl = function() {
 	var canvas = $('#canvas-watermap')[0];
+	this.canvas = canvas;
 	if ( ! canvas || ! canvas.getContext ) { return false; }
 	this.width = canvas.width;
 	this.height = canvas.height;
@@ -159,7 +160,7 @@ var Apl = function() {
 											document.getElementById('vert-shader').text,
 											document.getElementById('frag-shader').text);
 
-	const programInfo = {
+	this.programInfo = {
 		program: shaderProgram,
 		//attribLocations: {
 		//	vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
@@ -174,8 +175,8 @@ var Apl = function() {
 
 	//////////////////////////////
 	// create rectangle
-	var buffer = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+	this.buffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
 	gl.bufferData(
 		gl.ARRAY_BUFFER,
 		new Float32Array([
@@ -191,18 +192,6 @@ var Apl = function() {
 	var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-	// zantei
-	this.draw();
-
-	const texture = loadTexture(gl, canvas);
-
-	function draw() {
-		//gl.drawArrays(gl.TRIANGLES, 0, 6);
-		drawScene(gl, programInfo, buffer, texture);
-	}
-
-	requestAnimationFrame(draw);
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
@@ -214,6 +203,9 @@ Apl.prototype.draw = function() {
 	//this.drawParticles();
 	this.drawSimpleColor();
 	//requestAnimationFrame(this.draw.bind(this));
+
+	const texture = loadTexture(this.gl, this.canvas);
+	drawScene(this.gl, this.programInfo, this.buffer, texture);
 };
 Apl.prototype.drawParticles = function() {
 	this.ctx.globalCompositeOperation = 'source-over';
