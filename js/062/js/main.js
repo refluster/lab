@@ -36,7 +36,7 @@ function loadShader(gl, type, source) {
 	return shader;
 }
 
-function loadTexture(gl, url, image) {
+function loadTexture(gl, image) {
 	const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 
@@ -129,8 +129,6 @@ var Apl = function() {
 	this.img = this.ctx.getImageData(0, 0, this.width, this.height)
 	this.dew = new Dew(this.ctx, this.img);
 
-	//////////////////////////////
-
 	// create alpha gfx canvas
 	this.alphaGfx = document.createElement("canvas");
 	this.dropletSize = 24;
@@ -157,7 +155,6 @@ var Apl = function() {
 	this.gl = c.getContext('webgl') || c.getContext('experimental-webgl');
 	console.log(this.gl);
 	var gl = this.gl;
-	//////////////////////////////
 	const shaderProgram = initShaderProgram(gl,
 											document.getElementById('vert-shader').text,
 											document.getElementById('frag-shader').text);
@@ -198,7 +195,7 @@ var Apl = function() {
 	// zantei
 	this.draw();
 
-	const texture = loadTexture(gl, 'cubetexture.png', canvas);
+	const texture = loadTexture(gl, canvas);
 
 	function draw() {
 		//gl.drawArrays(gl.TRIANGLES, 0, 6);
