@@ -41,7 +41,7 @@ void main() {
 
 	  // sets the color
 	  //gl_FragColor = vec4(coord.x/300.0,coord.y/400.0, 0.0, 1.0);
-    gl_FragColor.rgb = texture2D(texture0, vec2(coord.x/300.0, coord.y/400.0)).rgb;
+    gl_FragColor.rgb = texture2D(texture0, vec2(coord.x/300.0, 1.-coord.y/400.0)).rgb;
     gl_FragColor.a = 1.;
 }
     </script>
