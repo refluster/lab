@@ -129,6 +129,29 @@ var Apl = function() {
 	this.img = this.ctx.getImageData(0, 0, this.width, this.height)
 	this.dew = new Dew(this.ctx, this.img);
 
+	//////////////////////////////
+
+	// create alpha gfx canvas
+	this.alphaGfx = document.createElement("canvas");
+	this.dropletSize = 24;
+	document.getElementById('contents').appendChild(this.alphaGfx);
+	this.alphaGfx.height = this.dropletSize*2;
+	this.alphaGfx.width = this.dropletSize*2;
+	var alphaCtx = this.alphaGfx.getContext('2d');
+
+	// load and draw alpha image
+	var dropAlpha = $('#drop-alpha')[0];
+	alphaCtx.globalCompositeOperation="source-over";
+	alphaCtx.drawImage(dropAlpha, 0, 0, this.dropletSize*2, this.dropletSize*2);
+
+	// load and source in draw color channel image
+	var dropColor = $('#drop-color')[0];
+	alphaCtx.globalCompositeOperation="source-in";
+	alphaCtx.drawImage(dropColor, 0, 0, this.dropletSize*2, this.dropletSize*2);
+	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
+
+	this.alphaThreshold = 224;
+
 	// webgl
 	var c = $('#canvas-main')[0];
 	this.gl = c.getContext('webgl') || c.getContext('experimental-webgl');
@@ -171,29 +194,6 @@ var Apl = function() {
 	var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-	//////////////////////////////
-
-	// create alpha gfx canvas
-	this.alphaGfx = document.createElement("canvas");
-	this.dropletSize = 24;
-	document.getElementById('contents').appendChild(this.alphaGfx);
-	this.alphaGfx.height = this.dropletSize*2;
-	this.alphaGfx.width = this.dropletSize*2;
-	var alphaCtx = this.alphaGfx.getContext('2d');
-
-	// load and draw alpha image
-	var dropAlpha = $('#drop-alpha')[0];
-	alphaCtx.globalCompositeOperation="source-over";
-	alphaCtx.drawImage(dropAlpha, 0, 0, this.dropletSize*2, this.dropletSize*2);
-
-	// load and source in draw color channel image
-	var dropColor = $('#drop-color')[0];
-	alphaCtx.globalCompositeOperation="source-in";
-	alphaCtx.drawImage(dropColor, 0, 0, this.dropletSize*2, this.dropletSize*2);
-	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
-
-	this.alphaThreshold = 224;
 
 	// zantei
 	this.draw();
