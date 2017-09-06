@@ -36,7 +36,7 @@ function loadShader(gl, type, source) {
 	return shader;
 }
 
-function loadTexture(gl, url) {
+function loadTexture(gl, url, canvas) {
 	const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 
@@ -57,8 +57,13 @@ function loadTexture(gl, url) {
                   width, height, border, srcFormat, srcType,
                   pixel);
 
-	const image = new Image();
-	image.onload = function() {
+//	const image = new Image();
+//	image.onload = function() {
+
+	console.log('canvas = ', canvas);
+
+	var image = canvas;
+	{
 		gl.bindTexture(gl.TEXTURE_2D, texture);
 		gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
 					  srcFormat, srcType, image);
@@ -76,8 +81,9 @@ function loadTexture(gl, url) {
 			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		}
-	};
-	image.src = url;
+	}
+//	};
+//	image.src = url;
 
 	return texture;
 }
@@ -174,15 +180,6 @@ var Apl = function() {
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-	const texture = loadTexture(gl, 'cubetexture.png');
-
-	function draw() {
-		//gl.drawArrays(gl.TRIANGLES, 0, 6);
-		drawScene(gl, programInfo, buffer, texture);
-	}
-
-	requestAnimationFrame(draw);
-
 	//////////////////////////////
 
 	// create alpha gfx canvas
@@ -205,6 +202,18 @@ var Apl = function() {
 	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
 
 	this.alphaThreshold = 224;
+
+	// zantei
+	this.draw();
+
+	const texture = loadTexture(gl, 'cubetexture.png', canvas);
+
+	function draw() {
+		//gl.drawArrays(gl.TRIANGLES, 0, 6);
+		drawScene(gl, programInfo, buffer, texture);
+	}
+
+	requestAnimationFrame(draw);
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
@@ -240,6 +249,15 @@ Apl.prototype.drawSimpleColor = function() {
 		}
 	}
 	this.ctx.putImageData(d, 0, 0);
+
+	var d = this.ctx.getImageData(0, 0, this.width, this.height);
+	var count = 0;
+	for (var i = 0; i < d.data.length; i++) {
+		if (d.data[i] != 0) {
+			count ++;
+		}
+	}
+	console.log('count = ', count);
 }
 
 $(function() {
