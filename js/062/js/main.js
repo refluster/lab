@@ -62,10 +62,16 @@ var Apl = function() {
 			1.0,  1.0]),
 		gl.STATIC_DRAW);
 
+	// Tell WebGL to use our program when drawing
+	gl.useProgram(this.programInfo.program);
+
 	// gl vertex data
 	var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+	let resolutionLocation = gl.getUniformLocation(shaderProgram, "u_resolution");
+	gl.uniform2f(resolutionLocation, 300, 400);
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
