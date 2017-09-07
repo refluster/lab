@@ -28,6 +28,19 @@ var Apl = function() {
 	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
 	this.alphaThreshold = 224;
 
+	//////////////////////////////
+	// dropbuffer test
+	var _c = $('#drop-buffer')[0];
+	_c.width = 24;
+	_c.height = 24;
+	var _ctx = _c.getContext('2d');
+	_ctx.globalCompositeOperation = "source-over";
+	_ctx.drawImage(dropColor,0,0,this.dropletSize,this.dropletSize);
+	_ctx.globalCompositeOperation = "screen";
+	_ctx.fillStyle = "rgba(0,0,128,1)";
+	_ctx.fillRect(0,0,this.dropletSize,this.dropletSize);
+	//////////////////////////////
+
 	// webgl setup
 	var c = $('#canvas-main')[0];
 	this.gl = c.getContext('webgl') || c.getContext('experimental-webgl');
