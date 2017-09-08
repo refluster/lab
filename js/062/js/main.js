@@ -23,13 +23,8 @@ var Apl = function() {
 
 	// load and source in draw color channel image
 	var dropColor = $('#drop-color')[0];
-	alphaCtx.globalCompositeOperation="source-in";
-	alphaCtx.drawImage(dropColor, 0, 0, this.dropletSize*2, this.dropletSize*2);
-	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
-	this.alphaThreshold = 224;
 
-	//////////////////////////////
-	// dropbuffer test
+	// drop buffer
 	var _c = $('#drop-buffer')[0];
 	_c.width = 24;
 	_c.height = 24;
@@ -39,7 +34,12 @@ var Apl = function() {
 	_ctx.globalCompositeOperation = "screen";
 	_ctx.fillStyle = "rgba(0,0,128,1)";
 	_ctx.fillRect(0,0,this.dropletSize,this.dropletSize);
-	//////////////////////////////
+
+	// drop buffer
+	alphaCtx.globalCompositeOperation="source-in";
+	alphaCtx.drawImage(_c, 0, 0, this.dropletSize*2, this.dropletSize*2);
+	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
+	this.alphaThreshold = 224;
 
 	// webgl setup
 	var c = $('#canvas-main')[0];
@@ -126,6 +126,8 @@ Apl.prototype.drawSimpleColor = function() {
 }
 
 $(function() {
-	apl = new Apl();
-	apl.draw();
+	setTimeout(function() {
+		apl = new Apl();
+		apl.draw();
+	}, 200); //zantei wait
 });
