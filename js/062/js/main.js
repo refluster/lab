@@ -107,6 +107,8 @@ var Apl = function() {
 			this.draw();
 		}
 	}.bind(this));
+
+	this.animation = true;
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
