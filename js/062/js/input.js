@@ -2,7 +2,7 @@ var Input = function(T) {
 	this.T = T
 	this.pressed = false;
 
-	$('#canvas-watermap').on('touchstart', function(e) {
+	$('#canvas-main').on('touchstart', function(e) {
 		this.pressed = true;
 		var p = getCursor(e);
 		this.x = this.x0 = p.x;
@@ -12,14 +12,14 @@ var Input = function(T) {
 		e.preventDefault();
 	}.bind(this));
 
-	$('#canvas-watermap').on('touchmove', function(e) {
+	$('#canvas-main').on('touchmove', function(e) {
 		var p = getCursor(e);
 		this.x0 = p.x;
 		this.y0 = p.y;
 		e.preventDefault();
 	}.bind(this));
 
-	$('#canvas-watermap').on('touchend', function(e) {
+	$('#canvas-main').on('touchend', function(e) {
 		this.pressed = false;
 	}.bind(this));
 };
