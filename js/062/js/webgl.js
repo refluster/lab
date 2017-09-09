@@ -95,6 +95,7 @@ function uniformTexture(gl, uniformLocation, texture) {
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 }
 
+//function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
 	gl.clearDepth(1.0);                 // Clear everything
@@ -112,13 +113,13 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 	gl.useProgram(programInfo.program);
 
 	// Tell WebGL we want to affect texture unit 0
-	gl.activeTexture(gl.TEXTURE0);
+	//gl.activeTexture(gl.TEXTURE0);
 
 	// Bind the texture to texture unit 0
-	gl.bindTexture(gl.TEXTURE_2D, texture);
+	//gl.bindTexture(gl.TEXTURE_2D, texture);
 
 	// Tell the shader we bound the texture to texture unit 0
-	gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+	//gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 
 	{
 		const vertexCount = 6;

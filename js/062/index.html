@@ -34,7 +34,7 @@ void main() {
     </script>
     <script id="frag-shader" type="x-shader/x-fragment">
 precision mediump float;
-uniform sampler2D texture0;
+uniform sampler2D u_texture0;
 uniform sampler2D u_textureFg;
 uniform sampler2D u_textureBg;
 uniform vec2 u_resolution;
@@ -69,10 +69,12 @@ vec2 texCoord(){
 
 vec4 fgColor(float x, float y){
     vec2 scaledTexCoord = texCoord();
-    return texture2D(texture0, scaledTexCoord + (pixel()*vec2(x,y)));
+    return texture2D(u_texture0, scaledTexCoord + (pixel()*vec2(x,y)));
 }
 
 void main() {
+    vec4 bg = texture2D(u_textureBg, texCoord());
+
 	  // current coordinates
 	  vec4 coord = gl_FragCoord;
 
@@ -88,21 +90,19 @@ void main() {
     vec2 refractionPos = texCoord()
         + (pixel()*refraction*(u_minRefraction+(d*u_refractionDelta)));
 
-    vec4 tex=texture2D(u_textureFg, refractionPos);
+    vec4 tex = texture2D(u_textureFg, refractionPos);
 
-    //vec4 tex = vec4(d, d, d, 1.);
-    //vec4 tex = vec4(1., 1., 1., 1.);
     vec4 fg = vec4(tex.rgb*u_brightness, a);
 
     // shadow
-    float borderAlpha = texture2D(texture0, vec2(coord.x/u_resolution.x, 1.-coord.y/u_resolution.y+6.0*d)).a;
+    float borderAlpha = texture2D(u_texture0, vec2(coord.x/u_resolution.x, 1.-coord.y/u_resolution.y+6.0*d)).a;
     borderAlpha=borderAlpha*u_alphaMultiply-(u_alphaSubtract+0.5);
     borderAlpha=clamp(borderAlpha,0.,1.);
     borderAlpha*=0.2;
     vec4 border=vec4(0.,0.,0.,borderAlpha);
     fg = blend(border,fg);
 
-    gl_FragColor = fg;
+    gl_FragColor = blend(bg, fg);
 }
     </script>
     <script>

@@ -89,6 +89,10 @@ var Apl = function() {
 	gl.uniform2f(resolutionLocation, 300, 400);
 
 	{
+		createTexture(gl, $('#canvas-watermap')[0], 0);
+		createUniform(gl, shaderProgram, '1i', 'texture0', 0);
+	}
+	{
 		createTexture(gl, $('#texture-fg')[0], 1);
 		createUniform(gl, shaderProgram, '1i', 'textureFg', 1);
 	}
@@ -108,8 +112,12 @@ Apl.prototype.draw = function() {
 	this.drawSimpleColor();
 	//requestAnimationFrame(this.draw.bind(this));
 
-	const texture = loadTexture(this.gl, this.canvas);
-	drawScene(this.gl, this.programInfo, this.buffer, texture);
+	//const texture = loadTexture(this.gl, this.canvas);
+	//drawScene(this.gl, this.programInfo, this.buffer, texture);
+
+	activeTexture(this.gl, 0);
+	updateTexture(this.gl, this.canvas);
+	drawScene(this.gl, this.programInfo, this.buffer);
 };
 Apl.prototype.drawParticles = function() {
 	this.ctx.globalCompositeOperation = 'source-over';
