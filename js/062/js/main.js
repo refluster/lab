@@ -9,7 +9,7 @@ var Apl = function() {
 	this.dew = new Dew(this.ctx, this.img);
 
 	// create alpha gfx canvas
-	this.alphaGfx = document.createElement("canvas");
+	this.alphaGfx = $('#alpha-gfx')[0];
 	this.dropletSize = 24;
 	document.getElementById('contents').appendChild(this.alphaGfx);
 	this.alphaGfx.height = this.dropletSize*2;
