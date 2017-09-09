@@ -32,7 +32,7 @@ var Apl = function() {
 	_ctx.globalCompositeOperation = "source-over";
 	_ctx.drawImage(dropColor,0,0,this.dropletSize,this.dropletSize);
 	_ctx.globalCompositeOperation = "screen";
-	_ctx.fillStyle = "rgba(0,0,128,1)";
+	_ctx.fillStyle = "rgba(0,0,24,1)";
 	_ctx.fillRect(0,0,this.dropletSize,this.dropletSize);
 
 	// drop buffer

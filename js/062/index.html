@@ -36,15 +36,58 @@ void main() {
 precision mediump float;
 uniform sampler2D texture0;
 uniform vec2 u_resolution;
+float u_alphaMultiply = 7.;
+float u_alphaSubtract = 3.;
+float u_brightness = 1.;
+
+vec4 blend(vec4 bg, vec4 fg) {
+    vec3 bgm = bg.rgb*bg.a;
+    vec3 fgm = fg.rgb*fg.a;
+    float ia = 1.0-fg.a;
+    float a = (fg.a + bg.a * ia);
+    vec3 rgb;
+    if( a != 0.0) {
+        rgb = (fgm + bgm * ia) / a;
+    } else {
+        rgb = vec3(0.0,0.0,0.0);
+    }
+    return vec4(rgb,a);
+}
+
+vec2 pixel(){
+    return vec2(1.0,1.0)/u_resolution;
+}
+
+vec2 texCoord(){
+    return vec2(gl_FragCoord.x, u_resolution.y-gl_FragCoord.y)/u_resolution;
+}
+
+vec4 fgColor(float x, float y){
+    vec2 scaledTexCoord = texCoord();
+    return texture2D(texture0, scaledTexCoord + (pixel()*vec2(x,y)));
+}
 
 void main() {
 	  // current coordinates
 	  vec4 coord = gl_FragCoord;
 
 	  // sets the color
-	  //gl_FragColor = vec4(coord.x/300.0,coord.y/400.0, 0.0, 1.0);
-    gl_FragColor.rgb = texture2D(texture0, vec2(coord.x/u_resolution.x, 1.-coord.y/u_resolution.y)).rgb;
-    gl_FragColor.a = 1.;
+    vec4 cur = fgColor(0.0,0.0);
+    float d = cur.b;
+    float a = clamp(cur.a*u_alphaMultiply-u_alphaSubtract, 0.0,1.0);
+
+    vec4 tex = vec4(d, d, d, 1.);
+    vec4 fg = vec4(tex.rgb*u_brightness,a);
+
+    // shadow
+    float borderAlpha = texture2D(texture0, vec2(coord.x/u_resolution.x, 1.-coord.y/u_resolution.y+6.0*d)).a;
+    borderAlpha=borderAlpha*u_alphaMultiply-(u_alphaSubtract+0.5);
+    borderAlpha=clamp(borderAlpha,0.,1.);
+    borderAlpha*=0.2;
+    vec4 border=vec4(0.,0.,0.,borderAlpha);
+    fg = blend(border,fg);
+
+    gl_FragColor = fg;
 }
     </script>
     <script>
