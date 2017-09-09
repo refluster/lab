@@ -94,6 +94,8 @@ var Apl = function() {
 	createUniform(gl, shaderProgram, '1i', 'textureFg', 1);
 	createTexture(gl, $('#texture-bg')[0], 2);
 	createUniform(gl, shaderProgram, '1i', 'textureBg', 2);
+	createTexture(gl, $('#drop-shine')[0], 3);
+	createUniform(gl, shaderProgram, '1i', 'textureShine', 3);
 
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
