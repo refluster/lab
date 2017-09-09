@@ -37,6 +37,7 @@ precision mediump float;
 uniform sampler2D u_textureWatermap;
 uniform sampler2D u_textureFg;
 uniform sampler2D u_textureBg;
+uniform sampler2D u_textureShine;
 uniform vec2 u_resolution;
 float u_alphaMultiply = 8.;
 float u_alphaSubtract = 7.2;
@@ -92,6 +93,13 @@ void main() {
 
     vec4 tex = texture2D(u_textureFg, refractionPos);
 
+    // shine
+    float maxShine = 490.0;
+    float minShine = maxShine*0.18;
+    vec2 shinePos = vec2(0.5,0.5) + ((1.0/512.0)*refraction)* -(minShine+((maxShine-minShine)*d));
+    vec4 shine = texture2D(u_textureShine,shinePos);
+    tex = blend(tex,shine);
+
     vec4 fg = vec4(tex.rgb*u_brightness, a);
 
     // shadow
@@ -127,8 +135,10 @@ void main() {
         <canvas id="canvas-watermap" width="300" height="400"></canvas>
         <img id="drop-alpha" src="img/drop-alpha.png"></img>
         <img id="drop-color" src="img/drop-color.png"></img>
+        <img id="drop-shine" src="img/drop-shine.png"></img>
         <img id="texture-fg" src="img/texture-fg.png"></img>
         <img id="texture-bg" src="img/texture-bg.png"></img>
+        <canvas id="alpha-gfx" width="48" height="48"></canvas>
         <canvas id="drop-buffer" width="24" height="24"></canvas>
       </div>
     </div>

@@ -9,9 +9,8 @@ var Apl = function() {
 	this.dew = new Dew(this.ctx, this.img);
 
 	// create alpha gfx canvas
-	this.alphaGfx = document.createElement("canvas");
+	this.alphaGfx = $('#alpha-gfx')[0];
 	this.dropletSize = 24;
-	document.getElementById('contents').appendChild(this.alphaGfx);
 	this.alphaGfx.height = this.dropletSize*2;
 	this.alphaGfx.width = this.dropletSize*2;
 	var alphaCtx = this.alphaGfx.getContext('2d');
@@ -94,6 +93,8 @@ var Apl = function() {
 	createUniform(gl, shaderProgram, '1i', 'textureFg', 1);
 	createTexture(gl, $('#texture-bg')[0], 2);
 	createUniform(gl, shaderProgram, '1i', 'textureBg', 2);
+	createTexture(gl, $('#drop-shine')[0], 3);
+	createUniform(gl, shaderProgram, '1i', 'textureShine', 3);
 
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
