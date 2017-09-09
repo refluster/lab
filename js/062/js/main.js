@@ -88,24 +88,24 @@ var Apl = function() {
 	let resolutionLocation = gl.getUniformLocation(shaderProgram, "u_resolution");
 	gl.uniform2f(resolutionLocation, 300, 400);
 
-	{
-		createTexture(gl, $('#canvas-watermap')[0], 0);
-		createUniform(gl, shaderProgram, '1i', 'texture0', 0);
-	}
-	{
-		createTexture(gl, $('#texture-fg')[0], 1);
-		createUniform(gl, shaderProgram, '1i', 'textureFg', 1);
-	}
-	{
-		createTexture(gl, $('#texture-bg')[0], 2);
-		createUniform(gl, shaderProgram, '1i', 'textureBg', 2);
-	}
+	createTexture(gl, $('#canvas-watermap')[0], 0);
+	createUniform(gl, shaderProgram, '1i', 'textureWatermap', 0);
+	createTexture(gl, $('#texture-fg')[0], 1);
+	createUniform(gl, shaderProgram, '1i', 'textureFg', 1);
+	createTexture(gl, $('#texture-bg')[0], 2);
+	createUniform(gl, shaderProgram, '1i', 'textureBg', 2);
 
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
 		if (this.animation == true) {
 			this.draw();
 		}
+	}.bind(this));
+
+	$('#switch-debug').click(function(e) {
+		var display = $('#debug').css('display');
+		display = (display == 'none'? 'block': 'none');
+		$('#debug').css('display', display);
 	}.bind(this));
 
 	this.animation = true;
@@ -119,9 +119,6 @@ Apl.prototype.draw = function() {
 
 	//this.drawParticles();
 	this.drawSimpleColor();
-
-	//const texture = loadTexture(this.gl, this.canvas);
-	//drawScene(this.gl, this.programInfo, this.buffer, texture);
 
 	activeTexture(this.gl, 0);
 	updateTexture(this.gl, this.canvas);
