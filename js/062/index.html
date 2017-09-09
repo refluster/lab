@@ -38,8 +38,8 @@ uniform sampler2D u_texture0;
 uniform sampler2D u_textureFg;
 uniform sampler2D u_textureBg;
 uniform vec2 u_resolution;
-float u_alphaMultiply = 7.;
-float u_alphaSubtract = 3.;
+float u_alphaMultiply = 8.;
+float u_alphaSubtract = 7.2;
 float u_brightness = 1.;
 float u_minRefraction = 256.;
 float u_maxRefraction = 512.;
@@ -95,12 +95,12 @@ void main() {
     vec4 fg = vec4(tex.rgb*u_brightness, a);
 
     // shadow
-    float borderAlpha = fgColor(0.,0.-(d*6.0)).a;
-    borderAlpha=borderAlpha*u_alphaMultiply-(u_alphaSubtract+0.5);
-    borderAlpha=clamp(borderAlpha,0.,1.);
-    borderAlpha*=0.2;
-    vec4 border=vec4(0.,0.,0.,borderAlpha);
-    fg = blend(border,fg);
+    float borderAlpha = fgColor(0., -d*6.0).a;
+    borderAlpha = borderAlpha*u_alphaMultiply - (u_alphaSubtract + 0.5);
+    borderAlpha = clamp(borderAlpha, 0., 1.);
+    borderAlpha *= 0.2;
+    vec4 border = vec4(0., 0., 0., borderAlpha);
+    fg = blend(border, fg);
 
     gl_FragColor = blend(bg, fg);
 }

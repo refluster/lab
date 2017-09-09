@@ -134,14 +134,6 @@ Apl.prototype.drawSimpleColor = function() {
 	for (var i = 0; i < p.length; i++) {
 		this.ctx.drawImage(this.alphaGfx, p[i].x - this.dropletSize/2, p[i].y - this.dropletSize/2);
 	}
-	// filter by alpha threshold, shold be processed by pixel shader
-	var d = this.ctx.getImageData(0, 0, this.width, this.height);
-	for (var i = 0; i < d.data.length; i += 4) {
-		if (d.data[i + 3] < this.alphaThreshold) {
-			d.data[i + 3] = 0;
-		}
-	}
-	this.ctx.putImageData(d, 0, 0);
 }
 
 $(function() {
