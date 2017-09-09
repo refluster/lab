@@ -72,12 +72,16 @@ void main() {
 	  vec4 coord = gl_FragCoord;
 
 	  // sets the color
-    vec4 cur = fgColor(0.0,0.0);
+    vec4 cur = fgColor(0.0, 0.0);
     float d = cur.b;
-    float a = clamp(cur.a*u_alphaMultiply-u_alphaSubtract, 0.0,1.0);
+    float x = cur.g;
+    float y = cur.r;
 
-    vec4 tex = vec4(d, d, d, 1.);
-    vec4 fg = vec4(tex.rgb*u_brightness,a);
+    float a = clamp(cur.a*u_alphaMultiply-u_alphaSubtract, 0.0, 1.0);
+
+    //vec4 tex = vec4(d, d, d, 1.);
+    vec4 tex = vec4(1., 1., 1., 1.);
+    vec4 fg = vec4(tex.rgb*u_brightness, a);
 
     // shadow
     float borderAlpha = texture2D(texture0, vec2(coord.x/u_resolution.x, 1.-coord.y/u_resolution.y+6.0*d)).a;
