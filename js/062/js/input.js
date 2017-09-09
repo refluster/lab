@@ -2,7 +2,7 @@ var Input = function(T) {
 	this.T = T
 	this.pressed = false;
 
-	$('#canvas').on('touchstart mousedown', function(e) {
+	$('#canvas-main').on('touchstart mousedown', function(e) {
 		this.pressed = true;
 		var p = getCursor(e);
 		this.x = this.x0 = p.x;
@@ -12,7 +12,7 @@ var Input = function(T) {
 		e.preventDefault();
 	}.bind(this));
 
-	$('#canvas').on('touchmove mousemove', function(e) {
+	$('#canvas-main').on('touchmove mousemove', function(e) {
 		if (this.pressed == true) {
 			var p = getCursor(e);
 			this.x0 = p.x;
@@ -21,7 +21,7 @@ var Input = function(T) {
 		e.preventDefault();
 	}.bind(this));
 
-	$('#canvas').on('touchend mouseup', function(e) {
+	$('#canvas-main').on('touchend mouseup', function(e) {
 		this.pressed = false;
 	}.bind(this));
 };

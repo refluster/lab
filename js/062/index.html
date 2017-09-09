@@ -4,7 +4,7 @@
     <meta charset="EUC-JP">
     <style TYPE="text/css">
     <!--
-    #canvas {
+    canvas {
         border: solid 1px #808080;
     }
     .btn {
@@ -14,14 +14,97 @@
     }
     -->
     </style>
-    <title>particle simulation</title>
+    <title>droplet</title>
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/webgl.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/input.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/grid.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/sim.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/main.js" charset="EUC-JP"></script>
+    <script id="vert-shader" type="x-shader/x-vertex">
+// gets the current position
+attribute vec4 a_position;
+
+void main() {
+    // returns the position
+    gl_Position = a_position;
+}
+    </script>
+    <script id="frag-shader" type="x-shader/x-fragment">
+precision mediump float;
+uniform sampler2D u_textureWatermap;
+uniform sampler2D u_textureFg;
+uniform sampler2D u_textureBg;
+uniform vec2 u_resolution;
+float u_alphaMultiply = 8.;
+float u_alphaSubtract = 7.2;
+float u_brightness = 1.;
+float u_minRefraction = 256.;
+float u_maxRefraction = 512.;
+float u_refractionDelta = 0.;
+
+vec4 blend(vec4 bg, vec4 fg) {
+    vec3 bgm = bg.rgb*bg.a;
+    vec3 fgm = fg.rgb*fg.a;
+    float ia = 1.0-fg.a;
+    float a = (fg.a + bg.a * ia);
+    vec3 rgb;
+    if( a != 0.0) {
+        rgb = (fgm + bgm * ia) / a;
+    } else {
+        rgb = vec3(0.0,0.0,0.0);
+    }
+    return vec4(rgb,a);
+}
+
+vec2 pixel(){
+    return vec2(1.0,1.0)/u_resolution;
+}
+
+vec2 texCoord(){
+    return vec2(gl_FragCoord.x, u_resolution.y-gl_FragCoord.y)/u_resolution;
+}
+
+vec4 fgColor(float x, float y){
+    vec2 scaledTexCoord = texCoord();
+    return texture2D(u_textureWatermap, scaledTexCoord + (pixel()*vec2(x,y)));
+}
+
+void main() {
+    vec4 bg = texture2D(u_textureBg, texCoord());
+
+	  // current coordinates
+	  vec4 coord = gl_FragCoord;
+
+	  // sets the color
+    vec4 cur = fgColor(0.0, 0.0);
+    float d = cur.b;
+    float x = cur.g;
+    float y = cur.r;
+
+    float a = clamp(cur.a*u_alphaMultiply-u_alphaSubtract, 0.0, 1.0);
+
+    vec2 refraction = (vec2(x, y) - 0.8)*2.0;
+    vec2 refractionPos = texCoord()
+        + (pixel()*refraction*(u_minRefraction+(d*u_refractionDelta)));
+
+    vec4 tex = texture2D(u_textureFg, refractionPos);
+
+    vec4 fg = vec4(tex.rgb*u_brightness, a);
+
+    // shadow
+    float borderAlpha = fgColor(0., -d*6.0).a;
+    borderAlpha = borderAlpha*u_alphaMultiply - (u_alphaSubtract + 0.5);
+    borderAlpha = clamp(borderAlpha, 0., 1.);
+    borderAlpha *= 0.2;
+    vec4 border = vec4(0., 0., 0., borderAlpha);
+    fg = blend(border, fg);
+
+    gl_FragColor = blend(bg, fg);
+}
+    </script>
     <script>
      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -32,12 +115,22 @@
    </script>
   </head>
   <body>
-    <div id="header"><h2 class="title">particle simulation</h2></div>
+    <div id="header"><h2 class="title">droplet</h2></div>
     <div id="contents">
       <ul class="chapter-toc">
-        <li>sph simulation</li>
+        <li>particle simulation</li>
       </ul>
-	    <canvas id="canvas" width="300" height="400"></canvas>
+      <button id="switch-animation">switch animatiion</button>
+      <button id="switch-debug">switch debug images</button>
+      <canvas id="canvas-main" width="300" height="400"></canvas>
+      <div id="debug" style="display: none">
+        <canvas id="canvas-watermap" width="300" height="400"></canvas>
+        <img id="drop-alpha" src="img/drop-alpha.png"></img>
+        <img id="drop-color" src="img/drop-color.png"></img>
+        <img id="texture-fg" src="img/texture-fg.png"></img>
+        <img id="texture-bg" src="img/texture-bg.png"></img>
+        <canvas id="drop-buffer" width="24" height="24"></canvas>
+      </div>
     </div>
   </body>
 </html>
