@@ -100,6 +100,13 @@ var Apl = function() {
 		createTexture(gl, $('#texture-bg')[0], 2);
 		createUniform(gl, shaderProgram, '1i', 'textureBg', 2);
 	}
+
+	$('#switch-animation').click(function(e) {
+		this.animation = !this.animation;
+		if (this.animation == true) {
+			this.draw();
+		}
+	}.bind(this));
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
@@ -110,7 +117,6 @@ Apl.prototype.draw = function() {
 
 	//this.drawParticles();
 	this.drawSimpleColor();
-	//requestAnimationFrame(this.draw.bind(this));
 
 	//const texture = loadTexture(this.gl, this.canvas);
 	//drawScene(this.gl, this.programInfo, this.buffer, texture);
@@ -118,6 +124,8 @@ Apl.prototype.draw = function() {
 	activeTexture(this.gl, 0);
 	updateTexture(this.gl, this.canvas);
 	drawScene(this.gl, this.programInfo, this.buffer);
+
+	this.animation == true && requestAnimationFrame(this.draw.bind(this));
 };
 Apl.prototype.drawParticles = function() {
 	this.ctx.globalCompositeOperation = 'source-over';
