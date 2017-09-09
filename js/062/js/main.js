@@ -11,7 +11,6 @@ var Apl = function() {
 	// create alpha gfx canvas
 	this.alphaGfx = $('#alpha-gfx')[0];
 	this.dropletSize = 24;
-	document.getElementById('contents').appendChild(this.alphaGfx);
 	this.alphaGfx.height = this.dropletSize*2;
 	this.alphaGfx.width = this.dropletSize*2;
 	var alphaCtx = this.alphaGfx.getContext('2d');
