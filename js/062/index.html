@@ -95,7 +95,7 @@ void main() {
     vec4 fg = vec4(tex.rgb*u_brightness, a);
 
     // shadow
-    float borderAlpha = texture2D(u_texture0, vec2(coord.x/u_resolution.x, 1.-coord.y/u_resolution.y+6.0*d)).a;
+    float borderAlpha = fgColor(0.,0.-(d*6.0)).a;
     borderAlpha=borderAlpha*u_alphaMultiply-(u_alphaSubtract+0.5);
     borderAlpha=clamp(borderAlpha,0.,1.);
     borderAlpha*=0.2;
