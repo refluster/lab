@@ -58,8 +58,8 @@ var Apl = function() {
 			//projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
 			//modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
 			uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-			uTextureFg: gl.getUniformLocation(shaderProgram, 'u_texture_fg'),
-			uTextureBg: gl.getUniformLocation(shaderProgram, 'u_texture_bg'),
+			//uTextureFg: gl.getUniformLocation(shaderProgram, 'u_textureFg'),
+			//uTextureBg: gl.getUniformLocation(shaderProgram, 'u_textureBg'),
 		},
 	};
 
@@ -89,12 +89,12 @@ var Apl = function() {
 	gl.uniform2f(resolutionLocation, 300, 400);
 
 	{
-		let texture = loadTexture(gl, $('#texture-fg')[0]);
-		uniformTexture(gl, this.programInfo.uniformLocations.uTextureFg, texture);
+		createTexture(gl, $('#texture-fg')[0], 1);
+		createUniform(gl, shaderProgram, '1i', 'textureFg', 1);
 	}
 	{
-		let texture = loadTexture(gl, $('#texture-bg')[0]);
-		uniformTexture(gl, this.programInfo.uniformLocations.uTextureBg, texture);
+		createTexture(gl, $('#texture-bg')[0], 2);
+		createUniform(gl, shaderProgram, '1i', 'textureBg', 2);
 	}
 };
 Apl.prototype.blank = function() {
