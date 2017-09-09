@@ -37,9 +37,6 @@ function loadShader(gl, type, source) {
 }
 
 function loadTexture(gl, image) {
-	const texture = gl.createTexture();
-	gl.bindTexture(gl.TEXTURE_2D, texture);
-
 	// Because images have to be download over the internet
 	// they might take a moment until they are ready.
 	// Until then put a single pixel in the texture so we can
@@ -53,6 +50,8 @@ function loadTexture(gl, image) {
 	const srcFormat = gl.RGBA;
 	const srcType = gl.UNSIGNED_BYTE;
 	const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
+	const texture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
                   width, height, border, srcFormat, srcType,
                   pixel);
