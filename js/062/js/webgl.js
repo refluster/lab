@@ -81,6 +81,20 @@ function isPowerOf2(value) {
   return (value & (value - 1)) == 0;
 }
 
+function uniformTexture(gl, uniformLocation, texture) {
+	// Tell WebGL we want to affect texture unit 0
+	gl.activeTexture(gl.TEXTURE0);
+
+	// Bind the texture to texture unit 0
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+
+	// Tell the shader we bound the texture to texture unit 0
+	gl.uniform1i(uniformLocation, 0);
+
+	// Bind the texture to texture unit 0
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+}
+
 function drawScene(gl, programInfo, buffers, texture, deltaTime) {
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
 	gl.clearDepth(1.0);                 // Clear everything
