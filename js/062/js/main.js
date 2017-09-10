@@ -72,11 +72,25 @@ var Apl = function() {
 	let resolutionLocation = gl.getUniformLocation(this.shaderProgram, "u_resolution");
 	gl.uniform2f(resolutionLocation, 300, 400);
 
+	// make blur texture
+	{
+		let fgBlur = $('#texture-fg-blur')[0]
+		let ctx = fgBlur.getContext("2d");
+		ctx.filter = "blur(3px)";
+		ctx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
+	}
+	{
+		let bgBlur = $('#texture-bg-blur')[0]
+		let ctx = bgBlur.getContext("2d");
+		ctx.filter = "blur(3px)";
+		ctx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
+	}
+
 	createTexture(gl, $('#canvas-watermap')[0], 0);
 	createUniform(gl, this.shaderProgram, '1i', 'textureWatermap', 0);
-	createTexture(gl, $('#texture-fg')[0], 1);
+	createTexture(gl, $('#texture-fg-blur')[0], 1);
 	createUniform(gl, this.shaderProgram, '1i', 'textureFg', 1);
-	createTexture(gl, $('#texture-bg')[0], 2);
+	createTexture(gl, $('#texture-bg-blur')[0], 2);
 	createUniform(gl, this.shaderProgram, '1i', 'textureBg', 2);
 	createTexture(gl, $('#drop-shine')[0], 3);
 	createUniform(gl, this.shaderProgram, '1i', 'textureShine', 3);
