@@ -86,6 +86,7 @@ var Apl = function() {
 		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
 	}
 
+	// create uniform texture
 	createTexture(gl, $('#canvas-watermap')[0], 0);
 	createUniform(gl, this.shaderProgram, '1i', 'textureWatermap', 0);
 	createTexture(gl, $('#texture-fg-blur')[0], 1);
@@ -95,6 +96,7 @@ var Apl = function() {
 	createTexture(gl, $('#drop-shine')[0], 3);
 	createUniform(gl, this.shaderProgram, '1i', 'textureShine', 3);
 
+	// button operation
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
 		if (this.animation == true) {
