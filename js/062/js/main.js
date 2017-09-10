@@ -1,9 +1,13 @@
 var Apl = function() {
+	this.initParams();
 	this.initGraphicalElement();
 	this.initWebgl();
 	this.initInput();
 	this.dew = new Dew(this.ctx, this.width, this.height);
 	this.animation = true;
+};
+Apl.prototype.initParams = function() {
+	this.blurSize = 2;
 };
 Apl.prototype.initGraphicalElement = function() {
 	var canvas = $('#canvas-watermap')[0];
@@ -46,7 +50,6 @@ Apl.prototype.initGraphicalElement = function() {
 	this.alphaThreshold = 224;
 
 	// make blur texture
-	this.blurSize = 2;
 	{
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
@@ -160,6 +163,7 @@ $(function() {
 		let bg = $('#texture-bg')[0];
 		switch($('input[name=preset]:checked').val()) {
 		case 'leaf':
+			apl.blurSize = 0;
 			fg.onload = function() {
 				bg.onload = function() {
 					apl.initGraphicalElement();
@@ -170,6 +174,7 @@ $(function() {
 			fg.src = 'img/texture-leaf.png';
 			break;
 		case 'centralpark':
+			apl.blurSize = 2;
 			fg.onload = function() {
 				bg.onload = function() {
 					apl.initGraphicalElement();
