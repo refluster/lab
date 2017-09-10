@@ -2,7 +2,7 @@ var Apl = function() {
 	this.initGraphicalElement();
 	this.initWebgl();
 	this.initInput();
-	this.dew = new Dew(this.ctx, this.ctx.getImageData(0, 0, this.width, this.height));
+	this.dew = new Dew(this.ctx, this.width, this.height);
 	this.animation = true;
 };
 Apl.prototype.initGraphicalElement = function() {

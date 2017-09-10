@@ -25,8 +25,9 @@ var Particle = function(x, y) {
 	this.sy;
 };
 
-var Dew = function(ctx, img) {
-	this.img = img;
+var Dew = function(ctx, width, height) {
+	this.width = width;
+	this.height = height;
 
 	this.R = 8;
 	this.P = 0.10000000000000001;
@@ -47,8 +48,8 @@ var Dew = function(ctx, img) {
 	for (var i = 0; i < this.N; i++) {
 		r = (Math.sqrt((i + 1) / Math.PI) * this.R * 3) / 4;
 		t = 2 * Math.sqrt(Math.PI * (i + 1));
-		x = (img.width / 2) + r * Math.cos(t);
-		y = (img.height / 2) + r * Math.sin(t);
+		x = (width / 2) + r * Math.cos(t);
+		y = (height / 2) + r * Math.sin(t);
 		this.particles[i] = new Particle(x, y);
 	}
 
@@ -60,18 +61,18 @@ var Dew = function(ctx, img) {
 
 };
 Dew.prototype.step = function() {
-	var xbit = parseInt(Math.round(Math.log(this.img.width / this.H) / Math.log(2)));
-	var ybit = parseInt(Math.round(Math.log(this.img.height / this.H) / Math.log(2)));
+	var xbit = parseInt(Math.round(Math.log(this.width / this.H) / Math.log(2)));
+	var ybit = parseInt(Math.round(Math.log(this.height / this.H) / Math.log(2)));
 	var xsize = 1 << xbit;
 	var ysize = 1 << ybit;
 
 	do {
-		var xscale = xsize / this.img.width;
-		var yscale = ysize / this.img.height;
+		var xscale = xsize / this.width;
+		var yscale = ysize / this.height;
 		var xmin = 4 * this.R;
 		var ymin = 4 * this.R;
-		var xmax = this.img.width- 4 * this.R;
-		var ymax = this.img.height - 4 * this.R;
+		var xmax = this.width- 4 * this.R;
+		var ymax = this.height - 4 * this.R;
 		var t = 0;
 		do {
 			if (t >= this.T)
