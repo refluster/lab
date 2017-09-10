@@ -130,16 +130,32 @@ void main() {
       </ul>
       <button id="switch-animation">switch animatiion</button>
       <button id="switch-debug">switch debug images</button>
+      <div>
+        <input type="radio" name="preset" value="centralpark" checked="checked">central park
+        <input type="radio" name="preset" value="leaf">leaf
+      </div>
       <canvas id="canvas-main" width="300" height="400"></canvas>
       <div id="debug" style="display: none">
+        canvas-watermap
         <canvas id="canvas-watermap" width="300" height="400"></canvas>
+        drop-alpha
         <img id="drop-alpha" src="img/drop-alpha.png"></img>
+        drop-color
         <img id="drop-color" src="img/drop-color.png"></img>
+        drop-shine
         <img id="drop-shine" src="img/drop-shine.png"></img>
-        <img id="texture-fg" src="img/texture-fg.png"></img>
-        <img id="texture-bg" src="img/texture-bg.png"></img>
+        texture-fg
+        <img id="texture-fg" src="img/texture-centralpark.png" width="300" height="400"></img>
+        texture-bg
+        <img id="texture-bg" src="img/texture-centralpark.png" width="300" height="400"></img>
+        alpha-gfx
         <canvas id="alpha-gfx" width="48" height="48"></canvas>
+        drop-buffer
         <canvas id="drop-buffer" width="24" height="24"></canvas>
+        texture-fg-blur
+        <canvas id="texture-fg-blur" width="300" height="400"></canvas>
+        texture-bg-blur
+        <canvas id="texture-bg-blur" width="300" height="400"></canvas>
       </div>
     </div>
   </body>
