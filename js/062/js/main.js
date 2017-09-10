@@ -73,7 +73,7 @@ var Apl = function() {
 	gl.uniform2f(resolutionLocation, 300, 400);
 
 	// make blur texture
-	this.blurSize = 0;
+	this.blurSize = 2;
 	{
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
