@@ -40,6 +40,39 @@ var Apl = function() {
 	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
 	this.alphaThreshold = 224;
 
+	// make blur texture
+	this.blurSize = 2;
+	{
+		let fgBlur = $('#texture-fg-blur')[0];
+		let fgCtx = fgBlur.getContext("2d");
+		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
+		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
+
+		let bgBlur = $('#texture-bg-blur')[0]
+		let bgCtx = bgBlur.getContext("2d");
+		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
+		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
+	}
+
+	this.setupWebgl();
+
+	// button operation
+	$('#switch-animation').click(function(e) {
+		this.animation = !this.animation;
+		if (this.animation == true) {
+			this.draw();
+		}
+	}.bind(this));
+
+	$('#switch-debug').click(function(e) {
+		var display = $('#debug').css('display');
+		display = (display == 'none'? 'block': 'none');
+		$('#debug').css('display', display);
+	}.bind(this));
+
+	this.animation = true;
+};
+Apl.prototype.setupWebgl = function() {
 	// webgl setup
 	var c = $('#canvas-main')[0];
 	this.gl = c.getContext('webgl') || c.getContext('experimental-webgl');
@@ -72,20 +105,6 @@ var Apl = function() {
 	let resolutionLocation = gl.getUniformLocation(this.shaderProgram, "u_resolution");
 	gl.uniform2f(resolutionLocation, 300, 400);
 
-	// make blur texture
-	this.blurSize = 2;
-	{
-		let fgBlur = $('#texture-fg-blur')[0];
-		let fgCtx = fgBlur.getContext("2d");
-		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
-		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
-
-		let bgBlur = $('#texture-bg-blur')[0]
-		let bgCtx = bgBlur.getContext("2d");
-		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
-		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
-	}
-
 	// create uniform texture
 	createTexture(gl, $('#canvas-watermap')[0], 0);
 	createUniform(gl, this.shaderProgram, '1i', 'textureWatermap', 0);
@@ -95,22 +114,6 @@ var Apl = function() {
 	createUniform(gl, this.shaderProgram, '1i', 'textureBg', 2);
 	createTexture(gl, $('#drop-shine')[0], 3);
 	createUniform(gl, this.shaderProgram, '1i', 'textureShine', 3);
-
-	// button operation
-	$('#switch-animation').click(function(e) {
-		this.animation = !this.animation;
-		if (this.animation == true) {
-			this.draw();
-		}
-	}.bind(this));
-
-	$('#switch-debug').click(function(e) {
-		var display = $('#debug').css('display');
-		display = (display == 'none'? 'block': 'none');
-		$('#debug').css('display', display);
-	}.bind(this));
-
-	this.animation = true;
 };
 Apl.prototype.blank = function() {
 	this.ctx.clearRect(0, 0, this.width, this.height);
@@ -146,6 +149,17 @@ Apl.prototype.drawSimpleColor = function() {
 }
 
 $(function() {
+	$('input[name=preset]').click(function() {
+		switch($('input[name=preset]:checked').val()) {
+		case 'leaf':
+			console.log('lll');
+			break;
+		case 'centralpark':
+			console.log('ccc');
+			break;
+		}
+	});
+
 	setTimeout(function() {
 		apl = new Apl();
 		apl.draw();
