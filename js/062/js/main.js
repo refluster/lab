@@ -24,19 +24,19 @@ var Apl = function() {
 	var dropColor = $('#drop-color')[0];
 
 	// drop buffer
-	var _c = $('#drop-buffer')[0];
-	_c.width = 24;
-	_c.height = 24;
-	var _ctx = _c.getContext('2d');
-	_ctx.globalCompositeOperation = "source-over";
-	_ctx.drawImage(dropColor,0,0,this.dropletSize,this.dropletSize);
-	_ctx.globalCompositeOperation = "screen";
-	_ctx.fillStyle = "rgba(0,0,24,1)";
-	_ctx.fillRect(0,0,this.dropletSize,this.dropletSize);
+	var dropBuffer = $('#drop-buffer')[0];
+	dropBuffer.width = 24;
+	dropBuffer.height = 24;
+	var dropBufferCtx = dropBuffer.getContext('2d');
+	dropBufferCtx.globalCompositeOperation = "source-over";
+	dropBufferCtx.drawImage(dropColor,0,0,this.dropletSize,this.dropletSize);
+	dropBufferCtx.globalCompositeOperation = "screen";
+	dropBufferCtx.fillStyle = "rgba(0,0,24,1)";
+	dropBufferCtx.fillRect(0,0,this.dropletSize,this.dropletSize);
 
 	// drop buffer
 	alphaCtx.globalCompositeOperation="source-in";
-	alphaCtx.drawImage(_c, 0, 0, this.dropletSize*2, this.dropletSize*2);
+	alphaCtx.drawImage(dropBuffer, 0, 0, this.dropletSize*2, this.dropletSize*2);
 	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
 	this.alphaThreshold = 224;
 
