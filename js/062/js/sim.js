@@ -64,48 +64,6 @@ Dew.prototype.step = function() {
 	var ybit = parseInt(Math.round(Math.log(this.img.height / this.H) / Math.log(2)));
 	var xsize = 1 << xbit;
 	var ysize = 1 << ybit;
-	var isize = xsize * ysize;
-	var background = [];
-
-	var density = new Grid(xbit, ybit);
-	density.mass.fill((this.H * this.H) / (this.R * this.R));
-	for (var x = 0; x < xsize; x++) {
-		density.mass[x] = 1.0;
-	}
-	for (var x = 0; x < xsize; x++) {
-		density.mass[x | ysize - 1 << xbit] = 1.0;
-	}
-	for (var y = 0; y < ysize; y++) {
-		density.mass[y << xbit] = 1.0;
-	}
-	for (var y = 0; y < ysize; y++) {
-		density.mass[xsize - 1 | y << xbit] = 1.0;
-	}
-	density.compile();
-
-	var inflation = new Grid(xbit, ybit);
-	var thickness = new Array(isize);
-	var depth = new Array(isize);
-	var reflection = new Array(isize);
-
-	var photons = new Grid(xbit, ybit);
-	photons.mass.fill(this.C);
-	for (var x = 0; x < xsize; x++) {
-		photons.mass[x] = 4;
-	}
-	for (var x = 0; x < xsize; x++) {
-		photons.mass[x | ysize - 1 << xbit] = 4;
-	}
-	for (var y = 0; y < ysize; y++) {
-		photons.mass[y << xbit] = 4;
-	}
-	for (var y = 0; y < ysize; y++) {
-		photons.mass[xsize - 1 | y << xbit] = 4;
-	}
-	photons.compile();
-
-	var refraction = new Array(isize);
-	var pixels = new Array(isize);
 
 	//////////////////////////////
 
