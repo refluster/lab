@@ -44,24 +44,9 @@ var Apl = function() {
 	var c = $('#canvas-main')[0];
 	this.gl = c.getContext('webgl') || c.getContext('experimental-webgl');
 	var gl = this.gl;
-	const shaderProgram = initShaderProgram(gl,
-											document.getElementById('vert-shader').text,
-											document.getElementById('frag-shader').text);
-	this.programInfo = {
-		program: shaderProgram,
-		//attribLocations: {
-		//	vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
-		//	textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
-		//},
-		uniformLocations: {
-			//projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-			//modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-			uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
-			//uTextureFg: gl.getUniformLocation(shaderProgram, 'u_textureFg'),
-			//uTextureBg: gl.getUniformLocation(shaderProgram, 'u_textureBg'),
-		},
-	};
-
+	this.shaderProgram = initShaderProgram(gl,
+										   document.getElementById('vert-shader').text,
+										   document.getElementById('frag-shader').text);
 	// gl create rectangle
 	this.buffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
@@ -77,24 +62,24 @@ var Apl = function() {
 		gl.STATIC_DRAW);
 
 	// Tell WebGL to use our program when drawing
-	gl.useProgram(this.programInfo.program);
+	gl.useProgram(this.shaderProgram);
 
 	// gl vertex data
-	var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
+	var positionLocation = gl.getAttribLocation(this.shaderProgram, "a_position");
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-	let resolutionLocation = gl.getUniformLocation(shaderProgram, "u_resolution");
+	let resolutionLocation = gl.getUniformLocation(this.shaderProgram, "u_resolution");
 	gl.uniform2f(resolutionLocation, 300, 400);
 
 	createTexture(gl, $('#canvas-watermap')[0], 0);
-	createUniform(gl, shaderProgram, '1i', 'textureWatermap', 0);
+	createUniform(gl, this.shaderProgram, '1i', 'textureWatermap', 0);
 	createTexture(gl, $('#texture-fg')[0], 1);
-	createUniform(gl, shaderProgram, '1i', 'textureFg', 1);
+	createUniform(gl, this.shaderProgram, '1i', 'textureFg', 1);
 	createTexture(gl, $('#texture-bg')[0], 2);
-	createUniform(gl, shaderProgram, '1i', 'textureBg', 2);
+	createUniform(gl, this.shaderProgram, '1i', 'textureBg', 2);
 	createTexture(gl, $('#drop-shine')[0], 3);
-	createUniform(gl, shaderProgram, '1i', 'textureShine', 3);
+	createUniform(gl, this.shaderProgram, '1i', 'textureShine', 3);
 
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
@@ -123,7 +108,7 @@ Apl.prototype.draw = function() {
 
 	activeTexture(this.gl, 0);
 	updateTexture(this.gl, this.canvas);
-	drawScene(this.gl, this.programInfo, this.buffer);
+	drawScene(this.gl, this.shaderProgram, this.buffer);
 
 	this.animation == true && requestAnimationFrame(this.draw.bind(this));
 };
