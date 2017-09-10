@@ -52,7 +52,6 @@ Apl.prototype.initGraphicalElement = function() {
 		let fgCtx = fgBlur.getContext("2d");
 		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
-
 		let bgBlur = $('#texture-bg-blur')[0]
 		let bgCtx = bgBlur.getContext("2d");
 		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
@@ -151,19 +150,36 @@ Apl.prototype.drawSimpleColor = function() {
 }
 
 $(function() {
-	$('input[name=preset]').click(function() {
-		switch($('input[name=preset]:checked').val()) {
-		case 'leaf':
-			console.log('lll');
-			break;
-		case 'centralpark':
-			console.log('ccc');
-			break;
-		}
-	});
-
 	setTimeout(function() {
 		apl = new Apl();
 		apl.draw();
 	}, 200); //zantei wait
+
+	$('input[name=preset]').click(function() {
+		let fg = $('#texture-fg')[0];
+		let bg = $('#texture-bg')[0];
+		switch($('input[name=preset]:checked').val()) {
+		case 'leaf':
+			fg.onload = function() {
+				bg.onload = function() {
+					apl.initGraphicalElement();
+					apl.initWebgl();
+				}
+				bg.src = 'img/texture-leaf.png';
+			}
+			fg.src = 'img/texture-leaf.png';
+			break;
+		case 'centralpark':
+			fg.onload = function() {
+				bg.onload = function() {
+					apl.initGraphicalElement();
+					apl.initWebgl();
+				}
+				bg.src = 'img/texture-centralpark.png';
+			}
+			fg.src = 'img/texture-centralpark.png';
+			break;
+		}
+	});
+
 });
