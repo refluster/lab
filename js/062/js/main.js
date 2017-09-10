@@ -73,17 +73,17 @@ var Apl = function() {
 	gl.uniform2f(resolutionLocation, 300, 400);
 
 	// make blur texture
+	this.blurSize = 0;
 	{
-		let fgBlur = $('#texture-fg-blur')[0]
-		let ctx = fgBlur.getContext("2d");
-		ctx.filter = "blur(3px)";
-		ctx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
-	}
-	{
+		let fgBlur = $('#texture-fg-blur')[0];
+		let fgCtx = fgBlur.getContext("2d");
+		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
+		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
+
 		let bgBlur = $('#texture-bg-blur')[0]
-		let ctx = bgBlur.getContext("2d");
-		ctx.filter = "blur(3px)";
-		ctx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
+		let bgCtx = bgBlur.getContext("2d");
+		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
+		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
 	}
 
 	createTexture(gl, $('#canvas-watermap')[0], 0);
