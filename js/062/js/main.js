@@ -1,4 +1,10 @@
 var Apl = function() {
+	this.initGraphicalElement();
+	this.initWebgl();
+	this.initInput();
+	this.animation = true;
+};
+Apl.prototype.initGraphicalElement = function() {
 	var canvas = $('#canvas-watermap')[0];
 	this.canvas = canvas;
 	if ( ! canvas || ! canvas.getContext ) { return false; }
@@ -53,9 +59,8 @@ var Apl = function() {
 		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
 	}
-
-	this.setupWebgl();
-
+};
+Apl.prototype.initInput = function() {
 	// button operation
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
@@ -69,10 +74,8 @@ var Apl = function() {
 		display = (display == 'none'? 'block': 'none');
 		$('#debug').css('display', display);
 	}.bind(this));
-
-	this.animation = true;
 };
-Apl.prototype.setupWebgl = function() {
+Apl.prototype.initWebgl = function() {
 	// webgl setup
 	var c = $('#canvas-main')[0];
 	this.gl = c.getContext('webgl') || c.getContext('experimental-webgl');
