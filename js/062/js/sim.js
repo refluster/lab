@@ -65,8 +65,6 @@ Dew.prototype.step = function() {
 	var xsize = 1 << xbit;
 	var ysize = 1 << ybit;
 
-	//////////////////////////////
-
 	do {
 		var xscale = xsize / this.img.width;
 		var yscale = ysize / this.img.height;
