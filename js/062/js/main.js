@@ -77,6 +77,17 @@ Apl.prototype.initInput = function() {
 		$('#debug').css('display', display);
 	}.bind(this));
 
+	// gravity sensing on/off
+	this.gravity = false;
+	$('#switch-gravity').click(function(e) {
+		this.gravity = !this.gravity;
+		if (this.gravity == true) {
+			this.dew.input.enableGravity();
+		} else {
+			this.dew.input.disableGravity();
+		}
+	}.bind(this));
+
 	// set preset
 	$('input[name=preset]').click(function() {
 		switch($('input[name=preset]:checked').val()) {
