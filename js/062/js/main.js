@@ -8,6 +8,7 @@ var Apl = function() {
 };
 Apl.prototype.initParams = function() {
 	this.blurSize = 2;
+	this.gravity = false;
 };
 Apl.prototype.initGraphicalElement = function() {
 	var canvas = $('#canvas-watermap')[0];
@@ -78,7 +79,6 @@ Apl.prototype.initInput = function() {
 	}.bind(this));
 
 	// gravity sensing on/off
-	this.gravity = false;
 	$('#switch-gravity').click(function(e) {
 		this.gravity = !this.gravity;
 		if (this.gravity == true) {
