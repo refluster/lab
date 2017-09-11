@@ -158,6 +158,7 @@ $(function() {
 		apl.draw();
 	}, 200); //zantei wait
 
+	// zantei
 	$('input[name=preset]').click(function() {
 		let fg = $('#texture-fg')[0];
 		let bg = $('#texture-bg')[0];
@@ -183,6 +184,17 @@ $(function() {
 				bg.src = 'img/texture-centralpark.png';
 			}
 			fg.src = 'img/texture-centralpark.png';
+			break;
+		case 'plain':
+			apl.blurSize = 0;
+			fg.onload = function() {
+				bg.onload = function() {
+					apl.initGraphicalElement();
+					apl.initWebgl();
+				}
+				bg.src = 'img/texture-fg.png';
+			}
+			fg.src = 'img/texture-fg.png';
 			break;
 		}
 	});
