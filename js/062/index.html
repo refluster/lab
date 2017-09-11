@@ -128,14 +128,16 @@ void main() {
       <ul class="chapter-toc">
         <li>particle simulation</li>
       </ul>
-      <button id="switch-animation">switch animatiion</button>
-      <button id="switch-debug">switch debug images</button>
       <div>
         <input type="radio" name="preset" value="centralpark" checked="checked">central park
         <input type="radio" name="preset" value="leaf">leaf
         <input type="radio" name="preset" value="plain">plain
       </div>
       <canvas id="canvas-main" width="300" height="400"></canvas>
+      <div>
+        <button id="switch-animation">animation on/off</button>
+        <button id="switch-debug">debug images</button>
+      </div>
       <div id="debug" style="display: none">
         canvas-watermap
         <canvas id="canvas-watermap" width="300" height="400"></canvas>
