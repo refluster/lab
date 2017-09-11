@@ -106,6 +106,14 @@ Apl.prototype.initInput = function() {
 		}
 		fg.src = fgSrc;
 	});
+
+	$('input[name=blur]').change(function(e) {
+		var v = $(this).val();
+		$('#blur-value').html(v);
+		apl.blurSize = parseFloat(v);
+		apl.initGraphicalElement();
+		apl.initWebgl();
+	});
 };
 Apl.prototype.initWebgl = function() {
 	// webgl setup
