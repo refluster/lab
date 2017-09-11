@@ -40,7 +40,7 @@ function isPowerOf2(value) {
   return (value & (value - 1)) == 0;
 }
 
-function drawScene(gl, programInfo, buffers) {
+function drawScene(gl, shaderProgram, buffers) {
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
 	gl.clearDepth(1.0);                 // Clear everything
 	gl.enable(gl.DEPTH_TEST);           // Enable depth testing
@@ -53,7 +53,7 @@ function drawScene(gl, programInfo, buffers) {
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
 	// Tell WebGL to use our program when drawing
-	gl.useProgram(programInfo.program);
+	gl.useProgram(shaderProgram);
 
 	{
 		const vertexCount = 6;

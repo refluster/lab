@@ -25,8 +25,9 @@ var Particle = function(x, y) {
 	this.sy;
 };
 
-var Dew = function(ctx, img) {
-	this.img = img;
+var Dew = function(ctx, width, height) {
+	this.width = width;
+	this.height = height;
 
 	this.R = 8;
 	this.P = 0.10000000000000001;
@@ -47,8 +48,8 @@ var Dew = function(ctx, img) {
 	for (var i = 0; i < this.N; i++) {
 		r = (Math.sqrt((i + 1) / Math.PI) * this.R * 3) / 4;
 		t = 2 * Math.sqrt(Math.PI * (i + 1));
-		x = (img.width / 2) + r * Math.cos(t);
-		y = (img.height / 2) + r * Math.sin(t);
+		x = (width / 2) + r * Math.cos(t);
+		y = (height / 2) + r * Math.sin(t);
 		this.particles[i] = new Particle(x, y);
 	}
 
@@ -60,62 +61,18 @@ var Dew = function(ctx, img) {
 
 };
 Dew.prototype.step = function() {
-	var xbit = parseInt(Math.round(Math.log(this.img.width / this.H) / Math.log(2)));
-	var ybit = parseInt(Math.round(Math.log(this.img.height / this.H) / Math.log(2)));
+	var xbit = parseInt(Math.round(Math.log(this.width / this.H) / Math.log(2)));
+	var ybit = parseInt(Math.round(Math.log(this.height / this.H) / Math.log(2)));
 	var xsize = 1 << xbit;
 	var ysize = 1 << ybit;
-	var isize = xsize * ysize;
-	var background = [];
-
-	var density = new Grid(xbit, ybit);
-	density.mass.fill((this.H * this.H) / (this.R * this.R));
-	for (var x = 0; x < xsize; x++) {
-		density.mass[x] = 1.0;
-	}
-	for (var x = 0; x < xsize; x++) {
-		density.mass[x | ysize - 1 << xbit] = 1.0;
-	}
-	for (var y = 0; y < ysize; y++) {
-		density.mass[y << xbit] = 1.0;
-	}
-	for (var y = 0; y < ysize; y++) {
-		density.mass[xsize - 1 | y << xbit] = 1.0;
-	}
-	density.compile();
-
-	var inflation = new Grid(xbit, ybit);
-	var thickness = new Array(isize);
-	var depth = new Array(isize);
-	var reflection = new Array(isize);
-
-	var photons = new Grid(xbit, ybit);
-	photons.mass.fill(this.C);
-	for (var x = 0; x < xsize; x++) {
-		photons.mass[x] = 4;
-	}
-	for (var x = 0; x < xsize; x++) {
-		photons.mass[x | ysize - 1 << xbit] = 4;
-	}
-	for (var y = 0; y < ysize; y++) {
-		photons.mass[y << xbit] = 4;
-	}
-	for (var y = 0; y < ysize; y++) {
-		photons.mass[xsize - 1 | y << xbit] = 4;
-	}
-	photons.compile();
-
-	var refraction = new Array(isize);
-	var pixels = new Array(isize);
-
-	//////////////////////////////
 
 	do {
-		var xscale = xsize / this.img.width;
-		var yscale = ysize / this.img.height;
+		var xscale = xsize / this.width;
+		var yscale = ysize / this.height;
 		var xmin = 4 * this.R;
 		var ymin = 4 * this.R;
-		var xmax = this.img.width- 4 * this.R;
-		var ymax = this.img.height - 4 * this.R;
+		var xmax = this.width- 4 * this.R;
+		var ymax = this.height - 4 * this.R;
 		var t = 0;
 		do {
 			if (t >= this.T)
@@ -128,12 +85,6 @@ Dew.prototype.step = function() {
 					var dy = this.input.y - p.y;
 					var alpha = Math.min((this.R * this.R) / (dx * dx + dy * dy) - 0.20000000000000001, 1);
 					if (alpha > 0) {
-/*
-						console.log('= ' + i + ' =======');
-						console.log(alpha);
-						console.log(this.input.vx, this.input.vy);
-						console.log(p.vx, p.vy);
-*/
 						p.vx = (1 - alpha) * p.vx + alpha * this.input.vx;
 						p.vy = (1 - alpha) * p.vy + alpha * this.input.vy;
 					}
@@ -259,143 +210,6 @@ Dew.prototype.step = function() {
 			t++;
 		} while(true);
 
-		// zantei
-		{
-			//this.particles[0].x += 1;
-			break;// zantei
-		}
-
-		density.source.fill(0);
-		for(var i = 0; i < this.N; i++) {
-			p = this.particles[i];
-			var x = Math.max(1, Math.min((xscale * p.x), xsize - 1));
-			var y = Math.max(1, Math.min((yscale * p.y), ysize - 1));
-			var j = x | y << xbit;
-			density.source[j] += 8;
-		}
-		density.solve(1, 2);
-
-		for (var i = 0; i < isize; i++){
-			p = density.value[i];
-			if (p < 4) {
-				inflation.mass[i] = 4 - p;
-				inflation.source[i] = p;
-			} else {
-				inflation.mass[i] = 0;
-				inflation.source[i] = 4;
-			}
-		}
-
-		inflation.compile();
-		inflation.solve(1, 3);
-		var i = 0;
-		for (var y = 0; y < ysize; y++) {
-			for (var x = 0; x < xsize;) {
-				var p = inflation.value[i];
-				var z = p <= 0 ? 0 : Math.sqrt(p);
-				thickness[i] = z;
-				var px = inflation.value[x + 1 & xsize - 1 | y << xbit] - inflation.value[x - 1 & xsize - 1 | y << xbit];
-				var py = inflation.value[x | (y + 1 & ysize - 1) << xbit] - inflation.value[x | (y - 1 & ysize - 1) << xbit];
-				p += (px * px + py * py) / 16;
-				z += p <= 0 ? 0 : this.Z * Math.sqrt(p);
-				depth[i] = z;
-				x++;
-				i++;
-			}
-		}
-
-		photons.source.fill(0);
-		var i = 0;
-		for (var y = 0; y < ysize; y++) {
-			for (var x = 0; x < xsize;) {
-				var z = depth[i];
-				var nx = thickness[x - 1 & xsize - 1 | y << xbit] - thickness[x + 1 & xsize - 1 | y << xbit];
-				var ny = thickness[x | (y - 1 & ysize - 1) << xbit] - thickness[x | (y + 1 & ysize - 1) << xbit];
-				var nz = 2;
-				var _n = 1 / Math.sqrt(nx * nx + ny * ny + nz * nz);
-				nx *= _n;
-				ny *= _n;
-				nz *= _n;
-				var lx = -0.35999999999999999;
-				var ly = -0.47999999999999998;
-				var lz = 0.80000000000000004;
-				var ln = lx * nx + ly * ny + lz * nz;
-				reflection[i] = ln;
-				var e = 1.3300000000000001;
-				ln += Math.sqrt((e * e - 1) + ln * ln);
-				lx += ln * nx;
-				ly += ln * ny;
-				lz += ln * nz;
-				var _x = x - parseInt((z / lz) * lx);
-				var _y = y - parseInt((z / lz) * ly);
-				_x = ~(_x >> 31) & (_x | -(_x >> xbit) >> 31) & xsize - 1;
-				_y = ~(_y >> 31) & (_y | -(_y >> ybit) >> 31) & ysize - 1;
-				photons.source[_x | _y << xbit] += ln;
-				ln = nz + Math.sqrt((e * e - 1) + nz * nz);
-				lx = ln * nx;
-				ly = ln * ny;
-				lz = ln * nz + 1;
-				_x = x - parseInt((z / lz) * lx) & xsize - 1;
-				_y = y - parseInt((z / lz) * ly) & ysize - 1;
-				refraction[i] = _x | _y << xbit;
-				x++;
-				i++;
-			}
-		}
-
-		for (var x = 0; x < xsize; x++) {
-			photons.source[x] = 150;
-		}
-		for (var x = 0; x < xsize; x++) {
-			photons.source[x | ysize - 1 << xbit] = 150;
-		}
-		for (var y = 0; y < ysize; y++) {
-			photons.source[y << xbit] = 150;
-		}
-		for (var y = 0; y < ysize; y++) {
-			photons.source[xsize - 1 | y << xbit] = 150;
-		}
-		photons.solve(1, 2);
-
-		/*
-		if (background != null) {
-			for(int i = 0; i < isize; i++)
-			{
-				int j = refraction[i];
-				double specular = reflection[i];
-				specular *= specular;
-				specular *= specular;
-				specular *= specular;
-				specular *= specular;
-				int white = (int)(65536D * specular);
-				int luminance = (int)(A + B * C * photons.value[j]);
-				int color = background[j];
-				int red = white + luminance * (color >> 16 & 0xff);
-				int green = white + luminance * (color >> 8 & 0xff);
-				int blue = white + luminance * (color & 0xff);
-				pixels[i] = 0xff000000 | 0xff0000 & (red | -(red >> 16) >> 31) << 8 | 0xff00 & (green | -(green >> 16) >> 31) | 0xff & (blue | -(blue >> 16) >> 31) >> 8;
-			}
-
-		} else
-		*/
-		{
-			for (var i = 0; i < isize; i++) {
-				var j = refraction[i];
-				var specular = reflection[i];
-				specular *= specular;
-				specular *= specular;
-				specular *= specular;
-				specular *= specular;
-				var white = parseInt(256 * specular);
-				white += parseInt(this.A + this.B * this.C * photons.value[j]);
-				white = (white | -(white >> 8) >> 31) & 0xff;
-				//pixels[i] = 0xff000000 | white << 16 | white << 8 | white;
-				this.img.data[i*4 + 0] = white;
-				this.img.data[i*4 + 1] = white;
-				this.img.data[i*4 + 2] = white;
-				this.img.data[i*4 + 3] = 255;
-			}
-		}
 		break;
 	} while(true);
 
