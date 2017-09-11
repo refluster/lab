@@ -81,17 +81,17 @@ Apl.prototype.initInput = function() {
 	$('input[name=preset]').click(function() {
 		switch($('input[name=preset]:checked').val()) {
 		case 'leaf':
-			apl.blurSize = 0;
+			$('input[name=blur]').val(0.0).change();
 			var bgSrc = 'img/texture-leaf.png';
 			var fgSrc = 'img/texture-leaf.png';
 			break;
 		case 'centralpark':
-			apl.blurSize = 2;
+			$('input[name=blur]').val(2.0).change();
 			var bgSrc = 'img/texture-centralpark.png';
 			var fgSrc = 'img/texture-centralpark.png';
 			break;
 		case 'plain':
-			apl.blurSize = 0;
+			$('input[name=blur]').val(0.0).change();
 			var bgSrc = 'img/texture-plain-fg.png';
 			var fgSrc = 'img/texture-plain-fg.png';
 			break;
@@ -111,7 +111,7 @@ Apl.prototype.initInput = function() {
 	// set blur size
 	$('input[name=blur]').change(function(e) {
 		var v = $(this).val();
-		$('#blur-value').html(v);
+		$('#blur-value').html(v + 'px');
 		apl.blurSize = parseFloat(v);
 		apl.initGraphicalElement();
 		apl.initWebgl();
