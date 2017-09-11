@@ -192,9 +192,9 @@ $(function() {
 					apl.initGraphicalElement();
 					apl.initWebgl();
 				}
-				bg.src = 'img/texture-fg.png';
+				bg.src = 'img/texture-plain-fg.png';
 			}
-			fg.src = 'img/texture-fg.png';
+			fg.src = 'img/texture-plain-fg.png';
 			break;
 		}
 	});
