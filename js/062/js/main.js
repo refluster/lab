@@ -62,7 +62,7 @@ Apl.prototype.initGraphicalElement = function() {
 	}
 };
 Apl.prototype.initInput = function() {
-	// button operation
+	// animation on/off switch
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
 		if (this.animation == true) {
@@ -70,13 +70,14 @@ Apl.prototype.initInput = function() {
 		}
 	}.bind(this));
 
+	// debug image display on/off switch
 	$('#switch-debug').click(function(e) {
 		var display = $('#debug').css('display');
 		display = (display == 'none'? 'block': 'none');
 		$('#debug').css('display', display);
 	}.bind(this));
 
-	// zantei
+	// set preset
 	$('input[name=preset]').click(function() {
 		switch($('input[name=preset]:checked').val()) {
 		case 'leaf':
@@ -107,6 +108,7 @@ Apl.prototype.initInput = function() {
 		fg.src = fgSrc;
 	});
 
+	// set blur size
 	$('input[name=blur]').change(function(e) {
 		var v = $(this).val();
 		$('#blur-value').html(v);
