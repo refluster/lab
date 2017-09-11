@@ -75,6 +75,37 @@ Apl.prototype.initInput = function() {
 		display = (display == 'none'? 'block': 'none');
 		$('#debug').css('display', display);
 	}.bind(this));
+
+	// zantei
+	$('input[name=preset]').click(function() {
+		switch($('input[name=preset]:checked').val()) {
+		case 'leaf':
+			apl.blurSize = 0;
+			var bgSrc = 'img/texture-leaf.png';
+			var fgSrc = 'img/texture-leaf.png';
+			break;
+		case 'centralpark':
+			apl.blurSize = 2;
+			var bgSrc = 'img/texture-centralpark.png';
+			var fgSrc = 'img/texture-centralpark.png';
+			break;
+		case 'plain':
+			apl.blurSize = 0;
+			var bgSrc = 'img/texture-plain-fg.png';
+			var fgSrc = 'img/texture-plain-fg.png';
+			break;
+		}
+		let fg = $('#texture-fg')[0];
+		let bg = $('#texture-bg')[0];
+		fg.onload = function() {
+			bg.onload = function() {
+				apl.initGraphicalElement();
+				apl.initWebgl();
+			}
+			bg.src = bgSrc;
+		}
+		fg.src = fgSrc;
+	});
 };
 Apl.prototype.initWebgl = function() {
 	// webgl setup
@@ -157,36 +188,4 @@ $(function() {
 		apl = new Apl();
 		apl.draw();
 	}, 200); //zantei wait
-
-	// zantei
-	$('input[name=preset]').click(function() {
-		switch($('input[name=preset]:checked').val()) {
-		case 'leaf':
-			apl.blurSize = 0;
-			var bgSrc = 'img/texture-leaf.png';
-			var fgSrc = 'img/texture-leaf.png';
-			break;
-		case 'centralpark':
-			apl.blurSize = 2;
-			var bgSrc = 'img/texture-centralpark.png';
-			var fgSrc = 'img/texture-centralpark.png';
-			break;
-		case 'plain':
-			apl.blurSize = 0;
-			var bgSrc = 'img/texture-plain-fg.png';
-			var fgSrc = 'img/texture-plain-fg.png';
-			break;
-		}
-		let fg = $('#texture-fg')[0];
-		let bg = $('#texture-bg')[0];
-		fg.onload = function() {
-			bg.onload = function() {
-				apl.initGraphicalElement();
-				apl.initWebgl();
-			}
-			bg.src = bgSrc;
-		}
-		fg.src = fgSrc;
-	});
-
 });
