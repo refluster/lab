@@ -158,33 +158,35 @@ $(function() {
 		apl.draw();
 	}, 200); //zantei wait
 
+	// zantei
 	$('input[name=preset]').click(function() {
-		let fg = $('#texture-fg')[0];
-		let bg = $('#texture-bg')[0];
 		switch($('input[name=preset]:checked').val()) {
 		case 'leaf':
 			apl.blurSize = 0;
-			fg.onload = function() {
-				bg.onload = function() {
-					apl.initGraphicalElement();
-					apl.initWebgl();
-				}
-				bg.src = 'img/texture-leaf.png';
-			}
-			fg.src = 'img/texture-leaf.png';
+			var bgSrc = 'img/texture-leaf.png';
+			var fgSrc = 'img/texture-leaf.png';
 			break;
 		case 'centralpark':
 			apl.blurSize = 2;
-			fg.onload = function() {
-				bg.onload = function() {
-					apl.initGraphicalElement();
-					apl.initWebgl();
-				}
-				bg.src = 'img/texture-centralpark.png';
-			}
-			fg.src = 'img/texture-centralpark.png';
+			var bgSrc = 'img/texture-centralpark.png';
+			var fgSrc = 'img/texture-centralpark.png';
+			break;
+		case 'plain':
+			apl.blurSize = 0;
+			var bgSrc = 'img/texture-plain-fg.png';
+			var fgSrc = 'img/texture-plain-fg.png';
 			break;
 		}
+		let fg = $('#texture-fg')[0];
+		let bg = $('#texture-bg')[0];
+		fg.onload = function() {
+			bg.onload = function() {
+				apl.initGraphicalElement();
+				apl.initWebgl();
+			}
+			bg.src = bgSrc;
+		}
+		fg.src = fgSrc;
 	});
 
 });
