@@ -33,11 +33,12 @@ Input.prototype.step = function() {
 	this.y += this.vy;
 };
 Input.prototype.enableGravity = function() {
-	$(window).bind('devicemotion', getGravity.bind(this));
+	this.gravitySense = true;
+	$(window).on('devicemotion', getGravity.bind(this));
 };
 Input.prototype.disableGravity = function() {
-	console.log('disable');
-	$(window).unbind('devicemotion', getGravity.bind(this));
+	this.gravitySense = false;
+	$(window).off('devicemotion', getGravity.bind(this));
 	this.gravity.x = 0.0;
 	this.gravity.y = 0.0;
 	this.gravity.z = 0.0;
@@ -55,7 +56,9 @@ function getCursor(e) {
 }
 
 function getGravity(e) {
-	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
-	this.gravity.y = e.originalEvent.accelerationIncludingGravity.y;
-	this.gravity.z = e.originalEvent.accelerationIncludingGravity.z;
+	if (this.gravitySense == true) {
+		this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
+		this.gravity.y = e.originalEvent.accelerationIncludingGravity.y;
+		this.gravity.z = e.originalEvent.accelerationIncludingGravity.z;
+	}
 }
