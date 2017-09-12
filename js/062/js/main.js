@@ -8,6 +8,7 @@ var Apl = function() {
 };
 Apl.prototype.initParams = function() {
 	this.blurSize = 2;
+	this.gravity = false;
 };
 Apl.prototype.initGraphicalElement = function() {
 	var canvas = $('#canvas-watermap')[0];
@@ -62,7 +63,7 @@ Apl.prototype.initGraphicalElement = function() {
 	}
 };
 Apl.prototype.initInput = function() {
-	// button operation
+	// animation on/off switch
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
 		if (this.animation == true) {
@@ -70,11 +71,62 @@ Apl.prototype.initInput = function() {
 		}
 	}.bind(this));
 
+	// debug image display on/off switch
 	$('#switch-debug').click(function(e) {
 		var display = $('#debug').css('display');
 		display = (display == 'none'? 'block': 'none');
 		$('#debug').css('display', display);
 	}.bind(this));
+
+	// gravity sensing on/off
+	$('#switch-gravity').click(function(e) {
+		this.gravity = !this.gravity;
+		if (this.gravity == true) {
+			this.dew.input.enableGravity();
+		} else {
+			this.dew.input.disableGravity();
+		}
+	}.bind(this));
+
+	// set preset
+	$('input[name=preset]').click(function() {
+		switch($('input[name=preset]:checked').val()) {
+		case 'leaf':
+			$('input[name=blur]').val(0.0).change();
+			var bgSrc = 'img/texture-leaf.png';
+			var fgSrc = 'img/texture-leaf.png';
+			break;
+		case 'centralpark':
+			$('input[name=blur]').val(2.0).change();
+			var bgSrc = 'img/texture-centralpark.png';
+			var fgSrc = 'img/texture-centralpark.png';
+			break;
+		case 'plain':
+			$('input[name=blur]').val(0.0).change();
+			var bgSrc = 'img/texture-plain-fg.png';
+			var fgSrc = 'img/texture-plain-fg.png';
+			break;
+		}
+		let fg = $('#texture-fg')[0];
+		let bg = $('#texture-bg')[0];
+		fg.onload = function() {
+			bg.onload = function() {
+				apl.initGraphicalElement();
+				apl.initWebgl();
+			}
+			bg.src = bgSrc;
+		}
+		fg.src = fgSrc;
+	});
+
+	// set blur size
+	$('input[name=blur]').change(function(e) {
+		var v = $(this).val();
+		$('#blur-value').html(v + 'px');
+		apl.blurSize = parseFloat(v);
+		apl.initGraphicalElement();
+		apl.initWebgl();
+	});
 };
 Apl.prototype.initWebgl = function() {
 	// webgl setup
@@ -157,36 +209,4 @@ $(function() {
 		apl = new Apl();
 		apl.draw();
 	}, 200); //zantei wait
-
-	// zantei
-	$('input[name=preset]').click(function() {
-		switch($('input[name=preset]:checked').val()) {
-		case 'leaf':
-			apl.blurSize = 0;
-			var bgSrc = 'img/texture-leaf.png';
-			var fgSrc = 'img/texture-leaf.png';
-			break;
-		case 'centralpark':
-			apl.blurSize = 2;
-			var bgSrc = 'img/texture-centralpark.png';
-			var fgSrc = 'img/texture-centralpark.png';
-			break;
-		case 'plain':
-			apl.blurSize = 0;
-			var bgSrc = 'img/texture-plain-fg.png';
-			var fgSrc = 'img/texture-plain-fg.png';
-			break;
-		}
-		let fg = $('#texture-fg')[0];
-		let bg = $('#texture-bg')[0];
-		fg.onload = function() {
-			bg.onload = function() {
-				apl.initGraphicalElement();
-				apl.initWebgl();
-			}
-			bg.src = bgSrc;
-		}
-		fg.src = fgSrc;
-	});
-
 });

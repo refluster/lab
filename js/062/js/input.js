@@ -1,6 +1,7 @@
 var Input = function(T) {
 	this.T = T
 	this.pressed = false;
+	this.gravity = {x: 0.0, y: 0.0, z: 0.0};
 
 	$('#canvas-main').on('touchstart mousedown', function(e) {
 		this.pressed = true;
@@ -31,6 +32,17 @@ Input.prototype.step = function() {
 	this.x += this.vx;
 	this.y += this.vy;
 };
+Input.prototype.enableGravity = function() {
+	this.gravitySense = true;
+	$(window).on('devicemotion', getGravity.bind(this));
+};
+Input.prototype.disableGravity = function() {
+	this.gravitySense = false;
+	$(window).off('devicemotion', getGravity.bind(this));
+	this.gravity.x = 0.0;
+	this.gravity.y = 0.0;
+	this.gravity.z = 0.0;
+};
 
 function getCursor(e) {
 	if (e.touches) {
@@ -41,4 +53,12 @@ function getCursor(e) {
 		y = e.offsetY;
 	}
 	return {x: x, y: y};
+}
+
+function getGravity(e) {
+	if (this.gravitySense == true) {
+		this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
+		this.gravity.y = e.originalEvent.accelerationIncludingGravity.y;
+		this.gravity.z = e.originalEvent.accelerationIncludingGravity.z;
+	}
 }
