@@ -208,7 +208,7 @@ Dew.prototype.step = function() {
 				p.vx += p.fx;
 				p.vy += p.fy;
 				p.vx += this.input.gravity.x/this.gr;
-				p.vy += this.input.gravity.y/this.gr;
+				p.vy += -this.input.gravity.y/this.gr;
 			}
 			t++;
 		} while(true);
