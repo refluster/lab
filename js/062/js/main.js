@@ -79,25 +79,6 @@ Apl.prototype.initInput = function() {
 		$('#debug').css('display', display);
 	}.bind(this));
 
-	// gravity / gravity degree
-	const _this = this;
-	$('input[name=gravity-degree]').bind('change', function(e) {
-		var g = parseInt($(this).val());
-		_this.gravityDegree = g;
-		$('#gravity-degree-value').text(g + 'G');
-		if (g !== 0) {
-			console.log('on');
-			$(window).on('devicemotion', getGravity.bind(_this));
-		} else {
-			console.log('off');
-			$(window).off('devicemotion', getGravity.bind(_this));
-			this.gravity.x = 0.0;
-			this.gravity.y = 0.0;
-			this.gravity.z = 0.0;
-		}
-	});
-	$('input[name=gravity-degree]').change();
-
 	// set preset
 	$('input[name=preset]').click(function() {
 		switch($('input[name=preset]:checked').val()) {
@@ -128,6 +109,26 @@ Apl.prototype.initInput = function() {
 		}
 		fg.src = fgSrc;
 	});
+
+	const _this = this;
+
+	// gravity / gravity degree
+	$('input[name=gravity-degree]').bind('change', function(e) {
+		var g = parseInt($(this).val());
+		_this.gravityDegree = g;
+		$('#gravity-degree-value').text(g + 'G');
+		if (g !== 0) {
+			console.log('on');
+			$(window).on('devicemotion', getGravity.bind(_this));
+		} else {
+			console.log('off');
+			$(window).off('devicemotion', getGravity.bind(_this));
+			this.gravity.x = 0.0;
+			this.gravity.y = 0.0;
+			this.gravity.z = 0.0;
+		}
+	});
+	$('input[name=gravity-degree]').change();
 
 	// set blur size
 	$('input[name=blur]').change(function(e) {
