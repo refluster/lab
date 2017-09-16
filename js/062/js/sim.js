@@ -63,7 +63,9 @@ var Dew = function(ctx, width, height) {
 	var _this = this;
 
 	$('input[name=gravity]').bind('change', function(e) {
-		_this.gravity = $(this).val();
+		var g = $(this).val();
+		_this.gravity = g;
+		$('#gravity-value').text(g + 'G');
 	});
 };
 Dew.prototype.step = function() {
