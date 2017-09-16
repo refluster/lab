@@ -5,6 +5,7 @@ var Apl = function() {
 	this.initInput();
 	this.dew = new Dew(this.ctx, this.width, this.height);
 	this.animation = true;
+	this.gravity = {x: 0.0, y: 0.0, z: 0.0};
 };
 Apl.prototype.initParams = function() {
 	this.blurSize = 2;
@@ -78,15 +79,24 @@ Apl.prototype.initInput = function() {
 		$('#debug').css('display', display);
 	}.bind(this));
 
-	// gravity sensing on/off
-	$('#switch-gravity').click(function(e) {
-		this.gravity = !this.gravity;
-		if (this.gravity == true) {
-			this.dew.input.enableGravity();
+	// gravity degree
+	this.gravityDegree = parseInt($('input[name=gravity-degree]').val());
+	var _this = this;
+	$('input[name=gravity-degree]').bind('change', function(e) {
+		var g = parseInt($(this).val());
+		_this.gravityDegree = g;
+		$('#gravity-degree-value').text(g + 'G');
+		if (g !== 0) {
+			console.log('on');
+			$(window).on('devicemotion', getGravity.bind(_this));
 		} else {
-			this.dew.input.disableGravity();
+			console.log('off');
+			$(window).off('devicemotion', getGravity.bind(_this));
+			this.gravity.x = 0.0;
+			this.gravity.y = 0.0;
+			this.gravity.z = 0.0;
 		}
-	}.bind(this));
+	});
 
 	// set preset
 	$('input[name=preset]').click(function() {
@@ -127,7 +137,14 @@ Apl.prototype.initInput = function() {
 		apl.initGraphicalElement();
 		apl.initWebgl();
 	});
+
 };
+function getGravity(e) {
+	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
+	this.gravity.y = e.originalEvent.accelerationIncludingGravity.y;
+	this.gravity.z = e.originalEvent.accelerationIncludingGravity.z;
+}
+
 Apl.prototype.initWebgl = function() {
 	// webgl setup
 	var c = $('#canvas-main')[0];
@@ -176,7 +193,9 @@ Apl.prototype.blank = function() {
 };
 Apl.prototype.draw = function() {
 	this.blank();
-	this.dew.step();
+
+	const c = this.gravityDegree/8192;
+	this.dew.step({gravity: {x:this.gravity.x*c, y:this.gravity.y*c, z:this.gravity.z*c}});
 
 	//this.drawParticles();
 	this.drawSimpleColor();
