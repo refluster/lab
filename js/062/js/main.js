@@ -2,8 +2,8 @@ var Apl = function() {
 	this.initParams();
 	this.initGraphicalElement();
 	this.initWebgl();
-	this.initInput();
-	this.dew = new Dew(this.ctx, this.width, this.height);
+	this.initConfig();
+	this.dew = new Dew(this.ctx, this.width, this.height, {N: this.amount});
 	this.animation = true;
 	this.gravity = {x: 0.0, y: 0.0, z: 0.0};
 };
@@ -63,7 +63,7 @@ Apl.prototype.initGraphicalElement = function() {
 		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
 	}
 };
-Apl.prototype.initInput = function() {
+Apl.prototype.initConfig = function() {
 	// animation on/off switch
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
@@ -139,6 +139,16 @@ Apl.prototype.initInput = function() {
 		_this.initWebgl();
 	});
 	$('input[name=blur]').change();
+
+	// set the amount
+	$('input[name=amount]').change(function(e) {
+		var v = $(this).val();
+		$('#amount-value').html(v);
+		_this.amount = parseFloat(v);
+		delete this.dew;
+		_this.dew = new Dew(_this.ctx, _this.width, _this.height, {N: _this.amount});
+	});
+	$('input[name=amount]').change();
 };
 function getGravity(e) {
 	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
