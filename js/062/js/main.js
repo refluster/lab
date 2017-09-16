@@ -79,9 +79,8 @@ Apl.prototype.initInput = function() {
 		$('#debug').css('display', display);
 	}.bind(this));
 
-	// gravity degree
-	this.gravityDegree = parseInt($('input[name=gravity-degree]').val());
-	var _this = this;
+	// gravity / gravity degree
+	const _this = this;
 	$('input[name=gravity-degree]').bind('change', function(e) {
 		var g = parseInt($(this).val());
 		_this.gravityDegree = g;
@@ -97,6 +96,7 @@ Apl.prototype.initInput = function() {
 			this.gravity.z = 0.0;
 		}
 	});
+	$('input[name=gravity-degree]').change();
 
 	// set preset
 	$('input[name=preset]').click(function() {
@@ -133,11 +133,11 @@ Apl.prototype.initInput = function() {
 	$('input[name=blur]').change(function(e) {
 		var v = $(this).val();
 		$('#blur-value').html(v + 'px');
-		apl.blurSize = parseFloat(v);
-		apl.initGraphicalElement();
-		apl.initWebgl();
+		_this.blurSize = parseFloat(v);
+		_this.initGraphicalElement();
+		_this.initWebgl();
 	});
-
+	$('input[name=blur]').change();
 };
 function getGravity(e) {
 	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
