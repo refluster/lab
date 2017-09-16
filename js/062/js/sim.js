@@ -59,7 +59,12 @@ var Dew = function(ctx, width, height) {
 
 	this.input = new Input(this.T);
 
-	this.gr = parseInt($('input[name=gr]').val());
+	this.gravity = parseInt($('input[name=gravity]').val());
+	var _this = this;
+
+	$('input[name=gravity]').bind('change', function(e) {
+		_this.gravity = $(this).val();
+	});
 };
 Dew.prototype.step = function() {
 	var xbit = parseInt(Math.round(Math.log(this.width / this.H) / Math.log(2)));
@@ -204,11 +209,12 @@ Dew.prototype.step = function() {
 			}
 
 			for (var i = 0; i < this.N; i++) {
+				const gravityDivider = 8192;
 				p = this.particles[i];
 				p.vx += p.fx;
 				p.vy += p.fy;
-				p.vx += this.input.gravity.x/this.gr;
-				p.vy += this.input.gravity.y/this.gr;
+				p.vx += this.input.gravity.x*this.gravity/gravityDivider;
+				p.vy += this.input.gravity.y*this.gravity/gravityDivider;
 			}
 			t++;
 		} while(true);
