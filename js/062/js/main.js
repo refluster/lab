@@ -1,7 +1,6 @@
 var Apl = function() {
 	this.initParams();
 	this.initGraphicalElement();
-	this.initWebgl();
 	this.initConfig();
 	this.dew = new Dew(this.ctx, this.width, this.height, {N: this.amount});
 	this.animation = true;
@@ -85,16 +84,19 @@ Apl.prototype.initConfig = function() {
 		switch($('input[name=preset]:checked').val()) {
 		case 'leaf':
 			$('input[name=blur]').val(0.0).change();
+			$('input[name=color]').val(18).trigger('input').change();
 			var bgSrc = 'img/texture-leaf.png';
 			var fgSrc = 'img/texture-leaf.png';
 			break;
 		case 'centralpark':
 			$('input[name=blur]').val(2.0).change();
+			$('input[name=color]').val(0).trigger('input').change();
 			var bgSrc = 'img/texture-centralpark.png';
 			var fgSrc = 'img/texture-centralpark.png';
 			break;
 		case 'plain':
 			$('input[name=blur]').val(0.0).change();
+			$('input[name=color]').val(72).trigger('input').change();
 			var bgSrc = 'img/texture-plain-fg.png';
 			var fgSrc = 'img/texture-plain-fg.png';
 			break;
