@@ -176,9 +176,8 @@ Apl.prototype.initConfig = function() {
 		_this.color.b = b;
 	});
 	$('input[name=color]').change(function(e) {
-		// update the color to glsl
+		_this.initWebgl();
 	});
-
 };
 function getGravity(e) {
 	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
@@ -274,14 +273,17 @@ Apl.prototype.updateShineColor = function() {
 	const img = $('#drop-shine')[0];
 	const canvas = $('#drop-shine-color')[0];
 	const ctx = canvas.getContext("2d");
+	const rate = 0.08;
+	const rr = 1 - (255 - this.color.r)/255*rate;
+	const rg = 1 - (255 - this.color.g)/255*rate;
+	const rb = 1 - (255 - this.color.b)/255*rate;
 
 	ctx.drawImage(img, 0, 0);
 	var d = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	for (var i = 0; i < d.data.length; i += 4) {
-		d.data[i + 0] = parseInt(d.data[i + 0] * 1.0);
-		d.data[i + 1] = parseInt(d.data[i + 1] * 1.0);
-		d.data[i + 2] = parseInt(d.data[i + 2] * 1.0);
-		d.data[i + 3] = parseInt(d.data[i + 3] * 1.0);
+		d.data[i + 0] = parseInt(d.data[i + 0] * rr);
+		d.data[i + 1] = parseInt(d.data[i + 1] * rg);
+		d.data[i + 2] = parseInt(d.data[i + 2] * rb);
 	}
 	ctx.putImageData(d, 0, 0);
 };
