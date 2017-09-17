@@ -147,6 +147,29 @@ Apl.prototype.initConfig = function() {
 		_this.initWebgl();
 	});
 
+	$('input[name=background]').change(function(e) {
+		const file = e.target.files[0];
+		var reader = new FileReader();
+		if(file.type.indexOf("image") < 0){
+			return false;
+		}
+		reader.onload = (function(file) {
+			return function(e) {
+				let fg = $('#texture-fg')[0];
+				let bg = $('#texture-bg')[0];
+				fg.onload = function() {
+					bg.onload = function() {
+						apl.initGraphicalElement();
+						apl.initWebgl();
+					}
+					bg.src = e.target.result;
+				}
+				fg.src = e.target.result;
+			};
+		})(file);
+		reader.readAsDataURL(file);
+	});
+
 	// set preset
 	$('input[name=preset]').change(function() {
 		switch($('input[name=preset]:checked').val()) {
