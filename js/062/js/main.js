@@ -189,6 +189,13 @@ Apl.prototype.initWebgl = function() {
 	let resolutionLocation = gl.getUniformLocation(this.shaderProgram, "u_resolution");
 	gl.uniform2f(resolutionLocation, 300, 400);
 
+	// update shine color
+	$('#drop-shine-color').width($('#drop-shine').width());
+	$('#drop-shine-color').height($('#drop-shine').height());
+	$('#drop-shine-color').attr('width', $('#drop-shine').width());
+	$('#drop-shine-color').attr('height', $('#drop-shine').height());
+	this.updateShineColor();
+
 	// create uniform texture
 	createTexture(gl, $('#canvas-watermap')[0], 0);
 	createUniform(gl, this.shaderProgram, '1i', 'textureWatermap', 0);
@@ -196,7 +203,7 @@ Apl.prototype.initWebgl = function() {
 	createUniform(gl, this.shaderProgram, '1i', 'textureFg', 1);
 	createTexture(gl, $('#texture-bg-blur')[0], 2);
 	createUniform(gl, this.shaderProgram, '1i', 'textureBg', 2);
-	createTexture(gl, $('#drop-shine')[0], 3);
+	createTexture(gl, $('#drop-shine-color')[0], 3);
 	createUniform(gl, this.shaderProgram, '1i', 'textureShine', 3);
 };
 Apl.prototype.blank = function() {
@@ -233,6 +240,21 @@ Apl.prototype.drawSimpleColor = function() {
 		this.ctx.drawImage(this.alphaGfx, p[i].x - this.dropletSize/2, p[i].y - this.dropletSize/2);
 	}
 }
+Apl.prototype.updateShineColor = function() {
+	const img = $('#drop-shine')[0];
+	const canvas = $('#drop-shine-color')[0];
+	const ctx = canvas.getContext("2d");
+
+	ctx.drawImage(img, 0, 0);
+	var d = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	for (var i = 0; i < d.data.length; i += 4) {
+		d.data[i + 0] = parseInt(d.data[i + 0] * 1.0);
+		d.data[i + 1] = parseInt(d.data[i + 1] * 1.0);
+		d.data[i + 2] = parseInt(d.data[i + 2] * 1.0);
+		d.data[i + 3] = parseInt(d.data[i + 3] * 1.0);
+	}
+	ctx.putImageData(d, 0, 0);
+};
 
 $(function() {
 	setTimeout(function() {
