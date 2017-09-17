@@ -32,6 +32,7 @@ Input.prototype.step = function() {
 	this.x += this.vx;
 	this.y += this.vy;
 };
+
 function getCursor(e) {
 	if (e.touches) {
 		x = e.touches[0].pageX - e.target.offsetLeft;
