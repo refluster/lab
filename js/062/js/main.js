@@ -79,40 +79,6 @@ Apl.prototype.initConfig = function() {
 		$('#debug').css('display', display);
 	}.bind(this));
 
-	// set preset
-	$('input[name=preset]').click(function() {
-		switch($('input[name=preset]:checked').val()) {
-		case 'leaf':
-			$('input[name=blur]').val(0.0).change();
-			$('input[name=color]').val(18).trigger('input').change();
-			var bgSrc = 'img/texture-leaf.png';
-			var fgSrc = 'img/texture-leaf.png';
-			break;
-		case 'centralpark':
-			$('input[name=blur]').val(2.0).change();
-			$('input[name=color]').val(0).trigger('input').change();
-			var bgSrc = 'img/texture-centralpark.png';
-			var fgSrc = 'img/texture-centralpark.png';
-			break;
-		case 'plain':
-			$('input[name=blur]').val(0.0).change();
-			$('input[name=color]').val(72).trigger('input').change();
-			var bgSrc = 'img/texture-plain-fg.png';
-			var fgSrc = 'img/texture-plain-fg.png';
-			break;
-		}
-		let fg = $('#texture-fg')[0];
-		let bg = $('#texture-bg')[0];
-		fg.onload = function() {
-			bg.onload = function() {
-				apl.initGraphicalElement();
-				apl.initWebgl();
-			}
-			bg.src = bgSrc;
-		}
-		fg.src = fgSrc;
-	});
-
 	const _this = this;
 
 	// gravity / gravity degree
@@ -180,6 +146,41 @@ Apl.prototype.initConfig = function() {
 	$('input[name=color]').change(function(e) {
 		_this.initWebgl();
 	});
+
+	// set preset
+	$('input[name=preset]').change(function() {
+		switch($('input[name=preset]:checked').val()) {
+		case 'leaf':
+			$('input[name=blur]').val(0.0).change();
+			$('input[name=color]').val(18).trigger('input').change();
+			var bgSrc = 'img/texture-leaf.png';
+			var fgSrc = 'img/texture-leaf.png';
+			break;
+		case 'centralpark':
+			$('input[name=blur]').val(2.0).change();
+			$('input[name=color]').val(0).trigger('input').change();
+			var bgSrc = 'img/texture-centralpark.png';
+			var fgSrc = 'img/texture-centralpark.png';
+			break;
+		case 'plain':
+			$('input[name=blur]').val(0.0).change();
+			$('input[name=color]').val(72).trigger('input').change();
+			var bgSrc = 'img/texture-plain-fg.png';
+			var fgSrc = 'img/texture-plain-fg.png';
+			break;
+		}
+		let fg = $('#texture-fg')[0];
+		let bg = $('#texture-bg')[0];
+		fg.onload = function() {
+			bg.onload = function() {
+				apl.initGraphicalElement();
+				apl.initWebgl();
+			}
+			bg.src = bgSrc;
+		}
+		fg.src = fgSrc;
+	});
+	$('input[name=preset]:checked').change();
 };
 function getGravity(e) {
 	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
