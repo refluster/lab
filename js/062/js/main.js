@@ -149,6 +149,32 @@ Apl.prototype.initConfig = function() {
 		_this.dew = new Dew(_this.ctx, _this.width, _this.height, {N: _this.amount});
 	});
 	$('input[name=amount]').change();
+
+	const color_div = parseInt($('input[name=color]').prop('max')) + 1;
+	$('input[name=color]').on('input', function () {
+		const h = $(this).val()*360/color_div;
+		const hi = parseInt(h/60);
+		const v = 255;
+		const f = h/60 - hi;
+		const m = 0;
+		const n = parseInt(255*(1 - f));
+		const k = parseInt(255*f);
+		var r, g, b;
+		switch(hi) {
+		case 0: r = v, g = k, b = m; break;
+		case 1: r = n, g = v, b = m; break;
+		case 2: r = m, g = v, b = k; break;
+		case 3: r = m, g = n, b = v; break;
+		case 4: r = k, g = m, b = v; break;
+		case 5: r = v, g = m, b = n; break;
+		}
+
+		$('#color-value').html(r + ' ' + g + ' ' + b);
+	});
+	$('input[name=color]').change(function(e) {
+		// update the color to glsl
+	});
+
 };
 function getGravity(e) {
 	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
