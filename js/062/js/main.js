@@ -10,6 +10,7 @@ var Apl = function() {
 Apl.prototype.initParams = function() {
 	this.blurSize = 2;
 	this.gravity = false;
+	this.color = {r: 0, g: 0, b: 0};
 };
 Apl.prototype.initGraphicalElement = function() {
 	var canvas = $('#canvas-watermap')[0];
@@ -170,6 +171,9 @@ Apl.prototype.initConfig = function() {
 		}
 
 		$('#color-sample').css('background-color', 'rgb('+ r + ',' + g + ',' + b + ')');
+		_this.color.r = r;
+		_this.color.g = g;
+		_this.color.b = b;
 	});
 	$('input[name=color]').change(function(e) {
 		// update the color to glsl
