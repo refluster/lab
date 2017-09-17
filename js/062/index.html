@@ -87,7 +87,7 @@ void main() {
 
     float a = clamp(cur.a*u_alphaMultiply-u_alphaSubtract, 0.0, 1.0);
 
-    vec2 refraction = (vec2(x, y) - 0.8)*2.0;
+    vec2 refraction = (vec2(x, y) - 0.7)*1.4;
     vec2 refractionPos = texCoord()
         + (pixel()*refraction*(u_minRefraction+(d*u_refractionDelta)));
 
