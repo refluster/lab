@@ -169,7 +169,7 @@ Apl.prototype.initConfig = function() {
 		case 5: r = v, g = m, b = n; break;
 		}
 
-		$('#color-value').html(r + ' ' + g + ' ' + b);
+		$('#color-sample').css('background-color', 'rgb('+ r + ',' + g + ',' + b + ')');
 	});
 	$('input[name=color]').change(function(e) {
 		// update the color to glsl
