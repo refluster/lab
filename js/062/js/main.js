@@ -155,16 +155,7 @@ Apl.prototype.initConfig = function() {
 		}
 		reader.onload = (function(file) {
 			return function(e) {
-				let fg = $('#texture-fg')[0];
-				let bg = $('#texture-bg')[0];
-				fg.onload = function() {
-					bg.onload = function() {
-						apl.initGraphicalElement();
-						apl.initWebgl();
-					}
-					bg.src = e.target.result;
-				}
-				fg.src = e.target.result;
+				_this.setBackgroundImage(e.target.result, e.target.result);
 			};
 		})(file);
 		reader.readAsDataURL(file);
@@ -192,18 +183,21 @@ Apl.prototype.initConfig = function() {
 			var fgSrc = 'img/texture-plain-fg.png';
 			break;
 		}
-		let fg = $('#texture-fg')[0];
-		let bg = $('#texture-bg')[0];
-		fg.onload = function() {
-			bg.onload = function() {
-				apl.initGraphicalElement();
-				apl.initWebgl();
-			}
-			bg.src = bgSrc;
-		}
-		fg.src = fgSrc;
+		_this.setBackgroundImage(fgSrc, bgSrc);
 	});
 	$('input[name=preset]:checked').change();
+};
+Apl.prototype.setBackgroundImage = function(fgSrc, bgSrc) {
+	let fg = $('#texture-fg')[0];
+	let bg = $('#texture-bg')[0];
+	fg.onload = function() {
+		bg.onload = function() {
+			apl.initGraphicalElement();
+			apl.initWebgl();
+		}
+		bg.src = bgSrc;
+	}
+	fg.src = fgSrc;
 };
 function getGravity(e) {
 	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
