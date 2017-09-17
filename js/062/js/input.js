@@ -22,7 +22,7 @@ var Input = function(T) {
 		e.preventDefault();
 	}.bind(this));
 
-	$('#canvas-main').on('touchend mouseup', function(e) {
+	$('#canvas-main').on('touchend mouseup mouseleave', function(e) {
 		this.pressed = false;
 	}.bind(this));
 };
