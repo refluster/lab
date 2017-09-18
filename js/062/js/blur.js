@@ -232,8 +232,9 @@ function _blur(src, dst, dispersion, radius, isVertical) {
 	putPixels(dst, dstColor);
 }
 
-function doBlur(srcImg, dstCanvas) {
-	var data = blur(srcImg, 255, 10);
+function doBlur(srcImg, dstCanvas, radius) {
+	radius *= 5; // zantei for avoid to generate dark images
+	var data = blur(srcImg, 255, radius);
 	var cv = dstCanvas;
 	var ctx = cv.getContext('2d');
 	cv.width  = srcImg.width;
@@ -241,7 +242,7 @@ function doBlur(srcImg, dstCanvas) {
 	ctx.putImageData(data, 0, 0);
 }
 
-function blurMain() {
-	doBlur($('#texture-fg')[0], $('#texture-fg-blur')[0]);
-	doBlur($('#texture-bg')[0], $('#texture-bg-blur')[0]);
+function blurMain(srcImg, dstCanvas, radius) {
+	doBlur(srcImg, dstCanvas, radius);
+	doBlur(srcImg, dstCanvas, radius);
 }
