@@ -1,6 +1,6 @@
 'use strict';
 
-function doBlur(srcImg, dstCanvas, radius) {
+function doBlur(srcCanvas, dstCanvas, radius) {
 	/**
 	 * Create a buffer.
 	 *
@@ -129,9 +129,10 @@ function doBlur(srcImg, dstCanvas, radius) {
 	}
 
 
-	function blur(img, dispersion, radius) {
-		var buffer    = createBuffer(img);
+	function blur(canvas, dispersion, radius) {
+		var buffer = canvas;
 		var bufferCtx = buffer.getContext('2d');
+
 		var src  = bufferCtx.getImageData(0, 0, buffer.width, buffer.height);
 		if (dispersion === 0 || radius === 0) {
 			return src;
@@ -229,10 +230,7 @@ function doBlur(srcImg, dstCanvas, radius) {
 
 	// main
 	radius *= 5; // zantei for avoid to generate dark images
-	var data = blur(srcImg, 8, radius);
-	var cv = dstCanvas;
-	var ctx = cv.getContext('2d');
-	cv.width  = srcImg.width;
-	cv.height = srcImg.height;
+	var data = blur(srcCanvas, 8, radius);
+	var ctx = dstCanvas.getContext('2d');
 	ctx.putImageData(data, 0, 0);
 }

@@ -52,7 +52,7 @@ Apl.prototype.initGraphicalElement = function() {
 	this.alphaThreshold = 224;
 
 	// make blur texture (texture-fg/bg -> texture-fg/bg-blur
-	if (this.ctx.filter !== undefined) {
+	{//if (this.ctx.filter !== undefined) {
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
 		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
@@ -61,9 +61,10 @@ Apl.prototype.initGraphicalElement = function() {
 		let bgCtx = bgBlur.getContext("2d");
 		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
-	} else {
-		doBlur($('#texture-fg')[0], $('#texture-fg-blur')[0], this.blurSize);
-		doBlur($('#texture-bg')[0], $('#texture-bg-blur')[0], this.blurSize);
+	}
+	{
+		doBlur($('#texture-fg-blur')[0], $('#texture-fg-blur')[0], this.blurSize);
+		doBlur($('#texture-bg-blur')[0], $('#texture-bg-blur')[0], this.blurSize);
 	}
 };
 Apl.prototype.initConfig = function() {
@@ -314,6 +315,6 @@ Apl.prototype.updateShineColor = function() {
 $(function() {
 	setTimeout(function() {
 		apl = new Apl();
-		//apl.draw();
+		apl.draw();
 	}, 200); //zantei wait
 });
