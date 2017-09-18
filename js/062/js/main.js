@@ -50,7 +50,7 @@ Apl.prototype.initGraphicalElement = function() {
 	this.alphaThreshold = 224;
 
 	// make blur texture (texture-fg/bg -> texture-fg/bg-blur
-	{//
+	{
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
 		let bgBlur = $('#texture-bg-blur')[0]
@@ -61,7 +61,6 @@ Apl.prototype.initGraphicalElement = function() {
 			fgCtx.filter = 'blur(' + this.blurSize + 'px)';
 			bgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		} else {
-			console.log('do blur');
 			StackBlur.canvasRGBA($('#texture-fg-blur')[0], 0, 0, 300, 400, this.blurSize*2);
 			StackBlur.canvasRGBA($('#texture-bg-blur')[0], 0, 0, 300, 400, this.blurSize*2);
 		}
