@@ -227,8 +227,6 @@ Dew.prototype.step = function(data) {
 
 		break;
 	} while(true);
-
-	$('#msg').text(data.gravity.x);
 };
 Dew.prototype.sort = function(particles, first, last) {
 	var a = first;
