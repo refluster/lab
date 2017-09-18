@@ -54,17 +54,19 @@ Apl.prototype.initGraphicalElement = function() {
 	{//
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
-//		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
-		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
 		let bgBlur = $('#texture-bg-blur')[0]
 		let bgCtx = bgBlur.getContext("2d");
-//		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
+		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
 		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
-	}
-	if (this.ctx.filter === undefined) {
-		console.log('do blur');
-		doBlur($('#texture-fg-blur')[0], $('#texture-fg-blur')[0], this.blurSize);
-		doBlur($('#texture-bg-blur')[0], $('#texture-bg-blur')[0], this.blurSize);
+		if (this.ctx.filter !== undefined) {
+			fgCtx.filter = 'blur(' + this.blurSize + 'px)';
+			bgCtx.filter = 'blur(' + this.blurSize + 'px)';
+		} else {
+			console.log('do blur');
+			doBlur($('#texture-fg-blur')[0], $('#texture-fg-blur')[0], this.blurSize);
+			doBlur($('#texture-bg-blur')[0], $('#texture-bg-blur')[0], this.blurSize);
+		}
+
 	}
 };
 Apl.prototype.initConfig = function() {
