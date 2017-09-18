@@ -25,10 +25,11 @@ var Particle = function(x, y) {
 	this.sy;
 };
 
-var Dew = function(ctx, width, height) {
+var Dew = function(ctx, width, height, data) {
 	this.width = width;
 	this.height = height;
 
+/*
 	this.R = 8;
 	this.P = 0.10000000000000001;
 	this.S = 0.02;
@@ -38,6 +39,19 @@ var Dew = function(ctx, width, height) {
 	this.B = 80;
 	this.C = 0.050000000000000003;
 	this.N = 100; //zantei 100;
+	this.M = 0;
+	this.T = 50;
+	this.H = 1;
+*/
+	this.R = 8;
+	this.P = 0.10000000000000001;
+	this.S = 0.02;
+	this.D = 0.050000000000000003;
+	this.Z = 0.90000000000000002;
+	this.A = 80;
+	this.B = 80;
+	this.C = 0.050000000000000003;
+	this.N = data.N;
 	this.M = 0;
 	this.T = 50;
 	this.H = 1;
@@ -58,10 +72,8 @@ var Dew = function(ctx, width, height) {
 	}
 
 	this.input = new Input(this.T);
-
-	this.gr = parseInt($('input[name=gr]').val());
 };
-Dew.prototype.step = function() {
+Dew.prototype.step = function(data) {
 	var xbit = parseInt(Math.round(Math.log(this.width / this.H) / Math.log(2)));
 	var ybit = parseInt(Math.round(Math.log(this.height / this.H) / Math.log(2)));
 	var xsize = 1 << xbit;
@@ -207,16 +219,14 @@ Dew.prototype.step = function() {
 				p = this.particles[i];
 				p.vx += p.fx;
 				p.vy += p.fy;
-				p.vx += this.input.gravity.x/this.gr;
-				p.vy += -this.input.gravity.y/this.gr;
+				p.vx += data.gravity.x;
+				p.vy += data.gravity.y;
 			}
 			t++;
 		} while(true);
 
 		break;
 	} while(true);
-
-	$('#msg').text(this.input.gravity.x);
 };
 Dew.prototype.sort = function(particles, first, last) {
 	var a = first;

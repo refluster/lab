@@ -16,12 +16,14 @@
     </style>
     <title>droplet</title>
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/webgl.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/input.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/grid.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/sim.js" charset="EUC-JP"></script>
+    <script type="text/javascript" src="js/stackblur.min.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/main.js" charset="EUC-JP"></script>
     <script id="vert-shader" type="x-shader/x-vertex">
 // gets the current position
@@ -87,7 +89,7 @@ void main() {
 
     float a = clamp(cur.a*u_alphaMultiply-u_alphaSubtract, 0.0, 1.0);
 
-    vec2 refraction = (vec2(x, y) - 0.8)*2.0;
+    vec2 refraction = (vec2(x, y) - 0.7)*1.4;
     vec2 refractionPos = texCoord()
         + (pixel()*refraction*(u_minRefraction+(d*u_refractionDelta)));
 
@@ -129,21 +131,32 @@ void main() {
         <li>particle simulation</li>
       </ul>
       <div>
-        <input type="radio" name="preset" value="centralpark" checked="checked">central park
-        <input type="radio" name="preset" value="leaf">leaf
-        <input type="radio" name="preset" value="plain">plain
+        preset:
+        <input type="radio" id="radio1" name="preset" value="centralpark" checked>
+        <label for="radio1">park</label>
+        <input type="radio" id="radio2" name="preset" value="leaf">
+        <label for="radio2">leaf</label>
+        <input type="radio" id="radio3" name="preset" value="plain">
+        <label for="radio3">plain</label> 
       </div>
       <div>
-        blur: <input type="range" name="blur" value="2.0" min="0.0" max="5.0" step="0.1">
-        <span id="blur-value"></span>
+        blur: <span id="blur-value"></span>
+        <input type="range" name="blur" value="2.0" min="0.0" max="5.0" step="0.1">
       </div>
       <div>
-        gr: <input type="range" name="gr" value="8192" min="1" max="8192" step="1">
-        <span id="gr-value"></span>
+        gravity: <span id="gravity-degree-value"></span>
+        <input type="range" name="gravity-degree" value="1" min="0" max="3" step="1">
       </div>
-      <div id="msg"></div>
       <div>
-        <button id="switch-gravity">gravity on/off</button>
+        amount: <span id="amount-value"></span>
+        <input type="range" name="amount" value="100" min="100" max="1000" step="100">
+      </div>
+      <div>
+        color: <div id="color-sample" style="display: inline-block; border: 1px solid #888; width: 60px; height: 16px;"></div>
+        <input type="range" name="color" value="0" min="0" max="119" step="1">
+      </div>
+      <div>
+        background: <input type="file" name="background">
       </div>
       <canvas id="canvas-main" width="300" height="400"></canvas>
       <div>
@@ -158,13 +171,15 @@ void main() {
         drop-color
         <img id="drop-color" src="img/drop-color.png"></img>
         drop-shine
-        <img id="drop-shine" src="img/drop-shine.png"></img>
+        <img id="drop-shine" width="128" height="128" src="img/drop-shine.png"></img>
         texture-fg
         <img id="texture-fg" src="img/texture-centralpark.png" width="300" height="400"></img>
         texture-bg
         <img id="texture-bg" src="img/texture-centralpark.png" width="300" height="400"></img>
         alpha-gfx
         <canvas id="alpha-gfx" width="48" height="48"></canvas>
+        drop-shine-color
+        <canvas id="drop-shine-color"></canvas>
         drop-buffer
         <canvas id="drop-buffer" width="24" height="24"></canvas>
         texture-fg-blur

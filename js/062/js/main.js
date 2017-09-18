@@ -1,14 +1,13 @@
 var Apl = function() {
 	this.initParams();
-	this.initGraphicalElement();
-	this.initWebgl();
-	this.initInput();
-	this.dew = new Dew(this.ctx, this.width, this.height);
+	this.initConfig();
+	this.dew = new Dew(this.ctx, this.width, this.height, {N: this.amount});
 	this.animation = true;
+	this.gravity = {x: 0.0, y: 0.0};
 };
 Apl.prototype.initParams = function() {
 	this.blurSize = 2;
-	this.gravity = false;
+	this.color = {r: 0, g: 0, b: 0};
 };
 Apl.prototype.initGraphicalElement = function() {
 	var canvas = $('#canvas-watermap')[0];
@@ -50,19 +49,24 @@ Apl.prototype.initGraphicalElement = function() {
 	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
 	this.alphaThreshold = 224;
 
-	// make blur texture
+	// make blur texture (texture-fg/bg -> texture-fg/bg-blur
 	{
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
-		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
-		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
 		let bgBlur = $('#texture-bg-blur')[0]
 		let bgCtx = bgBlur.getContext("2d");
-		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
+		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
 		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
+		if (this.ctx.filter !== undefined) {
+			fgCtx.filter = 'blur(' + this.blurSize + 'px)';
+			bgCtx.filter = 'blur(' + this.blurSize + 'px)';
+		} else {
+			StackBlur.canvasRGBA($('#texture-fg-blur')[0], 0, 0, 300, 400, this.blurSize*2);
+			StackBlur.canvasRGBA($('#texture-bg-blur')[0], 0, 0, 300, 400, this.blurSize*2);
+		}
 	}
 };
-Apl.prototype.initInput = function() {
+Apl.prototype.initConfig = function() {
 	// animation on/off switch
 	$('#switch-animation').click(function(e) {
 		this.animation = !this.animation;
@@ -78,56 +82,131 @@ Apl.prototype.initInput = function() {
 		$('#debug').css('display', display);
 	}.bind(this));
 
-	// gravity sensing on/off
-	$('#switch-gravity').click(function(e) {
-		this.gravity = !this.gravity;
-		if (this.gravity == true) {
-			this.dew.input.enableGravity();
-		} else {
-			this.dew.input.disableGravity();
-		}
-	}.bind(this));
+	const _this = this;
 
-	// set preset
-	$('input[name=preset]').click(function() {
-		switch($('input[name=preset]:checked').val()) {
-		case 'leaf':
-			$('input[name=blur]').val(0.0).change();
-			var bgSrc = 'img/texture-leaf.png';
-			var fgSrc = 'img/texture-leaf.png';
-			break;
-		case 'centralpark':
-			$('input[name=blur]').val(2.0).change();
-			var bgSrc = 'img/texture-centralpark.png';
-			var fgSrc = 'img/texture-centralpark.png';
-			break;
-		case 'plain':
-			$('input[name=blur]').val(0.0).change();
-			var bgSrc = 'img/texture-plain-fg.png';
-			var fgSrc = 'img/texture-plain-fg.png';
-			break;
+	// gravity / gravity degree
+	$('input[name=gravity-degree]').bind('change', function(e) {
+		var g = parseInt($(this).val());
+		_this.gravityDegree = g;
+		$('#gravity-degree-value').text(g + 'G');
+		if (g !== 0) {
+			$(window).on('devicemotion', getGravity.bind(_this));
+		} else {
+			$(window).off('devicemotion', getGravity.bind(_this));
+			this.gravity.x = 0.0;
+			this.gravity.y = 0.0;
 		}
-		let fg = $('#texture-fg')[0];
-		let bg = $('#texture-bg')[0];
-		fg.onload = function() {
-			bg.onload = function() {
-				apl.initGraphicalElement();
-				apl.initWebgl();
-			}
-			bg.src = bgSrc;
-		}
-		fg.src = fgSrc;
 	});
 
 	// set blur size
 	$('input[name=blur]').change(function(e) {
 		var v = $(this).val();
 		$('#blur-value').html(v + 'px');
-		apl.blurSize = parseFloat(v);
-		apl.initGraphicalElement();
-		apl.initWebgl();
+		_this.blurSize = parseFloat(v);
+		_this.initGraphicalElement();
+		_this.initWebgl();
 	});
+
+	// set the amount
+	$('input[name=amount]').change(function(e) {
+		var v = $(this).val();
+		$('#amount-value').html(v);
+		_this.amount = parseFloat(v);
+		delete this.dew;
+		_this.dew = new Dew(_this.ctx, _this.width, _this.height, {N: _this.amount});
+	});
+
+	const color_div = parseInt($('input[name=color]').prop('max')) + 1;
+	$('input[name=color]').on('input', function () {
+		const h = $(this).val()*360/color_div;
+		const hi = parseInt(h/60);
+		const v = 255;
+		const f = h/60 - hi;
+		const m = 0;
+		const n = parseInt(255*(1 - f));
+		const k = parseInt(255*f);
+		var r, g, b;
+		switch(hi) {
+		case 0: r = v, g = k, b = m; break;
+		case 1: r = n, g = v, b = m; break;
+		case 2: r = m, g = v, b = k; break;
+		case 3: r = m, g = n, b = v; break;
+		case 4: r = k, g = m, b = v; break;
+		case 5: r = v, g = m, b = n; break;
+		}
+
+		$('#color-sample').css('background-color', 'rgb('+ r + ',' + g + ',' + b + ')');
+		_this.color.r = r;
+		_this.color.g = g;
+		_this.color.b = b;
+	});
+	$('input[name=color]').change(function(e) {
+		_this.initWebgl();
+	});
+
+	$('input[name=background]').change(function(e) {
+		const file = e.target.files[0];
+		var reader = new FileReader();
+		if(file.type.indexOf("image") < 0){
+			return false;
+		}
+		reader.onload = (function(file) {
+			return function(e) {
+				_this.setBackgroundImage(e.target.result, e.target.result);
+			};
+		})(file);
+		reader.readAsDataURL(file);
+	});
+
+	// set preset
+	$('input[name=preset]').change(function() {
+		switch($('input[name=preset]:checked').val()) {
+		case 'leaf':
+			$('input[name=blur]').val(0.0).change();
+			$('input[name=color]').val(18).trigger('input').change();
+			$('input[name=gravity-degree]').val(1).change();
+			$('input[name=amount]').val(100).change();
+			var bgSrc = 'img/texture-leaf.png';
+			var fgSrc = 'img/texture-leaf.png';
+			break;
+		case 'centralpark':
+			$('input[name=blur]').val(2.0).change();
+			$('input[name=color]').val(0).trigger('input').change();
+			$('input[name=gravity-degree]').val(1).change();
+			$('input[name=amount]').val(100).change();
+			var bgSrc = 'img/texture-centralpark.png';
+			var fgSrc = 'img/texture-centralpark.png';
+			break;
+		case 'plain':
+			$('input[name=blur]').val(0.0).change();
+			$('input[name=color]').val(72).trigger('input').change();
+			$('input[name=gravity-degree]').val(1).change();
+			$('input[name=amount]').val(100).change();
+			var bgSrc = 'img/texture-plain-fg.png';
+			var fgSrc = 'img/texture-plain-fg.png';
+			break;
+		}
+		_this.setBackgroundImage(fgSrc, bgSrc);
+	});
+	$('input[name=preset]:checked').change();
 };
+Apl.prototype.setBackgroundImage = function(fgSrc, bgSrc) {
+	let fg = $('#texture-fg')[0];
+	let bg = $('#texture-bg')[0];
+	fg.onload = function() {
+		bg.onload = function() {
+			apl.initGraphicalElement();
+			apl.initWebgl();
+		}
+		bg.src = bgSrc;
+	}
+	fg.src = fgSrc;
+};
+function getGravity(e) {
+	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
+	this.gravity.y = e.originalEvent.accelerationIncludingGravity.y;
+}
+
 Apl.prototype.initWebgl = function() {
 	// webgl setup
 	var c = $('#canvas-main')[0];
@@ -161,6 +240,13 @@ Apl.prototype.initWebgl = function() {
 	let resolutionLocation = gl.getUniformLocation(this.shaderProgram, "u_resolution");
 	gl.uniform2f(resolutionLocation, 300, 400);
 
+	// update shine color
+	$('#drop-shine-color').width($('#drop-shine').width());
+	$('#drop-shine-color').height($('#drop-shine').height());
+	$('#drop-shine-color').attr('width', $('#drop-shine').width());
+	$('#drop-shine-color').attr('height', $('#drop-shine').height());
+	this.updateShineColor();
+
 	// create uniform texture
 	createTexture(gl, $('#canvas-watermap')[0], 0);
 	createUniform(gl, this.shaderProgram, '1i', 'textureWatermap', 0);
@@ -168,7 +254,7 @@ Apl.prototype.initWebgl = function() {
 	createUniform(gl, this.shaderProgram, '1i', 'textureFg', 1);
 	createTexture(gl, $('#texture-bg-blur')[0], 2);
 	createUniform(gl, this.shaderProgram, '1i', 'textureBg', 2);
-	createTexture(gl, $('#drop-shine')[0], 3);
+	createTexture(gl, $('#drop-shine-color')[0], 3);
 	createUniform(gl, this.shaderProgram, '1i', 'textureShine', 3);
 };
 Apl.prototype.blank = function() {
@@ -176,7 +262,9 @@ Apl.prototype.blank = function() {
 };
 Apl.prototype.draw = function() {
 	this.blank();
-	this.dew.step();
+
+	const c = this.gravityDegree/8192;
+	this.dew.step({gravity: {x:this.gravity.x*c, y:-this.gravity.y*c}});
 
 	//this.drawParticles();
 	this.drawSimpleColor();
@@ -203,6 +291,24 @@ Apl.prototype.drawSimpleColor = function() {
 		this.ctx.drawImage(this.alphaGfx, p[i].x - this.dropletSize/2, p[i].y - this.dropletSize/2);
 	}
 }
+Apl.prototype.updateShineColor = function() {
+	const img = $('#drop-shine')[0];
+	const canvas = $('#drop-shine-color')[0];
+	const ctx = canvas.getContext("2d");
+	const rate = 0.08;
+	const rr = 1 - (255 - this.color.r)/255*rate;
+	const rg = 1 - (255 - this.color.g)/255*rate;
+	const rb = 1 - (255 - this.color.b)/255*rate;
+
+	ctx.drawImage(img, 0, 0);
+	var d = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	for (var i = 0; i < d.data.length; i += 4) {
+		d.data[i + 0] = parseInt(d.data[i + 0] * rr);
+		d.data[i + 1] = parseInt(d.data[i + 1] * rg);
+		d.data[i + 2] = parseInt(d.data[i + 2] * rb);
+	}
+	ctx.putImageData(d, 0, 0);
+};
 
 $(function() {
 	setTimeout(function() {

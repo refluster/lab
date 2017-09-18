@@ -22,7 +22,7 @@ var Input = function(T) {
 		e.preventDefault();
 	}.bind(this));
 
-	$('#canvas-main').on('touchend mouseup', function(e) {
+	$('#canvas-main').on('touchend mouseup mouseleave', function(e) {
 		this.pressed = false;
 	}.bind(this));
 };
@@ -31,17 +31,6 @@ Input.prototype.step = function() {
 	this.vy += (2 * ((this.y0 - this.y) / this.T - this.vy)) / this.T;
 	this.x += this.vx;
 	this.y += this.vy;
-};
-Input.prototype.enableGravity = function() {
-	this.gravitySense = true;
-	$(window).on('devicemotion', getGravity.bind(this));
-};
-Input.prototype.disableGravity = function() {
-	this.gravitySense = false;
-	$(window).off('devicemotion', getGravity.bind(this));
-	this.gravity.x = 0.0;
-	this.gravity.y = 0.0;
-	this.gravity.z = 0.0;
 };
 
 function getCursor(e) {
@@ -53,12 +42,4 @@ function getCursor(e) {
 		y = e.offsetY;
 	}
 	return {x: x, y: y};
-}
-
-function getGravity(e) {
-	if (this.gravitySense == true) {
-		this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
-		this.gravity.y = e.originalEvent.accelerationIncludingGravity.y;
-		this.gravity.z = e.originalEvent.accelerationIncludingGravity.z;
-	}
 }
