@@ -91,10 +91,8 @@ Apl.prototype.initConfig = function() {
 		_this.gravityDegree = g;
 		$('#gravity-degree-value').text(g + 'G');
 		if (g !== 0) {
-			console.log('on');
 			$(window).on('devicemotion', getGravity.bind(_this));
 		} else {
-			console.log('off');
 			$(window).off('devicemotion', getGravity.bind(_this));
 			this.gravity.x = 0.0;
 			this.gravity.y = 0.0;
