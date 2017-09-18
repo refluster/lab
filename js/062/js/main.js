@@ -1,6 +1,5 @@
 var Apl = function() {
 	this.initParams();
-	this.initGraphicalElement();
 	this.initConfig();
 	this.dew = new Dew(this.ctx, this.width, this.height, {N: this.amount});
 	this.animation = true;
@@ -52,17 +51,18 @@ Apl.prototype.initGraphicalElement = function() {
 	this.alphaThreshold = 224;
 
 	// make blur texture (texture-fg/bg -> texture-fg/bg-blur
-	{//if (this.ctx.filter !== undefined) {
+	{//
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
-		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
+//		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
 		let bgBlur = $('#texture-bg-blur')[0]
 		let bgCtx = bgBlur.getContext("2d");
-		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
+//		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
 	}
-	{
+	if (this.ctx.filter === undefined) {
+		console.log('do blur');
 		doBlur($('#texture-fg-blur')[0], $('#texture-fg-blur')[0], this.blurSize);
 		doBlur($('#texture-bg-blur')[0], $('#texture-bg-blur')[0], this.blurSize);
 	}
@@ -101,7 +101,6 @@ Apl.prototype.initConfig = function() {
 			this.gravity.z = 0.0;
 		}
 	});
-	$('input[name=gravity-degree]').change();
 
 	// set blur size
 	$('input[name=blur]').change(function(e) {
@@ -111,7 +110,6 @@ Apl.prototype.initConfig = function() {
 		_this.initGraphicalElement();
 		_this.initWebgl();
 	});
-	$('input[name=blur]').change();
 
 	// set the amount
 	$('input[name=amount]').change(function(e) {
@@ -121,7 +119,6 @@ Apl.prototype.initConfig = function() {
 		delete this.dew;
 		_this.dew = new Dew(_this.ctx, _this.width, _this.height, {N: _this.amount});
 	});
-	$('input[name=amount]').change();
 
 	const color_div = parseInt($('input[name=color]').prop('max')) + 1;
 	$('input[name=color]').on('input', function () {
@@ -171,18 +168,24 @@ Apl.prototype.initConfig = function() {
 		case 'leaf':
 			$('input[name=blur]').val(0.0).change();
 			$('input[name=color]').val(18).trigger('input').change();
+			$('input[name=gravity-degree]').val(1).change();
+			$('input[name=amount]').val(100).change();
 			var bgSrc = 'img/texture-leaf.png';
 			var fgSrc = 'img/texture-leaf.png';
 			break;
 		case 'centralpark':
 			$('input[name=blur]').val(2.0).change();
 			$('input[name=color]').val(0).trigger('input').change();
+			$('input[name=gravity-degree]').val(1).change();
+			$('input[name=amount]').val(100).change();
 			var bgSrc = 'img/texture-centralpark.png';
 			var fgSrc = 'img/texture-centralpark.png';
 			break;
 		case 'plain':
 			$('input[name=blur]').val(0.0).change();
 			$('input[name=color]').val(72).trigger('input').change();
+			$('input[name=gravity-degree]').val(1).change();
+			$('input[name=amount]').val(100).change();
 			var bgSrc = 'img/texture-plain-fg.png';
 			var fgSrc = 'img/texture-plain-fg.png';
 			break;

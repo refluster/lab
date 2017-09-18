@@ -230,7 +230,7 @@ function doBlur(srcCanvas, dstCanvas, radius) {
 
 	// main
 	radius *= 5; // zantei for avoid to generate dark images
-	var data = blur(srcCanvas, 8, radius);
+	var data = blur(srcCanvas, 256, radius);
 	var ctx = dstCanvas.getContext('2d');
 	ctx.putImageData(data, 0, 0);
 }
