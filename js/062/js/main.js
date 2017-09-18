@@ -270,7 +270,7 @@ Apl.prototype.draw = function() {
 	this.blank();
 
 	const c = this.gravityDegree/8192;
-	this.dew.step({gravity: {x:this.gravity.x*c, y:this.gravity.y*c, z:this.gravity.z*c}});
+	this.dew.step({gravity: {x:this.gravity.x*c, y:-this.gravity.y*c, z:this.gravity.z*c}});
 
 	//this.drawParticles();
 	this.drawSimpleColor();
