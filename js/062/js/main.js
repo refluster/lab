@@ -52,7 +52,7 @@ Apl.prototype.initGraphicalElement = function() {
 	this.alphaThreshold = 224;
 
 	// make blur texture (texture-fg/bg -> texture-fg/bg-blur
-	{
+	if (false) {
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
 		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
@@ -61,6 +61,9 @@ Apl.prototype.initGraphicalElement = function() {
 		let bgCtx = bgBlur.getContext("2d");
 		bgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
+	} else {
+		blurMain($('#texture-fg')[0], $('#texture-fg-blur')[0]);
+		blurMain($('#texture-bg')[0], $('#texture-bg-blur')[0]);
 	}
 };
 Apl.prototype.initConfig = function() {

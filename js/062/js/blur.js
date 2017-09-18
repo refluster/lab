@@ -232,15 +232,16 @@ function _blur(src, dst, dispersion, radius, isVertical) {
 	putPixels(dst, dstColor);
 }
 
-function doBlur(img) {
-	var data = blur(img, 255, 10);
-	var cv = $('#blur-dst')[0];
+function doBlur(srcImg, dstCanvas) {
+	var data = blur(srcImg, 255, 10);
+	var cv = dstCanvas;
 	var ctx = cv.getContext('2d');
-	cv.width  = img.width;
-	cv.height = img.height;
+	cv.width  = srcImg.width;
+	cv.height = srcImg.height;
 	ctx.putImageData(data, 0, 0);
 }
 
 function blurMain() {
-	doBlur($('#texture-fg')[0]);
+	doBlur($('#texture-fg')[0], $('#texture-fg-blur')[0]);
+	doBlur($('#texture-bg')[0], $('#texture-bg-blur')[0]);
 }
