@@ -63,10 +63,9 @@ Apl.prototype.initGraphicalElement = function() {
 			bgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		} else {
 			console.log('do blur');
-			doBlur($('#texture-fg-blur')[0], $('#texture-fg-blur')[0], this.blurSize);
-			doBlur($('#texture-bg-blur')[0], $('#texture-bg-blur')[0], this.blurSize);
+			StackBlur.canvasRGBA($('#texture-fg-blur')[0], 0, 0, 300, 400, this.blurSize*4);
+			StackBlur.canvasRGBA($('#texture-bg-blur')[0], 0, 0, 300, 400, this.blurSize*4);
 		}
-
 	}
 };
 Apl.prototype.initConfig = function() {
