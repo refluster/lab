@@ -52,7 +52,7 @@ Apl.prototype.initGraphicalElement = function() {
 	this.alphaThreshold = 224;
 
 	// make blur texture (texture-fg/bg -> texture-fg/bg-blur
-	if (false) {
+	if (this.ctx.filter !== undefined) {
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");
 		fgCtx.filter = 'blur(' + this.blurSize + 'px)';
