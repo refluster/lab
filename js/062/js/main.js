@@ -311,6 +311,7 @@ Apl.prototype.updateShineColor = function() {
 $(function() {
 	setTimeout(function() {
 		apl = new Apl();
-		apl.draw();
+		//apl.draw();
+		blurMain();
 	}, 200); //zantei wait
 });

@@ -22,6 +22,7 @@
     <script type="text/javascript" src="js/input.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/grid.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/sim.js" charset="EUC-JP"></script>
+    <script type="text/javascript" src="js/blur.js" charset="EUC-JP"></script>
     <script type="text/javascript" src="js/main.js" charset="EUC-JP"></script>
     <script id="vert-shader" type="x-shader/x-vertex">
 // gets the current position
@@ -159,6 +160,10 @@ void main() {
         <button id="switch-animation">animation on/off</button>
         <button id="switch-debug">debug images</button>
       </div>
+
+      <img id="blur-src" src="img/texture-centralpark.png">
+      <canvas id="blur-dst" width="300" height="400"></canvas>
+
       <div id="debug" style="display: none">
         canvas-watermap
         <canvas id="canvas-watermap" width="300" height="400"></canvas>
