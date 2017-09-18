@@ -51,7 +51,7 @@ Apl.prototype.initGraphicalElement = function() {
 	this.alphaImage = alphaCtx.getImageData(0, 0, this.dropletSize*2, this.dropletSize*2);
 	this.alphaThreshold = 224;
 
-	// make blur texture
+	// make blur texture (texture-fg/bg -> texture-fg/bg-blur
 	{
 		let fgBlur = $('#texture-fg-blur')[0];
 		let fgCtx = fgBlur.getContext("2d");

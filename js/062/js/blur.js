@@ -242,5 +242,5 @@ function doBlur(img) {
 }
 
 function blurMain() {
-	doBlur($('#blur-src')[0]);
+	doBlur($('#texture-fg')[0]);
 }
