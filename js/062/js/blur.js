@@ -234,15 +234,10 @@ function _blur(src, dst, dispersion, radius, isVertical) {
 
 function doBlur(srcImg, dstCanvas, radius) {
 	radius *= 5; // zantei for avoid to generate dark images
-	var data = blur(srcImg, 255, radius);
+	var data = blur(srcImg, 8, radius);
 	var cv = dstCanvas;
 	var ctx = cv.getContext('2d');
 	cv.width  = srcImg.width;
 	cv.height = srcImg.height;
 	ctx.putImageData(data, 0, 0);
-}
-
-function blurMain(srcImg, dstCanvas, radius) {
-	doBlur(srcImg, dstCanvas, radius);
-	doBlur(srcImg, dstCanvas, radius);
 }
