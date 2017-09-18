@@ -3,11 +3,10 @@ var Apl = function() {
 	this.initConfig();
 	this.dew = new Dew(this.ctx, this.width, this.height, {N: this.amount});
 	this.animation = true;
-	this.gravity = {x: 0.0, y: 0.0, z: 0.0};
+	this.gravity = {x: 0.0, y: 0.0};
 };
 Apl.prototype.initParams = function() {
 	this.blurSize = 2;
-	this.gravity = false;
 	this.color = {r: 0, g: 0, b: 0};
 };
 Apl.prototype.initGraphicalElement = function() {
@@ -99,7 +98,6 @@ Apl.prototype.initConfig = function() {
 			$(window).off('devicemotion', getGravity.bind(_this));
 			this.gravity.x = 0.0;
 			this.gravity.y = 0.0;
-			this.gravity.z = 0.0;
 		}
 	});
 
@@ -210,7 +208,6 @@ Apl.prototype.setBackgroundImage = function(fgSrc, bgSrc) {
 function getGravity(e) {
 	this.gravity.x = e.originalEvent.accelerationIncludingGravity.x;
 	this.gravity.y = e.originalEvent.accelerationIncludingGravity.y;
-	this.gravity.z = e.originalEvent.accelerationIncludingGravity.z;
 }
 
 Apl.prototype.initWebgl = function() {
@@ -270,7 +267,7 @@ Apl.prototype.draw = function() {
 	this.blank();
 
 	const c = this.gravityDegree/8192;
-	this.dew.step({gravity: {x:this.gravity.x*c, y:-this.gravity.y*c, z:this.gravity.z*c}});
+	this.dew.step({gravity: {x:this.gravity.x*c, y:-this.gravity.y*c}});
 
 	//this.drawParticles();
 	this.drawSimpleColor();
