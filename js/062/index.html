@@ -16,6 +16,7 @@
     </style>
     <title>droplet</title>
     <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/webgl.js" charset="EUC-JP"></script>
@@ -130,26 +131,29 @@ void main() {
         <li>particle simulation</li>
       </ul>
       <div>
-        <input type="radio" name="preset" value="centralpark" checked="checked">central park
-        <input type="radio" name="preset" value="leaf">leaf
-        <input type="radio" name="preset" value="plain">plain
+        preset:
+        <input type="radio" id="radio1" name="preset" value="centralpark" checked>
+        <label for="radio1">park</label>
+        <input type="radio" id="radio2" name="preset" value="leaf">
+        <label for="radio2">leaf</label>
+        <input type="radio" id="radio3" name="preset" value="plain">
+        <label for="radio3">plain</label> 
       </div>
       <div>
-        blur: <input type="range" name="blur" value="2.0" min="0.0" max="5.0" step="0.1">
-        <span id="blur-value"></span>
+        blur: <span id="blur-value"></span>
+        <input type="range" name="blur" value="2.0" min="0.0" max="5.0" step="0.1">
       </div>
       <div>
-        gravity: <input type="range" name="gravity-degree" value="1" min="0" max="3" step="1">
-        <span id="gravity-degree-value"></span>
+        gravity: <span id="gravity-degree-value"></span>
+        <input type="range" name="gravity-degree" value="1" min="0" max="3" step="1">
       </div>
       <div>
-        amount: <input type="range" name="amount" value="100" min="100" max="1000" step="100">
-        <span id="amount-value"></span>
+        amount: <span id="amount-value"></span>
+        <input type="range" name="amount" value="100" min="100" max="1000" step="100">
       </div>
       <div>
-        color: <input type="range" name="color" value="0" min="0" max="119" step="1">
-        <span id="color-value"></span>
-        <div id="color-sample" style="display: inline-block; border: 1px solid #888; width: 60px; height: 16px;"></div>
+        color: <div id="color-sample" style="display: inline-block; border: 1px solid #888; width: 60px; height: 16px;"></div>
+        <input type="range" name="color" value="0" min="0" max="119" step="1">
       </div>
       <div>
         background: <input type="file" name="background">
