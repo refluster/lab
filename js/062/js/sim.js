@@ -13,8 +13,8 @@ var Particle = function(x, y) {
 	this.x = x;
 	this.y = y;
 	this.tag = 0;
-	this.vx = 0;
-	this.vy = 0;
+	this.vx = (Math.random() - 0.5)*2;
+	this.vy = (Math.random() - 0.5)*2;
 	this.fx;
 	this.fy;
 	this.w;
