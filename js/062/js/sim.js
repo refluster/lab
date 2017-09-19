@@ -29,20 +29,6 @@ var Dew = function(ctx, width, height, data) {
 	this.width = width;
 	this.height = height;
 
-/*
-	this.R = 8;
-	this.P = 0.10000000000000001;
-	this.S = 0.02;
-	this.D = 0.050000000000000003;
-	this.Z = 0.90000000000000002;
-	this.A = 80;
-	this.B = 80;
-	this.C = 0.050000000000000003;
-	this.N = 100; //zantei 100;
-	this.M = 0;
-	this.T = 50;
-	this.H = 1;
-*/
 	this.R = 8;
 	this.P = 0.10000000000000001;
 	this.S = 0.02;
