@@ -55,14 +55,14 @@ Apl.prototype.initGraphicalElement = function() {
 		let fgCtx = fgBlur.getContext("2d");
 		let bgBlur = $('#texture-bg-blur')[0]
 		let bgCtx = bgBlur.getContext("2d");
-		fgCtx.drawImage($('#texture-fg')[0], 0, 0, 300, 400);
-		bgCtx.drawImage($('#texture-bg')[0], 0, 0, 300, 400);
+		fgCtx.drawImage($('#texture-fg')[0], 0, 0, this.width, this.height);
+		bgCtx.drawImage($('#texture-bg')[0], 0, 0, this.width, this.height);
 		if (this.ctx.filter !== undefined) {
 			fgCtx.filter = 'blur(' + this.blurSize + 'px)';
 			bgCtx.filter = 'blur(' + this.blurSize + 'px)';
 		} else {
-			StackBlur.canvasRGBA($('#texture-fg-blur')[0], 0, 0, 300, 400, this.blurSize*2);
-			StackBlur.canvasRGBA($('#texture-bg-blur')[0], 0, 0, 300, 400, this.blurSize*2);
+			StackBlur.canvasRGBA($('#texture-fg-blur')[0], 0, 0, this.width, this.height, this.blurSize*2);
+			StackBlur.canvasRGBA($('#texture-bg-blur')[0], 0, 0, this.width, this.height, this.blurSize*2);
 		}
 	}
 };
@@ -238,7 +238,7 @@ Apl.prototype.initWebgl = function() {
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
 	let resolutionLocation = gl.getUniformLocation(this.shaderProgram, "u_resolution");
-	gl.uniform2f(resolutionLocation, 300, 400);
+	gl.uniform2f(resolutionLocation, this.width, this.height);
 
 	// update shine color
 	$('#drop-shine-color').width($('#drop-shine').width());
