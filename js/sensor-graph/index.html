@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="EUC-JP">
+    <title>sensor graph</title>
+    <script type="text/javascript" src="./js/jquery-3.1.0.min.js" charset="EUC-JP"></script>
+    <script type="text/javascript" src="./js/main.js" charset="EUC-JP"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script type="text/javascript" src="http://localhost:8881/socket.io/socket.io.js"></script>
+    <style TYPE="text/css">
+    </style>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-16703149-7', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <div id="header"><h2 class="title">sensor graph</h2></div>
+    <div class="container" id="contents">
+      <table class="table" id="sense">
+        <thead>
+          <tr>
+            <th>sensor type</th>
+            <th>support</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <div class="row">
+        <label for="sampling-interval" class="col-xs-8 control-label">sampling interval (msec)</label>
+        <div class="col-xs-4">
+          <input type="number" min="0" max="1000" step="1" id="sampling-interval"
+                 name="sampling-interval" class="form-control" required />
+        </div>
+      </div>
+      <button class="btn btn-primary" id="save">start</button>
+      <p>
+      <div class="panel panel-default">
+        <div class="panel-body" id="status">hoge</div>
+      </div>
+      <ul class="list-group" id="files">
+      </ul>
+    </div>
+  </body>
+</html>
