@@ -4,9 +4,6 @@ Apl = function() {
 			accelerationIncludingGravity: {x: '-', y: '-', z: '-'},
 			acceleration: {x: '-', y: '-', z: '-'},
 			rotationRate: {alpha: '-', beta: '-', gamma: '-'}},
-		deviceorientation: {absolute: '-', alpha: '-', beta: '-', gamma: '-'},
-		devicelight: {value: '-'},
-		deviceproximity: {max: '-', min: '-', value: '-'},
 	};
 
 	$('#save').on('click', this.startSaving.bind(this));
@@ -18,12 +15,6 @@ Apl = function() {
 			 '<td>' + (window.DeviceMotionEvent? 'ok': '-') + '</td></tr>');
 	d.append('<tr><td>rotation rate</td>' +
 			 '<td>' + (window.DeviceMotionEvent? 'ok': '-') + '</td></tr>');
-	d.append('<tr><td>gyroscope</td>' +
-			 '<td>' + (window.DeviceOrientationEvent? 'ok': '-') + '</td></tr>');
-	d.append('<tr><td>ambient light</td>' +
-			 '<td>' + (window.DeviceLightEvent? 'ok': '-') + '</td></tr>');
-	d.append('<tr><td>proximity</td>' +
-			 '<td>' + (window.DeviceProximityEvent? 'ok': '-') + '</td></tr>');
 
 	$('#status').text('ready');
 };
@@ -34,23 +25,7 @@ Apl.prototype.startSaving = function(e) {
 			this.ePointers.devicemotion = e.originalEvent;
 		}.bind(this));
 	}
-	if (window.DeviceOrientationEvent) {
-		$(window).on('deviceorientation', function(e) {
-			this.ePointers.deviceorientation = e.originalEvent;
-		}.bind(this));
-	}
-	if (window.DeviceLightEvent) {
-		$(window).on('devicelight', function(e) {
-			this.ePointers.devicelight = e.originalEvent;
-		}.bind(this));
-	}
-	if (window.DeviceProximityEvent) {
-		$(window).on('deviceproximity', function(e) {
-			this.ePointers.deviceproximity = e.originalEvent;
-		}.bind(this));
-	}
-	this.logHeader();
-	var sampleInterval = (parseInt($("#sampling-intervaol").val()) || 200);
+	var sampleInterval = (parseInt($("#sampling-interval").val()) || 200);
 	this.timer = setInterval(this.logDataPush.bind(this), sampleInterval);
 	$('#save').text('stop');
 	$('#save').off('click');
@@ -62,37 +37,11 @@ Apl.prototype.stopSaving = function(e) {
 	if (window.DeviceMotionEvent) {
 		$(window).off('devicemotion');
 	}
-	if (window.DeviceOrientationEvent) {
-		$(window).off('deviceorientation');
-	}
-	if (window.DeviceLightEvent) {
-		$(window).off('devicelight');
-	}
-	if (window.DeviceProximityEvent) {
-		$(window).off('deviceproximity');
-	}
 	clearInterval(this.timer);
 	$('#save').text('start');
-	$('#save').off('click');
 	$('#save').addClass('disabled');
 	$('#status').text('uploading data');
-	this.logUpload(function(file) {
-		$('#save').on('click', this.startSaving.bind(this));
-		$('#save').removeClass('disabled');
-		$('#status').text('saved ' + file + ', ready');
-	}.bind(this));
 };
-
-Apl.prototype.logHeader = function() {
-	this.log = [['date',
-				 'acg.x', 'acg.y', 'acg.z',
-				 'acc.x', 'acc.y', 'acc.z',
-				 'rot.a', 'rot.b', 'rot.g',
-				 'orient.abs', 'orient.a', 'orient.b', 'orient.g',
-				 'light',
-				 'prox.max', 'prox.min', 'prox.val',
-				]];
-}
 
 Apl.prototype.logDataPush = function() {
 	var date = new Date();
@@ -124,21 +73,6 @@ Apl.prototype.logDataPush = function() {
 		this.ePointers.deviceproximity.min,
 		this.ePointers.deviceproximity.value,
 	]);
-};
-
-Apl.prototype.logUpload = function(callback) {
-	var data = $.map(this.log, function(n, i) {return n.join(',')}).join("\n");
-
-	$.post('upload.cgi', {data: data}, function() {
-	})
-		.done(function(d) {
-		})
-		.fail(function() {
-		})
-		.always(function(d) {
-			console.log(d);
-			callback(d);
-		});
 };
 
 $(function() {
