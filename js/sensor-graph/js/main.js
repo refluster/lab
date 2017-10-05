@@ -20,6 +20,7 @@ Apl = function() {
 };
 
 Apl.prototype.startSaving = function(e) {
+	this.log = [];
 	if (window.DeviceMotionEvent) {
 		$(window).on('devicemotion', function(e) {
 			this.ePointers.devicemotion = e.originalEvent;
@@ -53,7 +54,7 @@ Apl.prototype.logDataPush = function() {
 		('0' + date.getSeconds()).slice(-2)  + '.' +
 		('0' + date.getMilliseconds()).slice(-3);
 
-	this.log.push([
+	var newRecord = [
 		dateStr,
 		this.ePointers.devicemotion.accelerationIncludingGravity.x,
 		this.ePointers.devicemotion.accelerationIncludingGravity.y,
@@ -63,18 +64,12 @@ Apl.prototype.logDataPush = function() {
 		this.ePointers.devicemotion.acceleration.z,
 		this.ePointers.devicemotion.rotationRate.alpha,
 		this.ePointers.devicemotion.rotationRate.beta,
-		this.ePointers.devicemotion.rotationRate.gamma,
-		this.ePointers.deviceorientation.absolute,
-		this.ePointers.deviceorientation.alpha,
-		this.ePointers.deviceorientation.beta,
-		this.ePointers.deviceorientation.gamma,
-		this.ePointers.devicelight.value,
-		this.ePointers.deviceproximity.max,
-		this.ePointers.deviceproximity.min,
-		this.ePointers.deviceproximity.value,
-	]);
+		this.ePointers.devicemotion.rotationRate.gamma];
+
+	this.log.push(newRecord);
 };
 
+var apl; // for debug
 $(function() {
-	var apl = new Apl();
+	apl = new Apl();
 });
