@@ -18,7 +18,7 @@ Apl = function() {
 
 	$('#status').text('ready');
 
-	var socket = io.connect('http://localhost:8880');
+	var socket = io.connect('http://lab.schememono.net:8881');
 };
 
 Apl.prototype.startSaving = function(e) {

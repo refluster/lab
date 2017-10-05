@@ -23,3 +23,5 @@ io.sockets.on('connection', function(socket) {
 		console.log('From client: ' + d.data);
 	});
 });
+
+console.log('main');
