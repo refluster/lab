@@ -17,6 +17,8 @@ Apl = function() {
 			 '<td>' + (window.DeviceMotionEvent? 'ok': '-') + '</td></tr>');
 
 	$('#status').text('ready');
+
+	var socket = io.connect('http://localhost:8880');
 };
 
 Apl.prototype.startSaving = function(e) {
@@ -67,6 +69,10 @@ Apl.prototype.logDataPush = function() {
 		this.ePointers.devicemotion.rotationRate.gamma];
 
 	this.log.push(newRecord);
+
+	socket.emit('collect', {
+		data: newRecord
+	});
 };
 
 var apl; // for debug
