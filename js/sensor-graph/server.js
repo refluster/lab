@@ -16,7 +16,7 @@ function handler(req, res) {
 }
 
 io.sockets.on('connection', function(socket) {
-	socket.on('log', function(d) {
+	socket.on('collect', function(d) {
 		socket.broadcast.emit('log', {
 			data: d.data,
 		});
