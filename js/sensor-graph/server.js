@@ -22,6 +22,10 @@ io.sockets.on('connection', function(socket) {
 		});
 		console.log('From client: ' + d.data);
 	});
+	socket.on('logreset', function(d) {
+		socket.broadcast.emit('logreset');
+		console.log('-- log reset');
+	});
 });
 
 console.log('main');
