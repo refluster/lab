@@ -1,5 +1,4 @@
 Apl = function() {
-	this.log = [];
 	this.ePointers = {
 		devicemotion: {
 			accelerationIncludingGravity: {x: '-', y: '-', z: '-'},
@@ -16,8 +15,6 @@ Apl = function() {
 
 	this.sampleInterval = 200;
 	this.tick = 0;
-	this.pro_history = JSON.parse(pro_history);
-	this.logDateFormat(this.pro_history);
 	this.drawGraph(1,
 				   this.tick*this.sampleInterval - graphLeftMsec,
 				   this.tick*this.sampleInterval + graphRightMsec);
