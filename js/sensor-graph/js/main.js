@@ -20,12 +20,14 @@ Apl = function() {
 
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
-		console.log(d);
+		this.log.push(d.data);
+	});
+	this.socket.on('logreset', function() {
+		this.log = [];
 	});
 };
 
 Apl.prototype.startSaving = function(e) {
-	this.log = [];
 	if (window.DeviceMotionEvent) {
 		$(window).on('devicemotion', function(e) {
 			this.ePointers.devicemotion = e.originalEvent;
@@ -37,6 +39,7 @@ Apl.prototype.startSaving = function(e) {
 	$('#save').off('click');
 	$('#save').on('click', this.stopSaving.bind(this));
 	$('#status').text('sampling');
+	this.socket.emit('logreset');
 };
 
 Apl.prototype.stopSaving = function(e) {
@@ -45,8 +48,6 @@ Apl.prototype.stopSaving = function(e) {
 	}
 	clearInterval(this.timer);
 	$('#save').text('start');
-	$('#save').addClass('disabled');
-	$('#status').text('uploading data');
 };
 
 Apl.prototype.logDataPush = function() {
@@ -70,8 +71,6 @@ Apl.prototype.logDataPush = function() {
 		this.ePointers.devicemotion.rotationRate.alpha,
 		this.ePointers.devicemotion.rotationRate.beta,
 		this.ePointers.devicemotion.rotationRate.gamma];
-
-	this.log.push(newRecord);
 
 	this.socket.emit('collect', {
 		data: newRecord
