@@ -1,4 +1,5 @@
 Apl = function() {
+	this.log = [];
 	this.ePointers = {
 		devicemotion: {
 			accelerationIncludingGravity: {x: '-', y: '-', z: '-'},
@@ -20,11 +21,13 @@ Apl = function() {
 
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
+		console.log(d);
 		this.log.push(d.data);
-	});
+	}.bind(this));
 	this.socket.on('logreset', function() {
+		console.log('log reset');
 		this.log = [];
-	});
+	}.bind(this));
 };
 
 Apl.prototype.startSaving = function(e) {
@@ -34,12 +37,12 @@ Apl.prototype.startSaving = function(e) {
 		}.bind(this));
 	}
 	var sampleInterval = (parseInt($("#sampling-interval").val()) || 200);
+	this.socket.emit('logreset');
 	this.timer = setInterval(this.logDataPush.bind(this), sampleInterval);
 	$('#save').text('stop');
-	$('#save').off('click');
+	//$('#save').off('click');
 	$('#save').on('click', this.stopSaving.bind(this));
 	$('#status').text('sampling');
-	this.socket.emit('logreset');
 };
 
 Apl.prototype.stopSaving = function(e) {
@@ -47,6 +50,8 @@ Apl.prototype.stopSaving = function(e) {
 		$(window).off('devicemotion');
 	}
 	clearInterval(this.timer);
+	$('#save').off('click');
+	$('#save').on('click', this.startSaving.bind(this));
 	$('#save').text('start');
 };
 
@@ -59,7 +64,6 @@ Apl.prototype.logDataPush = function() {
 		('0' + date.getMinutes()).slice(-2)  + ':' +
 		('0' + date.getSeconds()).slice(-2)  + '.' +
 		('0' + date.getMilliseconds()).slice(-3);
-
 	var newRecord = [
 		dateStr,
 		this.ePointers.devicemotion.accelerationIncludingGravity.x,
@@ -71,7 +75,6 @@ Apl.prototype.logDataPush = function() {
 		this.ePointers.devicemotion.rotationRate.alpha,
 		this.ePointers.devicemotion.rotationRate.beta,
 		this.ePointers.devicemotion.rotationRate.gamma];
-
 	this.socket.emit('collect', {
 		data: newRecord
 	});
