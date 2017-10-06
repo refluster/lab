@@ -50,11 +50,22 @@ Apl.prototype.sampleSensor = function() {
 
 Apl.prototype.playCalmDown = function() {
 	console.log('play calm down');
-	$('#panel .image').addClass('fadeIn');
+	$('#panel .text').addClass('fadeIn');
 	$('#calmdown')[0].play();
-	setInterval(() => {
+	setTimeout(() => {
+		$('#panel .image').addClass('fadeIn');
 		$('#jazz')[0].play();
-	}, 1000);
+	}, 3000);
+};
+
+Apl.prototype.resetCalmDown = function() {
+	console.log('reset calm down');
+	$('#panel .text').removeClass('fadeIn');
+	$('#panel .image').removeClass('fadeIn');
+	$('#calmdown')[0].pause();
+	$('#calmdown')[0].currentTime = 0;
+	$('#jazz')[0].pause();
+	$('#jazz')[0].currentTime = 0;
 };
 
 var apl; // for debug
