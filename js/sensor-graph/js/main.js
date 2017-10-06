@@ -24,7 +24,7 @@ Apl = function() {
 	this.socket.on('log', function(d) {
 		this.log.push(d.data);
 		this.logDateFormat(this.log);
-		this.drawGraph(this.log);
+		this.drawGraph(this.tick*200 - 1000, this.tick*200 + 3000);
 		this.tick ++;
 	}.bind(this));
 	this.socket.on('logreset', function() {
@@ -94,7 +94,7 @@ Apl.prototype.logDateFormat = function(data) {
 	});
 };
 
-Apl.prototype.drawGraph = function() {
+Apl.prototype.drawGraph = function(start, end) {
 	var svg = d3.select("svg");
 	svg.selectAll('*')
 		.remove();
@@ -125,7 +125,7 @@ Apl.prototype.drawGraph = function() {
 		.y(function(d) { return y(d[1]); });
 
 	function drawLine(data) {
-		x.domain(d3.extent(data, function(d) { return d.date; }));
+		x.domain([start, end]);
 		y.domain([-10, 10]); // due to gravity data (-9.8 - +9.8)
 
 		g.append("g")
