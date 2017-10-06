@@ -32,7 +32,7 @@ Apl = function() {
 	let graphRightMsec = 6000;
 
 	this.tick = 0;
-	this.sampleInterval = 200; // msec
+	this.sampleInterval = parseInt($('sampling-interval').val() || '200'); // msec
 	this.pro_history = JSON.parse(pro_history);
 	this.logDateFormat(this.pro_history);
 	this.drawGraph(1,
