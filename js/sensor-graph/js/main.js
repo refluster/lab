@@ -21,12 +21,10 @@ Apl = function() {
 
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
-		console.log(d);
 		this.log.push(d.data);
 		this.drawGraph(this.log);
 	}.bind(this));
 	this.socket.on('logreset', function() {
-		console.log('log reset');
 		this.log = [];
 	}.bind(this));
 };
@@ -54,8 +52,6 @@ Apl.prototype.stopSaving = function(e) {
 	$('#save').off('click');
 	$('#save').on('click', this.startSaving.bind(this));
 	$('#save').text('start');
-
-	//this.drawGraph(this.log);
 };
 
 Apl.prototype.logDataPush = function() {
@@ -84,8 +80,6 @@ Apl.prototype.logDataPush = function() {
 };
 
 Apl.prototype.drawGraph = function(data) {
-	console.log(data);
-
 	var svg = d3.select("svg");
 	svg.selectAll('*')
 		.remove();
@@ -99,8 +93,6 @@ Apl.prototype.drawGraph = function(data) {
 	//var parseTime = d3.timeParse("%d-%b-%y");
 	var parseTime = d3.timeParse('%Y/%m/%d %H:%M:%S.%L');
 	//2017/10/05 18:02:55.251
-
-	console.log(parseTime(data[data.length-1][0]));
 
 	data.forEach(function(d) {
 		d.date = parseTime(d[0]);
@@ -116,11 +108,9 @@ Apl.prototype.drawGraph = function(data) {
 		.x(function(d) { return x(d.date); })
 		.y(function(d) { return y(d[1]); });
 
-	console.log(d3.extent(data, function(d) { return d.date; }));
-
 	x.domain(d3.extent(data, function(d) { return d.date; }));
 	//y.domain([0, d3.max(data, function(d) { return d[1]; })]);
-	y.domain([-10, 10]);
+	y.domain([-10, 10]); // due to gravity data (-9.8 - +9.8)
 
 	g.append("g")
 		.attr("transform", "translate(0," + height + ")")
