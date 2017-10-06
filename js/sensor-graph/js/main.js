@@ -5,6 +5,9 @@ Apl = function() {
 			accelerationIncludingGravity: {x: '-', y: '-', z: '-'},
 			acceleration: {x: '-', y: '-', z: '-'},
 			rotationRate: {alpha: '-', beta: '-', gamma: '-'}},
+        deviceorientation: {absolute: '-', alpha: '-', beta: '-', gamma: '-'},
+        devicelight: {value: '-'},
+        deviceproximity: {max: '-', min: '-', value: '-'},
 	};
 
 	$('#save').on('click', this.startSaving.bind(this));
@@ -24,7 +27,7 @@ Apl = function() {
 	this.socket.on('log', function(d) {
 		this.log.push(d.data);
 		this.logDateFormat(this.log);
-		this.drawGraph(this.tick*200 - 1000, this.tick*200 + 3000);
+		this.drawGraph(this.tick*200 - 2000, this.tick*200 + 6000);
 		this.tick ++;
 	}.bind(this));
 	this.socket.on('logreset', function() {
@@ -33,12 +36,28 @@ Apl = function() {
 
 	this.pro_history = JSON.parse(pro_history);
 	this.logDateFormat(this.pro_history);
+	this.drawGraph(this.tick*200 - 2000, this.tick*200 + 6000);
 };
 
 Apl.prototype.startSaving = function(e) {
 	if (window.DeviceMotionEvent) {
 		$(window).on('devicemotion', function(e) {
 			this.ePointers.devicemotion = e.originalEvent;
+		}.bind(this));
+	}
+	if (window.DeviceOrientationEvent) {
+		$(window).on('deviceorientation', function(e) {
+			this.ePointers.deviceorientation = e.originalEvent;
+		}.bind(this));
+	}
+	if (window.DeviceLightEvent) {
+		$(window).on('devicelight', function(e) {
+			this.ePointers.devicelight = e.originalEvent;
+		}.bind(this));
+	}
+	if (window.DeviceProximityEvent) {
+		$(window).on('deviceproximity', function(e) {
+			this.ePointers.deviceproximity = e.originalEvent;
 		}.bind(this));
 	}
 	this.sampleInterval = (parseInt($("#sampling-interval").val()) || 200);
@@ -53,6 +72,15 @@ Apl.prototype.startSaving = function(e) {
 Apl.prototype.stopSaving = function(e) {
 	if (window.DeviceMotionEvent) {
 		$(window).off('devicemotion');
+	}
+	if (window.DeviceOrientationEvent) {
+		$(window).off('deviceorientation');
+	}
+	if (window.DeviceLightEvent) {
+		$(window).off('devicelight');
+	}
+	if (window.DeviceProximityEvent) {
+		$(window).off('deviceproximity');
 	}
 	clearInterval(this.timer);
 	$('#save').off('click');
@@ -80,7 +108,15 @@ Apl.prototype.logDataPush = function() {
 		this.ePointers.devicemotion.acceleration.z,
 		this.ePointers.devicemotion.rotationRate.alpha,
 		this.ePointers.devicemotion.rotationRate.beta,
-		this.ePointers.devicemotion.rotationRate.gamma];
+		this.ePointers.devicemotion.rotationRate.gamma,
+		this.ePointers.deviceorientation.absolute,
+		this.ePointers.deviceorientation.alpha,
+		this.ePointers.deviceorientation.beta,
+		this.ePointers.deviceorientation.gamma,
+		this.ePointers.devicelight.value,
+		this.ePointers.deviceproximity.max,
+		this.ePointers.deviceproximity.min,
+		this.ePointers.deviceproximity.value];
 	this.socket.emit('collect', {
 		data: newRecord
 	});
@@ -144,6 +180,7 @@ Apl.prototype.drawGraph = function(start, end) {
 			.attr("d", line);
 	}
 	drawLine(this.log);
+	drawLine(this.pro_history);
 };
 
 var apl; // for debug
