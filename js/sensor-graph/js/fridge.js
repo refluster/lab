@@ -23,6 +23,7 @@ Apl.prototype.startSensing = function(e) {
 	}
 	this.socket.emit('fridge/reset');
 	this.timer = setInterval(this.sampleSensor.bind(this), this.sampleInterval);
+	this.angry = false;
 	$('#save').text('stop');
 	$('#save').off('click');
 	$('#save').on('click', this.stopSensing.bind(this));
@@ -41,7 +42,8 @@ Apl.prototype.stopSensing = function(e) {
 };
 
 Apl.prototype.sampleSensor = function() {
-	if (this.devicemotion.rotationRate.beta >= 100) {
+	if (this.angry == false && this.devicemotion.rotationRate.beta >= 100) {
+		this.angry = true;
 		this.socket.emit('fridge/angry');
 	}
 };
