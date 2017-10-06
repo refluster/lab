@@ -87,8 +87,6 @@ Apl.prototype.drawGraph = function() {
 		height = 400 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	var parseTime = d3.timeParse("%d-%b-%y");
-
 	var x = d3.scaleTime()
 		.rangeRound([0, width]);
 
