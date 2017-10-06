@@ -23,6 +23,10 @@ Apl = function() {
 	$('#status').text('ready');
 
 	this.tick = 0;
+	this.pro_history = JSON.parse(pro_history);
+	this.logDateFormat(this.pro_history);
+	this.drawGraph(this.tick*200 - 2000, this.tick*200 + 6000);
+
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
 		this.log.push(d.data);
@@ -33,10 +37,6 @@ Apl = function() {
 	this.socket.on('logreset', function() {
 		this.log = [];
 	}.bind(this));
-
-	this.pro_history = JSON.parse(pro_history);
-	this.logDateFormat(this.pro_history);
-	this.drawGraph(this.tick*200 - 2000, this.tick*200 + 6000);
 };
 
 Apl.prototype.startSaving = function(e) {
@@ -141,15 +141,6 @@ Apl.prototype.drawGraph = function(start, end) {
 		height = 400 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	//var parseTime = d3.timeParse("%d-%b-%y");
-	//var parseTime = d3.timeParse('%Y/%m/%d %H:%M:%S.%L');
-	//2017/10/05 18:02:55.251
-
-	//var beginDate = parseTime(data[0][0]);
-	//data.forEach(function(d) {
-	//	d.date = parseTime(d[0]) - beginDate;
-	//});
-
 	var x = d3.scaleTime()
 		.rangeRound([0, width]);
 
@@ -186,5 +177,4 @@ Apl.prototype.drawGraph = function(start, end) {
 var apl; // for debug
 $(function() {
 	apl = new Apl();
-//	apl.drawGraph();
 });
