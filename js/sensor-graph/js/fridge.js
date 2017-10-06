@@ -7,11 +7,13 @@ Apl = function() {
 	this.socket = io.connect('http://lab.schememono.net:8881');
 
 	this.socket.on('fridge/angry', function() {
-		console.log('fridge/angry');
+		console.log('fridge/angry')
+		this.playCalmDown();
 	}.bind(this));
 
 	this.socket.on('fridge/reset', function() {
 		console.log('fridge/reset');
+		this.resetCalmDown();
 	}.bind(this));
 };
 
