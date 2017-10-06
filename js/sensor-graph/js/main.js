@@ -19,10 +19,12 @@ Apl = function() {
 
 	$('#status').text('ready');
 
+	this.tick = 0;
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
 		this.log.push(d.data);
 		this.drawGraph(this.log);
+		this.tick ++;
 	}.bind(this));
 	this.socket.on('logreset', function() {
 		this.log = [];
@@ -35,9 +37,9 @@ Apl.prototype.startSaving = function(e) {
 			this.ePointers.devicemotion = e.originalEvent;
 		}.bind(this));
 	}
-	var sampleInterval = (parseInt($("#sampling-interval").val()) || 200);
+	this.sampleInterval = (parseInt($("#sampling-interval").val()) || 200);
 	this.socket.emit('logreset');
-	this.timer = setInterval(this.logDataPush.bind(this), sampleInterval);
+	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
 	$('#save').text('stop');
 	$('#save').off('click');
 	$('#save').on('click', this.stopSaving.bind(this));
@@ -52,6 +54,7 @@ Apl.prototype.stopSaving = function(e) {
 	$('#save').off('click');
 	$('#save').on('click', this.startSaving.bind(this));
 	$('#save').text('start');
+	$('#status').text('ready');
 };
 
 Apl.prototype.logDataPush = function() {
@@ -94,8 +97,9 @@ Apl.prototype.drawGraph = function(data) {
 	var parseTime = d3.timeParse('%Y/%m/%d %H:%M:%S.%L');
 	//2017/10/05 18:02:55.251
 
+	var beginDate = parseTime(data[0][0]);
 	data.forEach(function(d) {
-		d.date = parseTime(d[0]);
+		d.date = parseTime(d[0]) - beginDate;
 	});
 
 	var x = d3.scaleTime()
