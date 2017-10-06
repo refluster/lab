@@ -47,7 +47,7 @@ Apl = function() {
 	}.bind(this));
 };
 
-Apl.prototype.startSaving = function(e) {
+Apl.prototype.startSensing = function(e) {
 	if (window.DeviceMotionEvent) {
 		$(window).on('devicemotion', function(e) {
 			this.ePointers.devicemotion = e.originalEvent;
@@ -72,11 +72,11 @@ Apl.prototype.startSaving = function(e) {
 	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
 	$('#save').text('stop');
 	$('#save').off('click');
-	$('#save').on('click', this.stopSaving.bind(this));
+	$('#save').on('click', this.stopSensing.bind(this));
 	$('#status').text('sampling');
 };
 
-Apl.prototype.stopSaving = function(e) {
+Apl.prototype.stopSensing = function(e) {
 	if (window.DeviceMotionEvent) {
 		$(window).off('devicemotion');
 	}
@@ -92,7 +92,7 @@ Apl.prototype.stopSaving = function(e) {
 	clearInterval(this.timer);
 	$('#save').text('start');
 	$('#save').off('click');
-	$('#save').on('click', this.startSaving.bind(this));
+	$('#save').on('click', this.startSensing.bind(this));
 	$('#status').text('ready');
 };
 
