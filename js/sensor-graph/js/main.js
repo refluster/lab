@@ -35,14 +35,16 @@ Apl = function() {
 	this.sampleInterval = 200; // msec
 	this.pro_history = JSON.parse(pro_history);
 	this.logDateFormat(this.pro_history);
-	this.drawGraph(this.tick*this.sampleInterval - graphLeftMsec,
+	this.drawGraph(1,
+				   this.tick*this.sampleInterval - graphLeftMsec,
 				   this.tick*this.sampleInterval + graphRightMsec);
 
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
 		this.log.push(d.data);
 		this.logDateFormat(this.log);
-		this.drawGraph(this.tick*this.sampleInterval - graphLeftMsec,
+		this.drawGraph(1,
+					   this.tick*this.sampleInterval - graphLeftMsec,
 					   this.tick*this.sampleInterval + graphRightMsec);
 		this.tick ++;
 	}.bind(this));
@@ -143,7 +145,7 @@ Apl.prototype.logDateFormat = function(data) {
 	});
 };
 
-Apl.prototype.drawGraph = function(start, end) {
+Apl.prototype.drawGraph = function(sensor_idx, start, end) {
 	var svg = d3.select("svg");
 	svg.selectAll('*')
 		.remove();
@@ -162,7 +164,7 @@ Apl.prototype.drawGraph = function(start, end) {
 
 	var line = d3.line()
 		.x(function(d) { return x(d.date); })
-		.y(function(d) { return y(d[1]); });
+		.y(function(d) { return y(d[sensor_idx]); });
 
 	function drawLine(data) {
 		x.domain([start, end]);
