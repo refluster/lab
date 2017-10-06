@@ -40,7 +40,7 @@ Apl.prototype.startSaving = function(e) {
 	this.socket.emit('logreset');
 	this.timer = setInterval(this.logDataPush.bind(this), sampleInterval);
 	$('#save').text('stop');
-	//$('#save').off('click');
+	$('#save').off('click');
 	$('#save').on('click', this.stopSaving.bind(this));
 	$('#status').text('sampling');
 };
@@ -53,6 +53,8 @@ Apl.prototype.stopSaving = function(e) {
 	$('#save').off('click');
 	$('#save').on('click', this.startSaving.bind(this));
 	$('#save').text('start');
+
+	this.drawGraph(this.log);
 };
 
 Apl.prototype.logDataPush = function() {
@@ -80,12 +82,20 @@ Apl.prototype.logDataPush = function() {
 	});
 };
 
-Apl.prototype.drawGraph = function() {
+Apl.prototype.drawGraph = function(data) {
 	var svg = d3.select("svg"),
 		margin = {top: 20, right: 20, bottom: 30, left: 50},
 		width = 800 - margin.left - margin.right,
 		height = 400 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	//var parseTime = d3.timeParse("%d-%b-%y");
+	var parseTime = d3.timeParse('%Y/%m/%d %H:%M:%S');
+	//2017/10/05 18:02:55.251
+
+	data.forEach(function(d) {
+		d[0] = parseTime(d[0]);
+	});
 
 	var x = d3.scaleTime()
 		.rangeRound([0, width]);
@@ -97,15 +107,6 @@ Apl.prototype.drawGraph = function() {
 		.x(function(d) { return x(d[0]); })
 		.y(function(d) { return y(d[1]); });
 
-	var data = [
-		[.1, .3],
-		[.2, .2],
-		[.3, .3],
-		[.4, .4],
-		[.5, .5],
-		[3.6, .7],
-	];
-	
 	x.domain(d3.extent(data, function(d) { console.log(d); return d[0]; }));
 	y.domain(d3.extent(data, function(d) { return d[1]; }));
 
@@ -138,5 +139,5 @@ Apl.prototype.drawGraph = function() {
 var apl; // for debug
 $(function() {
 	apl = new Apl();
-	apl.drawGraph();
+//	apl.drawGraph();
 });
