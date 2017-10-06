@@ -23,6 +23,7 @@ Apl = function() {
 	$('#status').text('ready');
 
 	this.tick = 0;
+	this.sampleInterval = 200; // msec
 	this.pro_history = JSON.parse(pro_history);
 	this.logDateFormat(this.pro_history);
 	this.drawGraph(this.tick*200 - 2000, this.tick*200 + 6000);
@@ -31,7 +32,7 @@ Apl = function() {
 	this.socket.on('log', function(d) {
 		this.log.push(d.data);
 		this.logDateFormat(this.log);
-		this.drawGraph(this.tick*200 - 2000, this.tick*200 + 6000);
+		this.drawGraph(this.tick*this.sampleInterval - 2000, this.tick*this.sampleInterval + 6000);
 		this.tick ++;
 	}.bind(this));
 	this.socket.on('logreset', function() {
@@ -60,7 +61,6 @@ Apl.prototype.startSaving = function(e) {
 			this.ePointers.deviceproximity = e.originalEvent;
 		}.bind(this));
 	}
-	this.sampleInterval = (parseInt($("#sampling-interval").val()) || 200);
 	this.socket.emit('logreset');
 	this.timer = setInterval(this.logDataPush.bind(this), this.sampleInterval);
 	$('#save').text('stop');
@@ -83,9 +83,9 @@ Apl.prototype.stopSaving = function(e) {
 		$(window).off('deviceproximity');
 	}
 	clearInterval(this.timer);
+	$('#save').text('start');
 	$('#save').off('click');
 	$('#save').on('click', this.startSaving.bind(this));
-	$('#save').text('start');
 	$('#status').text('ready');
 };
 
