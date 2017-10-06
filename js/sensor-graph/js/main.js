@@ -10,7 +10,7 @@ Apl = function() {
         deviceproximity: {max: '-', min: '-', value: '-'},
 	};
 
-	$('#save').on('click', this.startSaving.bind(this));
+	$('#save').on('click', this.startSensing.bind(this));
 
 	var d = $('#sense tbody');
 	d.append('<tr><td>acceleration including gravity</td>' +
@@ -32,7 +32,7 @@ Apl = function() {
 	this.sampleInterval = 200; // msec
 	this.pro_history = JSON.parse(pro_history);
 	this.logDateFormat(this.pro_history);
-	this.drawGraph(this.tick*200 - 2000, this.tick*200 + 6000);
+	this.drawGraph(this.tick*this.sampleInterval - 2000, this.tick*this.sampleInterval + 6000);
 
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
