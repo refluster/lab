@@ -42,6 +42,7 @@ Apl = function() {
 		this.tick ++;
 	}.bind(this));
 	this.socket.on('logreset', function() {
+		this.tick = 0;
 		this.log = [];
 	}.bind(this));
 };
@@ -122,7 +123,8 @@ Apl.prototype.logDataPush = function() {
 		this.ePointers.devicelight.value,
 		this.ePointers.deviceproximity.max,
 		this.ePointers.deviceproximity.min,
-		this.ePointers.deviceproximity.value];
+		this.ePointers.deviceproximity.value,
+	];
 	this.socket.emit('collect', {
 		data: newRecord
 	});
