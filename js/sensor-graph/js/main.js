@@ -99,13 +99,6 @@ Apl.prototype.drawGraph = function() {
 		.x(function(d) { return x(d[0]); })
 		.y(function(d) { return y(d[1]); });
 
-/*
-	d3.csv("data.csv", function(d) {
-		d.date = parseTime(d.date);
-		d.close = +d.close;
-		return d;
-	}, function(error, data) {
-*/
 	var data = [
 		[.1, .3],
 		[.2, .2],
@@ -115,35 +108,33 @@ Apl.prototype.drawGraph = function() {
 		[3.6, .7],
 	];
 	
-	{
-		x.domain(d3.extent(data, function(d) { console.log(d); return d[0]; }));
-		y.domain(d3.extent(data, function(d) { return d[1]; }));
+	x.domain(d3.extent(data, function(d) { console.log(d); return d[0]; }));
+	y.domain(d3.extent(data, function(d) { return d[1]; }));
 
-		g.append("g")
-			.attr("transform", "translate(0," + height + ")")
-			.call(d3.axisBottom(x))
-			.select(".domain")
-			.remove();
+	g.append("g")
+		.attr("transform", "translate(0," + height + ")")
+		.call(d3.axisBottom(x))
+		.select(".domain")
+		.remove();
 
-		g.append("g")
-			.call(d3.axisLeft(y))
-			.append("text")
-			.attr("fill", "#000")
-			.attr("transform", "rotate(-90)")
-			.attr("y", 6)
-			.attr("dy", "0.71em")
-			.attr("text-anchor", "end")
-			.text("Price ($)");
+	g.append("g")
+		.call(d3.axisLeft(y))
+		.append("text")
+		.attr("fill", "#000")
+		.attr("transform", "rotate(-90)")
+		.attr("y", 6)
+		.attr("dy", "0.71em")
+		.attr("text-anchor", "end")
+		.text("Price ($)");
 
-		g.append("path")
-			.datum(data)
-			.attr("fill", "none")
-			.attr("stroke", "steelblue")
-			.attr("stroke-linejoin", "round")
-			.attr("stroke-linecap", "round")
-			.attr("stroke-width", 1.5)
-			.attr("d", line);
-	}
+	g.append("path")
+		.datum(data)
+		.attr("fill", "none")
+		.attr("stroke", "steelblue")
+		.attr("stroke-linejoin", "round")
+		.attr("stroke-linecap", "round")
+		.attr("stroke-width", 1.5)
+		.attr("d", line);
 };
 
 var apl; // for debug
