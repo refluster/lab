@@ -94,7 +94,7 @@ Apl.prototype.logDateFormat = function(data) {
 	});
 };
 
-Apl.prototype.drawGraph = function(data) {
+Apl.prototype.drawGraph = function() {
 	var svg = d3.select("svg");
 	svg.selectAll('*')
 		.remove();
@@ -143,7 +143,7 @@ Apl.prototype.drawGraph = function(data) {
 			.attr("stroke-width", 1.5)
 			.attr("d", line);
 	}
-	drawLine(data);
+	drawLine(this.log);
 };
 
 var apl; // for debug
