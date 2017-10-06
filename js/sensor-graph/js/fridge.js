@@ -51,6 +51,10 @@ Apl.prototype.sampleSensor = function() {
 Apl.prototype.playCalmDown = function() {
 	console.log('play calm down');
 	$('#panel .image').addClass('fadeIn');
+	$('#calmdown')[0].play();
+	setInterval(() => {
+		$('#jazz')[0].play();
+	}, 1000);
 };
 
 var apl; // for debug
