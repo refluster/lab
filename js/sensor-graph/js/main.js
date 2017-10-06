@@ -41,6 +41,9 @@ Apl = function() {
 
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
+		if (d.data[1] == '-') {
+			return;
+		}
 		this.log.push(d.data);
 		this.logDateFormat(this.log);
 		this.drawGraph(1,
