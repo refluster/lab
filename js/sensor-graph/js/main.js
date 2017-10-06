@@ -31,6 +31,7 @@ Apl = function() {
 	let graphLeftMsec = 2000;
 	let graphRightMsec = 6000;
 
+	this.sampleInterval = 200;
 	this.tick = 0;
 	this.pro_history = JSON.parse(pro_history);
 	this.logDateFormat(this.pro_history);
