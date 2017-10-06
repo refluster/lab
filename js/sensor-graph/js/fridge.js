@@ -49,7 +49,8 @@ Apl.prototype.sampleSensor = function() {
 };
 
 Apl.prototype.playCalmDown = function() {
-	$('#panel').css('background-image', 'url(img/calmdown01_960.jpg)');
+	console.log('play calm down');
+	$('#panel .image').addClass('fadeIn');
 };
 
 var apl; // for debug
