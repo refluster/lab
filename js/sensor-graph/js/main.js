@@ -19,6 +19,12 @@ Apl = function() {
 			 '<td>' + (window.DeviceMotionEvent? 'ok': '-') + '</td></tr>');
 	d.append('<tr><td>rotation rate</td>' +
 			 '<td>' + (window.DeviceMotionEvent? 'ok': '-') + '</td></tr>');
+	d.append('<tr><td>gyroscope</td>' +
+			 '<td>' + (window.DeviceOrientationEvent? 'ok': '-') + '</td></tr>');
+	d.append('<tr><td>ambient light</td>' +
+			 '<td>' + (window.DeviceLightEvent? 'ok': '-') + '</td></tr>');
+	d.append('<tr><td>proximity</td>' +
+			 '<td>' + (window.DeviceProximityEvent? 'ok': '-') + '</td></tr>');
 
 	$('#status').text('ready');
 
