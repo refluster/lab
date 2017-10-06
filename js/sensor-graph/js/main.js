@@ -83,8 +83,8 @@ Apl.prototype.logDataPush = function() {
 Apl.prototype.drawGraph = function() {
 	var svg = d3.select("svg"),
 		margin = {top: 20, right: 20, bottom: 30, left: 50},
-		width = 300 - margin.left - margin.right,
-		height = 300 - margin.top - margin.bottom,
+		width = 800 - margin.left - margin.right,
+		height = 400 - margin.top - margin.bottom,
 		g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	var parseTime = d3.timeParse("%d-%b-%y");
@@ -96,18 +96,28 @@ Apl.prototype.drawGraph = function() {
 		.rangeRound([height, 0]);
 
 	var line = d3.line()
-		.x(function(d) { return x(d.date); })
-		.y(function(d) { return y(d.close); });
+		.x(function(d) { return x(d[0]); })
+		.y(function(d) { return y(d[1]); });
 
+/*
 	d3.csv("data.csv", function(d) {
 		d.date = parseTime(d.date);
 		d.close = +d.close;
 		return d;
 	}, function(error, data) {
-		if (error) throw error;
-
-		x.domain(d3.extent(data, function(d) { return d.date; }));
-		y.domain(d3.extent(data, function(d) { return d.close; }));
+*/
+	var data = [
+		[.1, .3],
+		[.2, .2],
+		[.3, .3],
+		[.4, .4],
+		[.5, .5],
+		[3.6, .7],
+	];
+	
+	{
+		x.domain(d3.extent(data, function(d) { console.log(d); return d[0]; }));
+		y.domain(d3.extent(data, function(d) { return d[1]; }));
 
 		g.append("g")
 			.attr("transform", "translate(0," + height + ")")
@@ -133,7 +143,7 @@ Apl.prototype.drawGraph = function() {
 			.attr("stroke-linecap", "round")
 			.attr("stroke-width", 1.5)
 			.attr("d", line);
-	});
+	}
 };
 
 var apl; // for debug
