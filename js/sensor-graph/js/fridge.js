@@ -52,12 +52,14 @@ Apl.prototype.sampleSensor = function() {
 
 Apl.prototype.playCalmDown = function() {
 	console.log('play calm down');
-	$('#panel .text').addClass('fadeIn');
-	$('#calmdown')[0].play();
 	setTimeout(() => {
-		$('#panel .image').addClass('fadeIn');
-		$('#jazz')[0].play();
-	}, 3000);
+		$('#panel .text').addClass('fadeIn');
+		$('#calmdown')[0].play();
+		setTimeout(() => {
+			$('#panel .image').addClass('fadeIn');
+			$('#jazz')[0].play();
+		}, 3000);
+	}, 1000);
 };
 
 Apl.prototype.resetCalmDown = function() {
