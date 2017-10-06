@@ -28,17 +28,22 @@ Apl = function() {
 
 	$('#status').text('ready');
 
+	let graphLeftMsec = 2000;
+	let graphRightMsec = 6000;
+
 	this.tick = 0;
 	this.sampleInterval = 200; // msec
 	this.pro_history = JSON.parse(pro_history);
 	this.logDateFormat(this.pro_history);
-	this.drawGraph(this.tick*this.sampleInterval - 2000, this.tick*this.sampleInterval + 6000);
+	this.drawGraph(this.tick*this.sampleInterval - graphLeftMsec,
+				   this.tick*this.sampleInterval + graphRightMsec);
 
 	this.socket = io.connect('http://lab.schememono.net:8881');
 	this.socket.on('log', function(d) {
 		this.log.push(d.data);
 		this.logDateFormat(this.log);
-		this.drawGraph(this.tick*this.sampleInterval - 2000, this.tick*this.sampleInterval + 6000);
+		this.drawGraph(this.tick*this.sampleInterval - graphLeftMsec,
+					   this.tick*this.sampleInterval + graphRightMsec);
 		this.tick ++;
 	}.bind(this));
 	this.socket.on('logreset', function() {
