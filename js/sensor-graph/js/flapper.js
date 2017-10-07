@@ -31,7 +31,7 @@ Apl = function() {
 	let graphLeftMsec = 2000;
 	let graphRightMsec = 6000;
 
-	this.sampleInterval = 200;
+	this.sampleInterval = 100;
 	this.tick = 0;
 	this.pro_history = JSON.parse(pro_history);
 	this.logDateFormat(this.pro_history);
@@ -81,7 +81,7 @@ Apl = function() {
 };
 
 Apl.prototype.startSensing = function(e) {
-	this.sampleInterval = parseInt($('#sampling-interval').val() || '200'); // msec
+	this.sampleInterval = parseInt($('#sampling-interval').val() || '100'); // msec
 
 	if (window.DeviceMotionEvent) {
 		$(window).on('devicemotion', function(e) {
