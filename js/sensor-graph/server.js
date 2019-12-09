@@ -16,6 +16,7 @@ function handler(req, res) {
 }
 
 io.sockets.on('connection', function(socket) {
+console.log('conn');
 	socket.on('collect', function(d) {
 		socket.broadcast.emit('log', {
 			data: d.data,
@@ -25,6 +26,14 @@ io.sockets.on('connection', function(socket) {
 	socket.on('logreset', function(d) {
 		socket.broadcast.emit('logreset');
 		console.log('-- log reset');
+	});
+	socket.on('fridge/reset', function(d) {
+		socket.broadcast.emit('fridge/reset');
+		console.log('-- fridge/reset');
+	});
+	socket.on('fridge/angry', function(d) {
+		socket.broadcast.emit('fridge/angry');
+		console.log('-- fridge/angry');
 	});
 });
 
