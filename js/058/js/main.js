@@ -1,5 +1,5 @@
 var Graph = function() {
-	//N 33.674711390010856AE 132.52676725387573AS 31.358987471317462AW 129.01114225387573
+	//N 33.674711390010856ã€E 132.52676725387573ã€S 31.358987471317462ã€W 129.01114225387573
 
 	$('#map').css('height', $('#map').width()*499/638);
 
@@ -40,19 +40,19 @@ var Graph = function() {
 		.append("text")
 		.attr("x",       + h/2 + 5 + 1*3)
 		.attr("y", h/2   + 4)
-		.text("k“x1")
+		.text("éœ‡åº¦1")
 
 	this.label
 		.append("text")
 		.attr("x", w/3   + h/2 + 5 + 4*3)
 		.attr("y", h/2   + 4)
-		.text("k“x4")
+		.text("éœ‡åº¦4")
 
 	this.label
 		.append("text")
 		.attr("x", w/3*2 + h/2 + 5 + 7*3)
 		.attr("y", h/2   + 4)
-		.text("k“x7")
+		.text("éœ‡åº¦7")
 };
 
 Graph.prototype.dataReset = function() {
