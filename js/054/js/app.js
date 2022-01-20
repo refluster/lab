@@ -22,13 +22,19 @@ App.prototype.init = function() {
 
 	this.camera = new THREE.PerspectiveCamera(90, 1, 0.001, 700);
 	//	this.camera.position.set(80, 1, .1);
+	//this.camera.position.x = -100;
+	//this.camera.position.y = 1.8;
+	//this.camera.position.z = 10;
+
 	this.camera.position.x = 80;
-	this.camera.position.y = 1.8;
-	this.camera.position.x = 10;
+	this.camera.position.y = 300;
+	this.camera.position.z = 50;
+
 	this.scene.add(this.camera);
 
 	this.controls = new THREE.OrbitControls(this.camera, this.element);
-	this.controls.rotateUp(Math.PI / 4);
+	//this.controls.rotateUp(Math.PI / 4);
+	this.controls.rotateLeft(Math.PI / 1);
 
 	this.controls.noZoom = true;
 	this.controls.noPan = true;
@@ -267,7 +273,7 @@ App.prototype.render = function(dt) {
 	v -= 9.8*dt/40;
 	if (this.camera.position.y < 0) {
 		v = 0;
-		this.camera.position.y = 80;
+		this.camera.position.y = 300;
 	}
 
 	this.controls.target.set(
