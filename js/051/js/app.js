@@ -25,8 +25,11 @@ App.prototype.init = function() {
 	this.camera.position.set(0, 10, 0);
 	this.scene.add(this.camera);
 
+	//this.controls = new THREE.OrbitControls(this.camera, this.element);
+	const gyro_controls = new THREE.DeviceOrientationControls( this.camera);
 	this.controls = new THREE.OrbitControls(this.camera, this.element);
-	this.controls.rotateUp(Math.PI / 4);
+	
+	this.controls.rotateUp(Math.PI / 12);
 	this.controls.target.set(
 		this.camera.position.x + 0.1,
 		this.camera.position.y,
